@@ -155,6 +155,122 @@
     .toolkit { grid-template-columns: 1fr 1fr; }
   }
 
+  /* ── Creative work grid ── */
+  .creative-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 48px;
+  }
+  .creative-item {
+    background: var(--paper);
+    padding: 36px;
+    transition: background 0.3s;
+  }
+  .creative-item:hover { background: var(--paper-2); }
+  .ci-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    margin-bottom: 18px;
+  }
+  .creative-item h4 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    margin-bottom: 12px;
+    line-height: 1.15;
+  }
+  .creative-item p {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+  @media (max-width: 900px) {
+    .creative-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .creative-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── DesignDayyly content grid ── */
+  .dd-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 48px;
+  }
+  .dd-thumb {
+    aspect-ratio: 1;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  @media (max-width: 700px) {
+    .dd-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── Besides designing ── */
+  .beside-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 48px;
+  }
+  .beside-item {
+    background: var(--paper);
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: background 0.3s;
+  }
+  .beside-item:hover { background: var(--paper-2); }
+  .bi-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .beside-item h5 {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  @media (max-width: 800px) {
+    .beside-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 500px) {
+    .beside-grid { grid-template-columns: 1fr; }
+  }
+
   /* ── Contact form ── */
   .form-grid {
     display: grid;
@@ -255,49 +371,103 @@
   </div>
 </section>
 
-<!-- 02 Timeline -->
-<section data-screen-label="02 Timeline">
+<!-- 02 Creative work -->
+<section data-screen-label="02 Creative Work">
   <div class="wrap">
     <div class="sec-head">
       <div class="l reveal">
-        <span class="eyebrow">Career</span>
-        <h2 class="serif">Five years, four <span class="italic">categories.</span></h2>
+        <span class="eyebrow">Beyond product design</span>
+        <h2 class="serif">Writing, brand, and <span class="italic">visual craft.</span></h2>
       </div>
       <div class="r reveal">
-        <p>Mostly enterprise. Mostly the products people don&rsquo;t see, but their companies depend on. A short timeline.</p>
+        <p>Product design is the day job. Content writing, brand identity, graphic work, and websites built from scratch are everything else.</p>
       </div>
     </div>
 
-    <div class="timeline reveal">
-      <div class="tl-row">
-        <div class="yr">2023 to 2026</div>
-        <div class="role serif">Sr. Product Designer</div>
-        <div class="where">miniOrange · Privileged Access Management</div>
-        <div class="what">Strategy + IA + execution. PAM platform redesign. Onboarding overhaul. ↗</div>
+    <div class="creative-grid reveal-stagger">
+      <div class="creative-item">
+        <div class="ci-num">01</div>
+        <h4 class="serif">Content writing</h4>
+        <p>Essays, case studies, and product writing. Long-form pieces on enterprise UX, systems thinking, and the craft of making complex software actually usable.</p>
       </div>
-      <div class="tl-row">
-        <div class="yr">2025</div>
-        <div class="role serif">Lead Designer</div>
-        <div class="where">Merry Health · Healthcare ops</div>
-        <div class="what">Emergency ambulance dispatch decision-support system.</div>
+      <div class="creative-item">
+        <div class="ci-num">02</div>
+        <h4 class="serif">Content creation</h4>
+        <p>Design content for Instagram under @DesignDayyly. Carousels, reels, and visual explainers on design concepts, tools, and day-to-day process.</p>
       </div>
-      <div class="tl-row">
-        <div class="yr">2023 to 2026</div>
-        <div class="role serif">Sr. Product Designer</div>
-        <div class="where">Identity &amp; Access Management</div>
-        <div class="what">B2B identity provider onboarding. Reduced setup time from 4 days to a few hours.</div>
+      <div class="creative-item">
+        <div class="ci-num">03</div>
+        <h4 class="serif">Brand design</h4>
+        <p>Identity systems, logomarks, and brand guidelines. Built from positioning and voice first, then into a visual language that holds together at scale.</p>
       </div>
-      <div class="tl-row">
-        <div class="yr">2024</div>
-        <div class="role serif">Solo designer</div>
-        <div class="where">SaltPeppr · Consumer food</div>
-        <div class="what">Web + iOS + Android + ops display. One system, three surfaces.</div>
+      <div class="creative-item">
+        <div class="ci-num">04</div>
+        <h4 class="serif">Graphic design</h4>
+        <p>Print and digital. Event collateral, marketing materials, social assets. Hands-on Adobe and Figma work, across formats and contexts.</p>
       </div>
-      <div class="tl-row">
-        <div class="yr">2025</div>
-        <div class="role serif">Lead Designer</div>
-        <div class="where">EducAItors · EdTech</div>
-        <div class="what">Designing an AI-native learning platform from 0 → 1.</div>
+      <div class="creative-item">
+        <div class="ci-num">05</div>
+        <h4 class="serif">Website design</h4>
+        <p>Landing pages and small-product sites, designed and deployed without a handoff. From Figma to browser, start to finish, in one engagement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02b DesignDayyly -->
+<section data-screen-label="02b DesignDayyly">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="l reveal">
+        <span class="eyebrow">Content creation</span>
+        <h2 class="serif">Creating content <span class="italic">@DesignDayyly.</span></h2>
+      </div>
+      <div class="r reveal">
+        <p>Design education on Instagram: carousels, reels, and visual frameworks on UX, branding, and the everyday practice of product design.</p>
+      </div>
+    </div>
+    <div class="dd-grid reveal">
+      <div class="dd-thumb">POST 01</div>
+      <div class="dd-thumb">POST 02</div>
+      <div class="dd-thumb">POST 03</div>
+      <div class="dd-thumb">POST 04</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02c Besides designing -->
+<section data-screen-label="02c Besides Designing">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="l reveal">
+        <span class="eyebrow">Besides designing</span>
+        <h2 class="serif">What I do when I&rsquo;m <span class="italic">not at the screen.</span></h2>
+      </div>
+    </div>
+    <div class="beside-grid reveal-stagger">
+      <div class="beside-item">
+        <div class="bi-dot">P</div>
+        <h5>Plan events</h5>
+      </div>
+      <div class="beside-item">
+        <div class="bi-dot">R</div>
+        <h5>Read books</h5>
+      </div>
+      <div class="beside-item">
+        <div class="bi-dot">C</div>
+        <h5>Create design content</h5>
+      </div>
+      <div class="beside-item">
+        <div class="bi-dot">D</div>
+        <h5>Doodle and paint</h5>
+      </div>
+      <div class="beside-item">
+        <div class="bi-dot">A</div>
+        <h5>Attend concerts and art galleries</h5>
+      </div>
+      <div class="beside-item">
+        <div class="bi-dot">F</div>
+        <h5>Talk about fashion</h5>
       </div>
     </div>
   </div>
@@ -491,13 +661,21 @@
 
 <script src="app.js"></script>
 <script>
-  // Contact form submit
   document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    const btn = this.querySelector('button[type="submit"]');
-    btn.textContent = 'Sent ✓';
-    btn.disabled = true;
-    btn.style.opacity = '0.7';
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const company = document.getElementById('company').value;
+    const helpType = document.getElementById('help-type').value;
+    const message = document.getElementById('message').value;
+    const subject = encodeURIComponent('Portfolio enquiry: ' + helpType);
+    const body = encodeURIComponent(
+      'Name: ' + name + '\n' +
+      'Email: ' + email + '\n' +
+      'Company: ' + company + '\n\n' +
+      message
+    );
+    window.location.href = 'mailto:mehakrgarg@gmail.com?subject=' + subject + '&body=' + body;
   });
 </script>
 </body>

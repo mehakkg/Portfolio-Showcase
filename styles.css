@@ -20,7 +20,7 @@
   --mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
 
   /* density */
-  --pad-section: 96px;
+  --pad-section: 72px;
   --pad-side: clamp(20px, 5vw, 96px);
   --gap: 24px;
 
@@ -492,7 +492,7 @@ section + section { border-top: 1px solid var(--rule); }
 }
 .belief {
   background: var(--paper);
-  padding: 56px 48px;
+  padding: 40px var(--pad-side);
   position: relative;
   transition: background 0.4s;
 }
