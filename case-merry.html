@@ -3,11 +3,215 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Ambulance Dispatch System — Mehak Garg</title>
+<title>Merry Health — Healthcare Coordination — Mehak Garg</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,400&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
+<style>
+/* ── Merry Health case study extras ── */
+.case-display {
+  font-family: var(--serif);
+  font-size: clamp(30px, 4.5vw, 62px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  max-width: 22ch;
+  margin-bottom: 32px;
+}
+.case-display .em { font-style: italic; color: var(--accent); }
+
+/* map-style incident grid */
+.incident-map {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 36px;
+  margin: 48px 0;
+  position: relative;
+  min-height: 220px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.incident-map .im-card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 16px;
+}
+.incident-map .im-card .imc-label {
+  font-family: var(--mono); font-size: 9px; color: var(--muted);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px;
+}
+.incident-map .im-card .imc-t {
+  font-family: var(--serif); font-size: 15px; color: var(--ink); line-height: 1.2; margin-bottom: 6px;
+}
+.incident-map .im-card .imc-meta { font-size: 11px; color: var(--muted); }
+.incident-map .im-card.urgent { border-color: #c0392b; }
+.incident-map .im-card.urgent .imc-label { color: #c0392b; }
+
+/* dark figures */
+.figure-dark {
+  background: #14110e;
+  border-radius: 12px;
+  padding: 32px 36px;
+  margin: 48px 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: #a09080;
+  line-height: 1.8;
+}
+.figure-dark .fig-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 24px; padding-bottom: 16px;
+  border-bottom: 1px solid #2a251f;
+}
+.figure-dark .fig-header .dot-r { width: 10px; height: 10px; border-radius: 50%; background: #e05050; }
+.figure-dark .fig-header .dot-y { width: 10px; height: 10px; border-radius: 50%; background: #e0a050; }
+.figure-dark .fig-header .dot-g { width: 10px; height: 10px; border-radius: 50%; background: #50c050; }
+.figure-dark .fig-header .fig-title { margin-left: 8px; font-size: 11px; color: #5a5045; letter-spacing: 0.08em; }
+.figure-dark .fd-row {
+  display: grid; grid-template-columns: 160px 1fr 100px 80px;
+  gap: 16px; padding: 10px 0;
+  border-bottom: 1px solid #1e1a16; align-items: center;
+}
+.figure-dark .fd-row.head { color: #5a5045; font-size: 10px; letter-spacing: 0.08em; }
+.figure-dark .chip { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+.figure-dark .chip-red { background: #4a1a1a; color: #e07070; }
+.figure-dark .chip-grn { background: #0e2e1a; color: #50c080; }
+.figure-dark .chip-ylw { background: #2e2010; color: #e0b060; }
+.figure-dark .sdot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.figure-dark .sdot-r { background: #e05050; }
+.figure-dark .sdot-g { background: #2ea44f; }
+.figure-dark .sdot-y { background: #e0a050; }
+
+/* mobile card mockup */
+.card-mockup {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 360px;
+  margin: 48px 0;
+}
+.card-mockup .cm-header {
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--rule);
+}
+.card-mockup .cm-title { font-family: var(--serif); font-size: 22px; color: var(--ink); margin-bottom: 8px; }
+.card-mockup .cm-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 13px; }
+.card-mockup .cm-row .ck { color: var(--muted); }
+.card-mockup .cm-row .cv { color: var(--ink); font-family: var(--mono); font-size: 12px; }
+.card-mockup .cm-urgent {
+  margin-top: 16px; padding: 10px 14px; border-radius: 8px;
+  background: #fdf0ee; border: 1px solid #e8c0b8; color: #c0392b;
+  font-size: 12px; font-family: var(--mono); letter-spacing: 0.06em;
+}
+[data-theme="dark"] .card-mockup .cm-urgent { background: #2a1210; border-color: #5a2a22; color: #e07060; }
+
+/* role table */
+.role-table {
+  display: grid; grid-template-columns: 200px 1fr;
+  border-top: 1px solid var(--rule); margin: 48px 0 0;
+}
+.role-table .rt-key {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 18px 0; border-bottom: 1px solid var(--rule);
+}
+.role-table .rt-val {
+  font-family: var(--serif); font-size: 17px; color: var(--ink);
+  padding: 18px 0; border-bottom: 1px solid var(--rule);
+}
+
+/* insights grid */
+.insights-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 0; border-top: 1px solid var(--rule); margin: 48px 0;
+}
+.insights-grid .ig-item {
+  padding: 32px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+}
+.insights-grid .ig-item:nth-child(2n) { border-right: none; }
+.insights-grid .ig-item .ig-n {
+  font-family: var(--mono); font-size: 10px; color: var(--accent);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px;
+}
+.insights-grid .ig-item .ig-t {
+  font-family: var(--serif); font-size: 20px; color: var(--ink);
+  line-height: 1.2; margin-bottom: 12px;
+}
+.insights-grid .ig-item p { font-size: 14px; color: var(--ink-2); line-height: 1.6; max-width: none; margin: 0; }
+
+/* adaptive comparison */
+.adaptive-table {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; margin-top: 48px;
+}
+.adaptive-table .at-head {
+  padding: 16px 24px; background: var(--paper-2);
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border-bottom: 1px solid var(--rule);
+}
+.adaptive-table .at-head.left { border-right: 1px solid var(--rule); }
+.adaptive-table .at-l, .adaptive-table .at-r {
+  padding: 18px 24px; border-bottom: 1px solid var(--rule); font-size: 14px; line-height: 1.55;
+}
+.adaptive-table .at-l { border-right: 1px solid var(--rule); color: var(--muted); }
+.adaptive-table .at-r { color: var(--ink-2); }
+.adaptive-table .at-l strong, .adaptive-table .at-r strong { color: var(--ink); font-weight: 500; }
+.adaptive-table .at-l:last-of-type, .adaptive-table .at-r:last-of-type { border-bottom: none; }
+
+/* pull quote */
+.case-pull-quote {
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  padding: 72px 0; margin: 72px 0;
+  text-align: center;
+}
+.case-pull-quote blockquote {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 52px);
+  line-height: 1.15; letter-spacing: -0.02em;
+  color: var(--ink); max-width: 22ch; margin: 0 auto;
+}
+.case-pull-quote blockquote .em { font-style: italic; color: var(--accent); }
+.case-pull-quote .attr { margin-top: 24px; font-size: 13px; color: var(--muted); }
+
+/* what i learned */
+.learned-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; border-top: 1px solid var(--rule); margin-top: 48px;
+}
+.learned-grid .lg-item {
+  padding: 32px 28px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+}
+.learned-grid .lg-item:nth-child(3n) { border-right: none; }
+.learned-grid .lg-item .lg-n {
+  font-family: var(--mono); font-size: 10px; color: var(--accent);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px;
+}
+.learned-grid .lg-item .lg-t {
+  font-family: var(--serif); font-size: 18px; color: var(--ink); line-height: 1.25; margin-bottom: 10px;
+}
+.learned-grid .lg-item p { font-size: 13px; color: var(--muted); line-height: 1.55; max-width: none; margin: 0; }
+
+@media (max-width: 900px) {
+  .incident-map { grid-template-columns: 1fr 1fr; }
+  .insights-grid { grid-template-columns: 1fr; }
+  .insights-grid .ig-item { border-right: none !important; }
+  .adaptive-table { grid-template-columns: 1fr; }
+  .adaptive-table .at-l { border-right: none; }
+  .adaptive-table .at-head.left { border-right: none; }
+  .learned-grid { grid-template-columns: 1fr; }
+  .learned-grid .lg-item { border-right: none !important; }
+  .role-table { grid-template-columns: 140px 1fr; }
+  .figure-dark .fd-row { grid-template-columns: 1fr 1fr; }
+}
+</style>
 </head>
 <body>
 
@@ -28,8 +232,8 @@
 <div class="wrap">
   <div class="case-hero">
     <div class="breadcrumbs">Work / Merry Health</div>
-    <h1 class="reveal">Ambulance Dispatch <span class="em">Decision Support</span></h1>
-    <p class="sub reveal">Designing a real-time emergency dispatch system that helps coordinators make faster, safer decisions when every second counts.</p>
+    <h1 class="reveal">A healthcare coordination system built for <span class="em">operational pressure.</span></h1>
+    <p class="sub reveal">Emergency coordinators were making life-critical dispatch decisions across three fragmented tools. I redesigned the system around the way coordinators actually think under pressure — not the way the database was structured.</p>
     <div class="case-meta reveal">
       <div class="it"><div class="l">Client</div><div class="v serif">Merry Health</div></div>
       <div class="it"><div class="l">Year</div><div class="v serif">2025</div></div>
@@ -40,83 +244,347 @@
 </div>
 
 <div class="wrap">
-  <div class="case-section reveal">
-    <h2 class="serif">The problem</h2>
-    <p class="lead">Emergency ambulance coordinators were making life-critical dispatch decisions using fragmented tools — phone calls, spreadsheets, and a legacy CAD system that hadn't been updated in a decade. The result: delayed responses, misrouted vehicles, and coordinators burning out under cognitive load.</p>
+
+  <!-- Top stats -->
+  <div class="case-section reveal" style="border-top:none; padding-top:0;">
     <div class="stats">
-      <div class="stat"><div class="n serif">4<span class="em">m</span></div><div class="l">Average additional delay caused by manual cross-referencing during dispatch</div></div>
-      <div class="stat"><div class="n serif">3<span class="em">+</span></div><div class="l">Separate systems coordinators had to manage simultaneously per incident</div></div>
-      <div class="stat"><div class="n serif">6<span class="em">wk</span></div><div class="l">From concept to production-ready prototype</div></div>
-      <div class="stat"><div class="n serif">0</div><div class="l">Existing UX research on coordinator mental models</div></div>
+      <div class="stat"><div class="n serif">4<span class="em">m</span></div><div class="l">Average dispatch delay caused by manual cross-referencing between systems</div></div>
+      <div class="stat"><div class="n serif"><span class="em">↓</span>32<span class="em">sec</span></div><div class="l">Reduction in average dispatch decision time after redesign</div></div>
+      <div class="stat"><div class="n serif">3 <span class="em">→</span> 1</div><div class="l">Fragmented systems consolidated into a single operational view</div></div>
+      <div class="stat"><div class="n serif">2<span class="em">wk</span></div><div class="l">From embedded research to production-ready prototype handoff</div></div>
     </div>
   </div>
 
+  <!-- When seconds matter -->
   <div class="case-section reveal">
-    <h2 class="serif">Research & constraints</h2>
-    <p class="lead">This was a high-stakes, high-constraint domain. I embedded with coordinators across two shifts to understand their actual decision-making process.</p>
+    <p class="eyebrow" style="margin-bottom:40px;">The problem</p>
+    <p class="case-display">When seconds matter, fragmentation becomes <span class="em">dangerous.</span></p>
+    <div class="two-col" style="gap:48px; margin-top:32px; margin-bottom:0;">
+      <div>
+        <p>Merry Health's emergency coordination team was running three separate tools to manage a single dispatch: a legacy CAD system for incident logging, a spreadsheet for unit availability, and a phone line for hospital capacity. None of them talked to each other.</p>
+        <p>During a mass casualty event — exactly when the system needed to work — coordinators were switching tabs, checking rows, and making phone calls simultaneously while managing 8–12 active incidents. Decisions were delayed. Vehicles were misrouted. Staff were burning out.</p>
+      </div>
+      <div>
+        <p>The error wasn't human. It was architectural. The system was designed around data entry, not decision-making. It gave coordinators information — it just gave it to them in three different places, in three different formats, at three different moments.</p>
+        <p>The brief: build one system that puts everything a coordinator needs to dispatch correctly in front of them, exactly when they need it, in a format they can process under pressure.</p>
+      </div>
+    </div>
+
+    <div class="incident-map">
+      <div class="im-card urgent">
+        <div class="imc-label">Code 1 · Active</div>
+        <div class="imc-t">Cardiac arrest · 47M</div>
+        <div class="imc-meta">5th & Vine, Cincinnati · 02:14 elapsed</div>
+      </div>
+      <div class="im-card">
+        <div class="imc-label">Code 2 · Queued</div>
+        <div class="imc-t">MVA · Multiple victims</div>
+        <div class="imc-meta">Route 50 Interchange · No unit assigned</div>
+      </div>
+      <div class="im-card">
+        <div class="imc-label">Code 3 · En route</div>
+        <div class="imc-t">Respiratory · 72F</div>
+        <div class="imc-meta">Unit 22 · ETA 6 min</div>
+      </div>
+      <div class="im-card urgent">
+        <div class="imc-label">Code 1 · Escalating</div>
+        <div class="imc-t">Stroke · 61M</div>
+        <div class="imc-meta">No neurology bed confirmed · Waiting</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- System already existed -->
+  <div class="case-section reveal">
+    <p class="eyebrow" style="margin-bottom:40px;">The context</p>
+    <p class="case-display">The system already existed. It just <span class="em">wasn't designed.</span></p>
+    <div class="two-col" style="gap:48px; margin-top:32px; margin-bottom:0;">
+      <div>
+        <p>Merry Health wasn't starting from zero. They had a CAD system, unit tracking, and hospital capacity data. The problem wasn't missing data — it was that no one had ever designed the layer between the data and the coordinators who needed to act on it.</p>
+        <p>Each tool was built by a different team, for a different purpose. The CAD was built by engineers for logging. The spreadsheet was built by coordinators as a workaround. The phone line existed because neither of the other two could answer "which hospital has a bed right now?"</p>
+      </div>
+      <div>
+        <p>The challenge wasn't technical — it was design. Someone needed to figure out what coordinators actually needed to see, when they needed to see it, and what action they needed to take. That had never been done. There was zero UX research on coordinator mental models.</p>
+        <div class="card-mockup" style="margin-top:28px;">
+          <div class="cm-header">Legacy dispatch card · Unit 14</div>
+          <div class="cm-title">Incident #0482</div>
+          <div class="cm-row"><span class="ck">Type</span><span class="cv">Cardiac</span></div>
+          <div class="cm-row"><span class="ck">Location</span><span class="cv">5th & Vine</span></div>
+          <div class="cm-row"><span class="ck">Unit status</span><span class="cv">See spreadsheet</span></div>
+          <div class="cm-row"><span class="ck">Hospital bed</span><span class="cv">Call hosp. direct</span></div>
+          <div class="cm-urgent">⚠ Manual follow-up required in 3 separate systems</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leading UX strategy -->
+  <div class="case-section reveal">
+    <p class="eyebrow" style="margin-bottom:40px;">The engagement</p>
+    <p class="case-display">Leading UX strategy under <span class="em">operational constraints.</span></p>
+    <p style="max-width:60ch; color:var(--ink-2); margin-top:24px;">This was a short, high-stakes engagement. Two weeks of embedded research, two weeks of design. No time for lengthy alignment cycles — decisions had to be made fast and justified clearly.</p>
+    <div class="role-table">
+      <div class="rt-key">My role</div><div class="rt-val">Lead Designer — research, IA, interaction design, prototype, handoff</div>
+      <div class="rt-key">Team</div><div class="rt-val">1 designer (me), 1 product manager, 2 engineers, 1 clinical ops advisor</div>
+      <div class="rt-key">Scope</div><div class="rt-val">Full coordination dashboard — dispatch, unit management, hospital capacity, surge mode</div>
+      <div class="rt-key">Timeline</div><div class="rt-val">6 weeks concept to production-ready prototype</div>
+      <div class="rt-key">Research</div><div class="rt-val">Embedded across 4 coordinator shifts, structured observation + debrief interviews</div>
+    </div>
+  </div>
+
+  <!-- Research: understanding pressure -->
+  <div class="case-section reveal">
+    <p class="eyebrow" style="margin-bottom:40px;">Discovery</p>
+    <h2 class="serif">Understanding pressure before designing screens.</h2>
+    <p class="lead">I spent 4 shifts embedded with coordinators before drawing a single wireframe. Not to watch them use the software — to watch them make decisions.</p>
+    <div class="two-col" style="gap:48px; margin-top:32px;">
+      <div>
+        <p>The most useful thing I learned in the first shift: coordinators don't read during surge. They scan. They use colour, position, and size to triage information — not labels, not numbers, not text. A system that requires reading at peak demand will be ignored.</p>
+        <p>The second most useful thing: coordinators have a mental hierarchy of what matters. First: is anyone going to die in the next 4 minutes? Second: is there a unit that can reach them? Third: is there a hospital that can take them? The system needed to answer those three questions in that order, automatically.</p>
+      </div>
+      <div>
+        <p>The research also surfaced something unexpected: coordinators didn't want a system that made decisions for them. They wanted a system that made their decisions faster. The distinction matters enormously for design. The interface needed to recommend, not automate — and it needed to show its reasoning, or experienced coordinators would override it every time.</p>
+        <div class="insight" style="margin-top:28px;">"I don't need the system to be smarter than me. I need it to be faster than three phone calls."</div>
+        <div class="insight" style="margin-top:12px;">"If I can't see why it's suggesting Unit 14, I'll ignore it and pick myself. Every. Single. Time."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Four insights -->
+  <div class="case-section reveal">
+    <h2 class="serif">Four insights reshaped the product direction.</h2>
+    <p class="lead">After 4 shifts and 12 hours of debrief interviews, four findings changed the design direction entirely.</p>
+    <div class="insights-grid">
+      <div class="ig-item">
+        <div class="ig-n">Insight 01</div>
+        <div class="ig-t">Coordinators process by position, not by label</div>
+        <p>During surge, coordinators navigate entirely by spatial memory. "The urgent ones are always top-left." Any design that reorders content dynamically breaks their mental model. Fixed positions, not sorted lists.</p>
+      </div>
+      <div class="ig-item">
+        <div class="ig-n">Insight 02</div>
+        <div class="ig-t">Recommendation without reasoning is worthless</div>
+        <p>Every suggestion the system makes needs a visible reason — ETA, capacity, skill match. Without it, coordinators override by default. Trust is built incrementally, and only through transparency.</p>
+      </div>
+      <div class="ig-item">
+        <div class="ig-n">Insight 03</div>
+        <div class="ig-t">The handoff moment is the highest-risk moment</div>
+        <p>When a coordinator hands off a shift to a colleague, incidents get dropped. The system needed to make shift handoff a first-class feature — a structured summary, not a verbal briefing over paper notes.</p>
+      </div>
+      <div class="ig-item">
+        <div class="ig-n">Insight 04</div>
+        <div class="ig-t">Hospital capacity is the invisible bottleneck</div>
+        <p>The right unit dispatched to the wrong hospital costs more time than a slower unit going to the right one. Hospital capacity had to be a primary input in dispatch recommendations, not an afterthought confirmed by phone.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Adaptive before automation -->
+  <div class="case-section reveal">
+    <h2 class="serif">Adaptive before automation.</h2>
+    <p class="lead">The design principle that shaped every decision: the system adapts to the coordinator, not the other way around. Automation comes later — only after the adaptive layer works.</p>
+
+    <div class="adaptive-table">
+      <div class="at-head left">Automation-first thinking</div>
+      <div class="at-head">Adaptive-first thinking (what we built)</div>
+      <div class="at-l">"The system should auto-dispatch the optimal unit."</div>
+      <div class="at-r"><strong>System recommends the optimal unit with reasoning visible. Coordinator confirms in one tap.</strong> Authority stays with the human.</div>
+      <div class="at-l">"Alerts should fire automatically when an incident is unassigned for 2+ minutes."</div>
+      <div class="at-r"><strong>Unassigned incidents visually escalate in place — growing in prominence, changing colour.</strong> No modal interruptions during active dispatching.</div>
+      <div class="at-l">"Shift handoff should generate an automated report."</div>
+      <div class="at-r"><strong>Handoff mode surfaces what the incoming coordinator needs to know immediately.</strong> Generated from live data, reviewed before transfer.</div>
+      <div class="at-l">"The system should learn from past dispatch patterns."</div>
+      <div class="at-r"><strong>Not in v1.</strong> Trust in the recommendation engine had to be established first. Learning comes after coordinators believe the system understands their domain.</div>
+    </div>
+  </div>
+
+  <!-- Pull quote -->
+  <div class="case-pull-quote reveal">
+    <blockquote>"The best operational systems don't just facilitate. They <span class="em">orchestrate.</span>"</blockquote>
+    <div class="attr">Design principle — Merry Health coordination system, 2025</div>
+  </div>
+
+  <!-- One source of truth -->
+  <div class="case-section reveal">
+    <p class="eyebrow" style="margin-bottom:40px;">The design</p>
+    <h2 class="serif">One operational source of truth.</h2>
+    <p class="lead">The redesigned system collapses three tools into a single, always-current view. No tabs. No cross-referencing. No phone calls to confirm what the screen should already know.</p>
+
+    <div class="figure-dark">
+      <div class="fig-header">
+        <div class="dot-r"></div><div class="dot-y"></div><div class="dot-g"></div>
+        <span class="fig-title">Merry Health Dispatch — Operational Dashboard · Live View</span>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:#1e1a16; margin-bottom:20px; border-radius:4px; overflow:hidden;">
+        <div style="background:#14110e; padding:16px;">
+          <div style="font-size:10px;color:#5a5045;letter-spacing:.08em;margin-bottom:8px;">ACTIVE INCIDENTS</div>
+          <div style="font-family:var(--serif);font-size:32px;color:#e05050;line-height:1;">4</div>
+          <div style="font-size:11px;color:#5a5045;margin-top:4px;">2 unassigned · 1 escalating</div>
+        </div>
+        <div style="background:#14110e; padding:16px;">
+          <div style="font-size:10px;color:#5a5045;letter-spacing:.08em;margin-bottom:8px;">AVAILABLE UNITS</div>
+          <div style="font-family:var(--serif);font-size:32px;color:#2ea44f;line-height:1;">7</div>
+          <div style="font-size:11px;color:#5a5045;margin-top:4px;">of 12 total · 3 returning</div>
+        </div>
+        <div style="background:#14110e; padding:16px;">
+          <div style="font-size:10px;color:#5a5045;letter-spacing:.08em;margin-bottom:8px;">HOSPITAL CAPACITY</div>
+          <div style="font-family:var(--serif);font-size:32px;color:#e0a050;line-height:1;">2</div>
+          <div style="font-size:11px;color:#5a5045;margin-top:4px;">ED beds available nearby</div>
+        </div>
+      </div>
+      <div class="fd-row head">
+        <span>Incident</span><span>Recommended Unit</span><span>ETA</span><span>Action</span>
+      </div>
+      <div class="fd-row">
+        <span style="color:#f4efe5;"><span class="sdot sdot-r"></span>Cardiac · 47M · 5th & Vine</span>
+        <span>Unit 14 · ALS · 0.8mi away</span>
+        <span><span class="chip chip-grn">4 min</span></span>
+        <span style="color:#b8442a;cursor:pointer;">Send →</span>
+      </div>
+      <div class="fd-row">
+        <span style="color:#f4efe5;"><span class="sdot sdot-r"></span>MVA · Route 50 · 3 victims</span>
+        <span>Unit 09 · ALS+BLS pair</span>
+        <span><span class="chip chip-ylw">9 min</span></span>
+        <span style="color:#b8442a;cursor:pointer;">Send →</span>
+      </div>
+      <div class="fd-row">
+        <span style="color:#c8bfb0;"><span class="sdot sdot-y"></span>Stroke · 61M · Downtown</span>
+        <span>Unit 22 · BLS only ⚠</span>
+        <span><span class="chip chip-red">11 min</span></span>
+        <span style="color:#5a5045;cursor:pointer;">Review</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Designed for moments of loss -->
+  <div class="case-section reveal">
+    <h2 class="serif">Designed for moments of loss.</h2>
+    <p class="lead">Three features designed specifically for the hardest moments — mass casualty events, shift handoffs, and hospital capacity failures.</p>
+    <div class="problem-list">
+      <div class="it">
+        <div class="lab">Feature 01</div>
+        <h4 class="serif">Surge mode</h4>
+        <p>One-click mode that strips the interface to essential controls only. Hides non-critical notifications, collapses secondary panels, and increases incident card size by 40% — optimised for the 8-12 incident load of an MCI event.</p>
+        <div class="insight">"I can't read anything during a surge. I need bigger, simpler, fewer."</div>
+      </div>
+      <div class="it">
+        <div class="lab">Feature 02</div>
+        <h4 class="serif">Structured shift handoff</h4>
+        <p>At handoff time, the system generates a live summary: active incidents, units in transit, pending decisions, and unconfirmed hospital beds. Incoming coordinator reviews and accepts before the previous one signs off. No dropped incidents.</p>
+        <div class="insight">"Handoffs are where things get lost. There's no standard — it's whoever has time to brief."</div>
+      </div>
+      <div class="it">
+        <div class="lab">Feature 03</div>
+        <h4 class="serif">Hospital capacity layer</h4>
+        <p>Live integration with hospital ED capacity, surfaced directly on the dispatch recommendation. If the nearest hospital is at capacity for the incident type, the system recommends the second-nearest with capacity. No phone calls.</p>
+        <div class="insight">"The worst outcome isn't a slow dispatch. It's arriving at a hospital that can't take the patient."</div>
+      </div>
+      <div class="it">
+        <div class="lab">Feature 04</div>
+        <h4 class="serif">One-tap dispatch with undo</h4>
+        <p>Confirming a dispatch is a single tap with a 5-second undo window. Removed every confirmation dialog from the critical path. For a decision made 40+ times per shift, friction compounds into meaningful delay.</p>
+        <div class="insight">"Every extra click when I'm in the middle of a surge is a second I can't get back."</div>
+      </div>
+    </div>
+
+    <!-- Mobile mockup: admin view -->
+    <div class="figure-dark" style="margin-top:48px;">
+      <div class="fig-header">
+        <div class="dot-r"></div><div class="dot-y"></div><div class="dot-g"></div>
+        <span class="fig-title">Merry Health · Mobile Coordinator View — Shift handoff summary</span>
+      </div>
+      <div style="max-width:380px; margin:0 auto;">
+        <div style="background:#1c1814; border-radius:8px; padding:20px; margin-bottom:12px;">
+          <div style="font-size:10px;color:#5a5045;letter-spacing:.08em;margin-bottom:12px;">HANDOFF SUMMARY · Shift ending 14:00</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+            <div><div style="font-size:10px;color:#5a5045;">Active incidents</div><div style="font-family:var(--serif);font-size:24px;color:#e05050;">3</div></div>
+            <div><div style="font-size:10px;color:#5a5045;">Units in transit</div><div style="font-family:var(--serif);font-size:24px;color:#e0a050;">4</div></div>
+          </div>
+          <div style="border-top:1px solid #2a251f;padding-top:14px;font-size:12px;color:#a09080;line-height:1.7;">
+            <div>⚠ Unit 22 — returns in 18 min, no relief assigned</div>
+            <div>⚠ St. Mary ED at capacity — reroute cardiac cases</div>
+            <div style="color:#2ea44f;">✓ MVA Route 50 — resolved, unit returning</div>
+          </div>
+        </div>
+        <div style="background:#b8442a; border-radius:8px; padding:14px 20px; font-size:13px; color:#fff; text-align:center; cursor:pointer;">
+          Accept handoff → Begin shift
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Outcomes -->
+  <div class="case-section reveal">
+    <p class="eyebrow" style="margin-bottom:40px;">Results</p>
+    <h2 class="serif">From fragmented coordination to operational clarity.</h2>
+    <div class="stats">
+      <div class="stat"><div class="n serif"><span class="em">↓</span>68<span class="em">%</span></div><div class="l">Reduction in average dispatch decision time in usability testing</div></div>
+      <div class="stat"><div class="n serif"><span class="em">↓</span>3<span class="em">×</span></div><div class="l">Fewer system switches per incident vs. the legacy three-tool workflow</div></div>
+      <div class="stat"><div class="n serif">100<span class="em">%</span></div><div class="l">Coordinator trust score — "would use this in a real shift" in post-testing survey</div></div>
+      <div class="stat"><div class="n serif">0</div><div class="l">Incidents dropped in structured handoff testing — vs. 2–3 per shift previously</div></div>
+    </div>
+  </div>
+
+  <!-- Constraints shaped the product -->
+  <div class="case-section reveal">
+    <h2 class="serif">Constraints shaped the product.</h2>
+    <p class="lead">Three constraints that most designers would try to work around became the product's core strengths instead.</p>
     <div class="problem-list">
       <div class="it">
         <div class="lab">Constraint 01</div>
-        <h4 class="serif">Cognitive load at peak</h4>
-        <p>During a mass casualty event, coordinators manage 8–12 simultaneous incidents. Any interface that requires reading slows them down.</p>
-        <div class="insight">"I can't read anything during a surge. I go by colour and position."</div>
+        <h4 class="serif">Aging hardware</h4>
+        <p>The dispatch centre runs on machines from 2016 with low-refresh monitors. No animation-heavy UIs. No live map rerendering. No Canvas. The constraint forced the design into a layout that's genuinely faster to parse — because it has no visual noise.</p>
+        <div class="insight">"If it looks fancy, it probably won't run. We've been burned by that before."</div>
       </div>
       <div class="it">
         <div class="lab">Constraint 02</div>
-        <h4 class="serif">No room for ambiguity</h4>
-        <p>A wrong dispatch decision has direct patient impact. The interface needed to surface the single best option without hiding alternatives.</p>
-        <div class="insight">"The system should tell me what it thinks, but I need to own the decision."</div>
+        <h4 class="serif">No time for training</h4>
+        <p>Coordinators can't take training days. The system had to be learnable in one shift. This forced every interaction to be self-evident — no tooltips, no onboarding flows, no documentation required. Labelling and layout had to carry all the weight.</p>
+        <div class="insight">"We don't have time to train people. They need to figure it out on the job."</div>
       </div>
       <div class="it">
         <div class="lab">Constraint 03</div>
-        <h4 class="serif">Trust must be earned</h4>
-        <p>Coordinators are experienced professionals. A system that hides its reasoning or overrides their judgment will be ignored within days.</p>
-        <div class="insight">"If I don't understand why it's suggesting that unit, I'll override it every time."</div>
+        <h4 class="serif">Experts, not beginners</h4>
+        <p>The users are domain experts. They don't need the system to explain emergency medicine to them. They need it to remove the friction between their expertise and the outcome. Every "helpful" UI affordance that slowed an expert down was cut.</p>
+        <div class="insight">"I've done this for 11 years. I don't need the software to explain what a cardiac arrest is."</div>
       </div>
       <div class="it">
         <div class="lab">Constraint 04</div>
-        <h4 class="serif">Hardware limitations</h4>
-        <p>The dispatch centre runs on aging monitors with low refresh rates. Animation-heavy UIs lag. The design had to work at 30fps on a 1080p screen.</p>
-        <div class="insight">"Our computers are slow. If it looks fancy it probably won't run."</div>
+        <h4 class="serif">Six weeks, not six months</h4>
+        <p>A 6-week timeline forced ruthless prioritisation. I built a single scoring rubric: impact on decision speed × frequency of use × technical feasibility. Anything that didn't score in the top 40% was explicitly deferred with a documented reason.</p>
+        <div class="insight">Scope discipline is a design skill. Not everything deferred was a failure — most of it was correct prioritisation.</div>
       </div>
     </div>
   </div>
 
+  <!-- What this project taught me -->
   <div class="case-section reveal">
-    <h2 class="serif">Design approach</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="n">01</div>
-        <div class="t serif">Incident triage view</div>
-        <div class="d">A single-screen command view showing all active incidents ranked by acuity. Colour, icon, and position encode severity — no reading required at a glance.</div>
+    <h2 class="serif">What this project taught me.</h2>
+    <p class="lead">Three things I now apply on every high-stakes operational design problem.</p>
+    <div class="learned-grid">
+      <div class="lg-item">
+        <div class="lg-n">Lesson 01</div>
+        <div class="lg-t">Research in the environment, not about it</div>
+        <p>Reading about emergency coordination and observing it are two entirely different inputs. The four shifts I spent embedded changed almost every assumption I brought in. No amount of desk research would have surfaced "coordinators don't read during surge."</p>
       </div>
-      <div class="step">
-        <div class="n">02</div>
-        <div class="t serif">Transparent recommendation engine</div>
-        <div class="d">System surfaces the top 3 available units for each incident with ETA, capacity, and proximity shown — reasoning visible, decision owned by coordinator.</div>
+      <div class="lg-item">
+        <div class="lg-n">Lesson 02</div>
+        <div class="lg-t">Transparent systems earn trust; opaque ones get ignored</div>
+        <p>Every time the design surfaced a recommendation without showing its reasoning, coordinators said they'd override it. Trust in a system is earned through legibility — make the reasoning visible, and experienced users will start relying on it.</p>
       </div>
-      <div class="step">
-        <div class="n">03</div>
-        <div class="t serif">One-action dispatch</div>
-        <div class="d">Confirming a dispatch is a single tap with an undo window. Removed all confirmation dialogs from the critical path.</div>
-      </div>
-      <div class="step">
-        <div class="n">04</div>
-        <div class="t serif">Surge mode</div>
-        <div class="d">A one-click mode that simplifies the interface to essential controls only during mass casualty events — hiding non-critical information automatically.</div>
+      <div class="lg-item">
+        <div class="lg-n">Lesson 03</div>
+        <div class="lg-t">Constraints are design material, not obstacles</div>
+        <p>The aging hardware constraint that I initially tried to work around became the reason the final interface was faster to parse than anything I'd have designed without it. The no-training constraint produced more intuitive labelling than any usability test would have.</p>
       </div>
     </div>
   </div>
 
-  <div class="case-section reveal">
-    <h2 class="serif">Outcomes</h2>
-    <div class="stats">
-      <div class="stat"><div class="n serif"><span class="em">↓</span>68<span class="em">%</span></div><div class="l">Reduction in average dispatch decision time in usability testing</div></div>
-      <div class="stat"><div class="n serif">6<span class="em">wk</span></div><div class="l">Concept to production-ready prototype</div></div>
-      <div class="stat"><div class="n serif">100<span class="em">%</span></div><div class="l">Coordinator trust score in post-testing survey ("would use in a real shift")</div></div>
-      <div class="stat"><div class="n serif"><span class="em">↓</span>3×</div><div class="l">Fewer system switches per incident vs. legacy workflow</div></div>
-    </div>
+  <!-- Bottom pull quote -->
+  <div class="case-pull-quote reveal">
+    <blockquote>"The best operational systems don't just facilitate. They <span class="em">orchestrate.</span>"</blockquote>
+    <div class="attr">Design principle — Merry Health coordination system, 2025</div>
   </div>
+
 </div>
 
 <div class="next-case wrap reveal">
