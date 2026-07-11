@@ -113,7 +113,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .contact a.contact__line:hover{color:var(--fg);transform:translateX(3px)}
 .qr{margin-top:18px;width:92px;height:92px;border-radius:8px;border:1px solid var(--line);padding:7px;background:#fff}
 .qr svg{width:100%;height:100%;display:block}
-.services{margin-top:auto;padding-top:54px}
+.services{margin-top:0;padding-top:28px}
 .services .label{margin-bottom:14px}
 .services__list{display:flex;flex-direction:column;gap:7px}
 .services__list span{font-style:italic;font-size:17px;color:var(--fg-soft);width:max-content;transition:color var(--t),transform var(--t);cursor:default}
@@ -161,7 +161,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   .hero__grid{grid-template-columns:1fr}
   .hero__right{align-items:flex-start;text-align:left}
   .stat{align-items:flex-start}
-  .services{padding-top:24px}
+  .services{padding-top:20px}
 }
 /* ============================================================ PROJECTS */
 .section{padding-top:clamp(60px,8vw,110px)}
@@ -187,14 +187,14 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .proj__shot img{display:block;width:100%;height:auto;aspect-ratio:16/11;object-fit:cover;object-position:top left}
 
 /* ============================================================ TESTIMONIAL */
-.testi{position:relative;padding:clamp(84px,12vw,156px) 0;overflow:hidden}
+.testi{position:relative;padding:clamp(48px,6vw,80px) 0;overflow:hidden}
 .testi__glyph{position:absolute;top:-12%;left:-3%;font-family:var(--serif);font-weight:700;font-size:min(52vw,720px);line-height:.7;color:var(--pink);opacity:.1;z-index:-1;pointer-events:none;user-select:none;will-change:transform}
-.testi__eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:.22em;font-size:11px;color:var(--fg-soft);display:flex;align-items:center;gap:12px;margin-bottom:clamp(26px,4vw,48px)}
+.testi__eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:.22em;font-size:11px;color:var(--fg-soft);display:flex;align-items:center;gap:12px;margin-bottom:clamp(16px,2.5vw,28px)}
 .testi__eyebrow::before{content:"";width:34px;height:1.5px;background:var(--pink)}
 .testi__stage{display:grid}
 .tslide{grid-area:1/1;opacity:0;transform:translateY(22px) scale(.992);transition:opacity .55s ease,transform .6s cubic-bezier(.22,.61,.36,1);pointer-events:none}
 .tslide.is-active{opacity:1;transform:none;pointer-events:auto}
-.tquote{font-family:var(--serif);font-size:clamp(27px,4.3vw,60px);line-height:1.1;letter-spacing:-.018em;max-width:20ch;color:#161311}
+.tquote{font-family:var(--serif);font-size:clamp(20px,2.8vw,40px);line-height:1.15;letter-spacing:-.015em;max-width:22ch;color:#161311}
 .tmark{position:relative;z-index:0;padding:0 .04em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .tmark::before{content:"";position:absolute;left:-.06em;right:-.06em;top:16%;bottom:12%;background:var(--pink);z-index:-1;transform:scaleX(0);transform-origin:left;border-radius:2px}
 .tslide.is-active .tmark::before{transition:transform .85s .3s cubic-bezier(.6,0,.2,1);transform:scaleX(1)}
@@ -331,7 +331,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   .writing__nav{width:100%;justify-content:space-between}
   .footer__grid{grid-template-columns:1fr 1fr;gap:28px}
   .footer__big{grid-column:1/-1;font-size:clamp(36px,8vw,56px)}
-  .tquote{font-size:clamp(22px,4vw,38px)}
+  .tquote{font-size:clamp(18px,3.5vw,28px)}
 }
 
 /* Mobile (≤ 520px) */
@@ -352,7 +352,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   .caro{padding-bottom:12px;padding-inline-start:var(--gut);scroll-padding-inline-start:var(--gut)}
   .card--reel{width:clamp(160px,44vw,220px)}
   .card--read{width:clamp(200px,80vw,260px)}
-  .tquote{font-size:clamp(20px,5vw,32px)}
+  .tquote{font-size:clamp(17px,4.5vw,24px)}
   .writing__kicker{font-size:clamp(22px,5.5vw,32px)}
   .writing__lead{font-size:clamp(15px,4vw,20px)}
   .web-mockup__body{min-height:90px}
@@ -373,7 +373,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .proj__overlay span{color:#fff;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:0 20px}
 .proj.locked:hover .proj__overlay{opacity:1}
 @media(max-width:768px){.stat,.hero__right .services,.contact,.hero__left .services{display:none}}
-.hero__tagline{font-size:clamp(13px,1.2vw,16px);font-weight:400;color:var(--fg-soft);line-height:1.5;margin-top:18px;max-width:36ch;text-align:center}
+.hero__tagline{font-size:clamp(16px,1.5vw,19px);font-weight:400;color:var(--fg-soft);line-height:1.5;margin-top:18px;max-width:36ch;text-align:center}
 </style>
 </head>
 <body>
