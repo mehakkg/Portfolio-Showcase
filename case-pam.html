@@ -3,252 +3,510 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PAM Platform Redesign | Mehak Garg</title>
+<title>PAM Platform Redesign — From feature-led to experience-led | Mehak Garg</title>
+<meta name="description" content="A Privileged Access Management redesign for miniOrange — from fragmented feature list to coherent enterprise platform." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,400&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <style>
-/* ── PAM case study extras ── */
-.case-display {
+/* ── PAM case study ── */
+
+/* Hero */
+.pam-hero {
+  padding-top: clamp(120px, 14vw, 180px);
+  padding-bottom: clamp(64px, 8vw, 96px);
+}
+.pam-hero .breadcrumbs {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 40px;
+}
+.pam-hero h1 {
   font-family: var(--serif);
-  font-size: clamp(30px, 4.5vw, 62px);
   font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -0.025em;
+  font-size: clamp(36px, 5.5vw, 80px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
   color: var(--ink);
   max-width: 22ch;
-  margin-bottom: 32px;
-}
-.case-display .em { font-style: italic; color: var(--accent); }
-
-.figure-dark {
-  background: #14110e;
-  border-radius: 12px;
-  padding: 32px 36px;
-  margin: 48px 0;
-  font-family: var(--mono);
-  font-size: 12px;
-  color: #a09080;
-  line-height: 1.8;
-  overflow: hidden;
-}
-.figure-dark .fig-header {
-  display: flex; align-items: center; gap: 8px;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #2a251f;
-}
-.figure-dark .fig-header .dot-r { width: 10px; height: 10px; border-radius: 50%; background: #e05050; }
-.figure-dark .fig-header .dot-y { width: 10px; height: 10px; border-radius: 50%; background: #e0a050; }
-.figure-dark .fig-header .dot-g { width: 10px; height: 10px; border-radius: 50%; background: #50c050; }
-.figure-dark .fig-header .fig-title { margin-left: 8px; font-size: 11px; color: #5a5045; letter-spacing: 0.08em; }
-.figure-dark .row {
-  display: grid;
-  grid-template-columns: 180px 1fr 80px 80px;
-  gap: 16px;
-  padding: 10px 0;
-  border-bottom: 1px solid #1e1a16;
-  align-items: center;
-}
-.figure-dark .row:first-child { color: #5a5045; font-size: 10px; letter-spacing: 0.08em; }
-.figure-dark .row .status-dot {
-  width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 6px;
-}
-.figure-dark .row .s-active { background: #2ea44f; }
-.figure-dark .row .s-warn   { background: #e0a050; }
-.figure-dark .row .s-risk   { background: #e05050; }
-.figure-dark .chip {
-  display: inline-block; padding: 2px 8px; border-radius: 4px;
-  font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
-}
-.figure-dark .chip-red { background: #4a1a1a; color: #e07070; }
-.figure-dark .chip-grn { background: #0e2e1a; color: #50c080; }
-.figure-dark .chip-ylw { background: #2e2010; color: #e0b060; }
-
-.figure-dark-b {
-  background: #14110e;
-  border-radius: 12px;
-  padding: 36px;
-  margin: 48px 0;
-  color: #c8bfb0;
-}
-.figure-dark-b .fdblock {
-  border-left: 2px solid #b8442a;
-  padding-left: 20px;
   margin-bottom: 28px;
 }
-.figure-dark-b .fdblock .fdb-label {
-  font-family: var(--mono); font-size: 10px; color: #b8442a;
-  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px;
+.pam-hero .subtitle {
+  font-size: clamp(16px, 1.4vw, 20px);
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 52ch;
+  margin-bottom: 56px;
+  font-style: italic;
+  font-family: var(--serif);
 }
-.figure-dark-b .fdblock .fdb-t {
-  font-family: var(--serif); font-size: 20px; color: #f4efe5; line-height: 1.2; margin-bottom: 8px;
-}
-.figure-dark-b .fdblock p { font-size: 13px; color: #8a8070; line-height: 1.55; max-width: none; }
-
-.audit-grid {
+.pam-meta {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
   border-top: 1px solid var(--rule);
-  margin: 48px 0;
+  padding-top: 32px;
 }
-.audit-grid .ag-item {
-  padding: 28px 24px;
+.pam-meta .pm-item {
+  padding-right: 32px;
+}
+.pam-meta .pm-item:not(:first-child) {
+  padding-left: 32px;
+  border-left: 1px solid var(--rule);
+}
+.pam-meta .pm-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.pam-meta .pm-val {
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+/* Full bleed hero image */
+.hero-image-wrap {
+  margin-top: 72px;
+  background: var(--paper-2);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  overflow: hidden;
+  line-height: 0;
+}
+.hero-image-wrap img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  max-height: 76vh;
+  object-position: top;
+}
+
+/* Section */
+.cs {
+  padding: clamp(72px, 8vw, 112px) 0;
+  border-top: 1px solid var(--rule);
+}
+.cs .sec-marker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+  display: block;
+}
+.cs h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(28px, 4vw, 54px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  max-width: 22ch;
+  margin-bottom: 40px;
+}
+.cs h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+.cs h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(22px, 2.8vw, 36px);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.12;
+  margin-top: 64px;
+  margin-bottom: 24px;
+}
+.cs p {
+  font-size: 17px;
+  line-height: 1.72;
+  color: var(--ink-2);
+  max-width: 66ch;
+  margin-bottom: 20px;
+}
+.cs p.wide { max-width: none; }
+.cs p strong { color: var(--ink); font-weight: 500; }
+
+/* Pull quote */
+.pull-quote {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: clamp(48px, 8vw, 96px) 0;
+  margin: clamp(56px, 8vw, 96px) 0;
+}
+.pull-quote blockquote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(24px, 3.8vw, 52px);
+  line-height: 1.18;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  max-width: 28ch;
+}
+
+/* $800K hero stat */
+.stat-hero {
+  margin: 56px 0 0;
+}
+.stat-hero .stat-n {
+  font-family: var(--serif);
+  font-size: clamp(80px, 14vw, 180px);
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  color: var(--ink);
+}
+.stat-hero .stat-n em { color: var(--accent); font-style: normal; }
+.stat-hero .stat-l {
+  margin-top: 20px;
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 42ch;
+  line-height: 1.5;
+  border-left: 2px solid var(--accent);
+  padding-left: 16px;
+}
+
+/* Phase marker */
+.phase-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 12px;
+  margin-top: 56px;
+}
+
+/* Root cause list */
+.root-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--rule);
+  margin-top: 40px;
+}
+.root-list .rl-item {
+  padding: 36px 36px 36px 0;
   border-right: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
 }
-.audit-grid .ag-item:nth-child(4n) { border-right: none; }
-.audit-grid .ag-item .ag-n {
-  font-family: var(--serif);
-  font-size: clamp(32px, 4vw, 52px);
+.root-list .rl-item:nth-child(2n) {
+  padding-left: 36px;
+  padding-right: 0;
+  border-right: none;
+}
+.root-list .rl-item:nth-last-child(-n+2) { border-bottom: none; }
+.root-list .rl-n {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--accent);
-  line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
-.audit-grid .ag-item .ag-l { font-size: 13px; color: var(--muted); line-height: 1.4; }
-
-.role-table {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  border-top: 1px solid var(--rule);
-  margin: 48px 0 0;
+.root-list .rl-t {
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 12px;
 }
-.role-table .rt-row {
-  display: contents;
-}
-.role-table .rt-key {
-  font-family: var(--mono); font-size: 11px; color: var(--muted);
-  letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 18px 0; border-bottom: 1px solid var(--rule);
-}
-.role-table .rt-val {
-  font-family: var(--serif); font-size: 17px; color: var(--ink);
-  padding: 18px 0; border-bottom: 1px solid var(--rule);
+.root-list .rl-item p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: none;
+  margin: 0;
 }
 
-.process-steps-h {
+/* Scenario grid */
+.scenario-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0;
-  border-top: 1px solid var(--rule);
-  margin: 48px 0;
-}
-.process-steps-h .psh-item {
-  padding: 28px 24px 28px 0;
-  border-right: 1px solid var(--rule);
-  padding-right: 24px;
-}
-.process-steps-h .psh-item:last-child { border-right: none; padding-right: 0; }
-.process-steps-h .psh-item .psh-n {
-  font-family: var(--mono); font-size: 11px; color: var(--accent);
-  letter-spacing: 0.1em; margin-bottom: 14px;
-}
-.process-steps-h .psh-item .psh-t {
-  font-family: var(--serif); font-size: 17px; color: var(--ink);
-  line-height: 1.25; margin-bottom: 10px;
-}
-.process-steps-h .psh-item p { font-size: 13px; color: var(--muted); line-height: 1.55; max-width: none; }
-
-.design-decisions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border-top: 1px solid var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
   margin-top: 48px;
 }
-.design-decisions .dd-item {
-  padding: 32px;
+.sc-cell {
+  padding: 18px 16px;
   border-right: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
 }
-.design-decisions .dd-item:nth-child(3n) { border-right: none; }
-.design-decisions .dd-item .dd-n {
-  font-family: var(--mono); font-size: 10px; color: var(--accent);
-  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px;
+.sc-cell:nth-child(5n) { border-right: none; }
+.sc-cell:nth-last-child(-n+5) { border-bottom: none; }
+.sc-cell.sc-head {
+  background: var(--paper-2);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
 }
-.design-decisions .dd-item .dd-t {
-  font-family: var(--serif); font-size: 18px; color: var(--ink);
-  line-height: 1.25; margin-bottom: 10px; font-weight: 400;
+.sc-cell.sc-critical {
+  background: rgba(184, 68, 42, 0.06);
+  color: var(--ink);
+  font-weight: 500;
 }
-.design-decisions .dd-item p { font-size: 13px; color: var(--muted); line-height: 1.55; max-width: none; margin: 0; }
+.sc-cell.sc-critical .sc-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--paper);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
 
-.adapted-table {
+/* Deal breaker filter */
+.db-filter {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;
   border: 1px solid var(--rule);
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   margin-top: 48px;
 }
-.adapted-table .at-head {
-  padding: 16px 24px;
+.db-col-head {
+  padding: 16px 28px;
   background: var(--paper-2);
-  font-family: var(--mono); font-size: 10px; color: var(--muted);
-  letter-spacing: 0.1em; text-transform: uppercase;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
   border-bottom: 1px solid var(--rule);
 }
-.adapted-table .at-head:first-child { border-right: 1px solid var(--rule); }
-.adapted-table .at-row-l, .adapted-table .at-row-r {
-  padding: 20px 24px;
+.db-col-head:first-child { border-right: 1px solid var(--rule); }
+.db-row-l, .db-row-r {
+  padding: 16px 28px;
+  font-size: 14px;
+  line-height: 1.5;
   border-bottom: 1px solid var(--rule);
-  font-size: 14px; line-height: 1.55;
-}
-.adapted-table .at-row-l {
-  border-right: 1px solid var(--rule);
   color: var(--ink-2);
 }
-.adapted-table .at-row-r { color: var(--muted); }
-.adapted-table .at-row-l strong, .adapted-table .at-row-r strong { color: var(--ink); font-weight: 500; }
-.adapted-table .at-row-l:last-of-type, .adapted-table .at-row-r:last-of-type { border-bottom: none; }
+.db-row-l { border-right: 1px solid var(--rule); }
+.db-row-l.core { color: var(--ink); font-weight: 500; }
+.db-row-r.deferred {
+  color: var(--muted-2);
+  text-decoration: line-through;
+  text-decoration-color: var(--rule-2);
+}
+.db-row-r.outcome { color: var(--ink); }
+.db-row-l:last-of-type, .db-row-r:last-of-type { border-bottom: none; }
 
-.constraints-grid {
+/* Architecture decisions */
+.arch-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 40px 1fr;
+  gap: 0 32px;
+  border-top: 1px solid var(--rule);
+  margin-top: 40px;
+}
+.arch-list .al-n {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  padding-top: 32px;
+  letter-spacing: 0.06em;
+}
+.arch-list .al-body {
+  padding: 32px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.arch-list .al-n { border-bottom: 1px solid var(--rule); padding-bottom: 32px; }
+.arch-list .al-t {
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+.arch-list .al-body p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 68ch;
+  margin: 0;
+}
+
+/* Outcome items */
+.outcome-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0;
   border-top: 1px solid var(--rule);
-  margin-top: 48px;
+  margin-top: 40px;
 }
-.constraints-grid .cg-item {
-  padding: 32px 28px;
+.ol-item {
+  padding: 32px 36px 32px 0;
   border-right: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
 }
-.constraints-grid .cg-item:nth-child(3n) { border-right: none; }
-.constraints-grid .cg-item .cg-tag {
-  font-family: var(--mono); font-size: 10px; color: var(--muted);
-  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px;
+.ol-item:nth-child(2n) {
+  padding-left: 36px;
+  padding-right: 0;
+  border-right: none;
 }
-.constraints-grid .cg-item .cg-t {
-  font-family: var(--serif); font-size: 18px; color: var(--ink);
-  line-height: 1.25; margin-bottom: 10px;
+.ol-item:nth-last-child(-n+2) { border-bottom: none; }
+.ol-item .ol-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
 }
-.constraints-grid .cg-item p { font-size: 13px; color: var(--muted); line-height: 1.55; max-width: none; margin: 0; }
+.ol-item p {
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.65;
+  max-width: none;
+  margin: 0;
+}
 
+/* Lessons */
+.lesson-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  margin-top: 40px;
+}
+.lesson-item {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+}
+.lesson-item:last-child { border-bottom: none; }
+.lesson-item .li-t {
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.lesson-item p {
+  font-size: 15px;
+  color: var(--ink-2);
+  line-height: 1.7;
+  max-width: none;
+  margin: 0;
+}
+
+/* Divider image block */
+.img-block {
+  margin: 64px 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  line-height: 0;
+}
+.img-block img {
+  width: 100%;
+  display: block;
+}
+.img-caption {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted-2);
+  letter-spacing: 0.06em;
+  margin-top: 14px;
+  text-align: center;
+}
+
+/* Before/after */
+.ba-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 56px;
+}
+.ba-col {
+  padding: 0;
+  overflow: hidden;
+}
+.ba-col + .ba-col { border-left: 1px solid var(--rule); }
+.ba-col-head {
+  padding: 14px 24px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--rule);
+}
+.ba-col img { width: 100%; display: block; }
+
+/* Scroll progress */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  width: 0%;
+  z-index: 100;
+  transition: width 0.1s linear;
+}
+
+/* Responsive */
 @media (max-width: 900px) {
-  .audit-grid { grid-template-columns: 1fr 1fr; }
-  .audit-grid .ag-item:nth-child(2n) { border-right: none; }
-  .process-steps-h { grid-template-columns: 1fr; }
-  .process-steps-h .psh-item { border-right: none; border-bottom: 1px solid var(--rule); padding: 24px 0; }
-  .design-decisions { grid-template-columns: 1fr; }
-  .design-decisions .dd-item { border-right: none !important; }
-  .adapted-table { grid-template-columns: 1fr; }
-  .adapted-table .at-head:first-child { border-right: none; }
-  .adapted-table .at-row-l { border-right: none; }
-  .constraints-grid { grid-template-columns: 1fr; }
-  .constraints-grid .cg-item { border-right: none !important; }
-  .figure-dark .row { grid-template-columns: 1fr 1fr; }
-  .role-table { grid-template-columns: 140px 1fr; }
+  .pam-meta { grid-template-columns: 1fr 1fr; gap: 28px 0; }
+  .pam-meta .pm-item { padding: 0 0 28px; border-bottom: 1px solid var(--rule); border-left: none !important; padding-left: 0 !important; }
+  .root-list { grid-template-columns: 1fr; }
+  .root-list .rl-item { border-right: none; padding-right: 0; padding-left: 0 !important; }
+  .root-list .rl-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .root-list .rl-item:last-child { border-bottom: none; }
+  .scenario-grid { grid-template-columns: repeat(3, 1fr); }
+  .db-filter { grid-template-columns: 1fr; }
+  .db-col-head:first-child { border-right: none; border-bottom: 1px solid var(--rule); }
+  .db-row-l { border-right: none; }
+  .db-row-r.deferred { display: none; }
+  .arch-list { grid-template-columns: 1fr; gap: 0; }
+  .arch-list .al-n { padding-top: 32px; padding-bottom: 0; border-bottom: none; }
+  .outcome-list { grid-template-columns: 1fr; }
+  .ol-item { border-right: none; padding-right: 0; padding-left: 0 !important; }
+  .ol-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .ol-item:last-child { border-bottom: none; }
+  .lesson-item { grid-template-columns: 1fr; gap: 12px; }
+  .ba-wrap { grid-template-columns: 1fr; }
+  .ba-col + .ba-col { border-left: none; border-top: 1px solid var(--rule); }
+}
+@media (max-width: 600px) {
+  .pam-meta { grid-template-columns: 1fr; }
+  .scenario-grid { grid-template-columns: 1fr 1fr; }
+  .pull-quote blockquote { font-size: clamp(20px, 5.5vw, 32px); }
 }
 </style>
 </head>
 <body>
 
-<div class="scroll-progress"></div>
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-label" id="cursorLabel"></div>
 
-<nav class="nav">
+<nav class="nav" id="nav">
   <a href="index.html" class="nav-logo" data-cursor="hover">
     <span class="dot"></span>
     <img src="assets/logo.svg" alt="Mehak Garg" />
@@ -256,380 +514,374 @@
   <div class="nav-links">
     <a href="index.html#work" data-cursor="hover">Work</a>
     <a href="about.html" data-cursor="hover">About</a>
-    <a href="about.html#contact" class="cta" data-cursor="hover">Book a call →</a>
+    <a href="mailto:mehakrgarg@gmail.com" class="cta" data-cursor="hover">Say hi →</a>
   </div>
 </nav>
 
+<!-- ── HERO ── -->
 <div class="wrap">
-  <div class="case-hero">
-    <div class="breadcrumbs">Work / PAM</div>
-    <h1 class="reveal">Rebuilding PAM from the inside out: how a feature-led product became an <span class="em">experience-led platform.</span></h1>
-    <p class="sub reveal">A single compromised privileged account can take down customer data, audit standing, and operational trust, all in one breach. I redesigned the product end-to-end to make that harder to do.</p>
-    <div class="case-meta reveal">
-      <div class="it"><div class="l">Client</div><div class="v serif">miniOrange</div></div>
-      <div class="it"><div class="l">Timeline</div><div class="v serif">2023 to 2026</div></div>
-      <div class="it"><div class="l">Role</div><div class="v serif">Sr. Product Designer</div></div>
-      <div class="it"><div class="l">Domain</div><div class="v serif">Privileged Access Management</div></div>
+  <div class="pam-hero reveal">
+    <div class="breadcrumbs">Work &nbsp;/&nbsp; PAM · miniOrange</div>
+    <h1>From feature&#8209;led product<br>to experience&#8209;led platform</h1>
+    <p class="subtitle">A Privileged Access Management redesign for miniOrange</p>
+    <div class="pam-meta">
+      <div class="pm-item">
+        <div class="pm-label">Client</div>
+        <div class="pm-val">miniOrange<br>Enterprise Security (PAM)</div>
+      </div>
+      <div class="pm-item">
+        <div class="pm-label">Role</div>
+        <div class="pm-val">Sr. Product Designer<br>Design Lead</div>
+      </div>
+      <div class="pm-item">
+        <div class="pm-label">Timeline</div>
+        <div class="pm-val">2024 to Present</div>
+      </div>
+      <div class="pm-item">
+        <div class="pm-label">Team</div>
+        <div class="pm-val">2 PMs, 40 engineers<br>1 product designer (me)</div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="wrap">
-
-  <!-- Stats -->
-  <div class="case-section reveal" style="border-top:none; padding-top:0;">
-    <div class="stats">
-      <div class="stat"><div class="n serif">74<span class="em">%</span></div><div class="l">Reduction in onboarding-related support tickets post-launch</div></div>
-      <div class="stat"><div class="n serif">$4.45<span class="em">M</span></div><div class="l">Enterprise expansion revenue attributable to redesigned product</div></div>
-      <div class="stat"><div class="n serif">204<span class="em">min</span></div><div class="l">Average time to first working policy, down from 4 days</div></div>
-      <div class="stat"><div class="n serif">60<span class="em">%</span></div><div class="l">Of enterprise deals previously lost to UX friction, now converting</div></div>
-    </div>
-  </div>
-
-  <!-- Context -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">The context</p>
-    <p class="case-display">Access management is inherently complex. PAM sits at a <span class="em">fragile intersection.</span></p>
-    <div class="two-col" style="gap:48px; margin-top:32px;">
-      <div>
-        <p>Privileged Access Management is where security meets operations. IT admins use it to control who can access servers, databases, and infrastructure. Get it wrong and you get breaches. Get the UX wrong and admins bypass the system entirely, which is exactly as dangerous.</p>
-        <p>miniOrange's PAM product had shipped new capabilities every quarter for two years. The problem: capabilities were shipped, not designed. Every feature lived in its own drawer. Admins needed institutional knowledge just to find basic functions.</p>
-      </div>
-      <div>
-        <p>The consequence wasn't just user frustration. Enterprise customers were failing compliance audits because the audit trail UI was unusable. New customers were taking 4+ days to configure their first policy. Sales was losing enterprise deals in trials because buyers couldn't navigate the product themselves.</p>
-        <p>The brief was clear: fix the product, keep the engineering team, ship in 6 months.</p>
-      </div>
-    </div>
-
-    <!-- Dark mockup: old product -->
-    <div class="figure-dark">
-      <div class="fig-header">
-        <div class="dot-r"></div><div class="dot-y"></div><div class="dot-g"></div>
-        <span class="fig-title">miniOrange PAM: Privileged Account Management (legacy)</span>
-      </div>
-      <div class="row">
-        <span>Account Name</span><span>Last Access</span><span>Status</span><span>Risk</span>
-      </div>
-      <div class="row">
-        <span>prod-db-root</span><span style="color:#6b5a4a;">47d ago</span><span><span class="status-dot s-warn"></span>Inactive</span><span><span class="chip chip-red">High</span></span>
-      </div>
-      <div class="row">
-        <span>svc-deploy-key</span><span style="color:#c8bfb0;">2h ago</span><span><span class="status-dot s-active"></span>Active</span><span><span class="chip chip-ylw">Med</span></span>
-      </div>
-      <div class="row">
-        <span>admin-aws-prod</span><span style="color:#6b5a4a;">12d ago</span><span><span class="status-dot s-risk"></span>Locked</span><span><span class="chip chip-red">High</span></span>
-      </div>
-      <div class="row">
-        <span>db-backup-user</span><span style="color:#c8bfb0;">1h ago</span><span><span class="status-dot s-active"></span>Active</span><span><span class="chip chip-grn">Low</span></span>
-      </div>
-      <div style="margin-top:16px; padding-top:16px; border-top:1px solid #1e1a16; font-size:11px; color:#3a3028;">
-        47 accounts not shown. Filters: None active. Export to CSV ›
-      </div>
-    </div>
-  </div>
-
-  <!-- UX Audit -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">Discovery</p>
-    <p class="case-display">A scenario-driven UX audit. 4 personas, 4 scenarios, <span class="em">140+ usability issues.</span></p>
-    <div class="two-col" style="gap:48px; margin-top:32px; margin-bottom:0;">
-      <div>
-        <p>Before a single wireframe, I ran a structured audit: four IT admin personas across four core scenarios: onboarding a privileged account, responding to an access request, investigating a suspicious session, and running a compliance report.</p>
-        <p>Each scenario was walkthroughed with three enterprise customers and two internal sales engineers. I tagged every friction point, dead end, and confusing label. 140 issues. One shared root cause.</p>
-      </div>
-      <div>
-        <p>The product was built around database tables, not workflows. Every feature was a row in a table in a submenu in a tab. There was no concept of "what are you trying to do", only "here is all the data, figure it out."</p>
-        <div class="insight" style="margin-top:24px;">"I know it's in here somewhere. I just have to find it every time. I've been using this for 8 months."</div>
-      </div>
-    </div>
-
-    <div class="audit-grid">
-      <div class="ag-item">
-        <div class="ag-n">4</div>
-        <div class="ag-l">IT admin personas across seniority and org size</div>
-      </div>
-      <div class="ag-item">
-        <div class="ag-n">4</div>
-        <div class="ag-l">Scenarios mapped end-to-end across full audit scope</div>
-      </div>
-      <div class="ag-item">
-        <div class="ag-n">140+</div>
-        <div class="ag-l">Usability issues tagged, categorised, and prioritised</div>
-      </div>
-      <div class="ag-item">
-        <div class="ag-n">1</div>
-        <div class="ag-l">Root cause: the product had no concept of user intent</div>
-      </div>
-    </div>
-
-    <h3 class="serif" style="font-size:clamp(22px,3vw,32px); margin-bottom:24px; letter-spacing:-0.015em;">From 140 issues to four scenario failures.</h3>
-    <p style="max-width:60ch; color:var(--ink-2); margin-bottom:40px;">Not all 140 issues were equal. I grouped them by scenario and found four core failure patterns, each one blocking a different user goal entirely.</p>
-
-    <div class="problem-list">
-      <div class="it">
-        <div class="lab">Failure 01</div>
-        <h4 class="serif">Onboarding: no guided path</h4>
-        <p>Adding a new privileged account required navigating across 4 separate modules with no sequencing or dependency guidance. Admins routinely completed steps out of order and had to start over.</p>
-        <div class="insight">"Our customer success team spends 2 days with every new enterprise customer just to get them set up."</div>
-      </div>
-      <div class="it">
-        <div class="lab">Failure 02</div>
-        <h4 class="serif">Access requests: wrong mental model</h4>
-        <p>Just-in-time access requests were buried inside a "Requests" tab that most admins never opened. Emergency approvals during incidents required 7 clicks. Admins were sharing credentials in Slack instead.</p>
-        <div class="insight">"When a server goes down, I don't have time to find the approval screen. I just DM someone the password."</div>
-      </div>
-      <div class="it">
-        <div class="lab">Failure 03</div>
-        <h4 class="serif">Audit trails: data but no insight</h4>
-        <p>Session recordings existed but were stored in a flat table with no filtering, no anomaly surfacing, and no summary view. Compliance teams exported to Excel to do anything useful.</p>
-        <div class="insight">"I know the session recording is in there. Finding it takes 20 minutes. That's why we're failing audits."</div>
-      </div>
-      <div class="it">
-        <div class="lab">Failure 04</div>
-        <h4 class="serif">Policy configuration: no defaults</h4>
-        <p>Every single configuration field required a decision. Password rotation frequency, session timeout, MFA enforcement: all blank, all requiring expert-level decisions from day one.</p>
-        <div class="insight">"I don't know what the right values are. Just tell me what most companies your size use."</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Role & team -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">The engagement</p>
-    <p class="case-display">Lead designer on a small team. Strategy, prioritisation, <span class="em">systems thinking, execution.</span></p>
-    <p style="max-width:60ch; color:var(--ink-2); margin-top:24px;">This was not a "here's a spec, build it" engagement. The scope was defined as we went, I owned research, architecture, component design, prototyping, and handoff in parallel with two engineers.</p>
-    <div class="role-table">
-      <div class="rt-key">My role</div><div class="rt-val">Sr. Product Designer: research, IA, visual design, prototype, handoff</div>
-      <div class="rt-key">Team</div><div class="rt-val">1 designer (me), 2 front-end engineers, 1 product manager</div>
-      <div class="rt-key">Scope</div><div class="rt-val">Full product redesign: onboarding, dashboard, access management, audit, policy</div>
-      <div class="rt-key">Timeline</div><div class="rt-val">6 months concept to v1 ship; ongoing refinement through 2026</div>
-      <div class="rt-key">Tools</div><div class="rt-val">Figma, FigJam, Notion, Loom (async stakeholder reviews)</div>
-    </div>
-  </div>
-
-  <!-- Process -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">The work</p>
-    <h2 class="serif">The process that worked.</h2>
-    <p class="lead">Six months, five phases. Each one built on the last, with output from one phase serving as direct input for the next.</p>
-
-    <div class="process-steps-h">
-      <div class="psh-item">
-        <div class="psh-n">Phase 01</div>
-        <div class="psh-t">Scenario audit</div>
-        <p>4 personas × 4 scenarios × real customer sessions. 140+ issues tagged and prioritised by severity and frequency.</p>
-      </div>
-      <div class="psh-item">
-        <div class="psh-n">Phase 02</div>
-        <div class="psh-t">Information architecture</div>
-        <p>Rebuilt the nav structure around user intent, not database tables. Three primary areas: Accounts, Access, and Audit.</p>
-      </div>
-      <div class="psh-item">
-        <div class="psh-n">Phase 03</div>
-        <div class="psh-t">Deal-breaker fixes</div>
-        <p>Four flows that were losing enterprise deals in trials. Fixed first, shipped first, measured before building anything else.</p>
-      </div>
-      <div class="psh-item">
-        <div class="psh-n">Phase 04</div>
-        <div class="psh-t">Experience prioritisation</div>
-        <p>From feature-led to experience-led, designed around the scenario, not the capability. Every screen earns its place.</p>
-      </div>
-      <div class="psh-item">
-        <div class="psh-n">Phase 05</div>
-        <div class="psh-t">Design system</div>
-        <p>Documented the component library, token set, and usage rules. The next designer can ship 3× faster because this exists.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Deal-breakers -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">Phase 03</p>
-    <h2 class="serif">Identifying the deal-breakers.</h2>
-    <p class="lead">Not all 140 issues needed solving to unlock enterprise conversions. Four scenarios were responsible for 80% of trial drop-offs. I fixed those first.</p>
-
-    <div class="figure-dark-b">
-      <div class="fdblock">
-        <div class="fdb-label">Deal-breaker 01</div>
-        <div class="fdb-t">Onboarding wizard: 23 steps to 4</div>
-        <p>Rebuilt the account onboarding flow around the most common enterprise configuration. Sensible defaults pre-filled throughout. Advanced options collapsed behind a "Customise" toggle. New accounts reach first working policy in under 30 minutes.</p>
-      </div>
-      <div class="fdblock">
-        <div class="fdb-label">Deal-breaker 02</div>
-        <div class="fdb-t">JIT access tray: always visible, always one action</div>
-        <p>Pending access requests now live in a persistent tray that's visible on every screen. Approve or deny in one click with inline context, no navigation required. Emergency approvals in under 10 seconds.</p>
-      </div>
-      <div class="fdblock">
-        <div class="fdb-label">Deal-breaker 03</div>
-        <div class="fdb-t">Session audit: filterable timeline, not a flat table</div>
-        <p>Replaced the raw session log with a filterable timeline. Sessions grouped by account, date, and risk signal. Anomaly flags surface automatically. Compliance export preserved, but now it's a last resort, not the only option.</p>
-      </div>
-      <div class="fdblock" style="margin-bottom:0;">
-        <div class="fdb-label">Deal-breaker 04</div>
-        <div class="fdb-t">Policy defaults: opinionated presets by industry</div>
-        <p>Added three pre-configured policy templates: Standard Enterprise, Financial Services (SOC 2), and Healthcare (HIPAA). Admins choose a baseline and override only what they need to. Configuration burden reduced by ~60%.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Experience prioritisation -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">Phase 04</p>
-    <p class="case-display">Experience prioritisation. From <span class="em">'feature-led'</span> to <span class="em">'experience-led'.</span></p>
-    <div class="two-col" style="gap:48px; margin-top:32px; margin-bottom:0;">
-      <div>
-        <p>A feature-led product adds capabilities. An experience-led product asks: what is the user trying to do, and what's the fastest path from here to there? Every screen in the redesigned PAM answers one question, not four.</p>
-        <p>The redesigned dashboard shows: accounts needing attention, pending access requests, and recent anomalies, in that order. Not a firehose of data. A prioritised action queue.</p>
-      </div>
-      <div>
-        <p>The redesigned session audit shows: a timeline of what happened, who was involved, and what the risk signals were. One click to expand. One click to export. No context switching required.</p>
-        <p>The redesigned policy editor shows: what's currently set, what the industry baseline is, and what's different, so admins understand their posture without reading documentation.</p>
-      </div>
-    </div>
-
-    <!-- Dark mockup: new dashboard -->
-    <div class="figure-dark" style="margin-top:48px;">
-      <div class="fig-header">
-        <div class="dot-r"></div><div class="dot-y"></div><div class="dot-g"></div>
-        <span class="fig-title">miniOrange PAM: Redesigned Dashboard · Privileged Access Overview</span>
-      </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:#1e1a16; margin-bottom:20px;">
-        <div style="background:#14110e; padding:16px;">
-          <div style="font-size:10px; color:#5a5045; letter-spacing:0.08em; margin-bottom:8px;">ACCOUNTS AT RISK</div>
-          <div style="font-family:var(--serif); font-size:32px; color:#e05050; line-height:1;">12</div>
-          <div style="font-size:11px; color:#5a5045; margin-top:4px;">3 critical · 9 elevated</div>
-        </div>
-        <div style="background:#14110e; padding:16px;">
-          <div style="font-size:10px; color:#5a5045; letter-spacing:0.08em; margin-bottom:8px;">PENDING REQUESTS</div>
-          <div style="font-family:var(--serif); font-size:32px; color:#e0a050; line-height:1;">4</div>
-          <div style="font-size:11px; color:#5a5045; margin-top:4px;">2 awaiting your approval</div>
-        </div>
-        <div style="background:#14110e; padding:16px;">
-          <div style="font-size:10px; color:#5a5045; letter-spacing:0.08em; margin-bottom:8px;">SESSIONS TODAY</div>
-          <div style="font-family:var(--serif); font-size:32px; color:#c8bfb0; line-height:1;">38</div>
-          <div style="font-size:11px; color:#5a5045; margin-top:4px;">1 anomaly flagged</div>
-        </div>
-      </div>
-      <div class="row">
-        <span>Account</span><span>Last Access</span><span>Risk Signal</span><span>Action</span>
-      </div>
-      <div class="row">
-        <span style="color:#f4efe5;">prod-db-root</span>
-        <span><span class="status-dot s-warn"></span>47d inactive</span>
-        <span><span class="chip chip-red">Stale credential</span></span>
-        <span style="color:#b8442a; cursor:pointer;">Review →</span>
-      </div>
-      <div class="row">
-        <span style="color:#f4efe5;">admin-aws-prod</span>
-        <span><span class="status-dot s-risk"></span>Locked out</span>
-        <span><span class="chip chip-red">Access failure ×3</span></span>
-        <span style="color:#b8442a; cursor:pointer;">Review →</span>
-      </div>
-      <div class="row">
-        <span style="color:#f4efe5;">svc-analytics</span>
-        <span><span class="status-dot s-active"></span>Active now</span>
-        <span><span class="chip chip-ylw">Elevated priv</span></span>
-        <span style="color:#b8442a; cursor:pointer;">Inspect →</span>
-      </div>
-    </div>
-
-    <h3 class="serif" style="font-size:clamp(22px,3vw,32px); margin-top:64px; margin-bottom:24px; letter-spacing:-0.015em;">These design decisions that reshaped the product.</h3>
-
-    <div class="design-decisions">
-      <div class="dd-item">
-        <div class="dd-n">Decision 01</div>
-        <div class="dd-t">Intent-first navigation</div>
-        <p>Replaced the database-mirroring nav with three intent areas: Manage (accounts and policies), Respond (access requests), and Review (audit and sessions). Users know where to go because they know what they're doing.</p>
-      </div>
-      <div class="dd-item">
-        <div class="dd-n">Decision 02</div>
-        <div class="dd-t">Persistent action tray</div>
-        <p>Pending access requests live in a corner tray visible from every screen, so emergencies don't require navigation. Dismissed automatically when resolved. Configurable urgency thresholds per team.</p>
-      </div>
-      <div class="dd-item">
-        <div class="dd-n">Decision 03</div>
-        <div class="dd-t">Risk-first account list</div>
-        <p>Default sort on the account list is now by risk signal, not alphabetical. Accounts needing attention float to the top. Admins don't need to know what to look for, the system surfaces it.</p>
-      </div>
-      <div class="dd-item">
-        <div class="dd-n">Decision 04</div>
-        <div class="dd-t">Progressive policy editor</div>
-        <p>Policy configuration now shows: the current value, the industry baseline, and the delta. Advanced fields collapsed behind "Customise". Admins understand their security posture without needing documentation.</p>
-      </div>
-      <div class="dd-item">
-        <div class="dd-n">Decision 05</div>
-        <div class="dd-t">Contextual error recovery</div>
-        <p>Every failure state, failed login, expired session, misconfigured policy: now includes what went wrong, why it likely happened, and the exact steps to fix it. No raw error codes. No dead ends.</p>
-      </div>
-      <div class="dd-item">
-        <div class="dd-n">Decision 06</div>
-        <div class="dd-t">Design system as product</div>
-        <p>Shipped a component library alongside the redesign: tokens, patterns, and usage rules documented in Figma with engineering annotations. Future features can be built without reinventing layout or interaction logic.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- What didn't work -->
-  <div class="case-section reveal">
-    <h2 class="serif">What didn't work, and how I adapted.</h2>
-    <p class="lead">A 6-month engagement with two engineers moves fast. Not every decision survived contact with engineering reality or customer feedback.</p>
-
-    <div class="adapted-table">
-      <div class="at-head">What I designed</div>
-      <div class="at-head">What actually shipped / why it changed</div>
-      <div class="at-row-l"><strong>Inline session video player</strong>: watch recordings inside the audit timeline without leaving the screen.</div>
-      <div class="at-row-r">Deferred. Video decoding in-browser caused performance issues on the enterprise hardware tier. Replaced with a linked player that opens in a panel.</div>
-      <div class="at-row-l"><strong>AI-assisted anomaly summaries</strong>: natural language description of what was unusual about a flagged session.</div>
-      <div class="at-row-r">Scoped down to rule-based anomaly flags only. LLM integration deprioritised to v2 due to compliance concerns from a key customer's InfoSec team.</div>
-      <div class="at-row-l"><strong>Role-based dashboard variants</strong>: different default views for IT admin, CISO, and auditor personas.</div>
-      <div class="at-row-r">Shipped as one configurable dashboard with widget reordering. Fully custom views per role are a v2 milestone when customer count justifies the maintenance cost.</div>
-      <div class="at-row-l"><strong>Onboarding wizard with live connection test</strong>: validate LDAP/AD connection before confirming setup steps.</div>
-      <div class="at-row-r">Shipped. This one stayed exactly as designed. Most impactful single change for reducing onboarding support calls.</div>
-    </div>
-  </div>
-
-  <!-- Designing inside reality -->
-  <div class="case-section reveal">
-    <h2 class="serif">Designing inside reality.</h2>
-    <p class="lead">Enterprise security products don't exist in a vacuum. Three constraints shaped every decision.</p>
-
-    <div class="constraints-grid">
-      <div class="cg-item">
-        <div class="cg-tag">Constraint 01</div>
-        <div class="cg-t">Compliance first, aesthetics second</div>
-        <p>Every audit trail feature had to meet SOC 2 and ISO 27001 requirements before it could be "designed well". Working with the compliance team early meant no surprises at handoff.</p>
-      </div>
-      <div class="cg-item">
-        <div class="cg-tag">Constraint 02</div>
-        <div class="cg-tag" style="margin-top:0;"></div>
-        <div class="cg-t">Enterprise hardware runs slow</div>
-        <p>Key customers run PAM on on-premise servers from 2017. Animation-heavy UIs lag, large data loads time out. The design had to perform at 2GB RAM and 30fps before it could be called done.</p>
-      </div>
-      <div class="cg-item">
-        <div class="cg-tag">Constraint 03</div>
-        <div class="cg-t">No design debt budget</div>
-        <p>Two engineers, six months. No time for a full rewrite. Every change had to layer on top of the existing front-end framework without requiring architectural changes below the design layer.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Outcomes -->
-  <div class="case-section reveal">
-    <h2 class="serif">What shipped, what changed.</h2>
-    <div class="stats">
-      <div class="stat"><div class="n serif"><span class="em">↓</span>74<span class="em">%</span></div><div class="l">Onboarding support tickets in the 90 days post-launch</div></div>
-      <div class="stat"><div class="n serif">$4.45<span class="em">M</span></div><div class="l">Enterprise expansion revenue in the 12 months after ship</div></div>
-      <div class="stat"><div class="n serif"><span class="em">↓</span>7<span class="em">×</span></div><div class="l">Faster just-in-time access approvals: from 7 clicks to 1</div></div>
-      <div class="stat"><div class="n serif">NPS <span class="em">↑</span>31</div><div class="l">Point increase in enterprise customer NPS within 2 quarters</div></div>
-    </div>
-    <p style="max-width:60ch; color:var(--muted); margin-top:8px; font-size:14px;">The product went from losing enterprise deals in trial to being cited as the reason customers chose miniOrange over established competitors. The UX became a sales asset.</p>
-  </div>
-
+<!-- Hero image — full bleed -->
+<div class="hero-image-wrap reveal">
+  <img src="uploads/PAM DB.png" alt="PAM resource detail page — tabbed workspace" />
 </div>
 
+<!-- ── § 01 THE PROBLEM ── -->
+<div class="wrap">
+  <div class="cs reveal">
+    <span class="sec-marker">§ 01 &nbsp;·&nbsp; The Problem</span>
+    <h2>miniOrange's PAM had everything a buyer's checklist asks for. <em>Nobody could use it.</em></h2>
+    <p>miniOrange's Privileged Access Management product had everything a PAM buyer's checklist asks for. Vaulting, session recording, access policies, discovery, MFA. On a feature comparison spreadsheet, it looked competitive.</p>
+    <p>Every admin who tried to actually use it hit the same wall.</p>
+    <p>The product was 14 disconnected nav items masquerading as an ecosystem. Setting up a single privileged workflow required jumping between three or four unrelated sections. Object names contradicted what admins actually meant. "System Users" was where credentials lived, not users. Errors happened silently. Discovery surfaced data but didn't guide action. Critical enterprise capabilities like JIT access, emergency break glass, session OCR, reconciliation were either missing or buried so deep that customers assumed they didn't exist.</p>
+    <p>The result was a product with strong bones and no spine.</p>
+
+    <!-- Fragile intersection diagram -->
+    <div style="margin-top:64px; border:1px solid var(--rule); border-radius:6px; overflow:hidden;">
+      <div style="padding:16px 28px; background:var(--paper-2); border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted-2);">PAM sits at a fragile intersection</div>
+      <div style="padding:48px 36px; display:grid; grid-template-columns:1fr auto 1fr; gap:0; align-items:center;">
+        <div style="display:grid; grid-template-rows:1fr 1fr; gap:24px;">
+          <div style="text-align:right; padding-right:32px;">
+            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">Security Risk</div>
+            <div style="font-size:13px; color:var(--muted); line-height:1.5; max-width:22ch; margin-left:auto;">Breached credentials, standing admin access, unrotated secrets</div>
+          </div>
+          <div style="text-align:right; padding-right:32px;">
+            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">Compliance</div>
+            <div style="font-size:13px; color:var(--muted); line-height:1.5; max-width:22ch; margin-left:auto;">SOC 2, ISO 27001, HIPAA audit trails and evidence</div>
+          </div>
+        </div>
+        <div style="text-align:center; padding:28px 40px; border:1px solid var(--rule); border-radius:6px; background:var(--paper);">
+          <div style="font-family:var(--serif); font-size:13px; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); margin-bottom:8px;">at the center</div>
+          <div style="font-family:var(--serif); font-style:italic; font-size:28px; color:var(--ink); line-height:1.1; letter-spacing:-0.02em;">PAM</div>
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-top:10px;">fragile intersection</div>
+        </div>
+        <div style="display:grid; grid-template-rows:1fr 1fr; gap:24px;">
+          <div style="padding-left:32px;">
+            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">Continuity</div>
+            <div style="font-size:13px; color:var(--muted); line-height:1.5; max-width:22ch;">Break glass access, emergency elevation, incident response</div>
+          </div>
+          <div style="padding-left:32px;">
+            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">Productivity</div>
+            <div style="font-size:13px; color:var(--muted); line-height:1.5; max-width:22ch;">JIT access, self-service, zero-friction admin workflows</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="img-caption">The four forces PAM must balance simultaneously. A failure in UX cascades into all four.</p>
+  </div>
+
+  <!-- ── § 02 WHY IT WAS A PROBLEM ── -->
+  <div class="cs reveal">
+    <span class="sec-marker">§ 02 &nbsp;·&nbsp; Why It Was a Problem</span>
+    <h2>In consumer software, bad UX costs engagement. In PAM, it costs <em>the entire security posture.</em></h2>
+    <p>The core paradox of Privileged Access Management: the harder it is to use, the less secure it makes you. Admins under deadline pressure don't file tickets when a workflow is broken, they route around it. A DevOps engineer who can't get JIT access in under a minute will just use their standing admin credentials. A security admin who can't set up rotation policies without a workshop will skip the policy and rotate credentials manually. Every workaround becomes a shadow IT vulnerability. Every friction point becomes an audit finding.</p>
+    <p>At the business layer, the pattern was equally painful. Enterprise deals stalled in POC because admins couldn't set up meaningful workflows inside a trial window. Support fielded repetitive tickets on setup steps that should have been self serve. Sales engineers got pulled into implementation calls that ate margin. Compliance customers failed audit prep because the product didn't produce audit ready evidence out of the box.</p>
+    <p>The product wasn't failing because it lacked features. It was failing because the features didn't hold together as a system.</p>
+  </div>
+</div>
+
+<!-- Pull quote — full bleed -->
+<div class="pull-quote reveal">
+  <div class="wrap">
+    <blockquote>"If security feels like friction, teams route around it — and the system fails the moment it's needed."</blockquote>
+  </div>
+</div>
+
+<!-- ── § 03 HOW I SOLVED IT ── -->
+<div class="wrap">
+  <div class="cs reveal">
+    <span class="sec-marker">§ 03 &nbsp;·&nbsp; How I Solved It</span>
+    <h2>I approached this as a systems problem, <em>not a screens problem.</em> Three phases.</h2>
+
+    <!-- Phase 1 -->
+    <span class="phase-label">Phase 1 &nbsp;·&nbsp; Diagnose before designing</span>
+    <p>Before touching a single wireframe, I ran a scenario driven UX audit across the existing product. Not happy path click throughs. Real operational scenarios: onboarding a new admin on day one, break glass elevation during a Sev 1, credential rotation across 200+ accounts, offboarding a departing engineer, walking an auditor through a 90 day activity log.</p>
+    <p>Ten scenarios. Four personas: Security Admins, IT Operations, DevOps and SysAdmins, Compliance Officers. 140+ usability issues surfaced.</p>
+    <p>But 140 issues isn't a fix list, it's a symptom list. I clustered them into four systemic root causes:</p>
+
+    <div class="root-list">
+      <div class="rl-item">
+        <div class="rl-n">Root cause 01</div>
+        <div class="rl-t">Fragmented information architecture</div>
+        <p>14 flat nav items, no task based grouping. Admins had to know the product's internal object model to find anything.</p>
+      </div>
+      <div class="rl-item">
+        <div class="rl-n">Root cause 02</div>
+        <div class="rl-t">Broken domain terminology</div>
+        <p>Object names didn't match the mental model of any of the four personas. Every new admin spent their first week translating the interface before they could use it.</p>
+      </div>
+      <div class="rl-item">
+        <div class="rl-n">Root cause 03</div>
+        <div class="rl-t">No workflow continuity</div>
+        <p>The product was a sum of features, not a system of workflows. Critical paths like JIT, approvals, break glass either didn't exist or required jumping between disconnected sections.</p>
+      </div>
+      <div class="rl-item">
+        <div class="rl-n">Root cause 04</div>
+        <div class="rl-t">Silent failure states</div>
+        <p>Errors weren't surfaced. Discovery surfaced data but didn't guide action. Admins couldn't tell what broke or what to do next.</p>
+      </div>
+    </div>
+    <p style="margin-top:28px; font-size:15px; color:var(--muted); font-style:italic;">These four causes — not the 140 surface issues — drove every subsequent decision.</p>
+
+    <!-- Scenario grid -->
+    <h3>Ten scenarios. Four personas. One shared root cause.</h3>
+    <div class="scenario-grid">
+      <div class="sc-cell sc-head">Scenario</div>
+      <div class="sc-cell sc-head">Security Admin</div>
+      <div class="sc-cell sc-head">IT Ops</div>
+      <div class="sc-cell sc-head">DevOps / SysAdmin</div>
+      <div class="sc-cell sc-head">Compliance</div>
+
+      <div class="sc-cell sc-critical">SC.01 &nbsp;·&nbsp; Admin onboarding <span class="sc-badge">Critical</span></div>
+      <div class="sc-cell sc-critical">Primary</div>
+      <div class="sc-cell sc-critical">Primary</div>
+      <div class="sc-cell">Secondary</div>
+      <div class="sc-cell">—</div>
+
+      <div class="sc-cell sc-critical">SC.02 &nbsp;·&nbsp; Break glass elevation <span class="sc-badge">Critical</span></div>
+      <div class="sc-cell sc-critical">Primary</div>
+      <div class="sc-cell">Secondary</div>
+      <div class="sc-cell sc-critical">Primary</div>
+      <div class="sc-cell">—</div>
+
+      <div class="sc-cell">SC.03 &nbsp;·&nbsp; JIT access request</div>
+      <div class="sc-cell">Approver</div>
+      <div class="sc-cell">Requester</div>
+      <div class="sc-cell">Requester</div>
+      <div class="sc-cell">Observer</div>
+
+      <div class="sc-cell">SC.04 &nbsp;·&nbsp; Credential rotation</div>
+      <div class="sc-cell">Owner</div>
+      <div class="sc-cell">Primary</div>
+      <div class="sc-cell">Secondary</div>
+      <div class="sc-cell">—</div>
+
+      <div class="sc-cell">SC.05 &nbsp;·&nbsp; Offboard engineer</div>
+      <div class="sc-cell">Primary</div>
+      <div class="sc-cell">Primary</div>
+      <div class="sc-cell">—</div>
+      <div class="sc-cell">Secondary</div>
+
+      <div class="sc-cell">SC.06 &nbsp;·&nbsp; Discovery review</div>
+      <div class="sc-cell">Primary</div>
+      <div class="sc-cell">Secondary</div>
+      <div class="sc-cell">—</div>
+      <div class="sc-cell">—</div>
+
+      <div class="sc-cell">SC.07 &nbsp;·&nbsp; Session audit review</div>
+      <div class="sc-cell">Secondary</div>
+      <div class="sc-cell">Secondary</div>
+      <div class="sc-cell">—</div>
+      <div class="sc-cell">Primary</div>
+
+      <div class="sc-cell">SC.08 &nbsp;·&nbsp; Policy configuration</div>
+      <div class="sc-cell">Primary</div>
+      <div class="sc-cell">Secondary</div>
+      <div class="sc-cell">—</div>
+      <div class="sc-cell">Secondary</div>
+
+      <div class="sc-cell">SC.09 &nbsp;·&nbsp; Reconciliation setup</div>
+      <div class="sc-cell">Primary</div>
+      <div class="sc-cell">Primary</div>
+      <div class="sc-cell">—</div>
+      <div class="sc-cell">—</div>
+
+      <div class="sc-cell">SC.10 &nbsp;·&nbsp; 90-day audit prep</div>
+      <div class="sc-cell">Secondary</div>
+      <div class="sc-cell">—</div>
+      <div class="sc-cell">—</div>
+      <div class="sc-cell">Primary</div>
+    </div>
+    <p class="img-caption">SC.01 and SC.02 highlighted as most critical — both blocked by the same root cause: fragmented IA.</p>
+
+    <!-- Phase 2 -->
+    <span class="phase-label" style="margin-top:80px;">Phase 2 &nbsp;·&nbsp; A prioritization framework that ended the debate</span>
+    <p>The engineering team had been stuck in framework debate for months. Kano models, MoSCoW, RICE. Every exercise produced a different answer and no forward motion.</p>
+    <p>I collapsed the whole thing to one binary question: <strong>does this strengthen a deal breaker capability, or doesn't it?</strong></p>
+    <p>Deal breakers were the five capabilities that determine whether an enterprise buyer will even consider a PAM product: Vault, Rotation and Reconciliation; Discovery and Inventory; Session Proxying, Recording and OCR; Access Governance (RBAC and JIT); Integrations and Auditability. Anything strengthening these got prioritized. Anything that didn't got deferred, regardless of who asked for it.</p>
+    <p>Two days of alignment. A meaningful portion of the v1 backlog cut without a single status meeting.</p>
+
+    <div class="db-filter">
+      <div class="db-col-head">Feature proposal</div>
+      <div class="db-col-head">Outcome</div>
+      <div class="db-row-l core">Vault + rotation and reconciliation</div>
+      <div class="db-row-r outcome">Prioritized v1 &nbsp;·&nbsp; deal breaker capability</div>
+      <div class="db-row-l core">Session proxying, recording, OCR</div>
+      <div class="db-row-r outcome">Prioritized v1 &nbsp;·&nbsp; deal breaker capability</div>
+      <div class="db-row-l core">Access governance — RBAC + JIT</div>
+      <div class="db-row-r outcome">Prioritized v1 &nbsp;·&nbsp; deal breaker capability</div>
+      <div class="db-row-l core">Discovery and inventory</div>
+      <div class="db-row-r outcome">Prioritized v1 &nbsp;·&nbsp; deal breaker capability</div>
+      <div class="db-row-l core">Integrations and auditability</div>
+      <div class="db-row-r outcome">Prioritized v1 &nbsp;·&nbsp; deal breaker capability</div>
+      <div class="db-row-l" style="color:var(--muted);">Custom branding per tenant</div>
+      <div class="db-row-r deferred">Deferred &nbsp;·&nbsp; no deal breaker link</div>
+      <div class="db-row-l" style="color:var(--muted);">In-app notification center</div>
+      <div class="db-row-r deferred">Deferred &nbsp;·&nbsp; no deal breaker link</div>
+      <div class="db-row-l" style="color:var(--muted);">Analytics dashboard for CISO</div>
+      <div class="db-row-r deferred">Deferred &nbsp;·&nbsp; no deal breaker link</div>
+    </div>
+    <p class="img-caption">The deal-breaker filter. Core capabilities to the left, outcome to the right. Deferred items struck through.</p>
+
+    <!-- Phase 3 -->
+    <span class="phase-label" style="margin-top:80px;">Phase 3 &nbsp;·&nbsp; Redesign the system, not the screens</span>
+    <p>With direction locked, I rebuilt the product around three architectural decisions:</p>
+
+    <div class="arch-list">
+      <div class="al-n">01</div>
+      <div class="al-body">
+        <div class="al-t">Experience architecture over feature list</div>
+        <p>The old product organized itself by internal object type: Users, Groups, Certificates, Resources, Policies. The redesign organizes itself by admin intent: Overview, Setup, Access Control, Security Ops, Identity Config. A new admin can now find break glass because it lives where break glass belongs, not scattered across three unrelated sections.</p>
+      </div>
+      <div class="al-n">02</div>
+      <div class="al-body">
+        <div class="al-t">Workflow continuity within the resource</div>
+        <p>Instead of forcing admins to piece a workflow together across separate pages, I built the resource detail as a tabbed workspace. Overview, Credentials, Policy, Access, Sessions, Audit trail. All scoped to the resource they're working on. The admin never loses context. Reconciliation credentials — which used to be an undocumented concept — now sit inline in the credentials tab with a plain language explanation of what they do.</p>
+      </div>
+      <div class="al-n">03</div>
+      <div class="al-body" style="border-bottom:none;">
+        <div class="al-t">A six-stage onboarding model</div>
+        <p>I redesigned admin onboarding as six discrete stages: Discovery, Inventory, Policy, Roles, Provisioning, Access. Each stage produces a verifiable checkpoint. No more setup wizards where you can't tell if you've done it right. Every stage gives the admin evidence they've actually configured the thing they meant to configure.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Full-width payoff screenshot -->
+<div style="margin:0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); line-height:0; background:var(--paper-2);">
+  <div class="wrap" style="padding-top:0; padding-bottom:0;">
+    <img src="uploads/PAM DB.png" alt="New miniOrange PAM resource page — tabbed workspace" style="width:100%; display:block; max-height:80vh; object-fit:cover; object-position:top;" />
+  </div>
+</div>
+<div class="wrap"><p class="img-caption" style="padding-top:0;">The new resource detail page. One resource, one context, all the admin's tools in one workspace.</p></div>
+
+<!-- ── § 04 OUTCOME ── -->
+<div class="wrap">
+  <div class="cs reveal">
+    <span class="sec-marker">§ 04 &nbsp;·&nbsp; Outcome</span>
+    <h2>The v1 shipped as a <em>coherent platform,</em> not a feature list.</h2>
+
+    <div class="stat-hero">
+      <div class="stat-n"><em>$</em>800K</div>
+      <div class="stat-l">in PAM sales unlocked post release. The redesign directly enabled enterprise deals that had previously stalled at POC, with capability gaps closed and admin onboarding compressed to trial window timelines.</div>
+    </div>
+
+    <h3>Product outcomes</h3>
+    <div class="outcome-list">
+      <div class="ol-item">
+        <div class="ol-label">Workflow continuity</div>
+        <p>Admins can now complete critical workflows — onboarding, break glass, credential rotation, access allocation, audit review — without leaving the resource they're working on.</p>
+      </div>
+      <div class="ol-item">
+        <div class="ol-label">Deal-breaker capabilities</div>
+        <p>The five deal-breaker capabilities that were previously missing or buried now anchor the product's core experience.</p>
+      </div>
+      <div class="ol-item">
+        <div class="ol-label">Inline error resolution</div>
+        <p>Error states and reconciliation logic surface inline instead of hiding in documentation. Admins know what broke and exactly how to fix it.</p>
+      </div>
+      <div class="ol-item">
+        <div class="ol-label">Architecture-level compliance</div>
+        <p>The product aligns to Zero Trust, SOC 2, and ISO principles by architecture, not by disclaimer.</p>
+      </div>
+    </div>
+
+    <h3>Team outcomes</h3>
+    <p>Engineering had a single prioritization filter that resolved scope debates in minutes instead of quarters. Design churn dropped significantly by moving decisions from "which screen?" to "which system?" early in the process. PMs, engineers, and design shared a common language — deal breakers, experiences, capabilities — that cut review cycles down to what actually mattered.</p>
+
+    <!-- Before / after -->
+    <div class="ba-wrap">
+      <div class="ba-col">
+        <div class="ba-col-head">Before &nbsp;·&nbsp; Fragmented nav, 14 flat items</div>
+        <div style="padding:36px 32px; background:var(--paper-2);">
+          <div style="font-family:var(--mono); font-size:12px; color:var(--muted); line-height:2.2;">
+            › System Users<br>
+            › Groups<br>
+            › Certificates<br>
+            › Resources<br>
+            › Policies<br>
+            › Session Recordings<br>
+            › Discovery<br>
+            › Access Requests<br>
+            › Audit Logs<br>
+            › MFA Settings<br>
+            › LDAP Config<br>
+            › Rotation Tasks<br>
+            › Compliance Reports<br>
+            › Integrations
+          </div>
+        </div>
+      </div>
+      <div class="ba-col">
+        <div class="ba-col-head">After &nbsp;·&nbsp; Intent-organized, experience-led</div>
+        <div style="padding:36px 32px; background:var(--paper);">
+          <div style="font-family:var(--mono); font-size:12px; color:var(--ink); line-height:2.2;">
+            <span style="color:var(--accent);">›</span> Overview<br>
+            <span style="color:var(--accent);">›</span> Setup<br>
+            <span style="padding-left:1em; color:var(--muted);">Discovery · Inventory · Onboarding</span><br>
+            <span style="color:var(--accent);">›</span> Access Control<br>
+            <span style="padding-left:1em; color:var(--muted);">RBAC · JIT · Break Glass</span><br>
+            <span style="color:var(--accent);">›</span> Security Ops<br>
+            <span style="padding-left:1em; color:var(--muted);">Sessions · Recordings · Rotation</span><br>
+            <span style="color:var(--accent);">›</span> Identity Config<br>
+            <span style="padding-left:1em; color:var(--muted);">Credentials · Policies · Integrations</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="img-caption">Left: 14 flat nav items organized by internal object model. Right: 5 intent areas organized by what the admin is trying to do.</p>
+  </div>
+
+  <!-- ── § 05 WHAT I'D TAKE INTO THE NEXT ONE ── -->
+  <div class="cs reveal">
+    <span class="sec-marker">§ 05 &nbsp;·&nbsp; What I'd Take into the Next One</span>
+    <h2>Three things I'd carry forward.</h2>
+
+    <div class="lesson-list">
+      <div class="lesson-item">
+        <div class="li-t">Audit against scenarios, not screens</div>
+        <p>Happy path heuristic reviews miss the failures that matter. Audit against what the user is actually trying to do — onboard, break glass, offboard, rotate, prep an audit — and the real friction surfaces immediately. The 10-scenario framework found root causes that a standard heuristic review would have missed entirely.</p>
+      </div>
+      <div class="lesson-item">
+        <div class="li-t">Prioritization is a communication problem, not a math problem</div>
+        <p>No framework fixes a stakeholder disagreement. What fixes it is a single, binary question everyone can answer the same way. If your prioritization exercise needs a workshop to interpret, it's the wrong exercise. The deal-breaker filter worked because it reduced a complex decision to one question, not because it was a sophisticated model.</p>
+      </div>
+      <div class="lesson-item">
+        <div class="li-t">In security products, usability is a security control</div>
+        <p>Every friction point pushes a user toward a workaround. Every workaround is a vulnerability. Design decisions in PAM aren't cosmetic — they're part of the threat model. The ROI of good UX in this space isn't just NPS. It's measured in reduced shadow IT, cleaner audit trails, and breaches that don't happen.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Next case study -->
 <div class="next-case wrap reveal">
   <span class="eyebrow">Next case study</span>
-  <h3 class="serif"><a href="case-merry.html">A healthcare coordination system built for <span class="em">operational pressure →</span></a></h3>
+  <h3 class="serif"><a href="case-iam.html">Architecting enterprise IAM from the ground up <em>→</em></a></h3>
 </div>
 
 <footer>
@@ -642,12 +894,13 @@
       <h5>Sitemap</h5>
       <a href="index.html#work">Work</a>
       <a href="about.html">About</a>
-      <a href="about.html#contact">Contact</a>
+      <a href="mailto:mehakrgarg@gmail.com">Contact</a>
     </div>
     <div class="col">
       <h5>Elsewhere</h5>
       <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener">LinkedIn ↗</a>
       <a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener">Behance ↗</a>
+      <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener">Medium ↗</a>
     </div>
     <div class="col">
       <h5>Located</h5>
@@ -661,5 +914,16 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+  /* scroll progress bar */
+  var prog = document.getElementById('scrollProg');
+  if (prog) {
+    window.addEventListener('scroll', function() {
+      var h = document.documentElement;
+      var pct = (h.scrollTop || document.body.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+      prog.style.width = pct + '%';
+    }, { passive: true });
+  }
+</script>
 </body>
 </html>
