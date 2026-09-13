@@ -3,927 +3,671 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PAM Platform Redesign — From feature-led to experience-led | Mehak Garg</title>
-<meta name="description" content="A Privileged Access Management redesign for miniOrange — from fragmented feature list to coherent enterprise platform." />
+<title>PAM Platform Redesign | Mehak Garg</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,400&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css" />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
-/* ── PAM case study ── */
+:root {
+  /* dark palette */
+  --dk:       #07090F;
+  --dk-1:     #0C0F18;
+  --dk-2:     #10141E;
+  --dk-3:     #161B28;
+  /* light palette */
+  --lt:       #F4F6FB;
+  --lt-1:     #EAEDF5;
+  --lt-2:     #DDE2EE;
+  /* ink */
+  --ink:      #080B14;
+  --ink-2:    #3A4155;
+  --ink-3:    #8492AA;
+  /* white text */
+  --wh:       #F2F6FF;
+  --wh-2:     #9BAFC8;
+  --wh-3:     #4A5568;
+  /* accent */
+  --cy:       #22D3EE;
+  --cy-2:     #06B6D4;
+  --cy-bg:    rgba(34,211,238,.08);
+  --cy-bd:    rgba(34,211,238,.2);
+  /* rules */
+  --rd:       rgba(255,255,255,.07);
+  --rd-2:     rgba(255,255,255,.12);
+  --rl:       rgba(0,0,0,.07);
+  --rl-2:     rgba(0,0,0,.12);
 
-/* Hero */
-.pam-hero {
-  padding-top: clamp(120px, 14vw, 180px);
-  padding-bottom: clamp(64px, 8vw, 96px);
-}
-.pam-hero .breadcrumbs {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 40px;
-}
-.pam-hero h1 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(36px, 5.5vw, 80px);
-  line-height: 1.04;
-  letter-spacing: -0.03em;
-  color: var(--ink);
-  max-width: 22ch;
-  margin-bottom: 28px;
-}
-.pam-hero .subtitle {
-  font-size: clamp(16px, 1.4vw, 20px);
-  color: var(--muted);
-  line-height: 1.5;
-  max-width: 52ch;
-  margin-bottom: 56px;
-  font-style: italic;
-  font-family: var(--serif);
-}
-.pam-meta {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 32px;
-}
-.pam-meta .pm-item {
-  padding-right: 32px;
-}
-.pam-meta .pm-item:not(:first-child) {
-  padding-left: 32px;
-  border-left: 1px solid var(--rule);
-}
-.pam-meta .pm-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 10px;
-}
-.pam-meta .pm-val {
-  font-family: var(--serif);
-  font-size: 17px;
-  color: var(--ink);
-  line-height: 1.35;
+  --serif: "Spectral", Georgia, serif;
+  --sans:  "Inter Tight", system-ui, sans-serif;
+  --mono:  "JetBrains Mono", monospace;
+  --pad:   clamp(24px,6vw,108px);
+  --ease:  cubic-bezier(0.22,1,0.36,1);
 }
 
-/* Full bleed hero image */
-.hero-image-wrap {
-  margin-top: 72px;
-  background: var(--paper-2);
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-  overflow: hidden;
-  line-height: 0;
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);
+  background:var(--dk);
+  color:var(--wh);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
 }
-.hero-image-wrap img {
-  width: 100%;
-  display: block;
-  object-fit: cover;
-  max-height: 76vh;
-  object-position: top;
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+
+/* ── Progress ── */
+.sp{position:fixed;top:0;left:0;height:2px;background:var(--cy);z-index:60;width:0;transition:width .1s linear;box-shadow:0 0 12px rgba(34,211,238,.5);}
+
+/* ── Nav ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px var(--pad);
+  background:rgba(7,9,15,.88);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s;
+}
+.nav.on{border-bottom-color:var(--rd-2);}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo .dot{width:7px;height:7px;border-radius:50%;background:var(--cy);box-shadow:0 0 8px var(--cy);animation:pulse 2.4s var(--ease) infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:.4;}}
+.nav-logo img{height:26px;width:auto;filter:invert(1);opacity:.9;}
+.nav-links{display:flex;gap:4px;align-items:center;font-size:14px;}
+.nav-links a{padding:8px 14px;border-radius:999px;color:var(--wh-2);transition:color .2s;}
+.nav-links a:hover{color:var(--wh);}
+.nav-links a.cta{background:var(--cy);color:var(--dk);font-weight:700;margin-left:6px;border-radius:999px;padding:8px 18px;transition:background .2s;}
+.nav-links a.cta:hover{background:var(--cy-2);}
+@media(max-width:700px){
+  .nav{padding:14px var(--pad);}
+  .nav-logo img{height:20px;}
+  .nav-links a:not(.cta){display:none;}
 }
 
-/* Section */
-.cs {
-  padding: clamp(72px, 8vw, 112px) 0;
-  border-top: 1px solid var(--rule);
-}
-.cs .sec-marker {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 24px;
-  display: block;
-}
-.cs h2 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(28px, 4vw, 54px);
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  color: var(--ink);
-  max-width: 22ch;
-  margin-bottom: 40px;
-}
-.cs h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
-.cs h3 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(22px, 2.8vw, 36px);
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  line-height: 1.12;
-  margin-top: 64px;
-  margin-bottom: 24px;
-}
-.cs p {
-  font-size: 17px;
-  line-height: 1.72;
-  color: var(--ink-2);
-  max-width: 66ch;
-  margin-bottom: 20px;
-}
-.cs p.wide { max-width: none; }
-.cs p strong { color: var(--ink); font-weight: 500; }
+/* ── Wrap ── */
+.w{max-width:1400px;margin:0 auto;padding:0 var(--pad);}
 
-/* Pull quote */
-.pull-quote {
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-  padding: clamp(48px, 8vw, 96px) 0;
-  margin: clamp(56px, 8vw, 96px) 0;
-}
-.pull-quote blockquote {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: clamp(24px, 3.8vw, 52px);
-  line-height: 1.18;
-  letter-spacing: -0.022em;
-  color: var(--ink);
-  max-width: 28ch;
-}
+/* ── Section marker ── */
+.sm{display:inline-flex;align-items:center;gap:10px;margin-bottom:32px;}
+.sm .star{font-size:16px;color:var(--cy);animation:spin 8s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.sm .pill{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 12px;border-radius:999px;}
+/* pill on dark */
+.sec-dk .sm .pill,.hero .sm .pill,.pull .sm .pill,.stat-s .sm .pill,.nc .sm .pill{color:var(--wh-2);background:var(--dk-2);border:1px solid var(--rd-2);}
+/* pill on light */
+.sec-lt .sm .pill{color:var(--ink-2);background:var(--lt-1);border:1px solid var(--rl-2);}
 
-/* $800K hero stat */
-.stat-hero {
-  margin: 56px 0 0;
-}
-.stat-hero .stat-n {
-  font-family: var(--serif);
-  font-size: clamp(80px, 14vw, 180px);
-  line-height: 0.88;
-  letter-spacing: -0.05em;
-  color: var(--ink);
-}
-.stat-hero .stat-n em { color: var(--accent); font-style: normal; }
-.stat-hero .stat-l {
-  margin-top: 20px;
-  font-size: 15px;
-  color: var(--muted);
-  max-width: 42ch;
-  line-height: 1.5;
-  border-left: 2px solid var(--accent);
-  padding-left: 16px;
-}
+/* ── 3-tone display heading ── */
+.dh{font-family:var(--sans);font-weight:800;line-height:.97;letter-spacing:-.035em;}
+.dh .t1{display:block;}
+.dh .t2{display:block;font-family:var(--serif);font-weight:300;font-style:italic;letter-spacing:-.015em;}
+.dh .t3{display:block;}
+/* dark variant */
+.sec-dk .dh .t1,.hero .dh .t1{color:var(--wh);}
+.sec-dk .dh .t2,.hero .dh .t2{color:transparent;background:linear-gradient(90deg,#4A5568 0%,#2A3040 100%);-webkit-background-clip:text;background-clip:text;}
+.sec-dk .dh .t3,.hero .dh .t3{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.22);}
+/* light variant */
+.sec-lt .dh .t1{color:var(--ink);}
+.sec-lt .dh .t2{color:transparent;background:linear-gradient(90deg,#8492AA 0%,#C0C8D8 100%);-webkit-background-clip:text;background-clip:text;}
+.sec-lt .dh .t3{color:#B2BECD;}
 
-/* Phase marker */
-.phase-label {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  display: block;
-  margin-bottom: 12px;
-  margin-top: 56px;
-}
+/* ── Dark section ── */
+.sec-dk{background:var(--dk);border-top:1px solid var(--rd);padding:120px 0;}
+.sec-dk p{font-size:17px;line-height:1.75;color:var(--wh-2);max-width:66ch;margin-bottom:22px;}
+.sec-dk p:last-child{margin-bottom:0;}
+.sec-dk p strong{color:var(--wh);font-weight:600;}
+.sec-dk .lead{font-family:var(--serif);font-style:italic;font-size:clamp(19px,1.8vw,24px);color:var(--wh-2);max-width:58ch;line-height:1.6;margin-bottom:52px;}
+.sec-dk h3{font-weight:700;font-size:clamp(20px,2.2vw,28px);letter-spacing:-.02em;color:var(--wh);margin-bottom:18px;margin-top:72px;line-height:1.15;}
 
-/* Root cause list */
-.root-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-top: 1px solid var(--rule);
-  margin-top: 40px;
-}
-.root-list .rl-item {
-  padding: 36px 36px 36px 0;
-  border-right: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-}
-.root-list .rl-item:nth-child(2n) {
-  padding-left: 36px;
-  padding-right: 0;
-  border-right: none;
-}
-.root-list .rl-item:nth-last-child(-n+2) { border-bottom: none; }
-.root-list .rl-n {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 12px;
-}
-.root-list .rl-t {
-  font-family: var(--serif);
-  font-size: 20px;
-  color: var(--ink);
-  line-height: 1.25;
-  margin-bottom: 12px;
-}
-.root-list .rl-item p {
-  font-size: 14px;
-  color: var(--muted);
-  line-height: 1.6;
-  max-width: none;
-  margin: 0;
-}
+/* ── Light section ── */
+.sec-lt{background:var(--lt);border-top:1px solid var(--rl);padding:120px 0;}
+.sec-lt p{font-size:17px;line-height:1.75;color:var(--ink-2);max-width:66ch;margin-bottom:22px;}
+.sec-lt p:last-child{margin-bottom:0;}
+.sec-lt p strong{color:var(--ink);font-weight:600;}
+.sec-lt .lead{font-family:var(--serif);font-style:italic;font-size:clamp(19px,1.8vw,24px);color:var(--ink-2);max-width:58ch;line-height:1.6;margin-bottom:52px;}
+.sec-lt h3{font-weight:700;font-size:clamp(20px,2.2vw,28px);letter-spacing:-.02em;color:var(--ink);margin-bottom:18px;margin-top:72px;line-height:1.15;}
 
-/* Scenario grid */
-.scenario-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0;
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  overflow: hidden;
-  margin-top: 48px;
+/* ── Hero ── */
+.hero{background:var(--dk);padding-top:clamp(140px,18vw,200px);padding-bottom:80px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse at 50% 20%,rgba(34,211,238,.05) 0%,transparent 65%);pointer-events:none;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cy);border:1px solid var(--cy-bd);padding:6px 14px;border-radius:999px;background:var(--cy-bg);margin-bottom:44px;}
+.hero-badge .live{width:5px;height:5px;border-radius:50%;background:var(--cy);box-shadow:0 0 6px var(--cy);}
+.hero h1{font-family:var(--sans);font-weight:800;font-size:clamp(48px,8vw,120px);line-height:.97;letter-spacing:-.035em;max-width:18ch;}
+.hero h1 .l1{color:var(--wh);display:block;}
+.hero h1 .l2{display:block;font-family:var(--serif);font-weight:300;font-style:italic;color:transparent;background:linear-gradient(90deg,#5A6A80,#3A4458);-webkit-background-clip:text;background-clip:text;letter-spacing:-.02em;}
+.hero h1 .l3{display:block;color:#18202E;-webkit-text-stroke:1px rgba(255,255,255,.05);}
+.hero .sub{margin-top:32px;font-size:clamp(15px,1.4vw,19px);color:var(--wh-2);max-width:50ch;line-height:1.6;font-family:var(--serif);font-style:italic;}
+.meta-strip{margin-top:72px;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rd-2);border-radius:14px;overflow:hidden;background:var(--dk-1);}
+.mi{padding:28px 32px;border-right:1px solid var(--rd-2);}
+.mi:last-child{border-right:none;}
+.mi .ml{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cy);margin-bottom:10px;}
+.mi .mv{font-family:var(--sans);font-size:15px;font-weight:500;color:var(--wh);line-height:1.45;}
+@media(max-width:720px){
+  .meta-strip{grid-template-columns:1fr 1fr;}
+  .mi{border-right:none;border-bottom:1px solid var(--rd-2);}
+  .mi:nth-child(odd){border-right:1px solid var(--rd-2);}
+  .mi:nth-last-child(-n+2){border-bottom:none;}
 }
-.sc-cell {
-  padding: 18px 16px;
-  border-right: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.06em;
-}
-.sc-cell:nth-child(5n) { border-right: none; }
-.sc-cell:nth-last-child(-n+5) { border-bottom: none; }
-.sc-cell.sc-head {
-  background: var(--paper-2);
-  font-size: 9px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted-2);
-}
-.sc-cell.sc-critical {
-  background: rgba(184, 68, 42, 0.06);
-  color: var(--ink);
-  font-weight: 500;
-}
-.sc-cell.sc-critical .sc-badge {
-  display: inline-block;
-  background: var(--accent);
-  color: var(--paper);
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  padding: 2px 6px;
-  border-radius: 2px;
-  margin-left: 4px;
-  vertical-align: middle;
-}
+.hero-img{margin-top:72px;border-radius:0;overflow:hidden;border:1px solid var(--rd-2);position:relative;box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 60px rgba(34,211,238,.05);}
+.hero-img::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cy),transparent);opacity:.35;z-index:1;}
+.hero-img img{width:100%;}
+.hero-img .cap{padding:12px 24px;border-top:1px solid var(--rd);font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--wh-3);}
 
-/* Deal breaker filter */
-.db-filter {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  overflow: hidden;
-  margin-top: 48px;
-}
-.db-col-head {
-  padding: 16px 28px;
-  background: var(--paper-2);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  border-bottom: 1px solid var(--rule);
-}
-.db-col-head:first-child { border-right: 1px solid var(--rule); }
-.db-row-l, .db-row-r {
-  padding: 16px 28px;
-  font-size: 14px;
-  line-height: 1.5;
-  border-bottom: 1px solid var(--rule);
-  color: var(--ink-2);
-}
-.db-row-l { border-right: 1px solid var(--rule); }
-.db-row-l.core { color: var(--ink); font-weight: 500; }
-.db-row-r.deferred {
-  color: var(--muted-2);
-  text-decoration: line-through;
-  text-decoration-color: var(--rule-2);
-}
-.db-row-r.outcome { color: var(--ink); }
-.db-row-l:last-of-type, .db-row-r:last-of-type { border-bottom: none; }
+/* ── Root cause grid (light) ── */
+.cause-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rl-2);border:1px solid var(--rl-2);border-radius:14px;overflow:hidden;margin-top:52px;}
+.cause{background:white;padding:36px;transition:background .3s;}
+.cause:hover{background:var(--lt);}
+.cause .cn{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cy-2);margin-bottom:14px;}
+.cause h4{font-weight:700;font-size:20px;letter-spacing:-.015em;color:var(--ink);margin-bottom:10px;line-height:1.25;}
+.cause p{font-size:14px;line-height:1.65;color:var(--ink-2);max-width:none;margin-bottom:0;}
+@media(max-width:700px){.cause-grid{grid-template-columns:1fr;}}
 
-/* Architecture decisions */
-.arch-list {
-  display: grid;
-  grid-template-columns: 40px 1fr;
-  gap: 0 32px;
-  border-top: 1px solid var(--rule);
-  margin-top: 40px;
-}
-.arch-list .al-n {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--accent);
-  padding-top: 32px;
-  letter-spacing: 0.06em;
-}
-.arch-list .al-body {
-  padding: 32px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.arch-list .al-n { border-bottom: 1px solid var(--rule); padding-bottom: 32px; }
-.arch-list .al-t {
-  font-family: var(--serif);
-  font-size: 20px;
-  color: var(--ink);
-  line-height: 1.25;
-  margin-bottom: 10px;
-}
-.arch-list .al-body p {
-  font-size: 14px;
-  color: var(--muted);
-  line-height: 1.65;
-  max-width: 68ch;
-  margin: 0;
-}
+/* ── Intersection diagram (dark) ── */
+.dia{margin-top:52px;background:var(--dk-1);border:1px solid var(--rd-2);border-radius:18px;padding:72px 40px;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;}
+.dia::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(34,211,238,.05) 0%,transparent 60%);}
+.dia-grid{position:relative;z-index:1;display:grid;grid-template-columns:160px 160px 160px;grid-template-rows:auto 160px auto;gap:16px;align-items:center;justify-items:center;}
+.dl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--wh-2);padding:10px 16px;border:1px solid var(--rd-2);border-radius:8px;background:var(--dk-2);text-align:center;width:100%;}
+.dn{grid-column:2;grid-row:2;width:160px;height:160px;border-radius:50%;background:var(--dk-2);border:1px solid var(--cy);box-shadow:0 0 60px rgba(34,211,238,.2),inset 0 0 30px rgba(34,211,238,.05);display:flex;align-items:center;justify-content:center;}
+.dn-label{font-family:var(--mono);font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--cy);font-weight:600;}
+.dia-cap{margin-top:28px;position:relative;z-index:1;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--wh-3);text-align:center;}
 
-/* Outcome items */
-.outcome-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border-top: 1px solid var(--rule);
-  margin-top: 40px;
-}
-.ol-item {
-  padding: 32px 36px 32px 0;
-  border-right: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-}
-.ol-item:nth-child(2n) {
-  padding-left: 36px;
-  padding-right: 0;
-  border-right: none;
-}
-.ol-item:nth-last-child(-n+2) { border-bottom: none; }
-.ol-item .ol-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-.ol-item p {
-  font-size: 14px;
-  color: var(--ink-2);
-  line-height: 1.65;
-  max-width: none;
-  margin: 0;
-}
+/* ── Scenario grid (light) ── */
+.sc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:52px;}
+.sc{background:white;border:1px solid var(--rl);border-radius:10px;padding:18px 14px;transition:border-color .2s,background .2s;}
+.sc.crit{background:var(--cy-bg);border-color:var(--cy-bd);box-shadow:0 0 20px rgba(34,211,238,.08);}
+.sc .sn{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--cy-2);margin-bottom:8px;}
+.sc .st{font-size:12px;color:var(--ink);line-height:1.4;}
+.sc.crit .st{color:var(--cy-2);}
+.sc .sp-{margin-top:10px;font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.06em;}
+@media(max-width:900px){.sc-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.sc-grid{grid-template-columns:1fr;}}
 
-/* Lessons */
-.lesson-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-  border-top: 1px solid var(--rule);
-  margin-top: 40px;
-}
-.lesson-item {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 48px;
-  padding: 36px 0;
-  border-bottom: 1px solid var(--rule);
-  align-items: start;
-}
-.lesson-item:last-child { border-bottom: none; }
-.lesson-item .li-t {
-  font-family: var(--serif);
-  font-size: 18px;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.lesson-item p {
-  font-size: 15px;
-  color: var(--ink-2);
-  line-height: 1.7;
-  max-width: none;
-  margin: 0;
-}
+/* ── Deal-breaker table (light) ── */
+.dbt{margin-top:52px;border:1px solid var(--rl-2);border-radius:14px;overflow:hidden;}
+.dbt-head{display:grid;grid-template-columns:1fr 1fr;background:white;border-bottom:1px solid var(--rl-2);}
+.dbt-head div{padding:14px 24px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cy-2);}
+.dbt-head div:first-child{border-right:1px solid var(--rl-2);}
+.dbt-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rl);transition:background .2s;background:var(--lt);}
+.dbt-row:last-child{border-bottom:none;}
+.dbt-row:hover{background:white;}
+.dbt-cell{padding:18px 24px;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.dbt-cell:first-child{border-right:1px solid var(--rl);color:var(--ink);font-weight:500;}
+.dbt-cell .pri{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--cy-2);margin-right:6px;}
+.dbt-cell .def{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#E05A5A;margin-right:6px;}
+.dbt-cell .strike{text-decoration:line-through;color:var(--ink-3);}
 
-/* Divider image block */
-.img-block {
-  margin: 64px 0;
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid var(--rule);
-  line-height: 0;
-}
-.img-block img {
-  width: 100%;
-  display: block;
-}
-.img-caption {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--muted-2);
-  letter-spacing: 0.06em;
-  margin-top: 14px;
-  text-align: center;
-}
+/* ── Arch decisions (dark) ── */
+.arch{margin-top:52px;display:flex;flex-direction:column;border-top:1px solid var(--rd);}
+.arch-row{display:grid;grid-template-columns:100px 1fr;gap:40px;padding:48px 0;border-bottom:1px solid var(--rd);align-items:start;}
+.arch-n{font-family:var(--sans);font-weight:800;font-size:clamp(40px,6vw,80px);line-height:1;letter-spacing:-.04em;background:linear-gradient(160deg,var(--cy) 0%,rgba(34,211,238,.2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.arch-body h4{font-weight:700;font-size:clamp(20px,2.2vw,26px);letter-spacing:-.02em;color:var(--wh);margin-bottom:14px;line-height:1.2;}
+.arch-body p{font-size:15px;color:var(--wh-2);line-height:1.7;max-width:64ch;margin-bottom:0;}
+@media(max-width:600px){.arch-row{grid-template-columns:1fr;gap:12px;}.arch-n{font-size:40px;}}
 
-/* Before/after */
-.ba-wrap {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  overflow: hidden;
-  margin-top: 56px;
-}
-.ba-col {
-  padding: 0;
-  overflow: hidden;
-}
-.ba-col + .ba-col { border-left: 1px solid var(--rule); }
-.ba-col-head {
-  padding: 14px 24px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  background: var(--paper-2);
-  border-bottom: 1px solid var(--rule);
-}
-.ba-col img { width: 100%; display: block; }
+/* ── Screenshot (dark) ── */
+.ss-wrap{margin:60px 0;}
+.ss{border-radius:16px;overflow:hidden;border:1px solid var(--rd-2);box-shadow:0 4px 100px rgba(0,0,0,.7),0 0 60px rgba(34,211,238,.06);}
+.ss img{width:100%;}
+.ss-cap{margin-top:14px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--wh-3);}
 
-/* Scroll progress */
-.scroll-progress {
-  position: fixed;
-  top: 0; left: 0;
-  height: 2px;
-  background: var(--accent);
-  width: 0%;
-  z-index: 100;
-  transition: width 0.1s linear;
-}
+/* ── Before/After (dark) ── */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:52px;border:1px solid var(--rd-2);border-radius:14px;overflow:hidden;}
+.ba-col{background:var(--dk-1);padding:32px;}
+.ba-col+.ba-col{border-left:1px solid var(--rd-2);}
+.ba-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding-bottom:14px;border-bottom:1px solid var(--rd);margin-bottom:0;}
+.ba-col:first-child .ba-label{color:var(--wh-3);}
+.ba-col:last-child .ba-label{color:var(--cy);}
+.ba-item{display:flex;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid var(--rd);font-size:14px;color:var(--wh-2);}
+.ba-item:last-child{border-bottom:none;}
+.ba-item .bi-n{font-family:var(--mono);font-size:10px;color:var(--wh-3);flex-shrink:0;letter-spacing:.08em;}
+.ba-col:last-child .ba-item{color:var(--wh);}
+.ba-col:last-child .bi-n{color:var(--cy);}
+@media(max-width:600px){.ba{grid-template-columns:1fr;}.ba-col+.ba-col{border-left:none;border-top:1px solid var(--rd-2);}}
 
-/* Responsive */
-@media (max-width: 900px) {
-  .pam-meta { grid-template-columns: 1fr 1fr; gap: 28px 0; }
-  .pam-meta .pm-item { padding: 0 0 28px; border-bottom: 1px solid var(--rule); border-left: none !important; padding-left: 0 !important; }
-  .root-list { grid-template-columns: 1fr; }
-  .root-list .rl-item { border-right: none; padding-right: 0; padding-left: 0 !important; }
-  .root-list .rl-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
-  .root-list .rl-item:last-child { border-bottom: none; }
-  .scenario-grid { grid-template-columns: repeat(3, 1fr); }
-  .db-filter { grid-template-columns: 1fr; }
-  .db-col-head:first-child { border-right: none; border-bottom: 1px solid var(--rule); }
-  .db-row-l { border-right: none; }
-  .db-row-r.deferred { display: none; }
-  .arch-list { grid-template-columns: 1fr; gap: 0; }
-  .arch-list .al-n { padding-top: 32px; padding-bottom: 0; border-bottom: none; }
-  .outcome-list { grid-template-columns: 1fr; }
-  .ol-item { border-right: none; padding-right: 0; padding-left: 0 !important; }
-  .ol-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
-  .ol-item:last-child { border-bottom: none; }
-  .lesson-item { grid-template-columns: 1fr; gap: 12px; }
-  .ba-wrap { grid-template-columns: 1fr; }
-  .ba-col + .ba-col { border-left: none; border-top: 1px solid var(--rule); }
+/* ── Prototype section ── */
+.proto-s{background:var(--lt);border-top:1px solid var(--rl);padding:100px 0;}
+.proto-s .pm{display:inline-flex;align-items:center;gap:10px;margin-bottom:32px;}
+.proto-s .pm .star{font-size:16px;color:var(--cy-2);animation:spin 8s linear infinite;display:inline-block;}
+.proto-s .pm .pill{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);background:var(--lt-1);border:1px solid var(--rl-2);padding:5px 12px;border-radius:999px;}
+.proto-head{font-family:var(--sans);font-weight:800;font-size:clamp(32px,5vw,64px);line-height:1.0;letter-spacing:-.03em;color:var(--ink);margin-bottom:16px;}
+.proto-sub{font-family:var(--serif);font-style:italic;font-size:clamp(16px,1.4vw,19px);color:var(--ink-2);max-width:52ch;line-height:1.55;margin-bottom:48px;}
+.proto-frame{
+  width:100%;height:700px;
+  border:1px solid var(--rl-2);
+  border-radius:16px;
+  overflow:hidden;
+  background:white;
+  box-shadow:0 8px 60px rgba(0,0,0,.12),0 2px 0 rgba(34,211,238,.3);
+  position:relative;
 }
-@media (max-width: 600px) {
-  .pam-meta { grid-template-columns: 1fr; }
-  .scenario-grid { grid-template-columns: 1fr 1fr; }
-  .pull-quote blockquote { font-size: clamp(20px, 5.5vw, 32px); }
-}
+.proto-frame::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cy-2),transparent);opacity:.4;z-index:1;}
+.proto-frame iframe{width:100%;height:100%;border:none;display:block;}
+.proto-url{margin-top:14px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-3);}
+.proto-url a{color:var(--cy-2);transition:color .2s;}
+.proto-url a:hover{color:var(--cy);}
+
+/* ── Pull quote ── */
+.pull{padding:120px var(--pad);text-align:center;background:var(--dk-1);border-top:1px solid var(--rd);border-bottom:1px solid var(--rd);position:relative;overflow:hidden;}
+.pull::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(34,211,238,.04) 0%,transparent 60%);}
+.pull blockquote{position:relative;z-index:1;font-family:var(--sans);font-weight:800;font-size:clamp(28px,4.5vw,62px);line-height:1.12;letter-spacing:-.03em;max-width:20ch;margin:0 auto;}
+.pull .qw{color:var(--wh);}
+.pull .qg{display:block;font-family:var(--serif);font-weight:300;font-style:italic;color:transparent;background:linear-gradient(90deg,#5A6A80,#3A4458);-webkit-background-clip:text;background-clip:text;letter-spacing:-.015em;}
+.pull .qc{color:var(--cy);}
+.pull .q-attr{position:relative;z-index:1;margin-top:48px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--wh-3);display:flex;align-items:center;justify-content:center;gap:12px;}
+.pull .q-attr::before,.pull .q-attr::after{content:"";display:block;width:40px;height:1px;background:var(--rd-2);}
+
+/* ── $800K ── */
+.stat-s{padding:140px var(--pad);text-align:center;background:var(--dk);border-top:1px solid var(--rd);border-bottom:1px solid var(--rd);position:relative;overflow:hidden;}
+.stat-s::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,rgba(34,211,238,.06) 0%,transparent 65%);}
+.stat-label{position:relative;z-index:1;display:block;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cy);margin-bottom:28px;}
+.stat-num{position:relative;z-index:1;font-family:var(--sans);font-weight:800;font-size:clamp(80px,20vw,240px);line-height:.9;letter-spacing:-.05em;color:var(--wh);}
+.stat-num .sc{color:var(--cy);}
+.stat-sub{position:relative;z-index:1;margin-top:28px;font-family:var(--serif);font-style:italic;font-size:clamp(16px,1.5vw,20px);color:var(--wh-2);max-width:48ch;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+/* ── Outcome columns (light) ── */
+.oc{display:grid;grid-template-columns:1fr 1fr;gap:52px;margin-top:52px;}
+.og h5{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cy-2);padding-bottom:14px;border-bottom:1px solid var(--rl-2);}
+.og ul{list-style:none;}
+.og ul li{padding:14px 0;border-bottom:1px solid var(--rl);font-size:15px;line-height:1.6;color:var(--ink-2);display:flex;gap:14px;align-items:baseline;}
+.og ul li::before{content:"→";font-family:var(--mono);font-size:11px;color:var(--cy-2);flex-shrink:0;}
+@media(max-width:600px){.oc{grid-template-columns:1fr;}}
+
+/* ── Lessons (dark) ── */
+.lg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rd);border:1px solid var(--rd);border-radius:14px;overflow:hidden;margin-top:52px;}
+.les{background:var(--dk-1);padding:40px 32px;transition:background .3s;}
+.les:hover{background:var(--dk-2);}
+.les .ln{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--cy);margin-bottom:20px;}
+.les h4{font-weight:700;font-size:clamp(18px,2vw,22px);letter-spacing:-.02em;line-height:1.2;color:var(--wh);margin-bottom:14px;}
+.les p{font-size:14px;color:var(--wh-2);line-height:1.7;max-width:none;margin-bottom:0;}
+@media(max-width:800px){.lg{grid-template-columns:1fr;}}
+
+/* ── Next case ── */
+.nc{padding:120px 0;text-align:center;background:var(--dk);border-top:1px solid var(--rd);position:relative;overflow:hidden;}
+.nc::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(34,211,238,.03) 0%,transparent 60%);}
+.nc-label{position:relative;z-index:1;display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--wh-3);margin-bottom:24px;}
+.nc h3{position:relative;z-index:1;font-weight:800;font-size:clamp(32px,5vw,72px);letter-spacing:-.03em;line-height:1;}
+.nc h3 a{color:var(--wh);transition:color .3s;display:inline-flex;align-items:center;gap:16px;}
+.nc h3 a:hover{color:var(--cy);}
+.nc-arrow{color:var(--cy);display:inline-block;transition:transform .3s var(--ease);}
+.nc h3 a:hover .nc-arrow{transform:translateX(8px);}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--rd);background:var(--dk-1);}
+.foot{max-width:1400px;margin:0 auto;padding:60px var(--pad) 36px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;font-size:14px;}
+.foot .col h5{font-family:var(--mono);font-size:10px;color:var(--wh-3);letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:14px;}
+.foot .col a,.foot .col p{display:block;color:var(--wh-2);margin-bottom:6px;transition:color .2s;}
+.foot .col a:hover{color:var(--cy);}
+.foot .mt{color:var(--wh-3);}
+.foot-bot{max-width:1400px;margin:0 auto;border-top:1px solid var(--rd);padding:18px var(--pad);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--wh-3);font-family:var(--mono);}
+@media(max-width:800px){.foot{grid-template-columns:1fr 1fr;}}
+@media(max-width:500px){.foot{grid-template-columns:1fr;}}
+
+/* ── Reveal ── */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+.rv.in{opacity:1;transform:none;}
+.rv2>*{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.rv2.in>*{opacity:1;transform:none;}
+.rv2.in>*:nth-child(1){transition-delay:.04s;}
+.rv2.in>*:nth-child(2){transition-delay:.10s;}
+.rv2.in>*:nth-child(3){transition-delay:.16s;}
+.rv2.in>*:nth-child(4){transition-delay:.22s;}
 </style>
 </head>
 <body>
 
-<div class="scroll-progress" id="scrollProg"></div>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-label" id="cursorLabel"></div>
+<div class="sp" id="sp"></div>
 
 <nav class="nav" id="nav">
-  <a href="index.html" class="nav-logo" data-cursor="hover">
+  <a href="index.html" class="nav-logo">
     <span class="dot"></span>
     <img src="assets/logo.svg" alt="Mehak Garg" />
   </a>
   <div class="nav-links">
-    <a href="index.html#work" data-cursor="hover">Work</a>
-    <a href="about.html" data-cursor="hover">About</a>
-    <a href="mailto:mehakrgarg@gmail.com" class="cta" data-cursor="hover">Say hi →</a>
+    <a href="index.html#work">Work</a>
+    <a href="about.html">About</a>
+    <a href="about.html#contact" class="cta">Book a call →</a>
   </div>
 </nav>
 
-<!-- ── HERO ── -->
-<div class="wrap">
-  <div class="pam-hero reveal">
-    <div class="breadcrumbs">Work &nbsp;/&nbsp; PAM · miniOrange</div>
-    <h1>From feature&#8209;led product<br>to experience&#8209;led platform</h1>
-    <p class="subtitle">A Privileged Access Management redesign for miniOrange</p>
-    <div class="pam-meta">
-      <div class="pm-item">
-        <div class="pm-label">Client</div>
-        <div class="pm-val">miniOrange<br>Enterprise Security (PAM)</div>
-      </div>
-      <div class="pm-item">
-        <div class="pm-label">Role</div>
-        <div class="pm-val">Sr. Product Designer<br>Design Lead</div>
-      </div>
-      <div class="pm-item">
-        <div class="pm-label">Timeline</div>
-        <div class="pm-val">2024 to Present</div>
-      </div>
-      <div class="pm-item">
-        <div class="pm-label">Team</div>
-        <div class="pm-val">2 PMs, 40 engineers<br>1 product designer (me)</div>
-      </div>
+
+<!-- ════ HERO — DARK ════ -->
+<div class="hero">
+  <div class="w">
+    <div class="hero-badge rv">
+      <span class="live"></span>
+      miniOrange · PAM · 2024–Present
     </div>
+
+    <h1 class="rv">
+      <span class="l1">From feature-led</span>
+      <span class="l2">product to experience-led</span>
+      <span class="l3">platform</span>
+    </h1>
+
+    <p class="sub rv">A Privileged Access Management redesign for miniOrange</p>
+
+    <div class="meta-strip rv2 rv" style="margin-top:72px;">
+      <div class="mi"><div class="ml">Client</div><div class="mv">miniOrange<br/>Enterprise Security</div></div>
+      <div class="mi"><div class="ml">Role</div><div class="mv">Sr. Product Designer<br/>Design Lead</div></div>
+      <div class="mi"><div class="ml">Timeline</div><div class="mv">2024 to Present</div></div>
+      <div class="mi"><div class="ml">Team</div><div class="mv">2 PMs · 40 Engineers<br/>1 Product Designer</div></div>
+    </div>
+
+    <div class="hero-img rv" style="margin-top:72px;">
+      <img src="uploads/pam-hero.png" alt="miniOrange PAM redesigned dashboard" />
+    </div>
+
   </div>
 </div>
 
-<!-- Hero image — full bleed -->
-<div class="hero-image-wrap reveal">
-  <img src="uploads/PAM DB.png" alt="PAM resource detail page — tabbed workspace" />
-</div>
 
-<!-- ── § 01 THE PROBLEM ── -->
-<div class="wrap">
-  <div class="cs reveal">
-    <span class="sec-marker">§ 01 &nbsp;·&nbsp; The Problem</span>
-    <h2>miniOrange's PAM had everything a buyer's checklist asks for. <em>Nobody could use it.</em></h2>
-    <p>miniOrange's Privileged Access Management product had everything a PAM buyer's checklist asks for. Vaulting, session recording, access policies, discovery, MFA. On a feature comparison spreadsheet, it looked competitive.</p>
+<!-- ════ § 01 — LIGHT ════ -->
+<div class="sec-lt">
+  <div class="w rv">
+    <div class="sm"><span class="star">✦</span><span class="pill">The Problem</span></div>
+    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
+      <span class="t1">Strong bones,</span>
+      <span class="t2">no spine</span>
+      <span class="t3">to hold it together</span>
+    </h2>
+
+    <p class="lead">miniOrange's PAM product had everything a buyer's checklist asks for. Vaulting, session recording, access policies, discovery, MFA. On a feature comparison spreadsheet, it looked competitive.</p>
     <p>Every admin who tried to actually use it hit the same wall.</p>
     <p>The product was 14 disconnected nav items masquerading as an ecosystem. Setting up a single privileged workflow required jumping between three or four unrelated sections. Object names contradicted what admins actually meant. "System Users" was where credentials lived, not users. Errors happened silently. Discovery surfaced data but didn't guide action. Critical enterprise capabilities like JIT access, emergency break glass, session OCR, reconciliation were either missing or buried so deep that customers assumed they didn't exist.</p>
-    <p>The result was a product with strong bones and no spine.</p>
+    <p><strong>The result was a product with strong bones and no spine.</strong></p>
+  </div>
+</div>
 
-    <!-- Fragile intersection diagram -->
-    <div style="margin-top:64px; border:1px solid var(--rule); border-radius:6px; overflow:hidden;">
-      <div style="padding:16px 28px; background:var(--paper-2); border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted-2);">PAM sits at a fragile intersection</div>
-      <div style="padding:48px 36px; display:grid; grid-template-columns:1fr auto 1fr; gap:0; align-items:center;">
-        <div style="display:grid; grid-template-rows:1fr 1fr; gap:24px;">
-          <div style="text-align:right; padding-right:32px;">
-            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">Security Risk</div>
-            <div style="font-size:13px; color:var(--muted); line-height:1.5; max-width:22ch; margin-left:auto;">Breached credentials, standing admin access, unrotated secrets</div>
-          </div>
-          <div style="text-align:right; padding-right:32px;">
-            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">Compliance</div>
-            <div style="font-size:13px; color:var(--muted); line-height:1.5; max-width:22ch; margin-left:auto;">SOC 2, ISO 27001, HIPAA audit trails and evidence</div>
-          </div>
-        </div>
-        <div style="text-align:center; padding:28px 40px; border:1px solid var(--rule); border-radius:6px; background:var(--paper);">
-          <div style="font-family:var(--serif); font-size:13px; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); margin-bottom:8px;">at the center</div>
-          <div style="font-family:var(--serif); font-style:italic; font-size:28px; color:var(--ink); line-height:1.1; letter-spacing:-0.02em;">PAM</div>
-          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-top:10px;">fragile intersection</div>
-        </div>
-        <div style="display:grid; grid-template-rows:1fr 1fr; gap:24px;">
-          <div style="padding-left:32px;">
-            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">Continuity</div>
-            <div style="font-size:13px; color:var(--muted); line-height:1.5; max-width:22ch;">Break glass access, emergency elevation, incident response</div>
-          </div>
-          <div style="padding-left:32px;">
-            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">Productivity</div>
-            <div style="font-size:13px; color:var(--muted); line-height:1.5; max-width:22ch;">JIT access, self-service, zero-friction admin workflows</div>
-          </div>
-        </div>
+
+<!-- ════ § 02 — DARK ════ -->
+<div class="sec-dk">
+  <div class="w rv">
+    <div class="sm"><span class="star">✦</span><span class="pill">Why It Mattered</span></div>
+    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
+      <span class="t1">Bad UX in PAM</span>
+      <span class="t2">isn't just frustrating —</span>
+      <span class="t3">it's a vulnerability</span>
+    </h2>
+
+    <p class="lead">In consumer software, bad UX costs engagement. In PAM, it costs the entire security posture.</p>
+    <p>The core paradox of Privileged Access Management: <strong>the harder it is to use, the less secure it makes you.</strong> Admins under deadline pressure don't file tickets when a workflow is broken, they route around it. A DevOps engineer who can't get JIT access in under a minute will just use their standing admin credentials. Every workaround becomes a shadow IT vulnerability. Every friction point becomes an audit finding.</p>
+    <p>At the business layer, enterprise deals stalled in POC because admins couldn't set up meaningful workflows inside a trial window. Support fielded repetitive tickets on setup steps that should have been self serve. Compliance customers failed audit prep because the product didn't produce audit ready evidence out of the box.</p>
+    <p><strong>The product wasn't failing because it lacked features. It was failing because the features didn't hold together as a system.</strong></p>
+
+    <div class="dia rv">
+      <div class="dia-grid">
+        <div></div><div class="dl">Security Risk</div><div></div>
+        <div class="dl">Continuity</div><div class="dn"><span class="dn-label">PAM</span></div><div class="dl">Compliance</div>
+        <div></div><div class="dl">Productivity</div><div></div>
       </div>
+      <div class="dia-cap">PAM sits at the fragile intersection of four competing enterprise pressures</div>
     </div>
-    <p class="img-caption">The four forces PAM must balance simultaneously. A failure in UX cascades into all four.</p>
-  </div>
-
-  <!-- ── § 02 WHY IT WAS A PROBLEM ── -->
-  <div class="cs reveal">
-    <span class="sec-marker">§ 02 &nbsp;·&nbsp; Why It Was a Problem</span>
-    <h2>In consumer software, bad UX costs engagement. In PAM, it costs <em>the entire security posture.</em></h2>
-    <p>The core paradox of Privileged Access Management: the harder it is to use, the less secure it makes you. Admins under deadline pressure don't file tickets when a workflow is broken, they route around it. A DevOps engineer who can't get JIT access in under a minute will just use their standing admin credentials. A security admin who can't set up rotation policies without a workshop will skip the policy and rotate credentials manually. Every workaround becomes a shadow IT vulnerability. Every friction point becomes an audit finding.</p>
-    <p>At the business layer, the pattern was equally painful. Enterprise deals stalled in POC because admins couldn't set up meaningful workflows inside a trial window. Support fielded repetitive tickets on setup steps that should have been self serve. Sales engineers got pulled into implementation calls that ate margin. Compliance customers failed audit prep because the product didn't produce audit ready evidence out of the box.</p>
-    <p>The product wasn't failing because it lacked features. It was failing because the features didn't hold together as a system.</p>
   </div>
 </div>
 
-<!-- Pull quote — full bleed -->
-<div class="pull-quote reveal">
-  <div class="wrap">
-    <blockquote>"If security feels like friction, teams route around it — and the system fails the moment it's needed."</blockquote>
-  </div>
+<div class="pull rv">
+  <blockquote>
+    <span class="qw">"If security feels</span>
+    <span class="qg">like friction, teams route around it —</span>
+    <span class="qc">and the system fails."</span>
+  </blockquote>
+  <div class="q-attr">Mehak Garg · Sr. Product Designer</div>
 </div>
 
-<!-- ── § 03 HOW I SOLVED IT ── -->
-<div class="wrap">
-  <div class="cs reveal">
-    <span class="sec-marker">§ 03 &nbsp;·&nbsp; How I Solved It</span>
-    <h2>I approached this as a systems problem, <em>not a screens problem.</em> Three phases.</h2>
 
-    <!-- Phase 1 -->
-    <span class="phase-label">Phase 1 &nbsp;·&nbsp; Diagnose before designing</span>
+<!-- ════ § 03 PHASE 01 — LIGHT ════ -->
+<div class="sec-lt">
+  <div class="w rv">
+    <div class="sm"><span class="star">✦</span><span class="pill">How I Solved It</span></div>
+    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
+      <span class="t1">Systems problem,</span>
+      <span class="t2">not a screens</span>
+      <span class="t3">problem</span>
+    </h2>
+
+    <p class="lead">Three phases. Diagnose, prioritize, rebuild.</p>
+
+    <h3>Phase 01 — Diagnose before designing</h3>
     <p>Before touching a single wireframe, I ran a scenario driven UX audit across the existing product. Not happy path click throughs. Real operational scenarios: onboarding a new admin on day one, break glass elevation during a Sev 1, credential rotation across 200+ accounts, offboarding a departing engineer, walking an auditor through a 90 day activity log.</p>
-    <p>Ten scenarios. Four personas: Security Admins, IT Operations, DevOps and SysAdmins, Compliance Officers. 140+ usability issues surfaced.</p>
-    <p>But 140 issues isn't a fix list, it's a symptom list. I clustered them into four systemic root causes:</p>
+    <p>Ten scenarios. Four personas: Security Admins, IT Operations, DevOps and SysAdmins, Compliance Officers. 140+ usability issues surfaced — clustered into four systemic root causes:</p>
 
-    <div class="root-list">
-      <div class="rl-item">
-        <div class="rl-n">Root cause 01</div>
-        <div class="rl-t">Fragmented information architecture</div>
-        <p>14 flat nav items, no task based grouping. Admins had to know the product's internal object model to find anything.</p>
-      </div>
-      <div class="rl-item">
-        <div class="rl-n">Root cause 02</div>
-        <div class="rl-t">Broken domain terminology</div>
-        <p>Object names didn't match the mental model of any of the four personas. Every new admin spent their first week translating the interface before they could use it.</p>
-      </div>
-      <div class="rl-item">
-        <div class="rl-n">Root cause 03</div>
-        <div class="rl-t">No workflow continuity</div>
-        <p>The product was a sum of features, not a system of workflows. Critical paths like JIT, approvals, break glass either didn't exist or required jumping between disconnected sections.</p>
-      </div>
-      <div class="rl-item">
-        <div class="rl-n">Root cause 04</div>
-        <div class="rl-t">Silent failure states</div>
-        <p>Errors weren't surfaced. Discovery surfaced data but didn't guide action. Admins couldn't tell what broke or what to do next.</p>
-      </div>
+    <div class="cause-grid rv">
+      <div class="cause"><div class="cn">Root cause 01</div><h4>Fragmented information architecture</h4><p>14 flat nav items, no task based grouping. Admins had to know the product's internal object model to find anything.</p></div>
+      <div class="cause"><div class="cn">Root cause 02</div><h4>Broken domain terminology</h4><p>Object names didn't match the mental model of any persona. Every new admin spent their first week translating the interface before they could use it.</p></div>
+      <div class="cause"><div class="cn">Root cause 03</div><h4>No workflow continuity</h4><p>Critical paths like JIT, approvals, break glass either didn't exist or required jumping between disconnected sections.</p></div>
+      <div class="cause"><div class="cn">Root cause 04</div><h4>Silent failure states</h4><p>Errors weren't surfaced. Discovery surfaced data but didn't guide action. Admins couldn't tell what broke or what to do next.</p></div>
     </div>
-    <p style="margin-top:28px; font-size:15px; color:var(--muted); font-style:italic;">These four causes — not the 140 surface issues — drove every subsequent decision.</p>
 
-    <!-- Scenario grid -->
-    <h3>Ten scenarios. Four personas. One shared root cause.</h3>
-    <div class="scenario-grid">
-      <div class="sc-cell sc-head">Scenario</div>
-      <div class="sc-cell sc-head">Security Admin</div>
-      <div class="sc-cell sc-head">IT Ops</div>
-      <div class="sc-cell sc-head">DevOps / SysAdmin</div>
-      <div class="sc-cell sc-head">Compliance</div>
-
-      <div class="sc-cell sc-critical">SC.01 &nbsp;·&nbsp; Admin onboarding <span class="sc-badge">Critical</span></div>
-      <div class="sc-cell sc-critical">Primary</div>
-      <div class="sc-cell sc-critical">Primary</div>
-      <div class="sc-cell">Secondary</div>
-      <div class="sc-cell">—</div>
-
-      <div class="sc-cell sc-critical">SC.02 &nbsp;·&nbsp; Break glass elevation <span class="sc-badge">Critical</span></div>
-      <div class="sc-cell sc-critical">Primary</div>
-      <div class="sc-cell">Secondary</div>
-      <div class="sc-cell sc-critical">Primary</div>
-      <div class="sc-cell">—</div>
-
-      <div class="sc-cell">SC.03 &nbsp;·&nbsp; JIT access request</div>
-      <div class="sc-cell">Approver</div>
-      <div class="sc-cell">Requester</div>
-      <div class="sc-cell">Requester</div>
-      <div class="sc-cell">Observer</div>
-
-      <div class="sc-cell">SC.04 &nbsp;·&nbsp; Credential rotation</div>
-      <div class="sc-cell">Owner</div>
-      <div class="sc-cell">Primary</div>
-      <div class="sc-cell">Secondary</div>
-      <div class="sc-cell">—</div>
-
-      <div class="sc-cell">SC.05 &nbsp;·&nbsp; Offboard engineer</div>
-      <div class="sc-cell">Primary</div>
-      <div class="sc-cell">Primary</div>
-      <div class="sc-cell">—</div>
-      <div class="sc-cell">Secondary</div>
-
-      <div class="sc-cell">SC.06 &nbsp;·&nbsp; Discovery review</div>
-      <div class="sc-cell">Primary</div>
-      <div class="sc-cell">Secondary</div>
-      <div class="sc-cell">—</div>
-      <div class="sc-cell">—</div>
-
-      <div class="sc-cell">SC.07 &nbsp;·&nbsp; Session audit review</div>
-      <div class="sc-cell">Secondary</div>
-      <div class="sc-cell">Secondary</div>
-      <div class="sc-cell">—</div>
-      <div class="sc-cell">Primary</div>
-
-      <div class="sc-cell">SC.08 &nbsp;·&nbsp; Policy configuration</div>
-      <div class="sc-cell">Primary</div>
-      <div class="sc-cell">Secondary</div>
-      <div class="sc-cell">—</div>
-      <div class="sc-cell">Secondary</div>
-
-      <div class="sc-cell">SC.09 &nbsp;·&nbsp; Reconciliation setup</div>
-      <div class="sc-cell">Primary</div>
-      <div class="sc-cell">Primary</div>
-      <div class="sc-cell">—</div>
-      <div class="sc-cell">—</div>
-
-      <div class="sc-cell">SC.10 &nbsp;·&nbsp; 90-day audit prep</div>
-      <div class="sc-cell">Secondary</div>
-      <div class="sc-cell">—</div>
-      <div class="sc-cell">—</div>
-      <div class="sc-cell">Primary</div>
+    <p style="margin-top:64px;color:var(--ink);font-weight:600;">The ten audit scenarios</p>
+    <div class="sc-grid rv">
+      <div class="sc crit"><div class="sn">SC.01</div><div class="st">New admin onboarding, day one</div><div class="sp-">Security Admin</div></div>
+      <div class="sc crit"><div class="sn">SC.02</div><div class="st">Break glass elevation, Sev 1</div><div class="sp-">IT Operations</div></div>
+      <div class="sc"><div class="sn">SC.03</div><div class="st">Credential rotation, 200+ accounts</div><div class="sp-">Security Admin</div></div>
+      <div class="sc"><div class="sn">SC.04</div><div class="st">Engineer offboarding</div><div class="sp-">IT Operations</div></div>
+      <div class="sc"><div class="sn">SC.05</div><div class="st">90-day audit log walkthrough</div><div class="sp-">Compliance Officer</div></div>
+      <div class="sc"><div class="sn">SC.06</div><div class="st">JIT access request, DevOps</div><div class="sp-">DevOps / SysAdmin</div></div>
+      <div class="sc"><div class="sn">SC.07</div><div class="st">RBAC policy creation</div><div class="sp-">Security Admin</div></div>
+      <div class="sc"><div class="sn">SC.08</div><div class="st">Discovery to inventory pipeline</div><div class="sp-">IT Operations</div></div>
+      <div class="sc"><div class="sn">SC.09</div><div class="st">Session recording review</div><div class="sp-">Compliance Officer</div></div>
+      <div class="sc"><div class="sn">SC.10</div><div class="st">MFA integration setup</div><div class="sp-">Security Admin</div></div>
     </div>
-    <p class="img-caption">SC.01 and SC.02 highlighted as most critical — both blocked by the same root cause: fragmented IA.</p>
+    <p style="margin-top:10px;font-size:12px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.06em;">SC.01 and SC.02 highlighted as deal-breaker scenarios</p>
 
-    <!-- Phase 2 -->
-    <span class="phase-label" style="margin-top:80px;">Phase 2 &nbsp;·&nbsp; A prioritization framework that ended the debate</span>
+    <h3>Phase 02 — A binary prioritization filter</h3>
     <p>The engineering team had been stuck in framework debate for months. Kano models, MoSCoW, RICE. Every exercise produced a different answer and no forward motion.</p>
-    <p>I collapsed the whole thing to one binary question: <strong>does this strengthen a deal breaker capability, or doesn't it?</strong></p>
-    <p>Deal breakers were the five capabilities that determine whether an enterprise buyer will even consider a PAM product: Vault, Rotation and Reconciliation; Discovery and Inventory; Session Proxying, Recording and OCR; Access Governance (RBAC and JIT); Integrations and Auditability. Anything strengthening these got prioritized. Anything that didn't got deferred, regardless of who asked for it.</p>
+    <p>I collapsed the whole thing to one binary question: <strong>does this strengthen a deal breaker capability, or doesn't it?</strong> Deal breakers: Vault &amp; Rotation, Discovery &amp; Inventory, Session Proxying &amp; OCR, Access Governance (RBAC and JIT), Integrations &amp; Auditability.</p>
     <p>Two days of alignment. A meaningful portion of the v1 backlog cut without a single status meeting.</p>
 
-    <div class="db-filter">
-      <div class="db-col-head">Feature proposal</div>
-      <div class="db-col-head">Outcome</div>
-      <div class="db-row-l core">Vault + rotation and reconciliation</div>
-      <div class="db-row-r outcome">Prioritized v1 &nbsp;·&nbsp; deal breaker capability</div>
-      <div class="db-row-l core">Session proxying, recording, OCR</div>
-      <div class="db-row-r outcome">Prioritized v1 &nbsp;·&nbsp; deal breaker capability</div>
-      <div class="db-row-l core">Access governance — RBAC + JIT</div>
-      <div class="db-row-r outcome">Prioritized v1 &nbsp;·&nbsp; deal breaker capability</div>
-      <div class="db-row-l core">Discovery and inventory</div>
-      <div class="db-row-r outcome">Prioritized v1 &nbsp;·&nbsp; deal breaker capability</div>
-      <div class="db-row-l core">Integrations and auditability</div>
-      <div class="db-row-r outcome">Prioritized v1 &nbsp;·&nbsp; deal breaker capability</div>
-      <div class="db-row-l" style="color:var(--muted);">Custom branding per tenant</div>
-      <div class="db-row-r deferred">Deferred &nbsp;·&nbsp; no deal breaker link</div>
-      <div class="db-row-l" style="color:var(--muted);">In-app notification center</div>
-      <div class="db-row-r deferred">Deferred &nbsp;·&nbsp; no deal breaker link</div>
-      <div class="db-row-l" style="color:var(--muted);">Analytics dashboard for CISO</div>
-      <div class="db-row-r deferred">Deferred &nbsp;·&nbsp; no deal breaker link</div>
-    </div>
-    <p class="img-caption">The deal-breaker filter. Core capabilities to the left, outcome to the right. Deferred items struck through.</p>
-
-    <!-- Phase 3 -->
-    <span class="phase-label" style="margin-top:80px;">Phase 3 &nbsp;·&nbsp; Redesign the system, not the screens</span>
-    <p>With direction locked, I rebuilt the product around three architectural decisions:</p>
-
-    <div class="arch-list">
-      <div class="al-n">01</div>
-      <div class="al-body">
-        <div class="al-t">Experience architecture over feature list</div>
-        <p>The old product organized itself by internal object type: Users, Groups, Certificates, Resources, Policies. The redesign organizes itself by admin intent: Overview, Setup, Access Control, Security Ops, Identity Config. A new admin can now find break glass because it lives where break glass belongs, not scattered across three unrelated sections.</p>
-      </div>
-      <div class="al-n">02</div>
-      <div class="al-body">
-        <div class="al-t">Workflow continuity within the resource</div>
-        <p>Instead of forcing admins to piece a workflow together across separate pages, I built the resource detail as a tabbed workspace. Overview, Credentials, Policy, Access, Sessions, Audit trail. All scoped to the resource they're working on. The admin never loses context. Reconciliation credentials — which used to be an undocumented concept — now sit inline in the credentials tab with a plain language explanation of what they do.</p>
-      </div>
-      <div class="al-n">03</div>
-      <div class="al-body" style="border-bottom:none;">
-        <div class="al-t">A six-stage onboarding model</div>
-        <p>I redesigned admin onboarding as six discrete stages: Discovery, Inventory, Policy, Roles, Provisioning, Access. Each stage produces a verifiable checkpoint. No more setup wizards where you can't tell if you've done it right. Every stage gives the admin evidence they've actually configured the thing they meant to configure.</p>
-      </div>
+    <div class="dbt rv">
+      <div class="dbt-head"><div>Feature proposal</div><div>Outcome</div></div>
+      <div class="dbt-row"><div class="dbt-cell">Credential vaulting with rotation</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Vault &amp; Rotation</div></div>
+      <div class="dbt-row"><div class="dbt-cell">Session recording + OCR</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Session Proxying &amp; Recording</div></div>
+      <div class="dbt-row"><div class="dbt-cell">JIT access with approval workflow</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Access Governance</div></div>
+      <div class="dbt-row"><div class="dbt-cell">Resource discovery + inventory</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Discovery &amp; Inventory</div></div>
+      <div class="dbt-row"><div class="dbt-cell"><span class="strike">Custom dashboard theming</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
+      <div class="dbt-row"><div class="dbt-cell"><span class="strike">Mobile app for session review</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
+      <div class="dbt-row"><div class="dbt-cell"><span class="strike">Slack bot notifications</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
     </div>
   </div>
 </div>
 
-<!-- Full-width payoff screenshot -->
-<div style="margin:0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); line-height:0; background:var(--paper-2);">
-  <div class="wrap" style="padding-top:0; padding-bottom:0;">
-    <img src="uploads/PAM DB.png" alt="New miniOrange PAM resource page — tabbed workspace" style="width:100%; display:block; max-height:80vh; object-fit:cover; object-position:top;" />
-  </div>
-</div>
-<div class="wrap"><p class="img-caption" style="padding-top:0;">The new resource detail page. One resource, one context, all the admin's tools in one workspace.</p></div>
 
-<!-- ── § 04 OUTCOME ── -->
-<div class="wrap">
-  <div class="cs reveal">
-    <span class="sec-marker">§ 04 &nbsp;·&nbsp; Outcome</span>
-    <h2>The v1 shipped as a <em>coherent platform,</em> not a feature list.</h2>
+<!-- ════ § 03 PHASE 03 — DARK ════ -->
+<div class="sec-dk">
+  <div class="w rv">
+    <div class="sm"><span class="star">✦</span><span class="pill">Architecture</span></div>
+    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
+      <span class="t1">Redesign the system,</span>
+      <span class="t2">not the screens</span>
+      <span class="t3">one by one</span>
+    </h2>
 
-    <div class="stat-hero">
-      <div class="stat-n"><em>$</em>800K</div>
-      <div class="stat-l">in PAM sales unlocked post release. The redesign directly enabled enterprise deals that had previously stalled at POC, with capability gaps closed and admin onboarding compressed to trial window timelines.</div>
-    </div>
+    <p class="lead">Three architectural decisions that changed what it felt like to use the product.</p>
 
-    <h3>Product outcomes</h3>
-    <div class="outcome-list">
-      <div class="ol-item">
-        <div class="ol-label">Workflow continuity</div>
-        <p>Admins can now complete critical workflows — onboarding, break glass, credential rotation, access allocation, audit review — without leaving the resource they're working on.</p>
-      </div>
-      <div class="ol-item">
-        <div class="ol-label">Deal-breaker capabilities</div>
-        <p>The five deal-breaker capabilities that were previously missing or buried now anchor the product's core experience.</p>
-      </div>
-      <div class="ol-item">
-        <div class="ol-label">Inline error resolution</div>
-        <p>Error states and reconciliation logic surface inline instead of hiding in documentation. Admins know what broke and exactly how to fix it.</p>
-      </div>
-      <div class="ol-item">
-        <div class="ol-label">Architecture-level compliance</div>
-        <p>The product aligns to Zero Trust, SOC 2, and ISO principles by architecture, not by disclaimer.</p>
-      </div>
-    </div>
-
-    <h3>Team outcomes</h3>
-    <p>Engineering had a single prioritization filter that resolved scope debates in minutes instead of quarters. Design churn dropped significantly by moving decisions from "which screen?" to "which system?" early in the process. PMs, engineers, and design shared a common language — deal breakers, experiences, capabilities — that cut review cycles down to what actually mattered.</p>
-
-    <!-- Before / after -->
-    <div class="ba-wrap">
-      <div class="ba-col">
-        <div class="ba-col-head">Before &nbsp;·&nbsp; Fragmented nav, 14 flat items</div>
-        <div style="padding:36px 32px; background:var(--paper-2);">
-          <div style="font-family:var(--mono); font-size:12px; color:var(--muted); line-height:2.2;">
-            › System Users<br>
-            › Groups<br>
-            › Certificates<br>
-            › Resources<br>
-            › Policies<br>
-            › Session Recordings<br>
-            › Discovery<br>
-            › Access Requests<br>
-            › Audit Logs<br>
-            › MFA Settings<br>
-            › LDAP Config<br>
-            › Rotation Tasks<br>
-            › Compliance Reports<br>
-            › Integrations
-          </div>
+    <div class="arch rv">
+      <div class="arch-row">
+        <div class="arch-n">01</div>
+        <div class="arch-body">
+          <h4>Experience architecture over feature list</h4>
+          <p>The old product organized itself by internal object type: Users, Groups, Certificates, Resources, Policies. The redesign organizes itself by admin intent: Overview, Setup, Access Control, Security Ops, Identity Config. A new admin can now find break glass because it lives where break glass belongs.</p>
         </div>
       </div>
-      <div class="ba-col">
-        <div class="ba-col-head">After &nbsp;·&nbsp; Intent-organized, experience-led</div>
-        <div style="padding:36px 32px; background:var(--paper);">
-          <div style="font-family:var(--mono); font-size:12px; color:var(--ink); line-height:2.2;">
-            <span style="color:var(--accent);">›</span> Overview<br>
-            <span style="color:var(--accent);">›</span> Setup<br>
-            <span style="padding-left:1em; color:var(--muted);">Discovery · Inventory · Onboarding</span><br>
-            <span style="color:var(--accent);">›</span> Access Control<br>
-            <span style="padding-left:1em; color:var(--muted);">RBAC · JIT · Break Glass</span><br>
-            <span style="color:var(--accent);">›</span> Security Ops<br>
-            <span style="padding-left:1em; color:var(--muted);">Sessions · Recordings · Rotation</span><br>
-            <span style="color:var(--accent);">›</span> Identity Config<br>
-            <span style="padding-left:1em; color:var(--muted);">Credentials · Policies · Integrations</span>
-          </div>
+      <div class="arch-row">
+        <div class="arch-n">02</div>
+        <div class="arch-body">
+          <h4>Workflow continuity within the resource</h4>
+          <p>Instead of forcing admins to piece a workflow together across separate pages, I built the resource detail as a tabbed workspace. Overview, Credentials, Policy, Access, Sessions, Audit trail — all scoped to the resource they're working on. The admin never loses context.</p>
+        </div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-n">03</div>
+        <div class="arch-body">
+          <h4>A six stage onboarding model</h4>
+          <p>I redesigned admin onboarding as six discrete stages: Discovery, Inventory, Policy, Roles, Provisioning, Access. Each stage produces a verifiable checkpoint — no more setup wizards where you can't tell if you've done it right.</p>
         </div>
       </div>
     </div>
-    <p class="img-caption">Left: 14 flat nav items organized by internal object model. Right: 5 intent areas organized by what the admin is trying to do.</p>
-  </div>
 
-  <!-- ── § 05 WHAT I'D TAKE INTO THE NEXT ONE ── -->
-  <div class="cs reveal">
-    <span class="sec-marker">§ 05 &nbsp;·&nbsp; What I'd Take into the Next One</span>
-    <h2>Three things I'd carry forward.</h2>
 
-    <div class="lesson-list">
-      <div class="lesson-item">
-        <div class="li-t">Audit against scenarios, not screens</div>
-        <p>Happy path heuristic reviews miss the failures that matter. Audit against what the user is actually trying to do — onboard, break glass, offboard, rotate, prep an audit — and the real friction surfaces immediately. The 10-scenario framework found root causes that a standard heuristic review would have missed entirely.</p>
+    <h3 style="margin-top:64px;">Before → After: navigation structure</h3>
+    <div class="ba rv">
+      <div class="ba-col">
+        <div class="ba-label">Before · Xecrify (14 items)</div>
+        <div class="ba-item"><span class="bi-n">01</span>System Users</div>
+        <div class="ba-item"><span class="bi-n">02</span>Groups</div>
+        <div class="ba-item"><span class="bi-n">03</span>Resources</div>
+        <div class="ba-item"><span class="bi-n">04</span>Certificates</div>
+        <div class="ba-item"><span class="bi-n">05</span>Policies</div>
+        <div class="ba-item"><span class="bi-n">06</span>Discovery</div>
+        <div class="ba-item"><span class="bi-n">07</span>Sessions</div>
+        <div class="ba-item"><span class="bi-n">08</span>Reports</div>
+        <div class="ba-item"><span class="bi-n">09</span>MFA</div>
+        <div class="ba-item"><span class="bi-n">10</span>Integrations</div>
+        <div class="ba-item"><span class="bi-n">11</span>Audit</div>
+        <div class="ba-item"><span class="bi-n">12</span>Settings</div>
+        <div class="ba-item"><span class="bi-n">13</span>Notifications</div>
+        <div class="ba-item"><span class="bi-n">14</span>Help</div>
       </div>
-      <div class="lesson-item">
-        <div class="li-t">Prioritization is a communication problem, not a math problem</div>
-        <p>No framework fixes a stakeholder disagreement. What fixes it is a single, binary question everyone can answer the same way. If your prioritization exercise needs a workshop to interpret, it's the wrong exercise. The deal-breaker filter worked because it reduced a complex decision to one question, not because it was a sophisticated model.</p>
-      </div>
-      <div class="lesson-item">
-        <div class="li-t">In security products, usability is a security control</div>
-        <p>Every friction point pushes a user toward a workaround. Every workaround is a vulnerability. Design decisions in PAM aren't cosmetic — they're part of the threat model. The ROI of good UX in this space isn't just NPS. It's measured in reduced shadow IT, cleaner audit trails, and breaches that don't happen.</p>
+      <div class="ba-col">
+        <div class="ba-label">After · miniOrange PAM (5 items)</div>
+        <div class="ba-item"><span class="bi-n">01</span>Overview</div>
+        <div class="ba-item"><span class="bi-n">02</span>Setup</div>
+        <div class="ba-item"><span class="bi-n">03</span>Access Control</div>
+        <div class="ba-item"><span class="bi-n">04</span>Security Ops</div>
+        <div class="ba-item"><span class="bi-n">05</span>Identity Config</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Next case study -->
-<div class="next-case wrap reveal">
-  <span class="eyebrow">Next case study</span>
-  <h3 class="serif"><a href="case-iam.html">Architecting enterprise IAM from the ground up <em>→</em></a></h3>
+
+<!-- ════ PROTOTYPE — LIGHT ════ -->
+<div class="proto-s">
+  <div class="w rv">
+    <div class="pm"><span class="star">✦</span><span class="pill">Live Prototype</span></div>
+    <div class="proto-head">Try the redesigned product</div>
+    <div class="proto-sub">The working prototype captures the core experience — frictionless access setup, the tabbed resource workspace, and the new information architecture. Interact with it directly below.</div>
+    <div class="proto-frame">
+      <iframe
+        src="https://miniorange-pam.vercel.app"
+        title="miniOrange PAM — redesigned product prototype"
+        allow="fullscreen"
+        loading="lazy"
+      ></iframe>
+    </div>
+    <div class="proto-url">Live at <a href="https://miniorange-pam.vercel.app" target="_blank" rel="noopener">miniorange-pam.vercel.app ↗</a></div>
+  </div>
 </div>
 
+
+<!-- ════ $800K — DARK ════ -->
+<div class="stat-s rv">
+  <span class="stat-label">Business outcome</span>
+  <div class="stat-num"><span class="sc">$</span>800<span class="sc">K</span></div>
+  <div class="stat-sub">in PAM sales unlocked post release — enterprise deals that had previously stalled at POC, unblocked by closing capability gaps and compressing admin onboarding to trial window timelines.</div>
+</div>
+
+
+<!-- ════ § 04 — LIGHT ════ -->
+<div class="sec-lt">
+  <div class="w rv">
+    <div class="sm"><span class="star">✦</span><span class="pill">Outcome</span></div>
+    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
+      <span class="t1">A coherent platform,</span>
+      <span class="t2">not a feature list</span>
+      <span class="t3">shipped to production</span>
+    </h2>
+    <p class="lead">The v1 shipped as a coherent platform, not a feature list.</p>
+    <div class="oc">
+      <div class="og">
+        <h5>Product outcomes</h5>
+        <ul>
+          <li>Admins complete critical workflows — onboarding, break glass, rotation, access, audit review — without leaving the resource they're working on.</li>
+          <li>The five deal-breaker capabilities now anchor the product's core experience.</li>
+          <li>Error states and reconciliation logic surface inline instead of hiding in documentation.</li>
+          <li>The product aligns to Zero Trust, SOC 2, and ISO principles by architecture, not by disclaimer.</li>
+        </ul>
+      </div>
+      <div class="og">
+        <h5>Team outcomes</h5>
+        <ul>
+          <li>Engineering had a single prioritization filter that resolved scope debates in minutes instead of quarters.</li>
+          <li>Design churn dropped significantly by moving decisions from "which screen?" to "which system?" early in the process.</li>
+          <li>PMs, engineers, and design shared a common language that cut review cycles down to what actually mattered.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════ § 05 — DARK ════ -->
+<div class="sec-dk">
+  <div class="w rv">
+    <div class="sm"><span class="star">✦</span><span class="pill">Lessons</span></div>
+    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:52px;">
+      <span class="t1">What I'd take</span>
+      <span class="t2">into the next</span>
+      <span class="t3">engagement</span>
+    </h2>
+    <div class="lg">
+      <div class="les"><div class="ln">Lesson 01</div><h4>Audit against scenarios, not screens</h4><p>Happy path heuristic reviews miss the failures that matter. Audit against what the user is actually trying to do and the real friction surfaces immediately.</p></div>
+      <div class="les"><div class="ln">Lesson 02</div><h4>Prioritization is a communication problem</h4><p>No framework fixes a stakeholder disagreement. What fixes it is a single, binary question everyone can answer the same way.</p></div>
+      <div class="les"><div class="ln">Lesson 03</div><h4>Usability is a security control</h4><p>Every friction point pushes a user toward a workaround. Every workaround is a vulnerability. Design decisions in PAM aren't cosmetic — they're part of the threat model.</p></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════ NEXT ════ -->
+<div class="nc">
+  <div class="w">
+    <span class="nc-label">Next case study</span>
+    <h3>
+      <a href="case-iam.html">
+        IAM Onboarding Overhaul
+        <span class="nc-arrow">→</span>
+      </a>
+    </h3>
+  </div>
+</div>
+
+
+<!-- ════ FOOTER ════ -->
 <footer>
   <div class="foot">
     <div class="col">
-      <div class="name" style="margin-bottom:12px;"><img src="assets/logo.svg" alt="Mehak Garg" style="height:32px;width:auto;" /></div>
-      <p class="meta">Senior Product Designer<br/>Building enterprise software that ships.</p>
+      <div style="margin-bottom:12px;"><img src="assets/logo.svg" alt="Mehak Garg" style="height:26px;width:auto;filter:invert(1);opacity:.8;" /></div>
+      <p class="mt">Senior Product Designer<br/>Building enterprise software that ships.</p>
     </div>
-    <div class="col">
-      <h5>Sitemap</h5>
-      <a href="index.html#work">Work</a>
-      <a href="about.html">About</a>
-      <a href="mailto:mehakrgarg@gmail.com">Contact</a>
-    </div>
-    <div class="col">
-      <h5>Elsewhere</h5>
-      <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener">LinkedIn ↗</a>
-      <a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener">Behance ↗</a>
-      <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener">Medium ↗</a>
-    </div>
-    <div class="col">
-      <h5>Located</h5>
-      <p class="meta">Pune · India<br/>Working globally</p>
-    </div>
+    <div class="col"><h5>Sitemap</h5><a href="index.html#work">Work</a><a href="about.html">About</a><a href="about.html#contact">Contact</a></div>
+    <div class="col"><h5>Elsewhere</h5><a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener">LinkedIn ↗</a><a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener">Behance ↗</a></div>
+    <div class="col"><h5>Located</h5><p class="mt">Pune · India<br/>Working globally</p></div>
   </div>
-  <div class="foot-bottom">
+  <div class="foot-bot">
     <span>© 2026 Mehak Garg</span>
-    <span>Mehak Garg · Senior Product Designer</span>
+    <span>Senior Product Designer</span>
   </div>
 </footer>
 
-<script src="app.js"></script>
+
 <script>
-  /* scroll progress bar */
-  var prog = document.getElementById('scrollProg');
-  if (prog) {
-    window.addEventListener('scroll', function() {
-      var h = document.documentElement;
-      var pct = (h.scrollTop || document.body.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
-      prog.style.width = pct + '%';
-    }, { passive: true });
-  }
+(function(){
+  var sp = document.getElementById('sp');
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function(){
+    var s = document.documentElement;
+    sp.style.width = Math.min((s.scrollTop||document.body.scrollTop)/(s.scrollHeight-s.clientHeight)*100,100)+'%';
+    nav.classList.toggle('on', window.scrollY > 40);
+  }, {passive:true});
+  var io = new IntersectionObserver(function(e){
+    e.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
+  }, {threshold:.06, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+})();
 </script>
 </body>
 </html>
