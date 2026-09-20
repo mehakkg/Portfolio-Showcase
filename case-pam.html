@@ -371,15 +371,25 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
   <div class="w rv">
     <div class="sm"><span class="star">✦</span><span class="pill">The Problem</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
-      <span class="t1">Strong bones,</span>
-      <span class="t2">no spine</span>
-      <span class="t3">to hold it together</span>
+      <span class="t1">Competitive on paper,</span>
+      <span class="t2">stalling in the POC</span>
+      <span class="t3">every time</span>
     </h2>
 
-    <p class="lead">miniOrange's PAM product had everything a buyer's checklist asks for. Vaulting, session recording, access policies, discovery, MFA. On a feature comparison spreadsheet, it looked competitive.</p>
-    <p>Every admin who tried to actually use it hit the same wall.</p>
-    <p>The product was 14 disconnected nav items masquerading as an ecosystem. Setting up a single privileged workflow required jumping between three or four unrelated sections. Object names contradicted what admins actually meant. "System Users" was where credentials lived, not users. Errors happened silently. Discovery surfaced data but didn't guide action. Critical enterprise capabilities like JIT access, emergency break glass, session OCR, reconciliation were either missing or buried so deep that customers assumed they didn't exist.</p>
-    <p><strong>The result was a product with strong bones and no spine.</strong></p>
+    <p class="lead">miniOrange's PAM product had all the features a security buyer would ask about on a discovery call. Vaulting, session recording, access policies, discovery, MFA. When our AEs walked prospects through the feature list, the product looked competitive against CyberArk and Delinea.</p>
+    <p>Then the prospect would start a POC, and their admin would open the product for the first time, and the deal would slow down.</p>
+    <p>Our left nav had 14 items, sitting flat, with no grouping that matched how anyone actually worked. Setting up a single privileged workflow meant jumping between three or four sections that didn't know about each other. Object names contradicted what admins meant when they said them out loud. "System Users" was where we stored credentials. Users lived somewhere else. Discovery would find 200 accounts and then leave the admin to figure out what to do with them. When things broke, they broke quietly.</p>
+    <p>The capabilities that actually close enterprise PAM deals — JIT access, emergency break glass, session OCR, reconciliation — were either missing or buried three clicks deep behind labels no one recognised. <strong>Our own SEs would sometimes ask me where a feature was during demo prep.</strong></p>
+    <p>The pieces were all there. Nothing held them together.</p>
+
+    <div class="dia rv">
+      <div class="dia-grid">
+        <div></div><div class="dl">Security Risk</div><div></div>
+        <div class="dl">Continuity</div><div class="dn"><span class="dn-label">PAM</span></div><div class="dl">Compliance</div>
+        <div></div><div class="dl">Productivity</div><div></div>
+      </div>
+      <div class="dia-cap">PAM sits at the fragile intersection of four competing enterprise pressures</div>
+    </div>
   </div>
 </div>
 
@@ -394,19 +404,10 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
       <span class="t3">it's a vulnerability</span>
     </h2>
 
-    <p class="lead">In consumer software, bad UX costs engagement. In PAM, it costs the entire security posture.</p>
-    <p>The core paradox of Privileged Access Management: <strong>the harder it is to use, the less secure it makes you.</strong> Admins under deadline pressure don't file tickets when a workflow is broken, they route around it. A DevOps engineer who can't get JIT access in under a minute will just use their standing admin credentials. Every workaround becomes a shadow IT vulnerability. Every friction point becomes an audit finding.</p>
-    <p>At the business layer, enterprise deals stalled in POC because admins couldn't set up meaningful workflows inside a trial window. Support fielded repetitive tickets on setup steps that should have been self serve. Compliance customers failed audit prep because the product didn't produce audit ready evidence out of the box.</p>
-    <p><strong>The product wasn't failing because it lacked features. It was failing because the features didn't hold together as a system.</strong></p>
-
-    <div class="dia rv">
-      <div class="dia-grid">
-        <div></div><div class="dl">Security Risk</div><div></div>
-        <div class="dl">Continuity</div><div class="dn"><span class="dn-label">PAM</span></div><div class="dl">Compliance</div>
-        <div></div><div class="dl">Productivity</div><div></div>
-      </div>
-      <div class="dia-cap">PAM sits at the fragile intersection of four competing enterprise pressures</div>
-    </div>
+    <p class="lead">In consumer software, bad UX costs engagement metrics. In PAM, it costs the entire security posture. That's not a design argument — it's a risk argument.</p>
+    <p>The core paradox of Privileged Access Management: <strong>the harder it is to use, the less secure it makes you.</strong> Admins under deadline pressure don't file tickets when a workflow is broken. They route around it. A DevOps engineer who can't get JIT access provisioned in under a minute will just use their standing admin credentials. An IT ops lead who can't find the break glass screen during a Sev 1 will share passwords over Slack. Every workaround is a shadow credential. Every shadow credential is an audit finding waiting to happen.</p>
+    <p>This was the actual business problem. Not "the product is hard to use." The product was creating security risk by being hard to use. DevOps teams were bypassing PAM controls entirely for time-sensitive work. Compliance customers were failing audit prep because the product couldn't surface clean audit-ready evidence without manual export work. Enterprise deals were stalling not because buyers didn't want the product, but because their admins couldn't get it set up inside a trial window.</p>
+    <p><strong>Bad UX in a consumer product costs you engagement metrics. Bad UX in PAM becomes a breach.</strong></p>
   </div>
 </div>
 
@@ -430,11 +431,11 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
       <span class="t3">problem</span>
     </h2>
 
-    <p class="lead">Three phases. Diagnose, prioritize, rebuild.</p>
+    <p class="lead">The instinct on a project like this is to pick the worst screens and redesign them. I pushed back on that for two weeks, because I was fairly sure that redesigning individual screens would just move the confusion around rather than resolve it.</p>
 
     <h3>Phase 01 — Diagnose before designing</h3>
-    <p>Before touching a single wireframe, I ran a scenario driven UX audit across the existing product. Not happy path click throughs. Real operational scenarios: onboarding a new admin on day one, break glass elevation during a Sev 1, credential rotation across 200+ accounts, offboarding a departing engineer, walking an auditor through a 90 day activity log.</p>
-    <p>Ten scenarios. Four personas: Security Admins, IT Operations, DevOps and SysAdmins, Compliance Officers. 140+ usability issues surfaced — clustered into four systemic root causes:</p>
+    <p>I ran a scenario-driven UX audit across the existing product first. Not happy-path click-throughs. Real operational scenarios pulled from CS call recordings and support tickets: onboarding a new admin on day one, break glass elevation during a Sev 1 incident, credential rotation across 200+ accounts, offboarding a departing engineer with shared credentials, walking a compliance officer through a 90-day activity log the morning before an audit.</p>
+    <p>Ten scenarios. Four personas: Security Admins, IT Operations, DevOps and SysAdmins, Compliance Officers. Over 140 discrete usability issues surfaced — which I then clustered into four systemic root causes. The audit took three weeks. It was the whole project, really. Everything after it was execution.</p>
 
     <div class="cause-grid rv">
       <div class="cause"><div class="cn">Root cause 01</div><h4>Fragmented information architecture</h4><p>14 flat nav items, no task based grouping. Admins had to know the product's internal object model to find anything.</p></div>
@@ -459,9 +460,9 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
     <p style="margin-top:10px;font-size:12px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.06em;">SC.01 and SC.02 highlighted as deal-breaker scenarios</p>
 
     <h3>Phase 02 — A binary prioritization filter</h3>
-    <p>The engineering team had been stuck in framework debate for months. Kano models, MoSCoW, RICE. Every exercise produced a different answer and no forward motion.</p>
-    <p>I collapsed the whole thing to one binary question: <strong>does this strengthen a deal breaker capability, or doesn't it?</strong> Deal breakers: Vault &amp; Rotation, Discovery &amp; Inventory, Session Proxying &amp; OCR, Access Governance (RBAC and JIT), Integrations &amp; Auditability.</p>
-    <p>Two days of alignment. A meaningful portion of the v1 backlog cut without a single status meeting.</p>
+    <p>The PM wanted to run a Kano exercise. The eng lead wanted RICE scoring. We'd been through two prioritization frameworks in the previous quarter and gotten different outputs both times with no consensus on what to build next. I suggested we try something blunter.</p>
+    <p>I identified five deal-breaker capabilities: the features that, if absent or broken, would lose us an enterprise deal regardless of everything else. Vault &amp; Rotation. Discovery &amp; Inventory. Session Proxying &amp; Recording. Access Governance (RBAC, JIT, approval workflows). Integrations &amp; Auditability. Then I asked one binary question about every item in the proposed backlog: <strong>does this directly strengthen one of those five capabilities, or doesn't it?</strong></p>
+    <p>A meaningful slice of the backlog got deferred in two days of alignment. The PM was skeptical that it was too blunt an instrument. Three sprints in, he said it was the most useful prioritization tool we'd used on the product.</p>
 
     <div class="dbt rv">
       <div class="dbt-head"><div>Feature proposal</div><div>Outcome</div></div>
@@ -487,28 +488,28 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
       <span class="t3">one by one</span>
     </h2>
 
-    <p class="lead">Three architectural decisions that changed what it felt like to use the product.</p>
+    <p class="lead">Three architectural decisions that changed what the product felt like to use — not just what it looked like.</p>
 
     <div class="arch rv">
       <div class="arch-row">
         <div class="arch-n">01</div>
         <div class="arch-body">
-          <h4>Experience architecture over feature list</h4>
-          <p>The old product organized itself by internal object type: Users, Groups, Certificates, Resources, Policies. The redesign organizes itself by admin intent: Overview, Setup, Access Control, Security Ops, Identity Config. A new admin can now find break glass because it lives where break glass belongs.</p>
+          <h4>Organize by admin intent, not object type</h4>
+          <p>The original nav was organized by internal database object: System Users, Groups, Certificates, Resources, Policies. An admin who wanted to set up break glass had to know that "break glass" was a policy type that lived inside a resource that you configured under Policies. The redesign organizes by what the admin is trying to do: Overview, Setup, Access Control, Security Ops, Identity Config. Break glass lives under Security Ops. A new admin who has never used the product can find it on day one without opening the docs.</p>
         </div>
       </div>
       <div class="arch-row">
         <div class="arch-n">02</div>
         <div class="arch-body">
           <h4>Workflow continuity within the resource</h4>
-          <p>Instead of forcing admins to piece a workflow together across separate pages, I built the resource detail as a tabbed workspace. Overview, Credentials, Policy, Access, Sessions, Audit trail — all scoped to the resource they're working on. The admin never loses context.</p>
+          <p>The reconciliation design was the decision I'm most proud of. Reconciliation — syncing credentials after a rotation event — was previously a multi-page workflow that required the admin to navigate through four separate screens. During an incident at 2am, this was genuinely dangerous. I embedded reconciliation inline in the credential tab, surfacing the mismatch status directly next to the credential record with a single-action resolution. An admin managing 200 accounts can reconcile a failed rotation in one screen without losing their place in the inventory. The tabbed resource workspace (Credentials, Policy, Access, Sessions, Audit) all scope to the resource the admin is working on.</p>
         </div>
       </div>
       <div class="arch-row">
         <div class="arch-n">03</div>
         <div class="arch-body">
-          <h4>A six stage onboarding model</h4>
-          <p>I redesigned admin onboarding as six discrete stages: Discovery, Inventory, Policy, Roles, Provisioning, Access. Each stage produces a verifiable checkpoint — no more setup wizards where you can't tell if you've done it right.</p>
+          <h4>A six-stage onboarding model with checkpoints</h4>
+          <p>New admin onboarding was previously a setup wizard — a linear sequence with no checkpoints and no clear sense of progress. Admins couldn't tell when they were done. I redesigned it as six discrete stages: Discover, Inventory, Policy, Roles, Provision, Access. Each stage produces a concrete, auditable output: a discovered account list, a configured policy, a role assignment. You know you've completed a stage when you have something to show for it. This also solved the POC stalling problem. An admin starting a trial can reach a meaningful test state — active session proxying, working JIT, real RBAC policies — within the first day.</p>
         </div>
       </div>
     </div>
@@ -569,7 +570,7 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
 <div class="stat-s rv">
   <span class="stat-label">Business outcome</span>
   <div class="stat-num"><span class="sc">$</span>800<span class="sc">K</span></div>
-  <div class="stat-sub">in PAM sales unlocked post release — enterprise deals that had previously stalled at POC, unblocked by closing capability gaps and compressing admin onboarding to trial window timelines.</div>
+  <div class="stat-sub">in new PAM sales in the quarter post-release. Enterprise deals that had stalled at POC closed once admins could get to a working state inside the trial window. I can't claim full causation — sales cycle improvements, pricing changes, and better SE support all played a role. But the timing was clear, and the stall pattern we knew to track was gone.</div>
 </div>
 
 
@@ -582,26 +583,27 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
       <span class="t2">not a feature list</span>
       <span class="t3">shipped to production</span>
     </h2>
-    <p class="lead">The v1 shipped as a coherent platform, not a feature list.</p>
+    <p class="lead">The v1 shipped as a coherent platform, not a feature list. Most importantly: it shipped. That sounds like a low bar, but this product had been in partial redesign for over a year before I joined. The audit and the binary prioritization filter gave us something we hadn't had — a shared definition of done.</p>
     <div class="oc">
       <div class="og">
         <h5>Product outcomes</h5>
         <ul>
           <li>Admins complete critical workflows — onboarding, break glass, rotation, access, audit review — without leaving the resource they're working on.</li>
-          <li>The five deal-breaker capabilities now anchor the product's core experience.</li>
-          <li>Error states and reconciliation logic surface inline instead of hiding in documentation.</li>
-          <li>The product aligns to Zero Trust, SOC 2, and ISO principles by architecture, not by disclaimer.</li>
+          <li>The five deal-breaker capabilities now anchor the product's core experience instead of being buried behind unfamiliar labels.</li>
+          <li>Error states and reconciliation logic surface inline. The admin knows what broke and has a clear action. No more silent failures.</li>
+          <li>The product aligns to Zero Trust, SOC 2, and ISO 27001 principles by architecture — not by adding a disclaimer to the docs.</li>
         </ul>
       </div>
       <div class="og">
         <h5>Team outcomes</h5>
         <ul>
-          <li>Engineering had a single prioritization filter that resolved scope debates in minutes instead of quarters.</li>
-          <li>Design churn dropped significantly by moving decisions from "which screen?" to "which system?" early in the process.</li>
-          <li>PMs, engineers, and design shared a common language that cut review cycles down to what actually mattered.</li>
+          <li>Engineering had a single prioritization filter that resolved scope debates in one meeting instead of a quarter of framework workshops.</li>
+          <li>Design churn dropped significantly because decisions moved from "which screen looks better?" to "which system structure supports the workflow?" — a question with a more stable answer.</li>
+          <li>PMs, engineers, and design shared vocabulary that cut review cycles to what actually mattered.</li>
         </ul>
       </div>
     </div>
+    <p style="margin-top:48px;"><strong>What I'd do differently:</strong> I'd push for a non-linear onboarding path earlier. The six-stage model worked well for net-new deployments, but customers migrating from a legacy PAM tool had a different mental model and kept trying to skip stages. We shipped a v1.2 patch three months later to address this — I should have caught it in the persona research.</p>
   </div>
 </div>
 
@@ -616,9 +618,9 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
       <span class="t3">engagement</span>
     </h2>
     <div class="lg">
-      <div class="les"><div class="ln">Lesson 01</div><h4>Audit against scenarios, not screens</h4><p>Happy path heuristic reviews miss the failures that matter. Audit against what the user is actually trying to do and the real friction surfaces immediately.</p></div>
-      <div class="les"><div class="ln">Lesson 02</div><h4>Prioritization is a communication problem</h4><p>No framework fixes a stakeholder disagreement. What fixes it is a single, binary question everyone can answer the same way.</p></div>
-      <div class="les"><div class="ln">Lesson 03</div><h4>Usability is a security control</h4><p>Every friction point pushes a user toward a workaround. Every workaround is a vulnerability. Design decisions in PAM aren't cosmetic — they're part of the threat model.</p></div>
+      <div class="les"><div class="ln">Lesson 01</div><h4>The audit was the whole project</h4><p>I've worked on products where the research phase is a checkbox before the real work starts. On this one, the three-week scenario audit was the most leveraged thing I did. It gave the entire team a shared, specific, evidence-based picture of what was broken and why. Every design decision after it was implementation of conclusions we'd already reached together. If I'd skipped it and gone straight to wireframes, I'd have spent the next six months relitigating the same scope arguments everyone had already been having for a year.</p></div>
+      <div class="les"><div class="ln">Lesson 02</div><h4>Prioritization frameworks are conversations, not calculations</h4><p>RICE scoring and Kano models failed on this project not because they're bad frameworks, but because the team was using them to avoid a conversation about values — what do we actually think matters for this product right now. The binary deal-breaker filter worked because it forced that conversation first and then gave it a concrete output. The filter was the excuse to have the alignment meeting we'd been avoiding.</p></div>
+      <div class="les"><div class="ln">Lesson 03</div><h4>In security products, usability is a security control</h4><p>This is the thing I'll carry into every security product I work on. The product that is easy to use correctly is more secure than the product with better security features that is hard to use. Every time a PAM admin routes around a broken workflow with a workaround, that workaround is a shadow credential, which is a compliance gap, which is a potential breach. The UX isn't decoration on top of the security model. It's load-bearing.</p></div>
     </div>
   </div>
 </div>
