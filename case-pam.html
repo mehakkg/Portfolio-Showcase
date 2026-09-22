@@ -42,8 +42,8 @@
   --mono:  "JetBrains Mono", monospace;
   --pad:   clamp(24px,6vw,108px);
   --ease:  cubic-bezier(0.22,1,0.36,1);
-  --brand: #b8442a;
-  --brand-soft: rgba(184,68,42,.12);
+  --brand: var(--cy);
+  --brand-soft: var(--cy-bg);
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -82,7 +82,7 @@ img{display:block;max-width:100%;}
 .nav-links a{padding:8px 14px;border-radius:999px;color:var(--wh-2);transition:color .2s;}
 .nav-links a:hover{color:var(--wh);}
 .nav-links a.cta{background:var(--wh);color:var(--dk);font-weight:600;margin-left:6px;border-radius:999px;padding:8px 18px;transition:background .2s,color .2s;}
-.nav-links a.cta:hover{background:var(--brand);color:#fff;}
+.nav-links a.cta:hover{background:var(--cy);color:var(--dk);}
 @media(max-width:700px){
   .nav{padding:14px var(--pad);}
   .nav-logo img{height:20px;}
@@ -153,10 +153,14 @@ img{display:block;max-width:100%;}
   .mi:nth-child(odd){border-right:1px solid var(--rd-2);}
   .mi:nth-last-child(-n+2){border-bottom:none;}
 }
-.hero-img{margin-top:72px;border-radius:0;overflow:hidden;border:1px solid var(--rd-2);position:relative;box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 60px rgba(34,211,238,.05);}
-.hero-img::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cy),transparent);opacity:.35;z-index:1;}
-.hero-img img{width:100%;}
-.hero-img .cap{padding:12px 24px;border-top:1px solid var(--rd);font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--wh-3);}
+.hero-img{margin-top:80px;position:relative;overflow:hidden;}
+.hero-img::after{content:"";position:absolute;bottom:0;left:0;right:0;height:160px;background:linear-gradient(to bottom,transparent,var(--dk));pointer-events:none;z-index:1;}
+.hero-img img{width:100%;display:block;border-top:1px solid var(--rd-2);}
+
+/* problem section image */
+.prob-img{margin-top:64px;position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--rl-2);box-shadow:0 8px 40px rgba(0,0,0,.12);}
+.prob-img img{width:100%;display:block;}
+.prob-img .cap{padding:10px 20px;background:var(--lt-1);border-top:1px solid var(--rl-2);font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-3);}
 
 /* ── Root cause grid (light) ── */
 .cause-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rl-2);border:1px solid var(--rl-2);border-radius:14px;overflow:hidden;margin-top:52px;}
@@ -358,10 +362,9 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
       <div class="mi"><div class="ml">Team</div><div class="mv">2 PMs · 40 Engineers<br/>1 Product Designer</div></div>
     </div>
 
-    <div class="hero-img rv" style="margin-top:72px;">
-      <img src="uploads/pam-hero.png" alt="miniOrange PAM redesigned dashboard" />
-    </div>
-
+  </div><!-- /w -->
+  <div class="hero-img rv">
+    <img src="uploads/pam-hero.png" alt="miniOrange PAM redesigned dashboard" />
   </div>
 </div>
 
@@ -389,6 +392,11 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
         <div></div><div class="dl">Productivity</div><div></div>
       </div>
       <div class="dia-cap">PAM sits at the fragile intersection of four competing enterprise pressures</div>
+    </div>
+
+    <div class="prob-img rv">
+      <img src="uploads/PAM DB.png" alt="The original Xecrify product — flat 14-item nav, no workflow grouping" />
+      <div class="cap">The original Xecrify product. 14 flat nav items, no task-based grouping, no workflow continuity.</div>
     </div>
   </div>
 </div>
@@ -515,34 +523,6 @@ footer{border-top:1px solid var(--rd);background:var(--dk-1);}
     </div>
 
 
-    <h3 style="margin-top:64px;">Before → After: navigation structure</h3>
-    <div class="ba rv">
-      <div class="ba-col">
-        <div class="ba-label">Before · Xecrify (14 items)</div>
-        <div class="ba-item"><span class="bi-n">01</span>System Users</div>
-        <div class="ba-item"><span class="bi-n">02</span>Groups</div>
-        <div class="ba-item"><span class="bi-n">03</span>Resources</div>
-        <div class="ba-item"><span class="bi-n">04</span>Certificates</div>
-        <div class="ba-item"><span class="bi-n">05</span>Policies</div>
-        <div class="ba-item"><span class="bi-n">06</span>Discovery</div>
-        <div class="ba-item"><span class="bi-n">07</span>Sessions</div>
-        <div class="ba-item"><span class="bi-n">08</span>Reports</div>
-        <div class="ba-item"><span class="bi-n">09</span>MFA</div>
-        <div class="ba-item"><span class="bi-n">10</span>Integrations</div>
-        <div class="ba-item"><span class="bi-n">11</span>Audit</div>
-        <div class="ba-item"><span class="bi-n">12</span>Settings</div>
-        <div class="ba-item"><span class="bi-n">13</span>Notifications</div>
-        <div class="ba-item"><span class="bi-n">14</span>Help</div>
-      </div>
-      <div class="ba-col">
-        <div class="ba-label">After · miniOrange PAM (5 items)</div>
-        <div class="ba-item"><span class="bi-n">01</span>Overview</div>
-        <div class="ba-item"><span class="bi-n">02</span>Setup</div>
-        <div class="ba-item"><span class="bi-n">03</span>Access Control</div>
-        <div class="ba-item"><span class="bi-n">04</span>Security Ops</div>
-        <div class="ba-item"><span class="bi-n">05</span>Identity Config</div>
-      </div>
-    </div>
   </div>
 </div>
 
