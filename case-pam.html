@@ -260,6 +260,30 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 @media(max-width:800px){.foot{grid-template-columns:1fr 1fr;}}
 @media(max-width:500px){.foot{grid-template-columns:1fr;}}
 
+/* ── Accordion ── */
+.acc-list{margin-top:48px;display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.acc{}
+.acc+.acc{border-top:1px solid var(--border);}
+.acc-hd{
+  width:100%;display:flex;align-items:center;gap:20px;
+  padding:28px 32px;background:var(--card);border:none;cursor:pointer;
+  text-align:left;transition:background .2s;
+}
+.acc-hd:hover{background:var(--card-2);}
+.acc.open .acc-hd{background:var(--card-2);}
+.acc-num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-3);flex-shrink:0;}
+.acc-title{font-family:var(--sans);font-size:clamp(16px,1.6vw,20px);font-weight:700;color:var(--ink);letter-spacing:-.015em;flex:1;}
+.acc-icon{flex-shrink:0;color:var(--ink-3);transition:transform .35s var(--ease);}
+.acc.open .acc-icon{transform:rotate(180deg);}
+.acc-body{
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .5s var(--ease);
+}
+.acc.open .acc-body{max-height:4000px;}
+.acc-body-inner{padding:0 32px 40px;}
+.acc-body-inner>p:first-child{padding-top:8px;}
+
 /* ── Reveal ── */
 .rv{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
 .rv.in{opacity:1;transform:none;}
@@ -381,47 +405,77 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 
     <p class="lead">The instinct on a project like this is to pick the worst screens and redesign them. I pushed back on that for two weeks, because I was fairly sure that redesigning individual screens would just move the confusion around rather than resolve it.</p>
 
-    <h3>Phase 01 — Diagnose before designing</h3>
-    <p>I ran a scenario-driven UX audit across the existing product first. Not happy-path click-throughs. Real operational scenarios pulled from CS call recordings and support tickets: onboarding a new admin on day one, break glass elevation during a Sev 1 incident, credential rotation across 200+ accounts, offboarding a departing engineer with shared credentials, walking a compliance officer through a 90-day activity log the morning before an audit.</p>
-    <p>Ten scenarios. Four personas: Security Admins, IT Operations, DevOps and SysAdmins, Compliance Officers. Over 140 discrete usability issues surfaced — which I then clustered into four systemic root causes. The audit took three weeks. It was the whole project, really. Everything after it was execution.</p>
+    <div class="acc-list">
 
-    <div class="cause-grid rv">
-      <div class="cause"><div class="cn">Root cause 01</div><h4>Fragmented information architecture</h4><p>14 flat nav items, no task based grouping. Admins had to know the product's internal object model to find anything.</p></div>
-      <div class="cause"><div class="cn">Root cause 02</div><h4>Broken domain terminology</h4><p>Object names didn't match the mental model of any persona. Every new admin spent their first week translating the interface before they could use it.</p></div>
-      <div class="cause"><div class="cn">Root cause 03</div><h4>No workflow continuity</h4><p>Critical paths like JIT, approvals, break glass either didn't exist or required jumping between disconnected sections.</p></div>
-      <div class="cause"><div class="cn">Root cause 04</div><h4>Silent failure states</h4><p>Errors weren't surfaced. Discovery surfaced data but didn't guide action. Admins couldn't tell what broke or what to do next.</p></div>
-    </div>
+      <!-- Phase 01 -->
+      <div class="acc open">
+        <button class="acc-hd" aria-expanded="true">
+          <span class="acc-num">01</span>
+          <span class="acc-title">Diagnose before designing</span>
+          <span class="acc-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+          <p>I ran a scenario-driven UX audit across the existing product first. Not happy-path click-throughs. Real operational scenarios pulled from CS call recordings and support tickets: onboarding a new admin on day one, break glass elevation during a Sev 1 incident, credential rotation across 200+ accounts, offboarding a departing engineer with shared credentials, walking a compliance officer through a 90-day activity log the morning before an audit.</p>
+          <p>Ten scenarios. Four personas: Security Admins, IT Operations, DevOps and SysAdmins, Compliance Officers. Over 140 discrete usability issues surfaced — which I then clustered into four systemic root causes. The audit took three weeks. It was the whole project, really. Everything after it was execution.</p>
 
-    <p style="margin-top:64px;color:var(--ink);font-weight:600;">The ten audit scenarios</p>
-    <div class="sc-grid rv">
-      <div class="sc crit"><div class="sn">SC.01</div><div class="st">New admin onboarding, day one</div><div class="sp-">Security Admin</div></div>
-      <div class="sc crit"><div class="sn">SC.02</div><div class="st">Break glass elevation, Sev 1</div><div class="sp-">IT Operations</div></div>
-      <div class="sc"><div class="sn">SC.03</div><div class="st">Credential rotation, 200+ accounts</div><div class="sp-">Security Admin</div></div>
-      <div class="sc"><div class="sn">SC.04</div><div class="st">Engineer offboarding</div><div class="sp-">IT Operations</div></div>
-      <div class="sc"><div class="sn">SC.05</div><div class="st">90-day audit log walkthrough</div><div class="sp-">Compliance Officer</div></div>
-      <div class="sc"><div class="sn">SC.06</div><div class="st">JIT access request, DevOps</div><div class="sp-">DevOps / SysAdmin</div></div>
-      <div class="sc"><div class="sn">SC.07</div><div class="st">RBAC policy creation</div><div class="sp-">Security Admin</div></div>
-      <div class="sc"><div class="sn">SC.08</div><div class="st">Discovery to inventory pipeline</div><div class="sp-">IT Operations</div></div>
-      <div class="sc"><div class="sn">SC.09</div><div class="st">Session recording review</div><div class="sp-">Compliance Officer</div></div>
-      <div class="sc"><div class="sn">SC.10</div><div class="st">MFA integration setup</div><div class="sp-">Security Admin</div></div>
-    </div>
-    <p style="margin-top:10px;font-size:12px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.06em;">SC.01 and SC.02 highlighted as deal-breaker scenarios</p>
+          <div class="cause-grid">
+            <div class="cause"><div class="cn">Root cause 01</div><h4>Fragmented information architecture</h4><p>14 flat nav items, no task based grouping. Admins had to know the product's internal object model to find anything.</p></div>
+            <div class="cause"><div class="cn">Root cause 02</div><h4>Broken domain terminology</h4><p>Object names didn't match the mental model of any persona. Every new admin spent their first week translating the interface before they could use it.</p></div>
+            <div class="cause"><div class="cn">Root cause 03</div><h4>No workflow continuity</h4><p>Critical paths like JIT, approvals, break glass either didn't exist or required jumping between disconnected sections.</p></div>
+            <div class="cause"><div class="cn">Root cause 04</div><h4>Silent failure states</h4><p>Errors weren't surfaced. Discovery surfaced data but didn't guide action. Admins couldn't tell what broke or what to do next.</p></div>
+          </div>
 
-    <h3>Phase 02 — A binary prioritization filter</h3>
-    <p>The PM wanted to run a Kano exercise. The eng lead wanted RICE scoring. We'd been through two prioritization frameworks in the previous quarter and gotten different outputs both times with no consensus on what to build next. I suggested we try something blunter.</p>
-    <p>I identified five deal-breaker capabilities: the features that, if absent or broken, would lose us an enterprise deal regardless of everything else. Vault &amp; Rotation. Discovery &amp; Inventory. Session Proxying &amp; Recording. Access Governance (RBAC, JIT, approval workflows). Integrations &amp; Auditability. Then I asked one binary question about every item in the proposed backlog: <strong>does this directly strengthen one of those five capabilities, or doesn't it?</strong></p>
-    <p>A meaningful slice of the backlog got deferred in two days of alignment. The PM was skeptical that it was too blunt an instrument. Three sprints in, he said it was the most useful prioritization tool we'd used on the product.</p>
+          <p style="margin-top:48px;color:var(--ink);font-weight:600;">The ten audit scenarios</p>
+          <div class="sc-grid">
+            <div class="sc crit"><div class="sn">SC.01</div><div class="st">New admin onboarding, day one</div><div class="sp-">Security Admin</div></div>
+            <div class="sc crit"><div class="sn">SC.02</div><div class="st">Break glass elevation, Sev 1</div><div class="sp-">IT Operations</div></div>
+            <div class="sc"><div class="sn">SC.03</div><div class="st">Credential rotation, 200+ accounts</div><div class="sp-">Security Admin</div></div>
+            <div class="sc"><div class="sn">SC.04</div><div class="st">Engineer offboarding</div><div class="sp-">IT Operations</div></div>
+            <div class="sc"><div class="sn">SC.05</div><div class="st">90-day audit log walkthrough</div><div class="sp-">Compliance Officer</div></div>
+            <div class="sc"><div class="sn">SC.06</div><div class="st">JIT access request, DevOps</div><div class="sp-">DevOps / SysAdmin</div></div>
+            <div class="sc"><div class="sn">SC.07</div><div class="st">RBAC policy creation</div><div class="sp-">Security Admin</div></div>
+            <div class="sc"><div class="sn">SC.08</div><div class="st">Discovery to inventory pipeline</div><div class="sp-">IT Operations</div></div>
+            <div class="sc"><div class="sn">SC.09</div><div class="st">Session recording review</div><div class="sp-">Compliance Officer</div></div>
+            <div class="sc"><div class="sn">SC.10</div><div class="st">MFA integration setup</div><div class="sp-">Security Admin</div></div>
+          </div>
+          <p style="margin-top:10px;font-size:12px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.06em;">SC.01 and SC.02 highlighted as deal-breaker scenarios</p>
+          </div><!-- /acc-body-inner -->
+        </div>
+      </div>
 
-    <div class="dbt rv">
-      <div class="dbt-head"><div>Feature proposal</div><div>Outcome</div></div>
-      <div class="dbt-row"><div class="dbt-cell">Credential vaulting with rotation</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Vault &amp; Rotation</div></div>
-      <div class="dbt-row"><div class="dbt-cell">Session recording + OCR</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Session Proxying &amp; Recording</div></div>
-      <div class="dbt-row"><div class="dbt-cell">JIT access with approval workflow</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Access Governance</div></div>
-      <div class="dbt-row"><div class="dbt-cell">Resource discovery + inventory</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Discovery &amp; Inventory</div></div>
-      <div class="dbt-row"><div class="dbt-cell"><span class="strike">Custom dashboard theming</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
-      <div class="dbt-row"><div class="dbt-cell"><span class="strike">Mobile app for session review</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
-      <div class="dbt-row"><div class="dbt-cell"><span class="strike">Slack bot notifications</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
-    </div>
+      <!-- Phase 02 -->
+      <div class="acc open">
+        <button class="acc-hd" aria-expanded="true">
+          <span class="acc-num">02</span>
+          <span class="acc-title">A binary prioritization filter</span>
+          <span class="acc-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+          <p>The PM wanted to run a Kano exercise. The eng lead wanted RICE scoring. We'd been through two prioritization frameworks in the previous quarter and gotten different outputs both times with no consensus on what to build next. I suggested we try something blunter.</p>
+          <p>I identified five deal-breaker capabilities: the features that, if absent or broken, would lose us an enterprise deal regardless of everything else. Vault &amp; Rotation. Discovery &amp; Inventory. Session Proxying &amp; Recording. Access Governance (RBAC, JIT, approval workflows). Integrations &amp; Auditability. Then I asked one binary question about every item in the proposed backlog: <strong>does this directly strengthen one of those five capabilities, or doesn't it?</strong></p>
+          <p>A meaningful slice of the backlog got deferred in two days of alignment. The PM was skeptical that it was too blunt an instrument. Three sprints in, he said it was the most useful prioritization tool we'd used on the product.</p>
+
+          <div class="dbt">
+            <div class="dbt-head"><div>Feature proposal</div><div>Outcome</div></div>
+            <div class="dbt-row"><div class="dbt-cell">Credential vaulting with rotation</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Vault &amp; Rotation</div></div>
+            <div class="dbt-row"><div class="dbt-cell">Session recording + OCR</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Session Proxying &amp; Recording</div></div>
+            <div class="dbt-row"><div class="dbt-cell">JIT access with approval workflow</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Access Governance</div></div>
+            <div class="dbt-row"><div class="dbt-cell">Resource discovery + inventory</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Discovery &amp; Inventory</div></div>
+            <div class="dbt-row"><div class="dbt-cell"><span class="strike">Custom dashboard theming</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
+            <div class="dbt-row"><div class="dbt-cell"><span class="strike">Mobile app for session review</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
+            <div class="dbt-row"><div class="dbt-cell"><span class="strike">Slack bot notifications</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
+          </div>
+          </div><!-- /acc-body-inner -->
+        </div>
+      </div>
+
+    </div><!-- /acc-list -->
   </div>
 </div>
 
@@ -592,6 +646,16 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
     e.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
   }, {threshold:.06, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+  // Accordion
+  document.querySelectorAll('.acc-hd').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var acc = btn.closest('.acc');
+      var isOpen = acc.classList.contains('open');
+      acc.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
 })();
 </script>
 </body>
