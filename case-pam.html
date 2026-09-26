@@ -153,6 +153,26 @@ img{display:block;max-width:100%;}
 .prob-img img{width:100%;display:block;}
 .prob-img .cap{padding:10px 20px;background:var(--card-2);border-top:1px solid var(--border);font-family:var(--mono);font-size:11px;letter-spacing:.07em;color:var(--ink-3);}
 
+/* ── Hover image preview ── */
+.img-preview{
+  position:fixed;z-index:200;
+  pointer-events:none;
+  opacity:0;transform:translateY(8px) scale(.97);
+  transition:opacity .22s var(--ease),transform .22s var(--ease);
+  border-radius:14px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.22),0 2px 8px rgba(0,0,0,.12);
+  border:1px solid var(--border);
+  background:#fff;
+  max-width:380px;
+  width:380px;
+}
+.img-preview.multi{width:600px;max-width:90vw;}
+.img-preview.visible{opacity:1;transform:translateY(0) scale(1);}
+.img-preview img{display:block;width:100%;}
+.img-preview .prev-duo{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.img-preview .prev-duo img{width:100%;}
+.img-preview .prev-cap{padding:8px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-3);border-top:1px solid var(--border);background:var(--card-2);}
+
 /* ── Root cause grid ── */
 .cause-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:48px;}
 .cause{background:var(--card);padding:32px;transition:background .25s;}
@@ -420,9 +440,9 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
           <p>Ten scenarios. Four personas: Security Admins, IT Operations, DevOps and SysAdmins, Compliance Officers. Over 140 discrete usability issues surfaced — which I then clustered into four systemic root causes. The audit took three weeks. It was the whole project, really. Everything after it was execution.</p>
 
           <div class="cause-grid">
-            <div class="cause"><div class="cn">Root cause 01</div><h4>Fragmented information architecture</h4><p>14 flat nav items, no task based grouping. Admins had to know the product's internal object model to find anything.</p></div>
+            <div class="cause" data-preview="single" data-img="uploads/pam-nav-redesign.webp" data-cap="Redesigned nav — organised by admin intent"><div class="cn">Root cause 01</div><h4>Fragmented information architecture</h4><p>14 flat nav items, no task based grouping. Admins had to know the product's internal object model to find anything.</p></div>
             <div class="cause"><div class="cn">Root cause 02</div><h4>Broken domain terminology</h4><p>Object names didn't match the mental model of any persona. Every new admin spent their first week translating the interface before they could use it.</p></div>
-            <div class="cause"><div class="cn">Root cause 03</div><h4>No workflow continuity</h4><p>Critical paths like JIT, approvals, break glass either didn't exist or required jumping between disconnected sections.</p></div>
+            <div class="cause" data-preview="multi" data-img="uploads/pam-resource-list.webp" data-img2="uploads/pam-resource-detail.webp" data-cap="Resource list + tabbed detail — workflow continuity within a resource"><div class="cn">Root cause 03</div><h4>No workflow continuity</h4><p>Critical paths like JIT, approvals, break glass either didn't exist or required jumping between disconnected sections.</p></div>
             <div class="cause"><div class="cn">Root cause 04</div><h4>Silent failure states</h4><p>Errors weren't surfaced. Discovery surfaced data but didn't guide action. Admins couldn't tell what broke or what to do next.</p></div>
           </div>
 
@@ -644,6 +664,52 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
     e.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
   }, {threshold:.06, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+  // Hover image preview
+  var preview = document.createElement('div');
+  preview.className = 'img-preview';
+  document.body.appendChild(preview);
+  var previewTimeout;
+
+  function showPreview(el, e){
+    var type = el.dataset.preview;
+    preview.className = 'img-preview' + (type === 'multi' ? ' multi' : '');
+    if(type === 'multi'){
+      preview.innerHTML =
+        '<div class="prev-duo">' +
+          '<img src="' + el.dataset.img + '" />' +
+          '<img src="' + el.dataset.img2 + '" />' +
+        '</div>' +
+        '<div class="prev-cap">' + (el.dataset.cap||'') + '</div>';
+    } else {
+      preview.innerHTML =
+        '<img src="' + el.dataset.img + '" />' +
+        '<div class="prev-cap">' + (el.dataset.cap||'') + '</div>';
+    }
+    positionPreview(e);
+    preview.classList.add('visible');
+  }
+
+  function positionPreview(e){
+    var pw = preview.offsetWidth || 380;
+    var ph = preview.offsetHeight || 300;
+    var x = e.clientX + 20;
+    var y = e.clientY - ph / 2;
+    if(x + pw > window.innerWidth - 16) x = e.clientX - pw - 20;
+    if(y < 16) y = 16;
+    if(y + ph > window.innerHeight - 16) y = window.innerHeight - ph - 16;
+    preview.style.left = x + 'px';
+    preview.style.top = y + 'px';
+  }
+
+  document.querySelectorAll('.cause[data-preview]').forEach(function(el){
+    el.style.cursor = 'default';
+    el.addEventListener('mouseenter', function(e){ showPreview(el, e); });
+    el.addEventListener('mousemove', function(e){ positionPreview(e); });
+    el.addEventListener('mouseleave', function(){
+      preview.classList.remove('visible');
+    });
+  });
 
   // Accordion
   document.querySelectorAll('.acc-hd').forEach(function(btn){
