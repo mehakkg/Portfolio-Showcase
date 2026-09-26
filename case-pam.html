@@ -216,6 +216,11 @@ img{display:block;max-width:100%;}
 .arch-body h4{font-weight:700;font-size:clamp(18px,2vw,24px);letter-spacing:-.02em;color:#F5F5F5;margin-bottom:12px;line-height:1.2;}
 .arch-body p{font-size:15px;color:var(--wh-2);line-height:1.75;max-width:64ch;margin-bottom:0;}
 @media(max-width:600px){.arch-row{grid-template-columns:1fr;gap:10px;}.arch-n{font-size:36px;}}
+.arch-img{margin-top:28px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);max-width:320px;}
+.arch-img img{display:block;width:100%;}
+.arch-img-duo{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:100%;}
+.arch-img-duo img{border-radius:10px;border:1px solid rgba(255,255,255,.1);}
+@media(max-width:640px){.arch-img-duo{grid-template-columns:1fr;}}
 
 /* ── Pull quote ── */
 .pull{background:var(--dk);padding:100px var(--pad);text-align:center;}
@@ -516,6 +521,9 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
         <div class="arch-body">
           <h4>Organize by admin intent, not object type</h4>
           <p>The original nav was organized by internal database object: System Users, Groups, Certificates, Resources, Policies. An admin who wanted to set up break glass had to know that "break glass" was a policy type that lived inside a resource that you configured under Policies. The redesign organizes by what the admin is trying to do: Overview, Setup, Access Control, Security Ops, Identity Config. Break glass lives under Security Ops. A new admin who has never used the product can find it on day one without opening the docs.</p>
+          <div class="arch-img">
+            <img src="uploads/pam-nav-redesign.webp" alt="Redesigned nav organised by admin intent" />
+          </div>
         </div>
       </div>
       <div class="arch-row">
@@ -523,6 +531,10 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
         <div class="arch-body">
           <h4>Workflow continuity within the resource</h4>
           <p>The reconciliation design was the decision I'm most proud of. Reconciliation — syncing credentials after a rotation event — was previously a multi-page workflow that required the admin to navigate through four separate screens. During an incident at 2am, this was genuinely dangerous. I embedded reconciliation inline in the credential tab, surfacing the mismatch status directly next to the credential record with a single-action resolution. An admin managing 200 accounts can reconcile a failed rotation in one screen without losing their place in the inventory. The tabbed resource workspace (Credentials, Policy, Access, Sessions, Audit) all scope to the resource the admin is working on.</p>
+          <div class="arch-img arch-img-duo">
+            <img src="uploads/pam-resource-list.webp" alt="Resource list view" />
+            <img src="uploads/pam-resource-detail.webp" alt="Tabbed resource detail — workflow continuity" />
+          </div>
         </div>
       </div>
       <div class="arch-row">
