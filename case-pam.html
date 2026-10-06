@@ -186,8 +186,9 @@ img{display:block;max-width:100%;}
 .dbt-row:hover{background:var(--card-2);}
 .dbt-cell{padding:16px 22px;font-size:14px;color:var(--ink-2);line-height:1.5;}
 .dbt-cell:first-child{border-right:1px solid var(--border);color:var(--ink);font-weight:500;}
-.dbt-cell .pri{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-right:6px;font-weight:600;}
-.dbt-cell .def{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-right:6px;}
+.dbt-cell .pri{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#22863a;margin-right:4px;font-weight:600;}
+.dbt-cell .def{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-right:4px;}
+.dbt-cell{display:flex;align-items:center;}
 .dbt-cell .strike{text-decoration:line-through;color:var(--ink-3);}
 
 /* ── Arch decisions ── */
@@ -451,16 +452,16 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       <span class="t3">every time</span>
     </h2>
 
-    <p class="lead">"If security feels like friction, teams route around it — and the system fails."</p>
-    <p class="lead" style="font-weight:400;font-size:clamp(16px,1.4vw,19px);margin-top:-8px;">miniOrange's PAM product had all the features a security buyer would ask about on a discovery call. Vaulting, session recording, access policies, discovery, MFA. When our AEs walked prospects through the feature list, the product looked competitive against CyberArk and Delinea.</p>
-    <p>Then the prospect would start a POC, and their admin would open the product for the first time, and the deal would slow down.</p>
-    <p>Our left nav had 14 items, sitting flat, with no grouping that matched how anyone actually worked. Setting up a single privileged workflow meant jumping between three or four sections that didn't know about each other. Object names contradicted what admins meant when they said them out loud. "System Users" was where we stored credentials. Users lived somewhere else. Discovery would find 200 accounts and then leave the admin to figure out what to do with them. When things broke, they broke quietly.</p>
-    <p>The capabilities that actually close enterprise PAM deals — JIT access, emergency break glass, session OCR, reconciliation — were either missing or buried three clicks deep behind labels no one recognised. <strong>Our own SEs would sometimes ask me where a feature was during demo prep.</strong></p>
+    <p class="lead">"If security feels like friction, teams route around it and the system fails."</p>
+    <p class="lead" style="font-weight:400;font-size:clamp(16px,1.4vw,19px);margin-top:-8px;">miniOrange's PAM product had all the features a security buyer would ask about on a discovery call: vaulting, session recording, access policies, discovery, MFA. On paper it looked competitive against CyberArk and Delinea.</p>
+    <p>Then the prospect would start a POC, their admin would open the product for the first time, and the deal would slow down.</p>
+    <p>The left nav had 14 items with no task-based grouping. Setting up a single privileged workflow meant jumping between three or four sections that didn't know about each other. "System Users" was where credentials lived. Users lived somewhere else. Discovery would surface 200 accounts and leave the admin to figure out what to do next. When things broke, they broke quietly.</p>
+    <p>The deal-breaking capabilities were either missing or buried three clicks deep behind labels no one recognised. <strong>Our own SEs would sometimes ask me where a feature was during demo prep.</strong></p>
     <p>The pieces were all there. Nothing held them together.</p>
 
     <div class="prob-img rv">
       <img src="uploads/pam-problem.png" alt="The original Xecrify product — annotated with key UX failures" />
-      <div class="cap">The original product. Productivity, Security Risk, Compliance, and Continuity — all suffering from the same root cause.</div>
+      <div class="cap">The original product. Productivity, Security Risk, Compliance, and Continuity all suffering from the same root cause.</div>
     </div>
   </div>
 </div>
@@ -490,20 +491,54 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
         </button>
         <div class="acc-body">
           <div class="acc-body-inner">
-          <p>I ran a scenario-driven UX audit across the existing product first. Not happy-path click-throughs. Real operational scenarios pulled from CS call recordings and support tickets: onboarding a new admin on day one, break glass elevation during a Sev 1 incident, credential rotation across 200+ accounts, offboarding a departing engineer with shared credentials, walking a compliance officer through a 90-day activity log the morning before an audit.</p>
-          <p>Ten scenarios. Four personas: Security Admins, IT Operations, DevOps and SysAdmins, Compliance Officers. Over 140 discrete usability issues surfaced — which I then clustered into four systemic root causes. The audit took three weeks. It was the whole project, really. Everything after it was execution.</p>
+          <p>I ran a scenario-driven UX audit across the existing product first. Not happy-path click-throughs. Real operational scenarios pulled from CS call recordings and support tickets: new admin onboarding, break glass elevation during a Sev 1, credential rotation across 200+ accounts, engineer offboarding, and audit log review the morning before a compliance call.</p>
+          <p>Ten scenarios across four personas surfaced <span class="count-num" data-count="140">0</span> discrete usability issues, which clustered into four systemic root causes. The audit took three weeks and was the most leveraged work on the project.</p>
 
           <div class="cause-grid">
-            <div class="cause"><div class="cn">Root cause 01</div><h4>Fragmented information architecture</h4><p>14 flat nav items, no task based grouping. Admins had to know the product's internal object model to find anything.</p></div>
-            <div class="cause"><div class="cn">Root cause 02</div><h4>Broken domain terminology</h4><p>Object names didn't match the mental model of any persona. Every new admin spent their first week translating the interface before they could use it.</p></div>
-            <div class="cause"><div class="cn">Root cause 03</div><h4>No workflow continuity</h4><p>Critical paths like JIT, approvals, break glass either didn't exist or required jumping between disconnected sections.</p></div>
-            <div class="cause"><div class="cn">Root cause 04</div><h4>Silent failure states</h4><p>Errors weren't surfaced. Discovery surfaced data but didn't guide action. Admins couldn't tell what broke or what to do next.</p></div>
+            <div class="cause">
+              <div class="cn">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+                Root cause 01
+              </div>
+              <h4>Fragmented information architecture</h4>
+              <p>14 flat nav items, no task-based grouping. Admins had to know the product's internal object model to find anything.</p>
+            </div>
+            <div class="cause">
+              <div class="cn">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M2 4h10M2 7h7M2 10h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                Root cause 02
+              </div>
+              <h4>Broken domain terminology</h4>
+              <p>Object names didn't match the mental model of any persona. New admins spent their first week translating the interface before using it.</p>
+            </div>
+            <div class="cause">
+              <div class="cn">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Root cause 03
+              </div>
+              <h4>No workflow continuity</h4>
+              <p>Critical paths like JIT, approvals, and break glass either didn't exist or required jumping between disconnected sections.</p>
+            </div>
+            <div class="cause">
+              <div class="cn">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M7 4.5v3l1.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Root cause 04
+              </div>
+              <h4>Silent failure states</h4>
+              <p>Errors weren't surfaced. Discovery found data but didn't guide action. Admins couldn't tell what broke or what to do next.</p>
+            </div>
           </div>
 
           <p style="margin-top:48px;color:var(--ink);font-weight:600;">The ten audit scenarios</p>
           <div class="sc-grid">
-            <div class="sc crit"><div class="sn">SC.01</div><div class="st">New admin onboarding, day one</div><div class="sp-">Security Admin</div></div>
-            <div class="sc crit"><div class="sn">SC.02</div><div class="st">Break glass elevation, Sev 1</div><div class="sp-">IT Operations</div></div>
+            <div class="sc crit">
+              <div class="sn"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-right:4px;"><path d="M5.5 1L6.8 4.2H10.2L7.4 6.3L8.5 9.5L5.5 7.5L2.5 9.5L3.6 6.3L.8 4.2H4.2Z" fill="currentColor"/></svg>SC.01</div>
+              <div class="st">New admin onboarding, day one</div><div class="sp-">Security Admin</div>
+            </div>
+            <div class="sc crit">
+              <div class="sn"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-right:4px;"><path d="M5.5 1L6.8 4.2H10.2L7.4 6.3L8.5 9.5L5.5 7.5L2.5 9.5L3.6 6.3L.8 4.2H4.2Z" fill="currentColor"/></svg>SC.02</div>
+              <div class="st">Break glass elevation, Sev 1</div><div class="sp-">IT Operations</div>
+            </div>
             <div class="sc"><div class="sn">SC.03</div><div class="st">Credential rotation, 200+ accounts</div><div class="sp-">Security Admin</div></div>
             <div class="sc"><div class="sn">SC.04</div><div class="st">Engineer offboarding</div><div class="sp-">IT Operations</div></div>
             <div class="sc"><div class="sn">SC.05</div><div class="st">90-day audit log walkthrough</div><div class="sp-">Compliance Officer</div></div>
@@ -513,7 +548,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
             <div class="sc"><div class="sn">SC.09</div><div class="st">Session recording review</div><div class="sp-">Compliance Officer</div></div>
             <div class="sc"><div class="sn">SC.10</div><div class="st">MFA integration setup</div><div class="sp-">Security Admin</div></div>
           </div>
-          <p style="margin-top:10px;font-size:12px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.06em;">SC.01 and SC.02 highlighted as deal-breaker scenarios</p>
+          <p style="margin-top:10px;font-size:12px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.06em;">SC.01 and SC.02 are deal-breaker scenarios</p>
           </div><!-- /acc-body-inner -->
         </div>
       </div>
@@ -529,19 +564,40 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
         </button>
         <div class="acc-body">
           <div class="acc-body-inner">
-          <p>The PM wanted to run a Kano exercise. The eng lead wanted RICE scoring. We'd been through two prioritization frameworks in the previous quarter and gotten different outputs both times with no consensus on what to build next. I suggested we try something blunter.</p>
-          <p>I identified five deal-breaker capabilities: the features that, if absent or broken, would lose us an enterprise deal regardless of everything else. Vault &amp; Rotation. Discovery &amp; Inventory. Session Proxying &amp; Recording. Access Governance (RBAC, JIT, approval workflows). Integrations &amp; Auditability. Then I asked one binary question about every item in the proposed backlog: <strong>does this directly strengthen one of those five capabilities, or doesn't it?</strong></p>
-          <p>A meaningful slice of the backlog got deferred in two days of alignment. The PM was skeptical that it was too blunt an instrument. Three sprints in, he said it was the most useful prioritization tool we'd used on the product.</p>
+          <p>The PM wanted Kano. The eng lead wanted RICE. We'd run two prioritization frameworks in the previous quarter, gotten different outputs each time, and still had no alignment on what to build next. I suggested something blunter.</p>
+          <p>I identified five deal-breaker capabilities: the features that, if absent or broken, would lose an enterprise deal regardless of everything else. Vault &amp; Rotation. Discovery &amp; Inventory. Session Proxying &amp; Recording. Access Governance. Integrations &amp; Auditability. Then one binary question for every backlog item: <strong>does this directly strengthen one of those five, or not?</strong></p>
+          <p>A meaningful slice of the backlog was deferred in two days. Three sprints in, the PM called it the most useful prioritization tool we'd used on the product.</p>
 
           <div class="dbt">
             <div class="dbt-head"><div>Feature proposal</div><div>Outcome</div></div>
-            <div class="dbt-row"><div class="dbt-cell">Credential vaulting with rotation</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Vault &amp; Rotation</div></div>
-            <div class="dbt-row"><div class="dbt-cell">Session recording + OCR</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Session Proxying &amp; Recording</div></div>
-            <div class="dbt-row"><div class="dbt-cell">JIT access with approval workflow</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Access Governance</div></div>
-            <div class="dbt-row"><div class="dbt-cell">Resource discovery + inventory</div><div class="dbt-cell"><span class="pri">Prioritized ·</span>Strengthens deal-breaker: Discovery &amp; Inventory</div></div>
-            <div class="dbt-row"><div class="dbt-cell"><span class="strike">Custom dashboard theming</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
-            <div class="dbt-row"><div class="dbt-cell"><span class="strike">Mobile app for session review</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
-            <div class="dbt-row"><div class="dbt-cell"><span class="strike">Slack bot notifications</span></div><div class="dbt-cell"><span class="def">Deferred ·</span>No deal-breaker relevance</div></div>
+            <div class="dbt-row">
+              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Credential vaulting with rotation</div>
+              <div class="dbt-cell"><span class="pri">Prioritized</span> · Vault &amp; Rotation</div>
+            </div>
+            <div class="dbt-row">
+              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Session recording + OCR</div>
+              <div class="dbt-cell"><span class="pri">Prioritized</span> · Session Proxying &amp; Recording</div>
+            </div>
+            <div class="dbt-row">
+              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>JIT access with approval workflow</div>
+              <div class="dbt-cell"><span class="pri">Prioritized</span> · Access Governance</div>
+            </div>
+            <div class="dbt-row">
+              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Resource discovery + inventory</div>
+              <div class="dbt-cell"><span class="pri">Prioritized</span> · Discovery &amp; Inventory</div>
+            </div>
+            <div class="dbt-row">
+              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#D0D0D0" stroke-width="1.2"/></svg><span class="strike">Custom dashboard theming</span></div>
+              <div class="dbt-cell"><span class="def">Deferred</span> · No deal-breaker relevance</div>
+            </div>
+            <div class="dbt-row">
+              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#D0D0D0" stroke-width="1.2"/></svg><span class="strike">Mobile app for session review</span></div>
+              <div class="dbt-cell"><span class="def">Deferred</span> · No deal-breaker relevance</div>
+            </div>
+            <div class="dbt-row">
+              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#D0D0D0" stroke-width="1.2"/></svg><span class="strike">Slack bot notifications</span></div>
+              <div class="dbt-cell"><span class="def">Deferred</span> · No deal-breaker relevance</div>
+            </div>
           </div>
           </div><!-- /acc-body-inner -->
         </div>
@@ -562,21 +618,21 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       <span class="t3">one by one</span>
     </h2>
 
-    <p class="lead">Three architectural decisions that changed what the product felt like to use — not just what it looked like.</p>
+    <p class="lead">Three architectural decisions that changed what the product felt like to use, not just what it looked like.</p>
 
     <div class="arch rv">
       <div class="arch-row">
         <div class="arch-n">01</div>
         <div class="arch-body">
           <h4>Organize by admin intent, not object type</h4>
-          <p>The original nav was organized by internal database object: System Users, Groups, Certificates, Resources, Policies. An admin who wanted to set up break glass had to know that "break glass" was a policy type that lived inside a resource that you configured under Policies. The redesign organizes by what the admin is trying to do: Overview, Setup, Access Control, Security Ops, Identity Config. Break glass lives under Security Ops. A new admin who has never used the product can find it on day one without opening the docs.</p>
+          <p>The original nav was organized by database object: System Users, Groups, Certificates, Resources, Policies. The redesign organizes by what the admin is trying to do: Overview, Setup, Access Control, Security Ops, Identity Config. Break glass lives under Security Ops. A new admin can find it on day one without opening the docs.</p>
         </div>
       </div>
       <div class="arch-row">
         <div class="arch-n">02</div>
         <div class="arch-body">
           <h4>Workflow continuity within the resource</h4>
-          <p>The reconciliation design was the decision I'm most proud of. Reconciliation — syncing credentials after a rotation event — was previously a multi-page workflow that required the admin to navigate through four separate screens. During an incident at 2am, this was genuinely dangerous. I embedded reconciliation inline in the credential tab, surfacing the mismatch status directly next to the credential record with a single-action resolution. An admin managing 200 accounts can reconcile a failed rotation in one screen without losing their place in the inventory. The tabbed resource workspace (Credentials, Policy, Access, Sessions, Audit) all scope to the resource the admin is working on.</p>
+          <p>Credential reconciliation was previously a multi-page workflow across four screens. During a 2am incident, that was genuinely dangerous. I embedded it inline in the credential tab: mismatch status surfaces next to the credential record with a single-action resolution. The tabbed resource workspace (Credentials, Policy, Access, Sessions, Audit) all scope to the resource the admin is working on, so they never lose their place.</p>
           <div class="arch-img arch-img-duo">
             <img src="uploads/pam-resource-list.webp" alt="Resource list view" />
             <img src="uploads/pam-resource-detail.webp" alt="Tabbed resource detail — workflow continuity" />
@@ -587,7 +643,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
         <div class="arch-n">03</div>
         <div class="arch-body">
           <h4>A six-stage onboarding model with checkpoints</h4>
-          <p>New admin onboarding was previously a setup wizard — a linear sequence with no checkpoints and no clear sense of progress. Admins couldn't tell when they were done. I redesigned it as six discrete stages: Discover, Inventory, Policy, Roles, Provision, Access. Each stage produces a concrete, auditable output: a discovered account list, a configured policy, a role assignment. You know you've completed a stage when you have something to show for it. This also solved the POC stalling problem. An admin starting a trial can reach a meaningful test state — active session proxying, working JIT, real RBAC policies — within the first day.</p>
+          <p>Onboarding was a linear wizard with no checkpoints. Admins couldn't tell when they were done. I redesigned it as six stages: Discover, Inventory, Policy, Roles, Provision, Access. Each produces a concrete output: a discovered account list, a configured policy, a role assignment. An admin starting a trial can reach active session proxying and working JIT within the first day.</p>
         </div>
       </div>
     </div>
@@ -602,7 +658,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
   <div class="w rv">
     <div class="pm"><span class="star">✦</span><span class="pill">Live Prototype</span></div>
     <div class="proto-head">Try the redesigned product</div>
-    <div class="proto-sub">The working prototype captures the core experience — frictionless access setup, the tabbed resource workspace, and the new information architecture. Interact with it directly below.</div>
+    <div class="proto-sub">The working prototype captures the core experience: frictionless access setup, the tabbed resource workspace, and the new information architecture.</div>
     <div class="proto-frame">
       <iframe
         src="https://miniorange-pam.vercel.app"
@@ -620,7 +676,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 <div class="stat-s rv">
   <span class="stat-label">Business outcome</span>
   <div class="stat-num"><span class="sc">$</span>800<span class="sc">K</span></div>
-  <div class="stat-sub">in new PAM sales in the quarter post-release. Enterprise deals that had stalled at POC closed once admins could get to a working state inside the trial window. I can't claim full causation — sales cycle improvements, pricing changes, and better SE support all played a role. But the timing was clear, and the stall pattern we knew to track was gone.</div>
+  <div class="stat-sub">in new PAM sales in the quarter post-release. Deals that had stalled at POC closed once admins could reach a working state inside the trial window. The stall pattern we'd been tracking was gone.</div>
 </div>
 
 
@@ -633,7 +689,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       <span class="t2">not a feature list</span>
       <span class="t3">shipped to production</span>
     </h2>
-    <p class="lead">The v1 shipped as a coherent platform, not a feature list. Most importantly: it shipped. That sounds like a low bar, but this product had been in partial redesign for over a year before I joined. The audit and the binary prioritization filter gave us something we hadn't had — a shared definition of done.</p>
+    <p class="lead">The v1 shipped as a coherent platform. This product had been in partial redesign for over a year before I joined. The audit and the prioritization filter gave the team a shared definition of done.</p>
     <div class="oc">
       <div class="og">
         <h5>Product outcomes</h5>
@@ -641,19 +697,19 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
           <li>Admins complete critical workflows — onboarding, break glass, rotation, access, audit review — without leaving the resource they're working on.</li>
           <li>The five deal-breaker capabilities now anchor the product's core experience instead of being buried behind unfamiliar labels.</li>
           <li>Error states and reconciliation logic surface inline. The admin knows what broke and has a clear action. No more silent failures.</li>
-          <li>The product aligns to Zero Trust, SOC 2, and ISO 27001 principles by architecture — not by adding a disclaimer to the docs.</li>
+          <li>The product aligns to Zero Trust, SOC 2, and ISO 27001 principles by architecture, not by adding a disclaimer to the docs.</li>
         </ul>
       </div>
       <div class="og">
         <h5>Team outcomes</h5>
         <ul>
           <li>Engineering had a single prioritization filter that resolved scope debates in one meeting instead of a quarter of framework workshops.</li>
-          <li>Design churn dropped significantly because decisions moved from "which screen looks better?" to "which system structure supports the workflow?" — a question with a more stable answer.</li>
+          <li>Design churn dropped because decisions shifted from "which screen looks better?" to "which system structure supports the workflow?", a question with a more stable answer.</li>
           <li>PMs, engineers, and design shared vocabulary that cut review cycles to what actually mattered.</li>
         </ul>
       </div>
     </div>
-    <p style="margin-top:48px;"><strong>What I'd do differently:</strong> I'd push for a non-linear onboarding path earlier. The six-stage model worked well for net-new deployments, but customers migrating from a legacy PAM tool had a different mental model and kept trying to skip stages. We shipped a v1.2 patch three months later to address this — I should have caught it in the persona research.</p>
+    <p style="margin-top:48px;"><strong>What I'd do differently:</strong> Push for a non-linear onboarding path earlier. The six-stage model worked for net-new deployments, but customers migrating from a legacy PAM tool had a different mental model and kept skipping stages. We patched it in v1.2. I should have caught it in the persona research.</p>
   </div>
 </div>
 
@@ -668,9 +724,9 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       <span class="t3">engagement</span>
     </h2>
     <div class="lg">
-      <div class="les"><div class="ln">Lesson 01</div><h4>The audit was the whole project</h4><p>I've worked on products where the research phase is a checkbox before the real work starts. On this one, the three-week scenario audit was the most leveraged thing I did. It gave the entire team a shared, specific, evidence-based picture of what was broken and why. Every design decision after it was implementation of conclusions we'd already reached together. If I'd skipped it and gone straight to wireframes, I'd have spent the next six months relitigating the same scope arguments everyone had already been having for a year.</p></div>
-      <div class="les"><div class="ln">Lesson 02</div><h4>Prioritization frameworks are conversations, not calculations</h4><p>RICE scoring and Kano models failed on this project not because they're bad frameworks, but because the team was using them to avoid a conversation about values — what do we actually think matters for this product right now. The binary deal-breaker filter worked because it forced that conversation first and then gave it a concrete output. The filter was the excuse to have the alignment meeting we'd been avoiding.</p></div>
-      <div class="les"><div class="ln">Lesson 03</div><h4>In security products, usability is a security control</h4><p>This is the thing I'll carry into every security product I work on. The product that is easy to use correctly is more secure than the product with better security features that is hard to use. Every time a PAM admin routes around a broken workflow with a workaround, that workaround is a shadow credential, which is a compliance gap, which is a potential breach. The UX isn't decoration on top of the security model. It's load-bearing.</p></div>
+      <div class="les"><div class="ln">Lesson 01</div><h4>The audit was the whole project</h4><p>On this one, the three-week scenario audit was the most leveraged work I did. It gave the team a shared, evidence-based picture of what was broken and why. Every design decision after was implementation of conclusions we'd already reached together.</p></div>
+      <div class="les"><div class="ln">Lesson 02</div><h4>Prioritization frameworks are conversations, not calculations</h4><p>RICE and Kano failed here not because they're bad frameworks, but because the team was using them to avoid a conversation about values. The binary deal-breaker filter worked because it forced that conversation and gave it a concrete output.</p></div>
+      <div class="les"><div class="ln">Lesson 03</div><h4>In security products, usability is a security control</h4><p>The product that is easy to use correctly is more secure than one with better features that is hard to use. Every time an admin routes around a broken workflow, that workaround is a shadow credential, a compliance gap, a potential breach. The UX isn't decoration on top of the security model. It's load-bearing.</p></div>
     </div>
   </div>
 </div>
