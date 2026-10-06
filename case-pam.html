@@ -46,6 +46,22 @@ img{display:block;max-width:100%;}
 /* ── Progress ── */
 .sp{position:fixed;top:0;left:0;height:2px;background:var(--ink);z-index:60;width:0;transition:width .1s linear;}
 
+/* ── Breadcrumb ── */
+.breadcrumb{
+  position:fixed;top:62px;left:0;right:0;z-index:49;
+  padding:8px clamp(20px,4vw,56px);
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  color:var(--ink-3);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s,background .3s;
+}
+.breadcrumb.on{background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom-color:var(--border);}
+.breadcrumb a{color:var(--ink-3);transition:color .2s;}
+.breadcrumb a:hover{color:var(--ink);}
+.breadcrumb .bc-sep{opacity:.4;}
+.breadcrumb .bc-cur{color:var(--ink);}
+
 /* ── Nav ── */
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:50;
@@ -126,7 +142,7 @@ img{display:block;max-width:100%;}
 .sec-dk h3{font-weight:700;font-size:clamp(18px,2vw,24px);letter-spacing:-.02em;color:#F5F5F5;margin-bottom:16px;margin-top:64px;line-height:1.2;}
 
 /* ── Hero ── */
-.hero{background:var(--card);padding-top:clamp(120px,14vw,180px);padding-bottom:0;}
+.hero{background:var(--card);padding-top:clamp(140px,15vw,196px);padding-bottom:0;}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);border:1px solid var(--border);padding:5px 14px;border-radius:999px;background:var(--card-2);margin-bottom:40px;}
 .hero-badge .live{width:5px;height:5px;border-radius:50%;background:var(--ink-3);}
 .hero h1{font-family:var(--sans);font-weight:800;font-size:clamp(44px,7.5vw,112px);line-height:.97;letter-spacing:-.035em;max-width:18ch;}
@@ -396,6 +412,14 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
     <a href="about.html#contact" class="cta">Book a call →</a>
   </div>
 </nav>
+
+<div class="breadcrumb" id="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="bc-sep">/</span>
+  <a href="index.html#work">Work</a>
+  <span class="bc-sep">/</span>
+  <span class="bc-cur">PAM Platform Redesign</span>
+</div>
 
 
 <!-- ════ HERO — DARK ════ -->
@@ -769,12 +793,14 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 (function(){
   var sp = document.getElementById('sp');
   var nav = document.getElementById('nav');
+  var bc = document.getElementById('breadcrumb');
 
   /* ── Scroll progress + nav ── */
   window.addEventListener('scroll', function(){
     var s = document.documentElement;
     sp.style.width = Math.min((s.scrollTop||document.body.scrollTop)/(s.scrollHeight-s.clientHeight)*100,100)+'%';
     nav.classList.toggle('on', window.scrollY > 40);
+    bc.classList.toggle('on', window.scrollY > 40);
   }, {passive:true});
 
   /* ── Reveal on scroll ── */
