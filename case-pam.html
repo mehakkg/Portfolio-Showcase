@@ -378,7 +378,6 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 <!-- Section TOC pills -->
 <nav class="toc-pills" id="tocPills" aria-label="Page sections">
   <div class="toc-pill" data-target="s-problem"><span class="toc-label">Problem</span><span class="toc-dot"></span></div>
-  <div class="toc-pill" data-target="s-research"><span class="toc-label">Research</span><span class="toc-dot"></span></div>
   <div class="toc-pill" data-target="s-solutions"><span class="toc-label">Solutions</span><span class="toc-dot"></span></div>
   <div class="toc-pill" data-target="s-arch"><span class="toc-label">Architecture</span><span class="toc-dot"></span></div>
   <div class="toc-pill" data-target="s-outcome"><span class="toc-label">Outcome</span><span class="toc-dot"></span></div>
@@ -424,11 +423,11 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
   </div><!-- /w -->
   <div class="hero-img rv">
     <div class="ba-slider" id="baSlider">
-      <!-- before = old product -->
-      <img src="uploads/pam-problem.png" alt="Before: Xecrify PAM" style="width:100%;display:block;" />
-      <!-- after = new design, clipped -->
+      <!-- before = old Xecrify dashboard -->
+      <img src="uploads/pam-before.webp" alt="Before: Xecrify PAM" style="width:100%;display:block;" />
+      <!-- after = new miniOrange PAM -->
       <div class="ba-after" id="baAfter">
-        <img src="uploads/pam-banner.webp" alt="After: miniOrange PAM redesign" />
+        <img src="uploads/pam-after.webp" alt="After: miniOrange PAM redesign" />
       </div>
       <div class="ba-handle" id="baHandle">
         <div class="ba-btn">
@@ -452,7 +451,8 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       <span class="t3">every time</span>
     </h2>
 
-    <p class="lead">miniOrange's PAM product had all the features a security buyer would ask about on a discovery call. Vaulting, session recording, access policies, discovery, MFA. When our AEs walked prospects through the feature list, the product looked competitive against CyberArk and Delinea.</p>
+    <p class="lead">"If security feels like friction, teams route around it — and the system fails."</p>
+    <p class="lead" style="font-weight:400;font-size:clamp(16px,1.4vw,19px);margin-top:-8px;">miniOrange's PAM product had all the features a security buyer would ask about on a discovery call. Vaulting, session recording, access policies, discovery, MFA. When our AEs walked prospects through the feature list, the product looked competitive against CyberArk and Delinea.</p>
     <p>Then the prospect would start a POC, and their admin would open the product for the first time, and the deal would slow down.</p>
     <p>Our left nav had 14 items, sitting flat, with no grouping that matched how anyone actually worked. Setting up a single privileged workflow meant jumping between three or four sections that didn't know about each other. Object names contradicted what admins meant when they said them out loud. "System Users" was where we stored credentials. Users lived somewhere else. Discovery would find 200 accounts and then leave the admin to figure out what to do with them. When things broke, they broke quietly.</p>
     <p>The capabilities that actually close enterprise PAM deals — JIT access, emergency break glass, session OCR, reconciliation — were either missing or buried three clicks deep behind labels no one recognised. <strong>Our own SEs would sometimes ask me where a feature was during demo prep.</strong></p>
@@ -466,41 +466,13 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 </div>
 
 
-<!-- ════ § 02 — DARK ════ -->
-<div class="sec-dk" id="s-research">
-  <div class="w rv">
-    <div class="sm"><span class="star">✦</span><span class="pill">Why It Mattered</span></div>
-    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
-      <span class="t1">Bad UX in PAM</span>
-      <span class="t2">isn't just frustrating —</span>
-      <span class="t3">it's a vulnerability</span>
-    </h2>
-
-    <p class="lead">In consumer software, bad UX costs engagement metrics. In PAM, it costs the entire security posture. That's not a design argument — it's a risk argument.</p>
-    <p>The core paradox of Privileged Access Management: <strong>the harder it is to use, the less secure it makes you.</strong> Admins under deadline pressure don't file tickets when a workflow is broken. They route around it. A DevOps engineer who can't get JIT access provisioned in under a minute will just use their standing admin credentials. An IT ops lead who can't find the break glass screen during a Sev 1 will share passwords over Slack. Every workaround is a shadow credential. Every shadow credential is an audit finding waiting to happen.</p>
-    <p>This was the actual business problem. Not "the product is hard to use." The product was creating security risk by being hard to use. DevOps teams were bypassing PAM controls entirely for time-sensitive work. Compliance customers were failing audit prep because the product couldn't surface clean audit-ready evidence without manual export work. Enterprise deals were stalling not because buyers didn't want the product, but because their admins couldn't get it set up inside a trial window.</p>
-    <p><strong>Bad UX in a consumer product costs you engagement metrics. Bad UX in PAM becomes a breach.</strong></p>
-  </div>
-</div>
-
-<div class="pull rv">
-  <blockquote>
-    <span class="qw">"If security feels</span>
-    <span class="qg">like friction, teams route around it —</span>
-    <span class="qc">and the system fails."</span>
-  </blockquote>
-  <div class="q-attr">Mehak Garg · Sr. Product Designer</div>
-</div>
-
-
 <!-- ════ § 03 PHASE 01 — LIGHT ════ -->
 <div class="sec-lt" id="s-solutions">
   <div class="w rv">
     <div class="sm"><span class="star">✦</span><span class="pill">How I Solved It</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
-      <span class="t1">Systems problem,</span>
-      <span class="t2">not a screens</span>
-      <span class="t3">problem</span>
+      <span class="t1">Systems</span>
+      <span class="t2">thinking</span>
     </h2>
 
     <p class="lead">The instinct on a project like this is to pick the worst screens and redesign them. I pushed back on that for two weeks, because I was fairly sure that redesigning individual screens would just move the confusion around rather than resolve it.</p>
