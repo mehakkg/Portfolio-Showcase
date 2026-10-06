@@ -299,10 +299,10 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 .rv2.in>*:nth-child(4){transition-delay:.22s;}
 
 /* ── Before/After slider ── */
-.ba-slider{position:relative;overflow:hidden;user-select:none;touch-action:none;cursor:col-resize;}
-.ba-slider img{display:block;width:100%;}
+.ba-slider{position:relative;overflow:hidden;user-select:none;touch-action:none;cursor:col-resize;aspect-ratio:16/9;background:#111;}
+.ba-slider>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .ba-after{position:absolute;inset:0;overflow:hidden;width:50%;}
-.ba-after img{width:100vw;max-width:none;position:absolute;top:0;left:0;}
+.ba-after img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;max-width:none;}
 .ba-handle{
   position:absolute;top:0;bottom:0;width:2px;background:#fff;
   left:50%;transform:translateX(-50%);
@@ -424,7 +424,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
   <div class="hero-img rv">
     <div class="ba-slider" id="baSlider">
       <!-- before = old Xecrify dashboard -->
-      <img src="uploads/pam-before.webp" alt="Before: Xecrify PAM" style="width:100%;display:block;" />
+      <img src="uploads/pam-before.webp" alt="Before: Xecrify PAM" />
       <!-- after = new miniOrange PAM -->
       <div class="ba-after" id="baAfter">
         <img src="uploads/pam-after.webp" alt="After: miniOrange PAM redesign" />
@@ -768,16 +768,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       var pct = Math.max(5, Math.min(95, (x - rect.left) / rect.width * 100));
       after.style.width = pct + '%';
       handle.style.left = pct + '%';
-      // sync after image width so it doesn't stretch
-      var afterImg = after.querySelector('img');
-      afterImg.style.width = slider.offsetWidth + 'px';
     }
-
-    // init at 50%
-    window.addEventListener('load', function(){
-      var afterImg = after.querySelector('img');
-      afterImg.style.width = slider.offsetWidth + 'px';
-    });
 
     slider.addEventListener('mousedown', function(e){ dragging = true; setPos(e.clientX); e.preventDefault(); });
     window.addEventListener('mousemove', function(e){ if(dragging) setPos(e.clientX); });
