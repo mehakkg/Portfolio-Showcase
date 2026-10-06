@@ -297,11 +297,93 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 .rv2.in>*:nth-child(2){transition-delay:.10s;}
 .rv2.in>*:nth-child(3){transition-delay:.16s;}
 .rv2.in>*:nth-child(4){transition-delay:.22s;}
+
+/* ── Before/After slider ── */
+.ba-slider{position:relative;overflow:hidden;user-select:none;touch-action:none;cursor:col-resize;}
+.ba-slider img{display:block;width:100%;}
+.ba-after{position:absolute;inset:0;overflow:hidden;width:50%;}
+.ba-after img{width:100vw;max-width:none;position:absolute;top:0;left:0;}
+.ba-handle{
+  position:absolute;top:0;bottom:0;width:2px;background:#fff;
+  left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.ba-handle::before,.ba-handle::after{
+  content:"";position:absolute;top:50%;width:36px;height:36px;
+  background:#fff;border-radius:50%;
+  transform:translateY(-50%);
+  box-shadow:0 2px 12px rgba(0,0,0,.25);
+}
+.ba-handle::before{display:none;}
+.ba-btn{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:40px;height:40px;border-radius:50%;background:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 16px rgba(0,0,0,.28);pointer-events:none;
+  flex-shrink:0;
+}
+.ba-btn svg{display:block;}
+.ba-label-before,.ba-label-after{
+  position:absolute;bottom:16px;font-family:var(--mono);font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;
+  background:rgba(0,0,0,.55);color:#fff;
+  padding:4px 10px;border-radius:999px;pointer-events:none;
+  backdrop-filter:blur(6px);
+}
+.ba-label-before{left:16px;}
+.ba-label-after{right:16px;}
+
+/* ── Sticky section pills ── */
+.toc-pills{
+  position:fixed;right:24px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:8px;z-index:40;
+}
+.toc-pill{
+  display:flex;align-items:center;gap:8px;
+  cursor:pointer;opacity:.4;transition:opacity .3s;
+  flex-direction:row-reverse;
+}
+.toc-pill:hover{opacity:.8;}
+.toc-pill.active{opacity:1;}
+.toc-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--ink);transition:transform .3s var(--ease),background .3s;
+}
+.toc-pill.active .toc-dot{transform:scale(1.5);}
+.toc-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink);background:var(--card);
+  padding:4px 10px;border-radius:999px;border:1px solid var(--border);
+  white-space:nowrap;
+  opacity:0;transform:translateX(6px);
+  transition:opacity .2s,transform .2s;
+  pointer-events:none;
+}
+.toc-pill:hover .toc-label,.toc-pill.active .toc-label{opacity:1;transform:none;}
+@media(max-width:900px){.toc-pills{display:none;}}
+
+/* ── Cause card hover lift ── */
+.cause{transition:background .25s,transform .3s var(--ease),box-shadow .3s var(--ease);}
+.cause:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.08);}
+
+/* ── Counting number ── */
+.count-num{display:inline-block;font-variant-numeric:tabular-nums;}
 </style>
 </head>
 <body>
 
 <div class="sp" id="sp"></div>
+
+<!-- Section TOC pills -->
+<nav class="toc-pills" id="tocPills" aria-label="Page sections">
+  <div class="toc-pill" data-target="s-problem"><span class="toc-label">Problem</span><span class="toc-dot"></span></div>
+  <div class="toc-pill" data-target="s-research"><span class="toc-label">Research</span><span class="toc-dot"></span></div>
+  <div class="toc-pill" data-target="s-solutions"><span class="toc-label">Solutions</span><span class="toc-dot"></span></div>
+  <div class="toc-pill" data-target="s-arch"><span class="toc-label">Architecture</span><span class="toc-dot"></span></div>
+  <div class="toc-pill" data-target="s-outcome"><span class="toc-label">Outcome</span><span class="toc-dot"></span></div>
+  <div class="toc-pill" data-target="s-lessons"><span class="toc-label">Lessons</span><span class="toc-dot"></span></div>
+</nav>
 
 <nav class="nav" id="nav">
   <a href="index.html" class="nav-logo">
@@ -330,7 +412,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       <span class="l3">actually work</span>
     </h1>
 
-    <p class="sub rv">Rebuilding a Privileged Access Management product around real admin workflows. Seven months, four personas, 140 usability issues, and $800K in stalled deals unlocked post-launch.</p>
+    <p class="sub rv">Rebuilding a Privileged Access Management product around real admin workflows. Seven months, four personas, <span class="count-num" data-count="140">0</span> usability issues, and $800K in stalled deals unlocked post-launch.</p>
 
     <div class="meta-strip rv2 rv" style="margin-top:72px;">
       <div class="mi"><div class="ml">Client</div><div class="mv">miniOrange<br/>Enterprise Security</div></div>
@@ -341,13 +423,27 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 
   </div><!-- /w -->
   <div class="hero-img rv">
-    <img src="uploads/pam-banner.webp" alt="Before and after: Xecrify to miniOrange PAM redesign" />
+    <div class="ba-slider" id="baSlider">
+      <!-- before = old product -->
+      <img src="uploads/pam-problem.png" alt="Before: Xecrify PAM" style="width:100%;display:block;" />
+      <!-- after = new design, clipped -->
+      <div class="ba-after" id="baAfter">
+        <img src="uploads/pam-banner.webp" alt="After: miniOrange PAM redesign" />
+      </div>
+      <div class="ba-handle" id="baHandle">
+        <div class="ba-btn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M6 9H2m0 0 2.5-2.5M2 9l2.5 2.5M12 9h4m0 0-2.5-2.5M16 9l-2.5 2.5" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <span class="ba-label-before">Before</span>
+      <span class="ba-label-after">After</span>
+    </div>
   </div>
 </div>
 
 
 <!-- ════ § 01 — LIGHT ════ -->
-<div class="sec-lt">
+<div class="sec-lt" id="s-problem">
   <div class="w rv">
     <div class="sm"><span class="star">✦</span><span class="pill">The Problem</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
@@ -371,7 +467,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 
 
 <!-- ════ § 02 — DARK ════ -->
-<div class="sec-dk">
+<div class="sec-dk" id="s-research">
   <div class="w rv">
     <div class="sm"><span class="star">✦</span><span class="pill">Why It Mattered</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
@@ -398,7 +494,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 
 
 <!-- ════ § 03 PHASE 01 — LIGHT ════ -->
-<div class="sec-lt">
+<div class="sec-lt" id="s-solutions">
   <div class="w rv">
     <div class="sm"><span class="star">✦</span><span class="pill">How I Solved It</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
@@ -485,7 +581,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 
 
 <!-- ════ § 03 PHASE 03 — DARK ════ -->
-<div class="sec-dk">
+<div class="sec-dk" id="s-arch">
   <div class="w rv">
     <div class="sm"><span class="star">✦</span><span class="pill">Architecture</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
@@ -557,7 +653,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 
 
 <!-- ════ § 04 — LIGHT ════ -->
-<div class="sec-lt">
+<div class="sec-lt" id="s-outcome">
   <div class="w rv">
     <div class="sm"><span class="star">✦</span><span class="pill">Outcome</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
@@ -591,7 +687,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 
 
 <!-- ════ § 05 — DARK ════ -->
-<div class="sec-dk">
+<div class="sec-dk" id="s-lessons">
   <div class="w rv">
     <div class="sm"><span class="star">✦</span><span class="pill">Lessons</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:52px;">
@@ -645,18 +741,103 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 (function(){
   var sp = document.getElementById('sp');
   var nav = document.getElementById('nav');
+
+  /* ── Scroll progress + nav ── */
   window.addEventListener('scroll', function(){
     var s = document.documentElement;
     sp.style.width = Math.min((s.scrollTop||document.body.scrollTop)/(s.scrollHeight-s.clientHeight)*100,100)+'%';
     nav.classList.toggle('on', window.scrollY > 40);
   }, {passive:true});
+
+  /* ── Reveal on scroll ── */
   var io = new IntersectionObserver(function(e){
-    e.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
+    e.forEach(function(x){
+      if(x.isIntersecting){
+        x.target.classList.add('in');
+        io.unobserve(x.target);
+      }
+    });
   }, {threshold:.06, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
 
+  /* ── Counting number ── */
+  function animateCount(el){
+    var target = parseInt(el.dataset.count, 10);
+    var duration = 1200;
+    var start = null;
+    function step(ts){
+      if(!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if(progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var countIO = new IntersectionObserver(function(e){
+    e.forEach(function(x){
+      if(x.isIntersecting){
+        animateCount(x.target);
+        countIO.unobserve(x.target);
+      }
+    });
+  }, {threshold:.5});
+  document.querySelectorAll('.count-num').forEach(function(el){ countIO.observe(el); });
 
-  // Accordion
+  /* ── Before/After slider ── */
+  var slider = document.getElementById('baSlider');
+  if(slider){
+    var after = document.getElementById('baAfter');
+    var handle = document.getElementById('baHandle');
+    var dragging = false;
+
+    function setPos(x){
+      var rect = slider.getBoundingClientRect();
+      var pct = Math.max(5, Math.min(95, (x - rect.left) / rect.width * 100));
+      after.style.width = pct + '%';
+      handle.style.left = pct + '%';
+      // sync after image width so it doesn't stretch
+      var afterImg = after.querySelector('img');
+      afterImg.style.width = slider.offsetWidth + 'px';
+    }
+
+    // init at 50%
+    window.addEventListener('load', function(){
+      var afterImg = after.querySelector('img');
+      afterImg.style.width = slider.offsetWidth + 'px';
+    });
+
+    slider.addEventListener('mousedown', function(e){ dragging = true; setPos(e.clientX); e.preventDefault(); });
+    window.addEventListener('mousemove', function(e){ if(dragging) setPos(e.clientX); });
+    window.addEventListener('mouseup', function(){ dragging = false; });
+
+    slider.addEventListener('touchstart', function(e){ dragging = true; setPos(e.touches[0].clientX); }, {passive:true});
+    window.addEventListener('touchmove', function(e){ if(dragging) setPos(e.touches[0].clientX); }, {passive:true});
+    window.addEventListener('touchend', function(){ dragging = false; });
+  }
+
+  /* ── Section TOC pills ── */
+  var pills = document.querySelectorAll('.toc-pill');
+  var sections = [];
+  pills.forEach(function(p){
+    var el = document.getElementById(p.dataset.target);
+    if(el) sections.push({el:el, pill:p});
+    p.addEventListener('click', function(){
+      var el2 = document.getElementById(p.dataset.target);
+      if(el2) el2.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  var tocIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        sections.forEach(function(s){ s.pill.classList.toggle('active', s.el === entry.target); });
+      }
+    });
+  }, {threshold:.2, rootMargin:'-10% 0px -60% 0px'});
+  sections.forEach(function(s){ tocIO.observe(s.el); });
+
+  /* ── Accordion ── */
   document.querySelectorAll('.acc-hd').forEach(function(btn){
     btn.addEventListener('click', function(){
       var acc = btn.closest('.acc');
@@ -665,6 +846,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       btn.setAttribute('aria-expanded', String(!isOpen));
     });
   });
+
 })();
 </script>
 </body>
