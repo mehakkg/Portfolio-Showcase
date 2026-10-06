@@ -73,9 +73,8 @@ img{display:block;max-width:100%;}
   transition:border-color .3s;
 }
 .nav.on{border-bottom-color:var(--border);}
-.nav-logo{display:flex;align-items:center;gap:10px;}
-.nav-logo .dot{width:6px;height:6px;border-radius:50%;background:var(--ink);}
-.nav-logo img{height:24px;width:auto;opacity:.9;}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:600;letter-spacing:.01em;color:var(--ink);white-space:nowrap;text-decoration:none;}
+.nav-logo .dot{width:6px;height:6px;border-radius:50%;background:var(--ink);flex-shrink:0;}
 .nav-links{display:flex;gap:2px;align-items:center;font-size:14px;font-weight:500;}
 .nav-links a{padding:7px 14px;border-radius:999px;color:var(--ink-3);transition:color .2s;}
 .nav-links a:hover{color:var(--ink);}
@@ -83,7 +82,7 @@ img{display:block;max-width:100%;}
 .nav-links a.cta:hover{opacity:.82;}
 @media(max-width:700px){
   .nav{padding:14px clamp(16px,4vw,40px);}
-  .nav-logo img{height:20px;}
+  .nav-logo{font-size:16px;}
   .nav-links a:not(.cta){display:none;}
 }
 
@@ -404,7 +403,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 <nav class="nav" id="nav">
   <a href="index.html" class="nav-logo">
     <span class="dot"></span>
-    <img src="assets/logo.svg" alt="Mehak Garg" />
+    Mehak Garg
   </a>
   <div class="nav-links">
     <a href="index.html#work">Work</a>
