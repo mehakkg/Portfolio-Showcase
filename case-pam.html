@@ -30,7 +30,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth;}}
 body{
   font-family:var(--sans);
   background:var(--bg);
@@ -44,7 +44,7 @@ a{color:inherit;text-decoration:none;}
 img{display:block;max-width:100%;}
 
 /* ── Progress ── */
-.sp{position:fixed;top:0;left:0;height:2px;background:var(--ink);z-index:60;width:0;transition:width .1s linear;}
+.sp{position:fixed;top:0;left:0;height:2px;background:var(--ink);z-index:60;width:100%;transform:scaleX(0);transform-origin:left center;}
 
 /* ── Breadcrumb ── */
 .breadcrumb{
@@ -138,7 +138,7 @@ img{display:block;max-width:100%;}
 .sec-dk p:last-child{margin-bottom:0;}
 .sec-dk p strong{color:var(--wh);font-weight:600;}
 .sec-dk .lead{font-size:clamp(18px,1.7vw,22px);font-weight:500;color:var(--wh-2);max-width:56ch;line-height:1.6;margin-bottom:52px;}
-.sec-dk h3{font-weight:700;font-size:clamp(18px,2vw,24px);letter-spacing:-.02em;color:#F5F5F5;margin-bottom:16px;margin-top:64px;line-height:1.2;}
+.sec-dk h3{font-weight:700;font-size:clamp(18px,2vw,24px);letter-spacing:-.02em;color:#F5F5F5;margin-bottom:16px;margin-top:0;line-height:1.2;}
 
 /* ── Hero ── */
 .hero{background:var(--card);padding-top:clamp(140px,15vw,196px);padding-bottom:0;}
@@ -149,16 +149,23 @@ img{display:block;max-width:100%;}
 .hero h1 .l2{display:block;font-weight:400;color:var(--ink-3);letter-spacing:-.02em;}
 .hero h1 .l3{display:block;color:var(--ink);}
 .hero .sub{margin-top:28px;font-size:clamp(15px,1.3vw,18px);color:var(--ink-2);max-width:52ch;line-height:1.65;font-weight:400;}
-.meta-strip{margin-top:64px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);}
+.meta-strip{margin-top:64px;display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--border);}
 .mi{padding:24px 28px;border-right:1px solid var(--border);}
 .mi:last-child{border-right:none;}
 .mi .ml{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;}
 .mi .mv{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--ink);line-height:1.5;}
-@media(max-width:720px){
-  .meta-strip{grid-template-columns:1fr 1fr;border-left:1px solid var(--border);}
+@media(max-width:900px){
+  .meta-strip{grid-template-columns:repeat(3,1fr);border-left:1px solid var(--border);}
   .mi{border-bottom:1px solid var(--border);}
+  .mi:nth-child(3n){border-right:none;}
+  .mi:nth-last-child(-n+3){border-bottom:none;}
+}
+@media(max-width:600px){
+  .meta-strip{grid-template-columns:1fr 1fr;}
+  .mi:nth-child(3n){border-right:1px solid var(--border);}
   .mi:nth-child(even){border-right:none;}
   .mi:nth-last-child(-n+2){border-bottom:none;}
+  .mi{border-bottom:1px solid var(--border);}
 }
 .hero-img{margin-top:56px;position:relative;overflow:hidden;}
 .hero-img img{width:100%;display:block;}
@@ -167,7 +174,6 @@ img{display:block;max-width:100%;}
 .prob-img{margin-top:56px;position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
 .prob-img img{width:100%;display:block;}
 .prob-img .cap{padding:10px 20px;background:var(--card-2);border-top:1px solid var(--border);font-family:var(--mono);font-size:11px;letter-spacing:.07em;color:var(--ink-3);}
-
 
 /* ── Root cause grid ── */
 .cause-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:48px;}
@@ -210,7 +216,7 @@ img{display:block;max-width:100%;}
 .arch{margin-top:48px;display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.1);}
 .arch-row{display:grid;grid-template-columns:90px 1fr;gap:36px;padding:44px 0;border-bottom:1px solid rgba(255,255,255,.1);align-items:start;}
 .arch-n{font-family:var(--sans);font-weight:800;font-size:clamp(36px,5vw,72px);line-height:1;letter-spacing:-.04em;color:rgba(255,255,255,.12);}
-.arch-body h4{font-weight:700;font-size:clamp(18px,2vw,24px);letter-spacing:-.02em;color:#F5F5F5;margin-bottom:12px;line-height:1.2;}
+.arch-body h3{font-weight:700;font-size:clamp(18px,2vw,24px);letter-spacing:-.02em;color:#F5F5F5;margin-bottom:12px;line-height:1.2;margin-top:0;}
 .arch-body p{font-size:15px;color:var(--wh-2);line-height:1.75;max-width:64ch;margin-bottom:0;}
 @media(max-width:600px){.arch-row{grid-template-columns:1fr;gap:10px;}.arch-n{font-size:36px;}}
 .arch-img{margin-top:28px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);max-width:320px;}
@@ -237,13 +243,6 @@ img{display:block;max-width:100%;}
 .proto-url{margin-top:14px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-3);}
 .proto-url a{color:var(--ink);transition:opacity .2s;}
 .proto-url a:hover{opacity:.6;}
-
-/* ── $800K stat ── */
-.stat-s{background:var(--dk);padding:120px var(--pad);text-align:center;position:relative;}
-.stat-label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--wh-3);margin-bottom:24px;}
-.stat-num{font-family:var(--sans);font-weight:800;font-size:clamp(72px,18vw,220px);line-height:.9;letter-spacing:-.05em;color:#F5F5F5;}
-.stat-num .sc{color:var(--wh-2);}
-.stat-sub{margin-top:24px;font-size:clamp(15px,1.4vw,18px);color:var(--wh-2);max-width:50ch;margin-left:auto;margin-right:auto;line-height:1.6;}
 
 /* ── Outcome columns ── */
 .oc{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px;}
@@ -280,39 +279,49 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 @media(max-width:800px){.foot{grid-template-columns:1fr 1fr;}}
 @media(max-width:500px){.foot{grid-template-columns:1fr;}}
 
-/* ── Accordion ── */
-.acc-list{margin-top:48px;display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;}
-.acc{}
-.acc+.acc{border-top:1px solid var(--border);}
-.acc-hd{
-  width:100%;display:flex;align-items:center;gap:20px;
-  padding:28px 32px;background:var(--card);border:none;cursor:pointer;
-  text-align:left;transition:background .2s;
-}
-.acc-hd:hover{background:var(--card-2);}
-.acc.open .acc-hd{background:var(--card-2);}
-.acc-num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-3);flex-shrink:0;}
-.acc-title{font-family:var(--sans);font-size:clamp(16px,1.6vw,20px);font-weight:700;color:var(--ink);letter-spacing:-.015em;flex:1;}
-.acc-icon{flex-shrink:0;color:var(--ink-3);transition:transform .35s var(--ease);}
-.acc.open .acc-icon{transform:rotate(180deg);}
-.acc-body{
-  overflow:hidden;
-  max-height:0;
-  transition:max-height .5s var(--ease);
-}
-.acc.open .acc-body{max-height:4000px;}
-.acc-body-inner{padding:0 32px 40px;}
-.acc-body-inner>p:first-child{padding-top:8px;}
-
-/* ── Reveal ── */
-.rv{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
-.rv.in{opacity:1;transform:none;}
-.rv2>*{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+/* ── Reveal — initial state set by CSS; Motion drives the animation ── */
+.rv{opacity:0;transform:translateY(24px);}
+.rv.in{opacity:1;transform:none;}  /* CSS fallback if module fails */
+.rv2>*{opacity:0;transform:translateY(18px);}
 .rv2.in>*{opacity:1;transform:none;}
-.rv2.in>*:nth-child(1){transition-delay:.04s;}
-.rv2.in>*:nth-child(2){transition-delay:.10s;}
-.rv2.in>*:nth-child(3){transition-delay:.16s;}
-.rv2.in>*:nth-child(4){transition-delay:.22s;}
+
+/* ── Root cause sticky layout ── */
+.rc-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-top:48px;}
+.rc-sticky{position:sticky;top:130px;}
+.rc-screenshot-wrap{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+.rc-screenshot-wrap img{width:100%;display:block;}
+.rc-outline{
+  position:absolute;border:2px solid rgba(250,195,0,.95);border-radius:3px;
+  pointer-events:none;opacity:0;
+  box-shadow:0 0 0 9999px rgba(0,0,0,.38);
+}
+.rc-outline-num{
+  position:absolute;top:-20px;left:-2px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
+  background:rgba(250,195,0,.95);color:#000;
+  padding:2px 6px;border-radius:3px 3px 0 0;line-height:1.5;
+}
+@media(max-width:900px){
+  .rc-layout{grid-template-columns:1fr;}
+  .rc-sticky{display:none;}
+}
+
+/* ── Nav reorganization demo ── */
+.nav-demo{margin-top:40px;border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;background:#0D0D0D;}
+.nav-demo-bar{padding:10px 16px;background:rgba(0,0,0,.4);border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.nav-demo-bar span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--wh-3);}
+.nav-demo-toggle{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:5px 14px;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.nav-demo-toggle:hover{background:rgba(255,255,255,.18);}
+.nav-demo-toggle:focus-visible{outline:2px solid rgba(255,255,255,.5);outline-offset:2px;}
+.nav-demo-body{display:grid;grid-template-columns:190px 1fr;height:300px;}
+.nav-demo-rail{padding:12px 0;border-right:1px solid rgba(255,255,255,.07);overflow:hidden;position:relative;}
+.nav-demo-item{padding:7px 20px;font-size:13px;color:rgba(255,255,255,.5);cursor:default;white-space:nowrap;display:block;position:relative;}
+.nav-demo-item.active{color:#fff;background:rgba(255,255,255,.07);}
+.nav-demo-group-label{padding:3px 12px 2px;margin-top:8px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.nav-demo-item.sub{padding-left:24px;font-size:12px;}
+.nav-demo-content{padding:20px 24px;display:flex;align-items:center;justify-content:center;}
+.nav-demo-hint{font-family:var(--mono);font-size:12px;letter-spacing:.07em;color:rgba(255,255,255,.3);text-align:center;line-height:1.7;}
+@media(max-width:600px){.nav-demo{display:none;}}
 
 /* ── Before/After slider ── */
 .ba-slider{position:relative;overflow:hidden;user-select:none;touch-action:none;cursor:col-resize;aspect-ratio:16/9;background:#111;}
@@ -350,54 +359,164 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 .ba-label-before{left:16px;}
 .ba-label-after{right:16px;}
 
-/* ── Sticky section pills ── */
-.toc-pills{
-  position:fixed;right:24px;top:50%;transform:translateY(-50%);
-  display:flex;flex-direction:column;gap:8px;z-index:40;
-}
-.toc-pill{
-  display:flex;align-items:center;gap:8px;
-  cursor:pointer;opacity:.4;transition:opacity .3s;
-  flex-direction:row-reverse;
-}
-.toc-pill:hover{opacity:.8;}
-.toc-pill.active{opacity:1;}
-.toc-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--ink);transition:transform .3s var(--ease),background .3s;
-}
-.toc-pill.active .toc-dot{transform:scale(1.5);}
-.toc-label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink);background:var(--card);
-  padding:4px 10px;border-radius:999px;border:1px solid var(--border);
-  white-space:nowrap;
-  opacity:0;transform:translateX(6px);
-  transition:opacity .2s,transform .2s;
-  pointer-events:none;
-}
-.toc-pill:hover .toc-label,.toc-pill.active .toc-label{opacity:1;transform:none;}
-@media(max-width:900px){.toc-pills{display:none;}}
-
 /* ── Cause card hover lift ── */
 .cause{transition:background .25s,transform .3s var(--ease),box-shadow .3s var(--ease);}
 .cause:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.08);}
 
 /* ── Counting number ── */
 .count-num{display:inline-block;font-variant-numeric:tabular-nums;}
+
+/* ── Case study template ── */
+
+/* Placeholder highlight */
+.placeholder{background:rgba(250,195,0,.38);border-radius:3px;padding:0 4px;color:var(--ink);}
+
+/* Eyebrow above H1 */
+.cs-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:32px;
+}
+
+/* Hero image caption */
+.cs-hero-cap{
+  padding:12px clamp(16px,3vw,40px);
+  font-family:var(--mono);font-size:11px;letter-spacing:.07em;
+  color:var(--ink-3);background:var(--card);border-top:1px solid var(--border);
+}
+
+/* TLDR block */
+.cs-tldr{padding:64px 0;}
+.cs-tldr-tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-3);border-bottom:1px solid var(--border);
+  padding-bottom:16px;margin-bottom:32px;
+}
+.cs-tldr-dl{
+  display:grid;grid-template-columns:1fr 1fr;
+  border:1px solid var(--border);border-radius:14px;overflow:hidden;
+}
+.cs-tldr-item{
+  padding:24px 28px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.cs-tldr-item:nth-child(2n){border-right:none;}
+.cs-tldr-item:nth-last-child(-n+2){border-bottom:none;}
+.cs-tldr-item dt{
+  font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:8px;
+}
+.cs-tldr-item dd{font-size:15px;color:var(--ink);font-weight:500;line-height:1.55;}
+@media(max-width:540px){
+  .cs-tldr-dl{grid-template-columns:1fr;}
+  .cs-tldr-item{border-right:none;}
+  .cs-tldr-item:nth-last-child(-n+2){border-bottom:1px solid var(--border);}
+  .cs-tldr-item:last-child{border-bottom:none;}
+}
+
+/* Left section nav */
+.cs-section-nav{
+  position:fixed;left:clamp(12px,1.8vw,24px);top:50%;transform:translateY(-50%);
+  z-index:40;
+}
+.cs-section-nav ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.cs-section-nav a{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);padding:3px 0;display:block;
+  white-space:nowrap;transition:color .2s,opacity .2s;
+  opacity:.45;
+}
+.cs-section-nav a:hover{opacity:.85;color:var(--ink);}
+.cs-section-nav a.active{opacity:1;color:var(--ink);font-weight:700;}
+@media(max-width:1024px){.cs-section-nav{display:none;}}
+
+/* Numbered cause list */
+.cs-cause-ol{
+  list-style:none;margin-top:40px;
+  border:1px solid var(--border);border-radius:14px;overflow:hidden;
+}
+.cs-cause-ol li{
+  display:grid;grid-template-columns:60px 1fr;
+  border-bottom:1px solid var(--border);
+  background:var(--card);transition:background .2s;
+}
+.cs-cause-ol li:last-child{border-bottom:none;}
+.cs-cause-ol li:hover{background:var(--card-2);}
+.cs-cause-num{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-3);
+  padding:24px 0 24px 24px;border-right:1px solid var(--border);
+  display:flex;align-items:flex-start;flex-shrink:0;
+}
+.cs-cause-text{padding:24px 28px;font-size:15px;line-height:1.7;color:var(--ink-2);}
+.cs-cause-text strong{color:var(--ink);}
+@media(max-width:500px){
+  .cs-cause-ol li{grid-template-columns:44px 1fr;}
+  .cs-cause-num{padding:18px 0 18px 14px;}
+  .cs-cause-text{padding:18px 18px;}
+}
+
+/* Inline pull text */
+.cs-pull-text{
+  margin-top:52px;
+  font-size:clamp(20px,2.5vw,30px);font-weight:700;
+  letter-spacing:-.025em;line-height:1.25;
+  color:var(--ink);max-width:28ch;
+}
+
+/* Figure + caption */
+.cs-fig{margin-top:28px;}
+.cs-fig-cap{
+  margin-top:12px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.07em;color:var(--ink-3);line-height:1.5;
+}
+
+/* Inline outcome stat */
+.cs-stat{margin-bottom:72px;}
+.cs-stat-label{
+  display:block;font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:16px;
+}
+.cs-stat-num{
+  font-family:var(--sans);font-weight:800;
+  font-size:clamp(72px,14vw,180px);line-height:.9;
+  letter-spacing:-.05em;color:var(--ink);
+}
+.cs-stat-sub{
+  margin-top:20px;font-size:clamp(15px,1.4vw,18px);
+  color:var(--ink-2);max-width:52ch;line-height:1.6;
+}
+
+/* Ending block */
+.cs-ending{padding:80px 0;}
+.cs-closing{
+  font-size:clamp(20px,2.5vw,32px);font-weight:700;
+  letter-spacing:-.025em;line-height:1.3;
+  max-width:30ch;color:var(--ink);margin-bottom:40px;
+}
+.cs-back{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-2);border:1px solid var(--border);border-radius:999px;
+  padding:10px 22px;transition:color .2s,border-color .2s;
+}
+.cs-back:hover{color:var(--ink);border-color:var(--ink);}
 </style>
+<noscript><style>.rv,.rv2>*{opacity:1!important;transform:none!important;}</style></noscript>
 </head>
 <body>
 
 <div class="sp" id="sp"></div>
 
-<!-- Section TOC pills -->
-<nav class="toc-pills" id="tocPills" aria-label="Page sections">
-  <div class="toc-pill" data-target="s-problem"><span class="toc-label">Problem</span><span class="toc-dot"></span></div>
-  <div class="toc-pill" data-target="s-solutions"><span class="toc-label">Solutions</span><span class="toc-dot"></span></div>
-  <div class="toc-pill" data-target="s-arch"><span class="toc-label">Architecture</span><span class="toc-dot"></span></div>
-  <div class="toc-pill" data-target="s-outcome"><span class="toc-label">Outcome</span><span class="toc-dot"></span></div>
-  <div class="toc-pill" data-target="s-lessons"><span class="toc-label">Lessons</span><span class="toc-dot"></span></div>
+<!-- Left section nav -->
+<nav class="cs-section-nav" id="csNav" aria-label="Page sections">
+  <ul>
+    <li><a href="#s-problem">Problem</a></li>
+    <li><a href="#s-audit">Audit</a></li>
+    <li><a href="#s-prio">Prioritization</a></li>
+    <li><a href="#s-arch">Architecture</a></li>
+    <li><a href="#s-proto">Prototype</a></li>
+    <li><a href="#s-edge">Edge case</a></li>
+    <li><a href="#s-outcome">Outcome</a></li>
+    <li><a href="#s-lessons">Lessons</a></li>
+  </ul>
 </nav>
 
 <nav class="nav" id="nav">
@@ -421,13 +540,10 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 </div>
 
 
-<!-- ════ HERO — DARK ════ -->
+<!-- ════ HERO ════ -->
 <div class="hero">
   <div class="w">
-    <div class="hero-badge rv">
-      <span class="live"></span>
-      miniOrange · PAM · 2024–Present
-    </div>
+    <div class="cs-eyebrow rv">Privileged Access Management · miniOrange</div>
 
     <h1 class="rv">
       <span class="l1">Rebuilding PAM</span>
@@ -435,23 +551,24 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       <span class="l3">actually work</span>
     </h1>
 
-    <p class="sub rv">Rebuilding a Privileged Access Management product around real admin workflows. Seven months, four personas, <span class="count-num" data-count="140">0</span> usability issues, and $800K in stalled deals unlocked post-launch.</p>
+    <p class="sub rv">Seven months rebuilding the system that was losing $800K in enterprise deals — not the screens, the structure.</p>
 
     <div class="meta-strip rv2 rv" style="margin-top:72px;">
-      <div class="mi"><div class="ml">Client</div><div class="mv">miniOrange<br/>Enterprise Security</div></div>
+      <div class="mi"><div class="ml">Duration</div><div class="mv">7 months · 2024–Present</div></div>
       <div class="mi"><div class="ml">Role</div><div class="mv">Sr. Product Designer<br/>Design Lead</div></div>
-      <div class="mi"><div class="ml">Timeline</div><div class="mv">2024 to Present</div></div>
+      <div class="mi"><div class="ml">Users</div><div class="mv">Security admins<br/>IT ops · Compliance</div></div>
+      <div class="mi"><div class="ml">Status</div><div class="mv">Shipped · Live</div></div>
+      <div class="mi"><div class="ml">Client</div><div class="mv">miniOrange<br/>Enterprise Security</div></div>
       <div class="mi"><div class="ml">Team</div><div class="mv">2 PMs · 40 Engineers<br/>1 Product Designer</div></div>
     </div>
 
   </div><!-- /w -->
+
   <div class="hero-img rv">
     <div class="ba-slider" id="baSlider">
-      <!-- before = old Xecrify dashboard -->
-      <img src="uploads/pam-before.webp" alt="Before: Xecrify PAM" />
-      <!-- after = new miniOrange PAM -->
+      <img src="uploads/pam-before.webp" alt="Before: Xecrify PAM dashboard — the original product before redesign" />
       <div class="ba-after" id="baAfter">
-        <img src="uploads/pam-after.webp" alt="After: miniOrange PAM redesign" />
+        <img src="uploads/pam-after.webp" alt="After: miniOrange PAM redesign — new information architecture organised by admin intent" />
       </div>
       <div class="ba-handle" id="baHandle">
         <div class="ba-btn">
@@ -461,14 +578,50 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       <span class="ba-label-before">Before</span>
       <span class="ba-label-after">After</span>
     </div>
+    <div class="cs-hero-cap">Before (Xecrify PAM) vs. After (miniOrange PAM redesign) — drag the handle left or right to compare</div>
   </div>
 </div>
 
 
-<!-- ════ § 01 — LIGHT ════ -->
+<!-- ════ TLDR ════ -->
+<div class="sec-lt cs-tldr">
+  <div class="w rv">
+    <div class="cs-tldr-tag">TLDR</div>
+    <dl class="cs-tldr-dl">
+      <div class="cs-tldr-item">
+        <dt>Problem</dt>
+        <dd>Competitive on paper, stalling in the POC every time.</dd>
+      </div>
+      <div class="cs-tldr-item">
+        <dt>Approach</dt>
+        <dd>A scenario based audit of ten real admin scenarios across four personas.</dd>
+      </div>
+      <div class="cs-tldr-item">
+        <dt>Result</dt>
+        <dd>$800K in new PAM sales the quarter post-launch. Deals that stalled at POC started closing.</dd>
+      </div>
+      <div class="cs-tldr-item">
+        <dt>Status</dt>
+        <dd>Shipped and live in production.</dd>
+      </div>
+    </dl>
+  </div>
+</div>
+
+
+<!-- ════ OPENING PULL LINE ════ -->
+<div class="pull rv">
+  <blockquote>
+    <span class="qw">The product was fine.</span>
+    <span class="qg">Getting started</span>
+    <span class="qc">wasn't.</span>
+  </blockquote>
+</div>
+
+
+<!-- ════ PROBLEM ════ -->
 <div class="sec-lt" id="s-problem">
   <div class="w rv">
-    <div class="sm"><span class="star">✦</span><span class="pill">The Problem</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
       <span class="t1">Competitive on paper,</span>
       <span class="t2">stalling in the POC</span>
@@ -483,162 +636,138 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
     <p>The pieces were all there. Nothing held them together.</p>
 
     <div class="prob-img rv">
-      <img src="uploads/pam-problem.png" alt="The original Xecrify product — annotated with key UX failures" />
+      <img src="uploads/pam-problem.png" alt="The original Xecrify product — annotated with key UX failures across navigation, terminology, workflow continuity and error handling" />
       <div class="cap">The original product. Productivity, Security Risk, Compliance, and Continuity all suffering from the same root cause.</div>
     </div>
   </div>
 </div>
 
 
-<!-- ════ § 03 PHASE 01 — LIGHT ════ -->
-<div class="sec-lt" id="s-solutions">
+<!-- ════ AUDIT ════ -->
+<div class="sec-lt" id="s-audit">
   <div class="w rv">
-    <div class="sm"><span class="star">✦</span><span class="pill">How I Solved It</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
-      <span class="t1">Systems</span>
-      <span class="t2">thinking</span>
+      <span class="t1">I audited ten real</span>
+      <span class="t2">admin scenarios and found</span>
+      <span class="t3">four root causes</span>
     </h2>
 
     <p class="lead">The instinct on a project like this is to pick the worst screens and redesign them. I pushed back on that for two weeks, because I was fairly sure that redesigning individual screens would just move the confusion around rather than resolve it.</p>
+    <p>I ran a scenario-driven UX audit across the existing product first. Not happy-path click-throughs. Real operational scenarios pulled from CS call recordings and support tickets: new admin onboarding, break glass elevation during a Sev 1, credential rotation across 200+ accounts, engineer offboarding, and audit log review the morning before a compliance call.</p>
+    <p>Ten scenarios across four personas surfaced <span class="count-num" data-count="140">0</span> discrete usability issues, which clustered into four systemic root causes. The audit took three weeks and was the most leveraged work on the project.</p>
 
-    <div class="acc-list">
-
-      <!-- Phase 01 -->
-      <div class="acc open">
-        <button class="acc-hd" aria-expanded="true">
-          <span class="acc-num">01</span>
-          <span class="acc-title">Diagnose before designing</span>
-          <span class="acc-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-        </button>
-        <div class="acc-body">
-          <div class="acc-body-inner">
-          <p>I ran a scenario-driven UX audit across the existing product first. Not happy-path click-throughs. Real operational scenarios pulled from CS call recordings and support tickets: new admin onboarding, break glass elevation during a Sev 1, credential rotation across 200+ accounts, engineer offboarding, and audit log review the morning before a compliance call.</p>
-          <p>Ten scenarios across four personas surfaced <span class="count-num" data-count="140">0</span> discrete usability issues, which clustered into four systemic root causes. The audit took three weeks and was the most leveraged work on the project.</p>
-
-          <div class="cause-grid">
-            <div class="cause">
-              <div class="cn">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
-                Root cause 01
-              </div>
-              <h4>Fragmented information architecture</h4>
-              <p>14 flat nav items, no task-based grouping. Admins had to know the product's internal object model to find anything.</p>
-            </div>
-            <div class="cause">
-              <div class="cn">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M2 4h10M2 7h7M2 10h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-                Root cause 02
-              </div>
-              <h4>Broken domain terminology</h4>
-              <p>Object names didn't match the mental model of any persona. New admins spent their first week translating the interface before using it.</p>
-            </div>
-            <div class="cause">
-              <div class="cn">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Root cause 03
-              </div>
-              <h4>No workflow continuity</h4>
-              <p>Critical paths like JIT, approvals, and break glass either didn't exist or required jumping between disconnected sections.</p>
-            </div>
-            <div class="cause">
-              <div class="cn">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M7 4.5v3l1.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Root cause 04
-              </div>
-              <h4>Silent failure states</h4>
-              <p>Errors weren't surfaced. Discovery found data but didn't guide action. Admins couldn't tell what broke or what to do next.</p>
-            </div>
+    <div class="rc-layout">
+      <div class="rc-sticky" aria-hidden="true">
+        <div class="rc-screenshot-wrap">
+          <img src="uploads/pam-problem.png" alt="" />
+          <div class="rc-outline" id="rcOutline">
+            <span class="rc-outline-num" id="rcOutlineNum"></span>
           </div>
-
-          <p style="margin-top:48px;color:var(--ink);font-weight:600;">The ten audit scenarios</p>
-          <div class="sc-grid">
-            <div class="sc crit">
-              <div class="sn"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-right:4px;"><path d="M5.5 1L6.8 4.2H10.2L7.4 6.3L8.5 9.5L5.5 7.5L2.5 9.5L3.6 6.3L.8 4.2H4.2Z" fill="currentColor"/></svg>SC.01</div>
-              <div class="st">New admin onboarding, day one</div><div class="sp-">Security Admin</div>
-            </div>
-            <div class="sc crit">
-              <div class="sn"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-right:4px;"><path d="M5.5 1L6.8 4.2H10.2L7.4 6.3L8.5 9.5L5.5 7.5L2.5 9.5L3.6 6.3L.8 4.2H4.2Z" fill="currentColor"/></svg>SC.02</div>
-              <div class="st">Break glass elevation, Sev 1</div><div class="sp-">IT Operations</div>
-            </div>
-            <div class="sc"><div class="sn">SC.03</div><div class="st">Credential rotation, 200+ accounts</div><div class="sp-">Security Admin</div></div>
-            <div class="sc"><div class="sn">SC.04</div><div class="st">Engineer offboarding</div><div class="sp-">IT Operations</div></div>
-            <div class="sc"><div class="sn">SC.05</div><div class="st">90-day audit log walkthrough</div><div class="sp-">Compliance Officer</div></div>
-            <div class="sc"><div class="sn">SC.06</div><div class="st">JIT access request, DevOps</div><div class="sp-">DevOps / SysAdmin</div></div>
-            <div class="sc"><div class="sn">SC.07</div><div class="st">RBAC policy creation</div><div class="sp-">Security Admin</div></div>
-            <div class="sc"><div class="sn">SC.08</div><div class="st">Discovery to inventory pipeline</div><div class="sp-">IT Operations</div></div>
-            <div class="sc"><div class="sn">SC.09</div><div class="st">Session recording review</div><div class="sp-">Compliance Officer</div></div>
-            <div class="sc"><div class="sn">SC.10</div><div class="st">MFA integration setup</div><div class="sp-">Security Admin</div></div>
-          </div>
-          <p style="margin-top:10px;font-size:12px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.06em;">SC.01 and SC.02 are deal-breaker scenarios</p>
-          </div><!-- /acc-body-inner -->
         </div>
       </div>
-
-      <!-- Phase 02 -->
-      <div class="acc open">
-        <button class="acc-hd" aria-expanded="true">
-          <span class="acc-num">02</span>
-          <span class="acc-title">A binary prioritization filter</span>
-          <span class="acc-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-        </button>
-        <div class="acc-body">
-          <div class="acc-body-inner">
-          <p>The PM wanted Kano. The eng lead wanted RICE. We'd run two prioritization frameworks in the previous quarter, gotten different outputs each time, and still had no alignment on what to build next. I suggested something blunter.</p>
-          <p>I identified five deal-breaker capabilities: the features that, if absent or broken, would lose an enterprise deal regardless of everything else. Vault &amp; Rotation. Discovery &amp; Inventory. Session Proxying &amp; Recording. Access Governance. Integrations &amp; Auditability. Then one binary question for every backlog item: <strong>does this directly strengthen one of those five, or not?</strong></p>
-          <p>A meaningful slice of the backlog was deferred in two days. Three sprints in, the PM called it the most useful prioritization tool we'd used on the product.</p>
-
-          <div class="dbt">
-            <div class="dbt-head"><div>Feature proposal</div><div>Outcome</div></div>
-            <div class="dbt-row">
-              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Credential vaulting with rotation</div>
-              <div class="dbt-cell"><span class="pri">Prioritized</span> · Vault &amp; Rotation</div>
-            </div>
-            <div class="dbt-row">
-              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Session recording + OCR</div>
-              <div class="dbt-cell"><span class="pri">Prioritized</span> · Session Proxying &amp; Recording</div>
-            </div>
-            <div class="dbt-row">
-              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>JIT access with approval workflow</div>
-              <div class="dbt-cell"><span class="pri">Prioritized</span> · Access Governance</div>
-            </div>
-            <div class="dbt-row">
-              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Resource discovery + inventory</div>
-              <div class="dbt-cell"><span class="pri">Prioritized</span> · Discovery &amp; Inventory</div>
-            </div>
-            <div class="dbt-row">
-              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#D0D0D0" stroke-width="1.2"/></svg><span class="strike">Custom dashboard theming</span></div>
-              <div class="dbt-cell"><span class="def">Deferred</span> · No deal-breaker relevance</div>
-            </div>
-            <div class="dbt-row">
-              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#D0D0D0" stroke-width="1.2"/></svg><span class="strike">Mobile app for session review</span></div>
-              <div class="dbt-cell"><span class="def">Deferred</span> · No deal-breaker relevance</div>
-            </div>
-            <div class="dbt-row">
-              <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#D0D0D0" stroke-width="1.2"/></svg><span class="strike">Slack bot notifications</span></div>
-              <div class="dbt-cell"><span class="def">Deferred</span> · No deal-breaker relevance</div>
-            </div>
-          </div>
-          </div><!-- /acc-body-inner -->
-        </div>
+      <div>
+        <ol class="cs-cause-ol rv">
+          <li data-hotspot="2,8,26,86">
+            <span class="cs-cause-num">01</span>
+            <span class="cs-cause-text"><strong>Fragmented information architecture.</strong> 14 flat nav items, no task-based grouping. Admins had to know the product's internal object model to find anything.</span>
+          </li>
+          <li data-hotspot="30,5,68,38">
+            <span class="cs-cause-num">02</span>
+            <span class="cs-cause-text"><strong>Broken domain terminology.</strong> Object names didn't match the mental model of any persona. New admins spent their first week translating the interface before using it.</span>
+          </li>
+          <li data-hotspot="30,48,68,38">
+            <span class="cs-cause-num">03</span>
+            <span class="cs-cause-text"><strong>No workflow continuity.</strong> Critical paths like JIT, approvals, and break glass either didn't exist or required jumping between disconnected sections.</span>
+          </li>
+          <li data-hotspot="30,22,68,58">
+            <span class="cs-cause-num">04</span>
+            <span class="cs-cause-text"><strong>Silent failure states.</strong> Errors weren't surfaced. Discovery found data but didn't guide action. Admins couldn't tell what broke or what to do next.</span>
+          </li>
+        </ol>
       </div>
+    </div>
 
-    </div><!-- /acc-list -->
+    <p style="margin-top:56px;color:var(--ink);font-weight:600;">The ten audit scenarios</p>
+    <div class="sc-grid">
+      <div class="sc crit">
+        <div class="sn"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-right:4px;"><path d="M5.5 1L6.8 4.2H10.2L7.4 6.3L8.5 9.5L5.5 7.5L2.5 9.5L3.6 6.3L.8 4.2H4.2Z" fill="currentColor"/></svg>SC.01</div>
+        <div class="st">New admin onboarding, day one</div><div class="sp-">Security Admin</div>
+      </div>
+      <div class="sc crit">
+        <div class="sn"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-right:4px;"><path d="M5.5 1L6.8 4.2H10.2L7.4 6.3L8.5 9.5L5.5 7.5L2.5 9.5L3.6 6.3L.8 4.2H4.2Z" fill="currentColor"/></svg>SC.02</div>
+        <div class="st">Break glass elevation, Sev 1</div><div class="sp-">IT Operations</div>
+      </div>
+      <div class="sc"><div class="sn">SC.03</div><div class="st">Credential rotation, 200+ accounts</div><div class="sp-">Security Admin</div></div>
+      <div class="sc"><div class="sn">SC.04</div><div class="st">Engineer offboarding</div><div class="sp-">IT Operations</div></div>
+      <div class="sc"><div class="sn">SC.05</div><div class="st">90-day audit log walkthrough</div><div class="sp-">Compliance Officer</div></div>
+      <div class="sc"><div class="sn">SC.06</div><div class="st">JIT access request, DevOps</div><div class="sp-">DevOps / SysAdmin</div></div>
+      <div class="sc"><div class="sn">SC.07</div><div class="st">RBAC policy creation</div><div class="sp-">Security Admin</div></div>
+      <div class="sc"><div class="sn">SC.08</div><div class="st">Discovery to inventory pipeline</div><div class="sp-">IT Operations</div></div>
+      <div class="sc"><div class="sn">SC.09</div><div class="st">Session recording review</div><div class="sp-">Compliance Officer</div></div>
+      <div class="sc"><div class="sn">SC.10</div><div class="st">MFA integration setup</div><div class="sp-">Security Admin</div></div>
+    </div>
+    <p style="margin-top:10px;font-size:12px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.06em;">SC.01 and SC.02 are deal-breaker scenarios</p>
+
+    <p class="cs-pull-text rv">140 issues. Four root causes. The problem was never the screens.</p>
   </div>
 </div>
 
 
-<!-- ════ § 03 PHASE 03 — DARK ════ -->
+<!-- ════ PRIORITIZATION ════ -->
+<div class="sec-lt" id="s-prio">
+  <div class="w rv">
+    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
+      <span class="t1">One filter</span>
+      <span class="t2">decided what</span>
+      <span class="t3">shipped</span>
+    </h2>
+
+    <p class="lead">The PM wanted Kano. The eng lead wanted RICE. We'd run two prioritization frameworks in the previous quarter, gotten different outputs each time, and still had no alignment on what to build next. I suggested something blunter.</p>
+    <p>I identified five deal-breaker capabilities: the features that, if absent or broken, would lose an enterprise deal regardless of everything else. Vault &amp; Rotation. Discovery &amp; Inventory. Session Proxying &amp; Recording. Access Governance. Integrations &amp; Auditability. Then one binary question for every backlog item: <strong>does this directly strengthen one of those five, or not?</strong></p>
+    <p>A meaningful slice of the backlog was deferred in two days. Three sprints in, the PM called it the most useful prioritization tool we'd used on the product.</p>
+
+    <div class="dbt rv">
+      <div class="dbt-head"><div>Feature proposal</div><div>Outcome</div></div>
+      <div class="dbt-row">
+        <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Credential vaulting with rotation</div>
+        <div class="dbt-cell"><span class="pri">Prioritized</span> · Vault &amp; Rotation</div>
+      </div>
+      <div class="dbt-row">
+        <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Session recording + OCR</div>
+        <div class="dbt-cell"><span class="pri">Prioritized</span> · Session Proxying &amp; Recording</div>
+      </div>
+      <div class="dbt-row">
+        <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>JIT access with approval workflow</div>
+        <div class="dbt-cell"><span class="pri">Prioritized</span> · Access Governance</div>
+      </div>
+      <div class="dbt-row">
+        <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9E9E9E" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#9E9E9E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Resource discovery + inventory</div>
+        <div class="dbt-cell"><span class="pri">Prioritized</span> · Discovery &amp; Inventory</div>
+      </div>
+      <div class="dbt-row">
+        <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#D0D0D0" stroke-width="1.2"/></svg><span class="strike">Custom dashboard theming</span></div>
+        <div class="dbt-cell"><span class="def">Deferred</span> · No deal-breaker relevance</div>
+      </div>
+      <div class="dbt-row">
+        <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#D0D0D0" stroke-width="1.2"/></svg><span class="strike">Mobile app for session review</span></div>
+        <div class="dbt-cell"><span class="def">Deferred</span> · No deal-breaker relevance</div>
+      </div>
+      <div class="dbt-row">
+        <div class="dbt-cell"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0;"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#D0D0D0" stroke-width="1.2"/></svg><span class="strike">Slack bot notifications</span></div>
+        <div class="dbt-cell"><span class="def">Deferred</span> · No deal-breaker relevance</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════ ARCHITECTURE ════ -->
 <div class="sec-dk" id="s-arch">
   <div class="w rv">
-    <div class="sm"><span class="star">✦</span><span class="pill">Architecture</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
-      <span class="t1">Redesign the system,</span>
-      <span class="t2">not the screens</span>
-      <span class="t3">one by one</span>
+      <span class="t1">Redesigned</span>
+      <span class="t2">the system</span>
+      <span class="t3"></span>
     </h2>
 
     <p class="lead">Three architectural decisions that changed what the product felt like to use, not just what it looked like.</p>
@@ -647,40 +776,54 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       <div class="arch-row">
         <div class="arch-n">01</div>
         <div class="arch-body">
-          <h4>Organize by admin intent, not object type</h4>
+          <h3>Organize by admin intent, not object type</h3>
           <p>The original nav was organized by database object: System Users, Groups, Certificates, Resources, Policies. The redesign organizes by what the admin is trying to do: Overview, Setup, Access Control, Security Ops, Identity Config. Break glass lives under Security Ops. A new admin can find it on day one without opening the docs.</p>
+          <div class="nav-demo" id="navDemo" aria-label="Navigation reorganization demo">
+            <div class="nav-demo-bar">
+              <span id="navDemoLabel">Before: organized by object</span>
+              <button class="nav-demo-toggle" id="navDemoToggle">Reorganize →</button>
+            </div>
+            <div class="nav-demo-body">
+              <div class="nav-demo-rail" id="navDemoRail" role="list" aria-label="Navigation items"></div>
+              <div class="nav-demo-content">
+                <p class="nav-demo-hint">14 flat items<br/>→ 5 intent groups</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="arch-row">
         <div class="arch-n">02</div>
         <div class="arch-body">
-          <h4>Workflow continuity within the resource</h4>
+          <h3>Workflow continuity within the resource</h3>
           <p>Credential reconciliation was previously a multi-page workflow across four screens. During a 2am incident, that was genuinely dangerous. I embedded it inline in the credential tab: mismatch status surfaces next to the credential record with a single-action resolution. The tabbed resource workspace (Credentials, Policy, Access, Sessions, Audit) all scope to the resource the admin is working on, so they never lose their place.</p>
-          <div class="arch-img arch-img-duo">
-            <img src="uploads/pam-resource-list.webp" alt="Resource list view" />
-            <img src="uploads/pam-resource-detail.webp" alt="Tabbed resource detail — workflow continuity" />
-          </div>
+          <figure class="cs-fig">
+            <div class="arch-img arch-img-duo">
+              <img src="uploads/pam-resource-list.webp" alt="Resource list view showing all managed resources in a single workspace" />
+              <img src="uploads/pam-resource-detail.webp" alt="Tabbed resource detail — Credentials, Policy, Access, Sessions and Audit tabs all scoped to one resource" />
+            </div>
+            <figcaption class="cs-fig-cap">Resource list and tabbed resource detail — credential reconciliation, policy, and audit all scoped within a single resource context</figcaption>
+          </figure>
         </div>
       </div>
       <div class="arch-row">
         <div class="arch-n">03</div>
         <div class="arch-body">
-          <h4>A six-stage onboarding model with checkpoints</h4>
+          <h3>A six-stage onboarding model with checkpoints</h3>
           <p>Onboarding was a linear wizard with no checkpoints. Admins couldn't tell when they were done. I redesigned it as six stages: Discover, Inventory, Policy, Roles, Provision, Access. Each produces a concrete output: a discovered account list, a configured policy, a role assignment. An admin starting a trial can reach active session proxying and working JIT within the first day.</p>
         </div>
       </div>
     </div>
 
-
   </div>
 </div>
 
 
-<!-- ════ PROTOTYPE — LIGHT ════ -->
-<div class="proto-s">
+<!-- ════ PROTOTYPE ════ -->
+<div class="proto-s" id="s-proto">
   <div class="w rv">
     <div class="pm"><span class="star">✦</span><span class="pill">Live Prototype</span></div>
-    <div class="proto-head">Try the redesigned product</div>
+    <h2 class="proto-head">Try the redesigned product</h2>
     <div class="proto-sub">The working prototype captures the core experience: frictionless access setup, the tabbed resource workspace, and the new information architecture.</div>
     <div class="proto-frame">
       <iframe
@@ -695,24 +838,38 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 </div>
 
 
-<!-- ════ $800K — DARK ════ -->
-<div class="stat-s rv">
-  <span class="stat-label">Business outcome</span>
-  <div class="stat-num"><span class="sc">$</span>800<span class="sc">K</span></div>
-  <div class="stat-sub">in new PAM sales in the quarter post-release. Deals that had stalled at POC closed once admins could reach a working state inside the trial window. The stall pattern we'd been tracking was gone.</div>
+<!-- ════ EDGE CASE ════ -->
+<div class="sec-lt" id="s-edge">
+  <div class="w rv">
+    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
+      <span class="t1">An edge case</span>
+      <span class="t2">that changed</span>
+      <span class="t3">the design</span>
+    </h2>
+
+    <p>Push for a non-linear onboarding path earlier. The six-stage model worked for net-new deployments, but customers migrating from a legacy PAM tool had a different mental model and kept skipping stages. We patched it in v1.2. I should have caught it in the persona research.</p>
+
+    <p class="cs-pull-text rv">A persona is incomplete without knowing what the user is migrating away from.</p>
+  </div>
 </div>
 
 
-<!-- ════ § 04 — LIGHT ════ -->
+<!-- ════ OUTCOME ════ -->
 <div class="sec-lt" id="s-outcome">
   <div class="w rv">
-    <div class="sm"><span class="star">✦</span><span class="pill">Outcome</span></div>
-    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:48px;">
+    <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:64px;">
       <span class="t1">A coherent platform,</span>
       <span class="t2">not a feature list</span>
       <span class="t3">shipped to production</span>
     </h2>
-    <p class="lead">The v1 shipped as a coherent platform. This product had been in partial redesign for over a year before I joined. The audit and the prioritization filter gave the team a shared definition of done.</p>
+
+    <div class="cs-stat rv">
+      <span class="cs-stat-label">New PAM revenue unlocked post-launch</span>
+      <div class="cs-stat-num">$800K</div>
+      <p class="cs-stat-sub">in new PAM sales in the quarter post-release. Deals that had stalled at POC closed once admins could reach a working state inside the trial window. The stall pattern we'd been tracking was gone.</p>
+    </div>
+
+    <p class="lead">The v1 shipped as a coherent platform. The audit and the prioritization filter gave the team a shared definition of done.</p>
     <div class="oc">
       <div class="og">
         <h5>Product outcomes</h5>
@@ -732,15 +889,13 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
         </ul>
       </div>
     </div>
-    <p style="margin-top:48px;"><strong>What I'd do differently:</strong> Push for a non-linear onboarding path earlier. The six-stage model worked for net-new deployments, but customers migrating from a legacy PAM tool had a different mental model and kept skipping stages. We patched it in v1.2. I should have caught it in the persona research.</p>
   </div>
 </div>
 
 
-<!-- ════ § 05 — DARK ════ -->
+<!-- ════ LESSONS ════ -->
 <div class="sec-dk" id="s-lessons">
   <div class="w rv">
-    <div class="sm"><span class="star">✦</span><span class="pill">Lessons</span></div>
     <h2 class="dh" style="font-size:clamp(48px,7vw,96px);margin-bottom:52px;">
       <span class="t1">What I'd take</span>
       <span class="t2">into the next</span>
@@ -751,6 +906,15 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
       <div class="les"><div class="ln">Lesson 02</div><h4>Prioritization frameworks are conversations, not calculations</h4><p>RICE and Kano failed here not because they're bad frameworks, but because the team was using them to avoid a conversation about values. The binary deal-breaker filter worked because it forced that conversation and gave it a concrete output.</p></div>
       <div class="les"><div class="ln">Lesson 03</div><h4>In security products, usability is a security control</h4><p>The product that is easy to use correctly is more secure than one with better features that is hard to use. Every time an admin routes around a broken workflow, that workaround is a shadow credential, a compliance gap, a potential breach. The UX isn't decoration on top of the security model. It's load-bearing.</p></div>
     </div>
+  </div>
+</div>
+
+
+<!-- ════ ENDING ════ -->
+<div class="sec-lt cs-ending">
+  <div class="w rv">
+    <p class="cs-closing">When you fix the system, not the symptoms, the numbers follow.</p>
+    <a href="index.html#work" class="cs-back">← Back to all work</a>
   </div>
 </div>
 
@@ -788,110 +952,6 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 </footer>
 
 
-<script>
-(function(){
-  var sp = document.getElementById('sp');
-  var nav = document.getElementById('nav');
-  var bc = document.getElementById('breadcrumb');
-
-  /* ── Scroll progress + nav ── */
-  window.addEventListener('scroll', function(){
-    var s = document.documentElement;
-    sp.style.width = Math.min((s.scrollTop||document.body.scrollTop)/(s.scrollHeight-s.clientHeight)*100,100)+'%';
-    nav.classList.toggle('on', window.scrollY > 40);
-    bc.classList.toggle('on', window.scrollY > 40);
-  }, {passive:true});
-
-  /* ── Reveal on scroll ── */
-  var io = new IntersectionObserver(function(e){
-    e.forEach(function(x){
-      if(x.isIntersecting){
-        x.target.classList.add('in');
-        io.unobserve(x.target);
-      }
-    });
-  }, {threshold:.06, rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
-
-  /* ── Counting number ── */
-  function animateCount(el){
-    var target = parseInt(el.dataset.count, 10);
-    var duration = 1200;
-    var start = null;
-    function step(ts){
-      if(!start) start = ts;
-      var progress = Math.min((ts - start) / duration, 1);
-      var eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(eased * target);
-      if(progress < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-  var countIO = new IntersectionObserver(function(e){
-    e.forEach(function(x){
-      if(x.isIntersecting){
-        animateCount(x.target);
-        countIO.unobserve(x.target);
-      }
-    });
-  }, {threshold:.5});
-  document.querySelectorAll('.count-num').forEach(function(el){ countIO.observe(el); });
-
-  /* ── Before/After slider ── */
-  var slider = document.getElementById('baSlider');
-  if(slider){
-    var after = document.getElementById('baAfter');
-    var handle = document.getElementById('baHandle');
-    var dragging = false;
-
-    function setPos(x){
-      var rect = slider.getBoundingClientRect();
-      var pct = Math.max(5, Math.min(95, (x - rect.left) / rect.width * 100));
-      after.style.width = pct + '%';
-      handle.style.left = pct + '%';
-    }
-
-    slider.addEventListener('mousedown', function(e){ dragging = true; setPos(e.clientX); e.preventDefault(); });
-    window.addEventListener('mousemove', function(e){ if(dragging) setPos(e.clientX); });
-    window.addEventListener('mouseup', function(){ dragging = false; });
-
-    slider.addEventListener('touchstart', function(e){ dragging = true; setPos(e.touches[0].clientX); }, {passive:true});
-    window.addEventListener('touchmove', function(e){ if(dragging) setPos(e.touches[0].clientX); }, {passive:true});
-    window.addEventListener('touchend', function(){ dragging = false; });
-  }
-
-  /* ── Section TOC pills ── */
-  var pills = document.querySelectorAll('.toc-pill');
-  var sections = [];
-  pills.forEach(function(p){
-    var el = document.getElementById(p.dataset.target);
-    if(el) sections.push({el:el, pill:p});
-    p.addEventListener('click', function(){
-      var el2 = document.getElementById(p.dataset.target);
-      if(el2) el2.scrollIntoView({behavior:'smooth', block:'start'});
-    });
-  });
-
-  var tocIO = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if(entry.isIntersecting){
-        sections.forEach(function(s){ s.pill.classList.toggle('active', s.el === entry.target); });
-      }
-    });
-  }, {threshold:.2, rootMargin:'-10% 0px -60% 0px'});
-  sections.forEach(function(s){ tocIO.observe(s.el); });
-
-  /* ── Accordion ── */
-  document.querySelectorAll('.acc-hd').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var acc = btn.closest('.acc');
-      var isOpen = acc.classList.contains('open');
-      acc.classList.toggle('open', !isOpen);
-      btn.setAttribute('aria-expanded', String(!isOpen));
-    });
-  });
-
-})();
-</script>
+<script type="module" src="js/case-interactions.js"></script>
 </body>
 </html>
