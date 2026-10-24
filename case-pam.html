@@ -659,6 +659,23 @@ img{display:block;max-width:100%;}
 @media(max-width:800px){.cs-lessons-grid{grid-template-columns:1fr;}}
 
 /* ════════════════════════════════════════════
+   NAV SPLIT (before/after side-by-side)
+════════════════════════════════════════════ */
+.cs-nav-split{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-radius:12px 12px 0 0;overflow:hidden;
+  min-height:340px;
+}
+.cs-nav-split-col{overflow:hidden;position:relative;}
+.cs-nav-split-col img{
+  width:100%;height:100%;object-fit:cover;object-position:left top;
+  position:absolute;top:0;left:0;display:block;
+}
+.cs-nav-split-col--before{border-right:2px solid #fff;}
+.cs-nav-split-col--before img{object-position:left top;}
+.cs-nav-split-col--after img{object-fit:contain;background:#F8F9FC;object-position:center top;}
+
+/* ════════════════════════════════════════════
    ENDING NAV
 ════════════════════════════════════════════ */
 .cs-ending-row{
@@ -674,31 +691,46 @@ img{display:block;max-width:100%;}
 }
 .cs-ending-back:hover{color:var(--ink);}
 .cs-ending-next{
-  padding:40px 48px;border-right:1px solid var(--border);
-  display:flex;flex-direction:column;justify-content:space-between;
+  padding:0;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
 }
-.cs-ending-next-label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:8px;
+.cs-ending-next-img{
+  flex:1;overflow:hidden;min-height:160px;
+}
+.cs-ending-next-img img{
+  width:100%;height:100%;object-fit:cover;object-position:top left;display:block;
+}
+.cs-ending-next-info{
+  padding:20px 32px 28px;border-top:1px solid var(--border);
+  display:flex;align-items:baseline;gap:16px;
 }
 .cs-ending-next-title{
   font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink);
 }
 .cs-ending-next-badge{
   font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink-3);margin-top:8px;
+  color:var(--ink-3);white-space:nowrap;
 }
-.cs-ending-related{padding:40px 48px;}
-.cs-ending-related-label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:8px;
+.cs-ending-related{
+  padding:40px 48px;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:20px;
 }
+.cs-ending-related-btn{
+  display:inline-flex;align-items:center;
+  border:2px solid var(--ink);border-radius:999px;
+  padding:14px 28px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink);transition:background .2s,color .2s;
+  white-space:nowrap;
+}
+.cs-ending-related-btn:hover{background:var(--ink);color:#fff;}
 .cs-ending-related-title{
   font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink);
 }
 @media(max-width:800px){
   .cs-ending-row{grid-template-columns:1fr;}
   .cs-ending-back,.cs-ending-next{border-right:none;border-bottom:1px solid var(--border);}
+  .cs-ending-next-img{min-height:120px;}
 }
 
 /* ── Footer ── */
@@ -997,7 +1029,14 @@ footer{background:var(--dk);padding:0;}
         </div>
         <div class="cs-tab-right">
           <div class="cs-before-after-fig">
-            <img src="uploads/pam-after.webp" alt="Before and after nav — from object-based to intent-based" />
+            <div class="cs-nav-split">
+              <div class="cs-nav-split-col cs-nav-split-col--before">
+                <img src="uploads/pam-problem.png" alt="Before — Xecrify flat ungrouped nav" />
+              </div>
+              <div class="cs-nav-split-col cs-nav-split-col--after">
+                <img src="uploads/pam-nav-redesign.webp" alt="After — miniOrange PAM intent-grouped nav" />
+              </div>
+            </div>
             <div class="cs-ba-fig-cap">before, by object → after, by intent</div>
           </div>
         </div>
@@ -1009,7 +1048,7 @@ footer{background:var(--dk);padding:0;}
         </div>
         <div class="cs-tab-right">
           <div class="cs-before-after-fig">
-            <img src="uploads/pam-after.webp" alt="Resource workspace view" />
+            <img src="uploads/pam-resource-detail.webp" alt="Resource workspace — prod-db-primary detail view" />
             <div class="cs-ba-fig-cap">everything you need, inside the resource</div>
           </div>
         </div>
@@ -1021,7 +1060,7 @@ footer{background:var(--dk);padding:0;}
         </div>
         <div class="cs-tab-right">
           <div class="cs-before-after-fig">
-            <img src="uploads/pam-after.webp" alt="Onboarding checkpoints flow" />
+            <img src="uploads/pam-resource-list.webp" alt="Resources list — onboarding starting point" />
             <div class="cs-ba-fig-cap">five checkpoints, zero guessing</div>
           </div>
         </div>
@@ -1094,12 +1133,16 @@ footer{background:var(--dk);padding:0;}
 <div class="cs-ending-row">
   <a href="index.html" class="cs-ending-back">‹ Return to homepage</a>
   <div class="cs-ending-next">
-    <div class="cs-ending-next-label">Next · NDA</div>
-    <div class="cs-ending-next-title">Architecting enterprise IAM</div>
-    <div class="cs-ending-next-badge">Coming soon</div>
+    <div class="cs-ending-next-img">
+      <img src="uploads/IDP%20DB.png" alt="Architecting enterprise IAM — Xecrify dashboard" />
+    </div>
+    <div class="cs-ending-next-info">
+      <div class="cs-ending-next-title">Architecting enterprise IAM</div>
+      <div class="cs-ending-next-badge">NEXT · NDA</div>
+    </div>
   </div>
   <div class="cs-ending-related">
-    <div class="cs-ending-related-label">See related project</div>
+    <a href="#" class="cs-ending-related-btn">SEE RELATED PROJECT ›</a>
     <div class="cs-ending-related-title">AI grading · trust UX</div>
   </div>
 </div>
