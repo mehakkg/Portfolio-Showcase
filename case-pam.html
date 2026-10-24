@@ -412,21 +412,113 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
   .cs-tldr-item:last-child{border-bottom:none;}
 }
 
-/* Left section nav */
-.cs-section-nav{
-  position:fixed;left:clamp(12px,1.8vw,24px);top:50%;transform:translateY(-50%);
-  z-index:40;
+/* Two-column layout: sticky left sidebar + scrollable right */
+.cs-layout{
+  display:grid;
+  grid-template-columns:240px 1fr;
+  align-items:start;
+  max-width:none;
 }
-.cs-section-nav ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
-.cs-section-nav a{
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-3);padding:3px 0;display:block;
-  white-space:nowrap;transition:color .2s,opacity .2s;
+.cs-sidebar{
+  position:sticky;
+  top:62px;
+  height:calc(100vh - 62px);
+  display:flex;
+  flex-direction:column;
+  padding:48px 24px 40px 48px;
+  border-right:1px solid var(--border);
+  overflow:hidden;
+  box-sizing:border-box;
+}
+.cs-section-nav{
+  flex:1;
+}
+.cs-section-nav ul{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  padding:0;
+  margin:0;
+}
+.cs-section-nav li{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+}
+.cs-section-nav .sn-num{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.08em;
+  color:var(--ink-3);
   opacity:.45;
+  flex-shrink:0;
+  width:16px;
+}
+.cs-section-nav a{
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:500;
+  color:var(--ink-3);
+  padding:7px 0;
+  display:block;
+  white-space:nowrap;
+  transition:color .2s,opacity .2s;
+  opacity:.45;
+  text-decoration:none;
 }
 .cs-section-nav a:hover{opacity:.85;color:var(--ink);}
 .cs-section-nav a.active{opacity:1;color:var(--ink);font-weight:700;}
-@media(max-width:1024px){.cs-section-nav{display:none;}}
+.cs-section-nav a.active + .sn-num,
+.cs-section-nav li:has(a.active) .sn-num{opacity:1;}
+
+/* Progress bar at bottom of sidebar */
+.cs-sidebar-footer{
+  padding-top:20px;
+  border-top:1px solid var(--border);
+}
+.cs-sidebar-read-time{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  opacity:.5;
+  margin-bottom:10px;
+}
+.cs-sidebar-progress{
+  height:2px;
+  background:var(--border);
+  border-radius:1px;
+  overflow:hidden;
+}
+.cs-sidebar-progress-fill{
+  height:100%;
+  background:var(--ink);
+  width:0%;
+  transition:width .1s linear;
+  border-radius:1px;
+}
+
+/* Right scrollable content */
+.cs-content{
+  min-width:0;
+}
+.cs-content .sec-lt,
+.cs-content .sec-dk,
+.cs-content .cs-ending{
+  padding-left:0;
+  padding-right:0;
+}
+
+@media(max-width:1100px){
+  .cs-layout{grid-template-columns:200px 1fr;}
+  .cs-sidebar{padding:40px 16px 32px 24px;}
+}
+@media(max-width:840px){
+  .cs-layout{grid-template-columns:1fr;}
+  .cs-sidebar{display:none;}
+}
 
 /* Numbered cause list */
 .cs-cause-ol{
@@ -505,19 +597,7 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 
 <div class="sp" id="sp"></div>
 
-<!-- Left section nav -->
-<nav class="cs-section-nav" id="csNav" aria-label="Page sections">
-  <ul>
-    <li><a href="#s-problem">Problem</a></li>
-    <li><a href="#s-audit">Audit</a></li>
-    <li><a href="#s-prio">Prioritization</a></li>
-    <li><a href="#s-arch">Architecture</a></li>
-    <li><a href="#s-proto">Prototype</a></li>
-    <li><a href="#s-edge">Edge case</a></li>
-    <li><a href="#s-outcome">Outcome</a></li>
-    <li><a href="#s-lessons">Lessons</a></li>
-  </ul>
-</nav>
+
 
 <nav class="nav" id="nav">
   <a href="index.html" class="nav-logo">
@@ -617,6 +697,31 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
     <span class="qc">wasn't.</span>
   </blockquote>
 </div>
+
+
+<div class="cs-layout">
+  <aside class="cs-sidebar">
+    <nav class="cs-section-nav" id="csNav" aria-label="Page sections">
+      <ul>
+        <li><span class="sn-num">01</span><a href="#s-problem">The problem</a></li>
+        <li><span class="sn-num">02</span><a href="#s-audit">The audit</a></li>
+        <li><span class="sn-num">03</span><a href="#s-prio">Prioritization</a></li>
+        <li><span class="sn-num">04</span><a href="#s-arch">Architecture</a></li>
+        <li><span class="sn-num">05</span><a href="#s-proto">Prototype</a></li>
+        <li><span class="sn-num">06</span><a href="#s-edge">Edge case</a></li>
+        <li><span class="sn-num">07</span><a href="#s-outcome">Outcome</a></li>
+        <li><span class="sn-num">08</span><a href="#s-lessons">Lessons</a></li>
+      </ul>
+    </nav>
+    <div class="cs-sidebar-footer">
+      <div class="cs-sidebar-read-time" id="csSidebarReadTime">~6 min left</div>
+      <div class="cs-sidebar-progress">
+        <div class="cs-sidebar-progress-fill" id="csProgressFill"></div>
+      </div>
+    </div>
+  </aside>
+  <div class="cs-content">
+
 
 
 <!-- ════ PROBLEM ════ -->
@@ -910,6 +1015,11 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 </div>
 
 
+
+  </div>
+</div>
+
+
 <!-- ════ ENDING ════ -->
 <div class="sec-lt cs-ending">
   <div class="w rv">
@@ -953,5 +1063,29 @@ footer{background:var(--dk);border-top:1px solid rgba(255,255,255,.08);margin:0 
 
 
 <script type="module" src="js/case-interactions.js"></script>
+
+<script>
+(function(){
+  var fill = document.getElementById('csProgressFill');
+  var readTime = document.getElementById('csSidebarReadTime');
+  if(!fill) return;
+  var content = document.querySelector('.cs-content');
+  function update(){
+    if(!content) return;
+    var rect = content.getBoundingClientRect();
+    var totalH = content.offsetHeight;
+    var scrolled = Math.max(0, -rect.top);
+    var pct = Math.min(100, (scrolled / (totalH - window.innerHeight)) * 100);
+    if(isNaN(pct) || pct < 0) pct = 0;
+    fill.style.width = pct + '%';
+    if(readTime){
+      var remaining = Math.max(0, Math.ceil(6 * (1 - pct/100)));
+      readTime.textContent = remaining <= 1 ? '~1 min left' : '~' + remaining + ' min left';
+    }
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+</script>
 </body>
 </html>
