@@ -515,17 +515,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   .sys-card+.sys-card{border-top:1px solid var(--line)}
   .web-grid{grid-template-columns:repeat(2,1fr);gap:10px}
 }
-@media(max-width:900px){
-  .work-card{grid-column:1/-1;height:auto;min-height:640px}
-  .work-card__stage{position:relative;bottom:auto;left:auto;right:auto;height:auto;perspective:none;padding:20px 0 56px}
-  .work-card--healthcare .work-card__stage,.work-card--ai-grading .work-card__stage{height:auto}
-  .work-card__window{position:relative!important;left:auto!important;bottom:auto!important;width:86%!important;margin:0 auto;transform:none!important}
-  .work-card--saltpeppr .work-card__window{width:86%!important}
-  .work-card__glow{display:none}
-  .work-card__float{width:220px!important;right:16px!important;bottom:16px!important;font-size:11px;padding:14px!important;gap:8px!important}
-  .work-card__window,.work-card__float{transition:none}
-  .work-card__text .proj__tags span{font-size:12px;padding:8px 14px}
-}
+
 
 
 @media(max-width:768px){.stat,.hero__right .services,.contact,.hero__left .services{display:none}}
@@ -632,7 +622,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <div class="sys-grid">
 
     <!-- 1. PAM -->
-    <a class="sys-card reveal" href="https://miniorange-pam.vercel.app" target="_blank" rel="noopener" data-cat="product">
+    <a class="sys-card reveal" href="case-pam.html" data-cat="product">
       <div class="sys-card__hd">
         <span class="sys-card__lbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> SYS-01 · PAM</span>
         <span class="sys-card__badge sys-card__badge--case">● Case Study</span>
@@ -1689,9 +1679,9 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
     });
   }
 
-  /* project filter tabs */
-  var tabs=$$(".tab");
-  var projects=$$(".proj,.work-card");
+  /* project filter tabs — removed (new sys-grid has no filter) */
+  var tabs=[];
+  var projects=[];
   function applyFilter(f){projects.forEach(function(p){var show=(p.getAttribute("data-cat")||"").indexOf(f)>-1;if(show){p.classList.remove("hide");}else{p.classList.add("hide");}});}
   tabs.forEach(function(tab){
     tab.addEventListener("click", function(){
