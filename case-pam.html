@@ -752,6 +752,48 @@ footer{background:var(--dk);padding:0;}
 </head>
 <body>
 
+<!-- ── Password gate ── -->
+<div id="pw-gate" style="position:fixed;inset:0;z-index:9999;background:#F5F5F5;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+  <div style="width:100%;max-width:400px;padding:0 24px;text-align:center">
+    <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(28px,5vw,42px);line-height:1.1;margin:0 0 8px">Protected work</p>
+    <p style="font-size:14px;color:#666;margin:0 0 32px;line-height:1.5">This case study is under NDA. Enter the password to view.</p>
+    <div style="position:relative;margin-bottom:12px">
+      <input id="pw-input" type="password" placeholder="Enter password" autocomplete="off"
+        style="width:100%;box-sizing:border-box;padding:14px 18px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;font-family:inherit;outline:none;background:#fff;transition:border-color .2s"
+        onfocus="this.style.borderColor='#141414'" onblur="this.style.borderColor='#ddd'">
+    </div>
+    <p id="pw-error" style="font-size:13px;color:#D23A6B;margin:0 0 12px;min-height:18px;opacity:0;transition:opacity .2s"></p>
+    <button onclick="checkPw()"
+      style="width:100%;padding:14px;border:none;border-radius:12px;background:#141414;color:#fff;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .2s"
+      onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">View case study →</button>
+    <a href="index.html" style="display:block;margin-top:20px;font-size:13px;color:#999;text-decoration:none">← Back to portfolio</a>
+  </div>
+</div>
+<script>
+(function(){
+  if(sessionStorage.getItem('pam_auth')==='1'){
+    document.getElementById('pw-gate').style.display='none';
+  }
+  document.getElementById('pw-input').addEventListener('keydown',function(e){
+    if(e.key==='Enter') checkPw();
+  });
+})();
+function checkPw(){
+  var v=document.getElementById('pw-input').value;
+  var err=document.getElementById('pw-error');
+  if(v==='mehak123'){
+    sessionStorage.setItem('pam_auth','1');
+    document.getElementById('pw-gate').style.display='none';
+  } else {
+    err.textContent='Incorrect password. Try again.';
+    err.style.opacity='1';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+    setTimeout(function(){err.style.opacity='0';},2500);
+  }
+}
+</script>
+
 <div class="sp" id="sp"></div>
 
 <nav class="nav" id="nav">
