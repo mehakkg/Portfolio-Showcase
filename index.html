@@ -254,24 +254,39 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .card--read:hover .rmore span{transform:translateX(5px)}
 
 /* ============================================================ FOOTER */
-.footer{background:var(--ink);color:var(--ink-fg);padding:clamp(70px,9vw,128px) 0 clamp(40px,4vw,56px)}
-.footer__grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:40px;align-items:start}
-.footer__big{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(42px,6vw,86px);line-height:.96;letter-spacing:-.01em}
-.footer__tag{margin-top:18px;font-style:italic;font-size:15px;color:var(--ink-dim)}
-.footer__col .label{color:var(--ink-dim);margin-bottom:16px}
-.footer__col a,.footer__col span{display:block;font-size:14px;color:var(--ink-fg);letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
-.footer__col a{transition:color var(--t),transform var(--t)}
-.footer__col a:hover{color:var(--pink);transform:translateX(3px)}
-.socials{display:flex;gap:14px;margin-top:2px}
-.socials a{display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(255,255,255,.18);border-radius:9px;transition:transform var(--t),background var(--t),color var(--t),border-color var(--t)}
-.socials a:hover{background:var(--pink);color:#111;border-color:var(--pink);transform:translateY(-3px)}
-.socials svg{width:18px;height:18px}
+/* ── Footer ── */
+.ft{background:#FDEBF0;color:#141414;font-family:var(--sans)}
+.ft a{color:inherit;text-decoration:none}
+.ft__hero{padding:clamp(56px,8vw,96px) clamp(24px,11.1vw,160px) clamp(44px,5.5vw,56px);display:flex;flex-direction:column;align-items:center;text-align:center}
+.ft__big{margin:0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(44px,7.8vw,112px);line-height:1;letter-spacing:-.01em}
+.ft__mark{background:#FF9FB2;padding:0 14px;border-radius:6px}
+.ft__sub{margin-top:18px;font-family:'Caveat',cursive;font-weight:600;font-size:clamp(22px,2.6vw,38px);line-height:1;display:inline-block;transform:rotate(-2deg)}
+.ft__email{margin-top:26px;padding:14px 28px;border-radius:999px;background:#141414;color:#fff;font-size:clamp(14px,1.25vw,18px);font-weight:600;transition:opacity .2s}
+.ft__email:hover{opacity:.8}
+.ft__mid{border-top:1px dashed #E3A9BC;display:grid;grid-template-columns:5fr 3fr 3fr;align-items:start;gap:40px;padding-top:44px;padding-bottom:44px}
+.ft__folder{position:relative;display:block;width:clamp(200px,22vw,320px);height:clamp(154px,17vw,246px);text-decoration:none;flex-shrink:0}
+.ft__folder .ft__card{transition:transform .4s cubic-bezier(.22,.61,.36,1)}
+.ft__folder:hover .ft__card{transform:rotate(0deg) translateY(-18px)}
+.ft__tab{position:absolute;left:0;top:0;width:37.5%;height:17.9%;border-radius:18px 18px 0 0;background:#E2557F}
+.ft__pocket{position:absolute;left:0;top:10.6%;width:100%;height:89.4%;border-radius:0 22px 22px 22px;background:#E2557F}
+.ft__card{position:absolute;left:12.5%;top:18.7%;width:75%;height:65%;box-sizing:border-box;background:#FFFDFB;border-radius:6px;transform:rotate(-3deg);box-shadow:0 10px 24px rgba(120,20,60,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;z-index:1}
+.ft__pin{position:absolute;top:-12px;left:calc(50% - 13px);width:26px;height:26px;border-radius:4px;background:#F4C84B;border:1.5px solid #141414}
+.ft__name{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(24px,3vw,44px);line-height:.9}
+.ft__tap{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#B2376A;padding-top:6px}
+.ft__flap{position:absolute;left:0;top:78%;width:100%;height:22%;border-radius:6px 6px 22px 22px;background:#EC6F93;z-index:2}
+.ft__nav{display:flex;flex-direction:column;gap:6px}
+.ft__nav-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#B2376A;padding-bottom:10px}
+.ft__navlink{font-family:var(--serif);font-size:clamp(22px,2.4vw,34px);line-height:1.2;color:#B2376A;display:inline-block;transition:transform .3s ease}
+.ft__navlink:hover{transform:translateX(6px)}
+.ft__bottom{border-top:1px solid #E3A9BC;display:flex;justify-content:space-between;padding:22px 0 28px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#8A3256}
+.ft__bottom a{color:inherit;text-decoration:none;transition:opacity .2s}
+.ft__bottom a:hover{opacity:.7}
 
 @media (max-width:900px){
   .svc-grid{grid-template-columns:1fr 1fr;gap:40px}
   .writing__grid{grid-template-columns:1fr}
-  .footer__grid{grid-template-columns:1fr 1fr;gap:34px}
-  .footer__big{grid-column:1/-1}
+  .ft__mid{grid-template-columns:1fr 1fr;gap:34px}
+  .ft__folder{grid-column:1/-1}
 }
 @media (max-width:680px){
   .projects{grid-template-columns:1fr}
@@ -329,8 +344,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   .svc-grid{grid-template-columns:1fr 1fr;gap:28px}
   .writing__bar{flex-direction:column;align-items:flex-start;gap:16px}
   .writing__nav{width:100%;justify-content:space-between}
-  .footer__grid{grid-template-columns:1fr 1fr;gap:28px}
-  .footer__big{grid-column:1/-1;font-size:clamp(36px,8vw,56px)}
+  .ft__mid{grid-template-columns:1fr 1fr;gap:28px}
+  .ft__folder{grid-column:1/-1}
   .tquote{font-size:clamp(18px,3.5vw,28px)}
 }
 
@@ -346,9 +361,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   .proj__tags{gap:6px}
   .proj__tags span{font-size:8.5px;padding:5px 10px}
   .svc-grid{grid-template-columns:1fr}
-  .footer__grid{grid-template-columns:1fr;gap:24px}
-  .footer__big{font-size:clamp(32px,9vw,48px)}
-  .footer__tag{font-size:13px}
+  .ft__mid{grid-template-columns:1fr;gap:24px}
+  .ft__folder{width:100%;max-width:280px}
   .caro{padding-bottom:12px;padding-inline-start:var(--gut);scroll-padding-inline-start:var(--gut)}
   .card--reel{width:clamp(160px,44vw,220px)}
   .card--read{width:clamp(200px,80vw,260px)}
@@ -907,26 +921,41 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 </main>
 
 <!-- ============================================================ FOOTER -->
-<footer class="footer" id="contact">
-  <div class="wrap footer__grid">
-    <div class="reveal">
-      <h2 class="footer__big">Let's (Work)<br>Together</h2>
-      <p class="footer__tag">Get in touch or just say hi &lt;3</p>
-    </div>
-    <div class="footer__col reveal" data-d="1">
-      <div class="label">Contact</div>
-      <a href="tel:+918308819607">+91 8308819607</a>
-      <a href="mailto:mehakrgarg@gmail.com">mehakrgarg@gmail.com</a>
-    </div>
-    <div class="footer__col reveal" data-d="2">
-      <div class="label">Social Media</div>
-      <div class="socials">
-        <a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.2 6.5c1 0 1.8.1 2.5.4.6.2 1.1.5 1.5.9.4.4.6.8.8 1.3.2.5.2 1.1.2 1.7 0 .7-.2 1.3-.5 1.8-.3.5-.8.9-1.4 1.2.9.3 1.5.7 2 1.4.4.6.6 1.4.6 2.3 0 .7-.1 1.4-.4 1.9-.3.5-.7 1-1.2 1.3-.5.3-1.1.6-1.7.7-.6.2-1.3.2-1.9.2H2V6.5h6.2Zm-.4 5.2c.5 0 1-.1 1.3-.4.3-.2.5-.7.5-1.2 0-.3 0-.6-.2-.8-.1-.2-.3-.3-.5-.4-.2-.1-.4-.2-.7-.2-.3 0-.5-.1-.8-.1H5v3.1h2.8Zm.2 5.5c.3 0 .6 0 .9-.1.3 0 .5-.1.7-.3.2-.1.4-.3.5-.5.1-.2.2-.5.2-.9 0-.7-.2-1.2-.6-1.5-.4-.3-.9-.4-1.6-.4H5v4.2h3ZM16.5 16.8c.3.3.8.5 1.5.5.5 0 .9-.1 1.3-.4.3-.2.6-.5.7-.8h2.1c-.3 1-.9 1.8-1.6 2.2-.7.5-1.6.7-2.6.7-.7 0-1.4-.1-1.9-.3-.6-.2-1-.5-1.5-1-.4-.4-.7-.9-.9-1.5-.2-.6-.3-1.2-.3-2 0-.7.1-1.3.3-1.9.2-.6.5-1.1 1-1.5.4-.4.9-.8 1.4-1 .6-.2 1.2-.4 1.9-.4.7 0 1.4.2 2 .5.6.3 1 .7 1.4 1.2.4.5.6 1.1.8 1.7.1.6.2 1.3.2 2h-6.5c0 .7.2 1.3.5 1.6ZM19.3 12c-.3-.3-.7-.4-1.2-.4-.4 0-.7.1-.9.2-.2.1-.4.3-.6.5-.1.2-.2.4-.3.6 0 .2-.1.4-.1.5h4c-.1-.6-.3-1.1-.6-1.4l-.2-.5ZM15 7.7h5v1.2h-5V7.7Z"/></svg></a>
-        <a href="https://dribbble.com/mehakkg" target="_blank" rel="noopener" aria-label="Dribbble"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9.5"/><path d="M5 7.5c3 3.4 8 5.2 13.6 4.7M8.5 3.2C12 7 14.3 12 15.2 20.4M21 14.3c-6-2-11 .2-13.4 5.4"/></svg></a>
-        <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 8.5v11H3v-11h3.5ZM4.75 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM21 13.4V19.5h-3.5v-5.6c0-1.4-.5-2.3-1.7-2.3-.9 0-1.5.6-1.7 1.2-.1.2-.1.5-.1.8v5.9H8.5s.05-9.6 0-10.6H12v1.5c.5-.7 1.3-1.8 3.2-1.8 2.3 0 4 1.5 4 4.8Z"/></svg></a>
-        <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" aria-label="Medium"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="4.5" width="19" height="15" rx="1.5"/><text x="12" y="15.5" font-family="serif" font-size="9" font-weight="700" fill="currentColor" stroke="none" text-anchor="middle">M</text></svg></a>
-      </div>
-    </div>
+<footer class="ft" id="contact">
+  <div class="ft__hero">
+    <h2 class="ft__big">Let's <span class="ft__mark">(work)</span> together</h2>
+    <span class="ft__sub">or just say hi &lt;3</span>
+    <a href="mailto:mehakrgarg@gmail.com" class="ft__email">mehakrgarg@gmail.com ↗</a>
+  </div>
+  <div class="ft__mid wrap">
+    <a href="uploads/Mehak-Garg-Resume.pdf" download class="ft__folder" aria-label="Download Mehak's resume">
+      <span class="ft__tab" aria-hidden="true"></span>
+      <span class="ft__pocket" aria-hidden="true"></span>
+      <span class="ft__card">
+        <span class="ft__pin" aria-hidden="true"></span>
+        <span class="ft__name">mehak's</span>
+        <span class="ft__name">resume</span>
+        <span class="ft__tap">TAP TO DOWNLOAD</span>
+      </span>
+      <span class="ft__flap" aria-hidden="true"></span>
+    </a>
+    <nav aria-label="Explore" class="ft__nav">
+      <span class="ft__nav-label">EXPLORE</span>
+      <a class="ft__navlink" href="#work">Work</a>
+      <a class="ft__navlink" href="#about">About</a>
+      <a class="ft__navlink" href="#writing">Writing</a>
+    </nav>
+    <nav aria-label="Elsewhere" class="ft__nav">
+      <span class="ft__nav-label">ELSEWHERE</span>
+      <a class="ft__navlink" href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="ft__navlink" href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener">Behance ↗</a>
+      <a class="ft__navlink" href="https://dribbble.com/mehakkg" target="_blank" rel="noopener">Dribbble ↗</a>
+      <a class="ft__navlink" href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener">Medium ↗</a>
+    </nav>
+  </div>
+  <div class="ft__bottom wrap">
+    <span>© 2026 MEHAK GARG · PUNE, INDIA</span>
+    <a href="#home">BACK TO TOP ↑</a>
   </div>
 </footer>
 <script id="image-slot-lib">
