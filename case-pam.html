@@ -426,6 +426,7 @@ img{display:block;max-width:100%;}
 .cs-stat-item{
   padding:28px 24px;
   border-right:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:flex-end;
 }
 .cs-stat-item:last-child{border-right:none;}
 .cs-stat-num{
@@ -436,7 +437,7 @@ img{display:block;max-width:100%;}
 }
 .cs-stat-num--serif{
   font-family:var(--serif);font-style:italic;font-weight:400;
-  font-size:clamp(48px,5vw,72px);
+  font-size:clamp(40px,4.5vw,62px);
 }
 .cs-stat-label{
   font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
@@ -913,7 +914,7 @@ footer{background:var(--dk);padding:0;}
           <div class="cs-stat-label">Issues</div>
         </div>
         <div class="cs-stat-item">
-          <div class="cs-stat-num" style="font-size:clamp(24px,3vw,40px);">3 wks</div>
+          <div class="cs-stat-num">3 wks</div>
           <div class="cs-stat-label">To find the root causes</div>
         </div>
       </div>
