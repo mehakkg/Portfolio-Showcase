@@ -311,29 +311,33 @@ img{display:block;max-width:100%;}
   overflow:hidden;
   box-sizing:border-box;
 }
+.cs-sidebar-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:16px;
+}
 .cs-section-nav{flex:1;}
 .cs-section-nav ul{list-style:none;display:flex;flex-direction:column;gap:2px;padding:0;margin:0;}
-.cs-section-nav li{display:flex;align-items:baseline;gap:10px;}
-.cs-section-nav .sn-num{
-  font-family:var(--mono);font-size:10px;letter-spacing:.08em;
-  color:var(--ink-3);opacity:.45;flex-shrink:0;width:16px;
-  transition:opacity .2s;
-}
+.cs-section-nav li{display:flex;align-items:center;gap:0;}
 .cs-section-nav a{
-  font-family:var(--sans);font-size:13px;font-weight:500;color:var(--ink-3);
-  padding:7px 0;display:block;white-space:nowrap;
-  transition:color .2s,opacity .2s;opacity:.45;text-decoration:none;
+  display:flex;align-items:center;gap:14px;
+  width:100%;padding:10px 14px;border-radius:10px;
+  font-family:var(--sans);font-size:14px;font-weight:500;color:var(--ink-3);
+  text-decoration:none;transition:background .15s,color .15s;
 }
-.cs-section-nav a:hover{opacity:.85;color:var(--ink);}
-.cs-section-nav a.active{opacity:1;color:var(--ink);font-weight:700;}
-.cs-section-nav li:has(a.active) .sn-num{opacity:1;}
+.cs-section-nav a:hover{color:var(--ink);}
+.cs-section-nav a.active{background:var(--ink);color:#fff;font-weight:600;}
+.cs-section-nav .sn-num{
+  font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  flex-shrink:0;width:18px;opacity:.5;
+}
+.cs-section-nav a.active .sn-num{opacity:.6;}
 .cs-sidebar-footer{padding-top:20px;border-top:1px solid var(--border);}
 .cs-sidebar-read-time{
   font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink-3);opacity:.5;margin-bottom:10px;
+  color:var(--ink-3);margin-bottom:10px;
 }
-.cs-sidebar-progress{height:2px;background:var(--border);border-radius:1px;overflow:hidden;}
-.cs-sidebar-progress-fill{height:100%;background:var(--ink);width:0%;transition:width .1s linear;border-radius:1px;}
+.cs-sidebar-progress{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.cs-sidebar-progress-fill{height:100%;background:var(--ink);width:0%;transition:width .1s linear;border-radius:2px;}
 @media(max-width:1100px){
   .cs-layout{grid-template-columns:200px 1fr;}
   .cs-sidebar{padding:40px 16px 32px 24px;}
@@ -899,21 +903,23 @@ function checkPw(){
 <!-- ════ TWO-COLUMN LAYOUT ════ -->
 <div class="cs-layout">
   <aside class="cs-sidebar">
+    <div class="cs-sidebar-label">You are here</div>
     <nav class="cs-section-nav" id="csNav" aria-label="Page sections">
       <ul>
-        <li><span class="sn-num">01</span><a href="#s-problem">The problem</a></li>
-        <li><span class="sn-num">02</span><a href="#s-audit">The audit</a></li>
-        <li><span class="sn-num">03</span><a href="#s-filter">One filter</a></li>
-        <li><span class="sn-num">04</span><a href="#s-system">The system</a></li>
-        <li><span class="sn-num">05</span><a href="#s-outcome">Outcome</a></li>
-        <li><span class="sn-num">06</span><a href="#s-lessons">Lessons</a></li>
+        <li><a href="#s-problem"><span class="sn-num">01</span>The problem</a></li>
+        <li><a href="#s-audit"><span class="sn-num">02</span>Strategy</a></li>
+        <li><a href="#s-filter"><span class="sn-num">03</span>Design explorations</a></li>
+        <li><a href="#s-system"><span class="sn-num">04</span>Rules &amp; JIT</a></li>
+        <li><a href="#s-outcome"><span class="sn-num">05</span>Coverage &amp; branding</a></li>
+        <li><a href="#s-impact"><span class="sn-num">06</span>Impact</a></li>
+        <li><a href="#s-lessons"><span class="sn-num">07</span>Lessons</a></li>
       </ul>
     </nav>
     <div class="cs-sidebar-footer">
-      <div class="cs-sidebar-read-time" id="csSidebarReadTime">~5 min left</div>
       <div class="cs-sidebar-progress">
         <div class="cs-sidebar-progress-fill" id="csProgressFill"></div>
       </div>
+      <div class="cs-sidebar-read-time" id="csSidebarReadTime">~6 min left</div>
     </div>
   </aside>
 
