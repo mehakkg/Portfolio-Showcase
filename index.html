@@ -102,50 +102,56 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .nav__menu{display:none}
 
 /* ============================================================ HERO */
-/* ── Giant headline ── */
-.hero-banner{background:#F7F5F1;position:relative;overflow:hidden}
-.hero-banner__top{text-align:center;padding:clamp(24px,4vw,48px) 0 0;font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:#6A655D}
-.giant{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(72px,15.5vw,224px);line-height:.92;letter-spacing:-.035em;white-space:nowrap;background:linear-gradient(180deg,#141414 35%,#8A847C 100%);-webkit-background-clip:text;background-clip:text;color:transparent;display:block;text-align:center}
+.hero-banner{background:#F7F5F1;overflow:hidden;position:relative}
+.hero-banner__mono{text-align:center;padding:clamp(20px,3.3vw,48px) 0 clamp(8px,1.4vw,20px);font-family:var(--mono);font-size:clamp(9px,0.83vw,12px);letter-spacing:.16em;color:#6A655D}
+/* giant text block — centered inline-block so we can anchor decorations to it */
+.hero-text-wrap{display:flex;justify-content:center;align-items:flex-start;position:relative}
+.hero-text-block{display:inline-block;position:relative;line-height:.92;white-space:nowrap}
+.giant{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(72px,15.5vw,224px);line-height:.92;letter-spacing:-.035em;white-space:nowrap;background:linear-gradient(180deg,#141414 35%,#8A847C 100%);-webkit-background-clip:text;background-clip:text;color:transparent;display:block}
 .wig{display:inline-block;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
 .wig:hover{transform:translateY(-10px) rotate(-4deg)}
 .giant .wig{background:inherit;-webkit-background-clip:text;background-clip:text;color:transparent}
-.face{display:inline-block;vertical-align:-.04em;width:clamp(60px,11.4vw,164px);height:clamp(60px,11.4vw,164px);border-radius:50%;overflow:hidden;border:clamp(3px,0.35vw,5px) solid #fff;box-shadow:0 18px 40px rgba(40,30,20,.22),0 0 0 1px #E2DDD3;transform:rotate(-6deg);background:#EAE5DC;transition:transform .5s cubic-bezier(.22,.61,.36,1);margin:0 2px 0 6px}
+/* photo circle */
+.face{display:inline-block;vertical-align:-.04em;width:clamp(54px,11.4vw,164px);height:clamp(54px,11.4vw,164px);border-radius:50%;overflow:hidden;border:clamp(2px,.35vw,5px) solid #fff;box-shadow:0 18px 40px rgba(40,30,20,.22),0 0 0 1px #E2DDD3;transform:rotate(-6deg);background:#EAE5DC;transition:transform .5s cubic-bezier(.22,.61,.36,1);margin:0 4px}
 .face:hover{transform:rotate(0deg) scale(1.06)}
 .face img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-line1{position:relative;display:flex;align-items:center;justify-content:center}
-.hero-line2{position:relative;display:flex;align-items:center;justify-content:center}
-.hero-hi{position:absolute;font-family:var(--hand);font-weight:700;font-size:clamp(18px,2.4vw,34px);color:#D2477A;transform:rotate(-8deg);top:clamp(-28px,-2.4vw,-10px);left:clamp(105px,18vw,260px);white-space:nowrap;pointer-events:none}
-.hero-senior{position:absolute;left:clamp(-110px,-9vw,-40px);bottom:clamp(40px,6.4vw,92px);font-family:var(--mono);font-size:clamp(9px,0.83vw,12px);letter-spacing:.14em;color:#6A655D;white-space:nowrap}
-.hero-location{position:absolute;right:clamp(10px,0.4vw,6px);bottom:clamp(-20px,-1.8vw,-4px);font-family:var(--mono);font-size:clamp(9px,0.83vw,12px);letter-spacing:.14em;color:#6A655D;white-space:nowrap}
-/* spinning badge */
-.hero-badge{position:absolute;left:clamp(20px,10.4vw,150px);top:clamp(20px,8.2vw,118px);width:clamp(70px,9.2vw,132px);height:clamp(70px,9.2vw,132px);z-index:3;pointer-events:none}
+/* pink period */
+.giant-dot{display:inline-block;color:#E2557F;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(72px,15.5vw,224px);line-height:.92;-webkit-text-fill-color:#E2557F}
+/* anchored decorations — relative to .hero-text-block */
+.hero-hi{position:absolute;font-family:var(--hand);font-weight:700;font-size:clamp(16px,2.4vw,34px);color:#D2477A;transform:rotate(-8deg);white-space:nowrap;pointer-events:none;
+  /* sits above & slightly left of the photo — photo is ~50% into "Product" text */
+  top:clamp(-32px,-2.8vw,-8px);left:clamp(100px,20vw,310px)}
+.hero-senior{position:absolute;left:clamp(-96px,-8vw,-20px);bottom:clamp(30px,5.5vw,76px);font-family:var(--mono);font-size:clamp(8px,.83vw,12px);letter-spacing:.14em;color:#6A655D;white-space:nowrap;pointer-events:none}
+.hero-location{position:absolute;right:clamp(-4px,.3vw,6px);bottom:clamp(-22px,-1.9vw,-4px);font-family:var(--mono);font-size:clamp(8px,.83vw,12px);letter-spacing:.14em;color:#6A655D;white-space:nowrap;pointer-events:none}
+/* spinning badge — left of block */
+.hero-badge{position:absolute;top:clamp(16px,8.2vw,112px);left:clamp(-160px,-13vw,-24px);width:clamp(60px,9.2vw,132px);height:clamp(60px,9.2vw,132px);pointer-events:none}
 .spin{animation:bnr-spin 22s linear infinite}
 @keyframes bnr-spin{to{transform:rotate(360deg)}}
-/* margin note */
-.hero-note{position:absolute;right:clamp(20px,5.5vw,80px);top:clamp(20px,7.8vw,112px);width:clamp(100px,10.4vw,150px);z-index:3;pointer-events:none;transform:rotate(3deg)}
-.hero-note span{display:block;font-family:var(--hand);font-weight:600;font-size:clamp(14px,1.67vw,24px);line-height:1.08;color:#141414}
+/* margin note — right of block */
+.hero-note{position:absolute;right:clamp(-170px,-14vw,-24px);top:clamp(16px,7.8vw,112px);width:clamp(90px,10.4vw,150px);transform:rotate(3deg);pointer-events:none}
+.hero-note span{display:block;font-family:var(--hand);font-weight:600;font-size:clamp(13px,1.67vw,24px);line-height:1.08;color:#141414}
 .hero-note mark{background:linear-gradient(180deg,transparent 58%,#E2557F66 58%);color:inherit}
-.hero-note em{display:block;margin-top:6px;text-align:right;font-family:var(--hand);font-weight:700;font-size:clamp(14px,1.53vw,22px);color:#E2557F;font-style:normal}
+.hero-note em{display:block;margin-top:6px;text-align:right;font-family:var(--hand);font-weight:700;font-size:clamp(13px,1.53vw,22px);color:#E2557F;font-style:normal}
 /* redline spec */
-.hero-redline{position:absolute;right:clamp(20px,5.5vw,80px);bottom:clamp(60px,6.1vw,88px);display:flex;align-items:center;gap:8px;z-index:3;pointer-events:none}
-.hero-redline__bar{width:1px;height:clamp(48px,6.1vw,88px);background:#E2557F;position:relative;flex-shrink:0}
+.hero-redline{position:absolute;right:clamp(-170px,-14vw,-24px);bottom:clamp(40px,5.5vw,80px);display:flex;align-items:center;gap:8px;pointer-events:none}
+.hero-redline__bar{width:1px;height:clamp(40px,6.1vw,88px);background:#E2557F;position:relative;flex-shrink:0}
 .hero-redline__bar::before,.hero-redline__bar::after{content:'';position:absolute;left:-5px;width:11px;height:1px;background:#E2557F}
 .hero-redline__bar::before{top:0}.hero-redline__bar::after{bottom:0}
-.hero-redline__chip{font-family:var(--mono);font-size:10px;line-height:1.4;color:#E2557F;padding:3px 6px;border:1px solid #E2557F;border-radius:4px;background:#F7F5F1;white-space:nowrap}
-/* cursor */
-.hero-cursor{position:absolute;right:clamp(120px,9.7vw,140px);bottom:clamp(110px,9vw,130px);z-index:6;pointer-events:none;animation:bnr-drift 5s ease-in-out infinite}
+.hero-redline__chip{font-family:var(--mono);font-size:10px;color:#E2557F;padding:3px 6px;border:1px solid #E2557F;border-radius:4px;background:#F7F5F1;white-space:nowrap}
+/* floating cursor */
+.hero-cursor{position:absolute;right:clamp(-170px,-14vw,-24px);bottom:clamp(-10px,-1vw,20px);pointer-events:none;animation:bnr-drift 5s ease-in-out infinite}
 @keyframes bnr-drift{0%,100%{transform:translate(0,0)}35%{transform:translate(-14px,-8px)}70%{transform:translate(6px,-14px)}}
 /* tagline + ctas */
-.hero-body{padding:clamp(20px,3.5vw,50px) clamp(24px,5.6vw,80px) 0;display:flex;flex-direction:column;align-items:center;gap:clamp(10px,1.25vw,18px);text-align:center}
-.hero-h1{margin:0;font-weight:500;font-size:clamp(18px,2.22vw,32px);line-height:1.3;letter-spacing:-.015em;max-width:900px}
-.hero-h1 em{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(22px,2.78vw,40px);text-decoration:underline wavy #E2557F;text-decoration-thickness:2px;text-underline-offset:12px}
-.hero-desc{margin:0;max-width:760px;font-size:clamp(14px,1.18vw,17px);line-height:1.65;color:#5A554D}
+.hero-body{padding:clamp(16px,3.5vw,50px) clamp(24px,5.6vw,80px) 0;display:flex;flex-direction:column;align-items:center;gap:clamp(10px,1.25vw,18px);text-align:center}
+.hero-h1{margin:0;font-weight:500;font-size:clamp(16px,2.22vw,32px);line-height:1.3;letter-spacing:-.015em;max-width:900px;color:#141414}
+.hero-h1 em{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(20px,2.78vw,40px);text-decoration:underline wavy #E2557F;text-decoration-thickness:2px;text-underline-offset:12px}
+.hero-desc{margin:0;max-width:760px;font-size:clamp(13px,1.18vw,17px);line-height:1.65;color:#5A554D}
 .hero-ctas{display:flex;gap:12px;padding-top:8px;flex-wrap:wrap;justify-content:center}
-.hero-btn{padding:clamp(10px,1.11vw,16px) clamp(16px,1.81vw,26px);border-radius:999px;font-size:clamp(13px,1.04vw,15px);font-weight:600;text-decoration:none;transition:transform .25s ease,opacity .2s}
+.hero-btn{padding:clamp(10px,1.11vw,16px) clamp(16px,1.81vw,26px);border-radius:999px;font-size:clamp(13px,1.04vw,15px);font-weight:600;text-decoration:none;transition:transform .25s ease,opacity .2s;display:inline-block}
 .hero-btn:hover{transform:translateY(-2px);opacity:.9}
 .hero-btn--dark{background:#141414;color:#F7F5F1}
-.hero-btn--pink{background:#E2557F;color:#141414}
-/* stats bar */
+.hero-btn--pink{background:#E2557F;color:#fff}
+/* stats */
 .hero-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid #E2DDD3;margin:clamp(20px,3.5vw,50px) clamp(24px,8.6vw,124px) 0;background:#F7F5F1}
 .hero-stat{display:flex;align-items:center;gap:14px;padding:clamp(12px,1.67vw,24px);border-right:1px solid #E2DDD3}
 .hero-stat:last-child{border-right:none;justify-content:flex-end}
@@ -153,20 +159,19 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .hero-stat__num{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(20px,2.22vw,32px);white-space:nowrap}
 .hero-stat__meta{display:flex;flex-direction:column;gap:3px}
 .hero-stat__lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#E2557F}
-.hero-stat__desc{font-size:clamp(11px,0.9vw,13px);line-height:1.35;color:#5A554D}
+.hero-stat__desc{font-size:clamp(11px,.9vw,13px);line-height:1.35;color:#5A554D}
 /* services ticker */
-.svc-strip{height:60px;display:flex;align-items:stretch;background:#141414;color:#F7F5F1;font-family:var(--mono);font-size:clamp(11px,0.9vw,13px);letter-spacing:.14em;white-space:nowrap;overflow:hidden}
+.svc-strip{height:60px;display:flex;align-items:stretch;background:#141414;color:#F7F5F1;font-family:var(--mono);font-size:clamp(11px,.9vw,13px);letter-spacing:.14em;white-space:nowrap;overflow:hidden}
 .svc-strip__label{display:flex;align-items:center;padding:0 clamp(16px,1.94vw,28px) 0 clamp(20px,5.6vw,80px);color:#E2557F;background:#141414;position:relative;z-index:2;flex-shrink:0}
 .svc-strip__track-wrap{flex:1;overflow:hidden;display:flex;align-items:center;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40px,#000 calc(100% - 80px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 40px,#000 calc(100% - 80px),transparent 100%)}
 .svc-strip__track{display:flex;width:max-content;animation:bnr-marquee 38s linear infinite}
 .svc-strip:hover .svc-strip__track{animation-play-state:paused}
 @keyframes bnr-marquee{to{transform:translateX(-50%)}}
-.svc-link{color:#F7F5F1;text-decoration:none;transition:color .2s}
-.svc-link:hover{color:#E2557F}
-.svc-star{display:inline-block;flex-shrink:0}
+.svc-link{color:#F7F5F1;text-decoration:none;transition:color .2s}.svc-link:hover{color:#E2557F}
+/* responsive */
 @media(prefers-reduced-motion:reduce){.spin,.hero-cursor,.svc-strip__track{animation:none}.face,.wig,.hero-btn{transition:none}}
-@media(max-width:900px){.hero-note,.hero-redline,.hero-cursor,.hero-badge{display:none}.hero-senior{display:none}}
-@media(max-width:600px){.hero-stats{margin-left:0;margin-right:0}.hero-stat{padding:12px 16px}.hero-stats{grid-template-columns:1fr 1fr}.hero-stat:last-child{justify-content:flex-start;grid-column:1/-1}}
+@media(max-width:1100px){.hero-note,.hero-redline,.hero-cursor,.hero-badge,.hero-senior,.hero-location{display:none}}
+@media(max-width:700px){.hero-hi{display:none}.hero-stats{margin-left:0;margin-right:0;grid-template-columns:1fr 1fr}.hero-stat:last-child{justify-content:flex-start;grid-column:1/-1;border-top:1px solid #E2DDD3}.hero-stat:nth-child(2){justify-content:flex-start}}
 /* ============================================================ PROJECTS */
 .section{padding-top:clamp(60px,8vw,110px)}
 .sec-title{font-family:var(--serif);font-style:italic;font-weight:600;text-align:center;font-size:clamp(32px,5.5vw,72px);letter-spacing:-.01em;line-height:.95}
@@ -594,48 +599,50 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 <!-- ============================================================ HERO -->
 <div class="hero-banner" id="home">
 
-  <p class="hero-banner__top">SENIOR PRODUCT DESIGNER · ENTERPRISE &amp; CONSUMER · AI</p>
+  <p class="hero-banner__mono">SENIOR PRODUCT DESIGNER · ENTERPRISE &amp; CONSUMER · AI</p>
 
-  <!-- Giant headline -->
-  <div style="position:relative;padding-bottom:clamp(8px,1.4vw,20px)">
+  <!-- Giant centered text block — decorations anchored to it -->
+  <div class="hero-text-wrap">
+    <div class="hero-text-block">
 
-    <!-- Spinning badge -->
-    <div class="hero-badge" aria-hidden="true">
-      <svg class="spin" viewBox="0 0 132 132" width="100%" height="100%" style="position:absolute;inset:0"><defs><path id="bnr-ring" d="M66,66 m-52,0 a52,52 0 1,1 104,0 a52,52 0 1,1 -104,0"></path></defs><text style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.9px;fill:#141414"><textPath href="#bnr-ring">DESIGNING TRUST · ONE SCREEN AT A TIME · </textPath></text></svg>
-      <svg viewBox="0 0 40 40" width="30%" height="30%" style="position:absolute;left:35%;top:35%"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-    </div>
+      <!-- Spinning badge (left of block) -->
+      <div class="hero-badge" aria-hidden="true">
+        <svg class="spin" viewBox="0 0 132 132" width="100%" height="100%" style="position:absolute;inset:0"><defs><path id="bnr-ring" d="M66,66 m-52,0 a52,52 0 1,1 104,0 a52,52 0 1,1 -104,0"></path></defs><text style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.9px;fill:#141414"><textPath href="#bnr-ring">DESIGNING TRUST · ONE SCREEN AT A TIME · </textPath></text></svg>
+        <svg viewBox="0 0 40 40" width="30%" height="30%" style="position:absolute;left:35%;top:35%"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      </div>
 
-    <!-- Margin note right -->
-    <div class="hero-note" aria-hidden="true">
-      <span>the screens are the easy part.<br><mark>knowing what to build</mark> is the job.</span>
-      <em>— m.</em>
-    </div>
+      <!-- Margin note (right of block) -->
+      <div class="hero-note" aria-hidden="true">
+        <span>the screens are the easy part.<br><mark>knowing what to build</mark> is the job.</span>
+        <em>— m.</em>
+      </div>
 
-    <!-- "hi, that's me" label -->
-    <span class="hero-hi" aria-hidden="true">hi, that's me ↓</span>
+      <!-- Redline spec -->
+      <div class="hero-redline" aria-hidden="true">
+        <div class="hero-redline__bar"></div>
+        <span class="hero-redline__chip">dark patterns: 0</span>
+      </div>
 
-    <!-- Line 1: "Product" with photo -->
-    <div class="hero-line1">
-      <span class="giant"><span class="wig">P</span><span class="wig">r</span><span class="wig">o</span><a href="#about" class="face"><img src="uploads/mehak-hero.png" alt="Mehak Garg"></a><span class="wig">d</span><span class="wig">u</span><span class="wig">c</span><span class="wig">t</span></span>
-    </div>
+      <!-- Floating cursor -->
+      <div class="hero-cursor" aria-hidden="true">
+        <svg width="22" height="24" viewBox="0 0 22 24"><path d="M2 2 L19 11 L11 13 L7 21 Z" fill="#E2557F" stroke="#141414" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+        <span style="position:absolute;left:16px;top:20px;white-space:nowrap;padding:4px 10px;border-radius:999px 999px 999px 4px;background:#E2557F;color:#141414;font-size:13px;font-weight:600">Mehak · let's talk</span>
+      </div>
 
-    <!-- Line 2: "Designer." -->
-    <div class="hero-line2">
+      <!-- "hi, that's me" label — above the photo -->
+      <span class="hero-hi" aria-hidden="true">hi, that's me ↓</span>
+
+      <!-- SENIOR label -->
       <span class="hero-senior" aria-hidden="true">SENIOR</span>
-      <span class="giant"><span class="wig">D</span><span class="wig">e</span><span class="wig">s</span><span class="wig">i</span><span class="wig">g</span><span class="wig">n</span><span class="wig">e</span><span class="wig">r</span><span class="wig" style="background:none;-webkit-background-clip:unset;background-clip:unset;color:#E2557F">.</span></span>
+
+      <!-- Line 1: P r o [photo] d u c t -->
+      <span class="giant"><span class="wig">P</span><span class="wig">r</span><span class="wig">o</span><a href="#about" class="face"><img src="uploads/mehak-hero.png" alt="Mehak Garg"></a><span class="wig">d</span><span class="wig">u</span><span class="wig">c</span><span class="wig">t</span></span>
+
+      <!-- Line 2: D e s i g n e r [pink dot] -->
+      <span class="giant"><span class="wig">D</span><span class="wig">e</span><span class="wig">s</span><span class="wig">i</span><span class="wig">g</span><span class="wig">n</span><span class="wig">e</span><span class="wig">r</span><span class="giant-dot">.</span></span>
+
+      <!-- MEHAK GARG · PUNE label -->
       <span class="hero-location" aria-hidden="true">MEHAK GARG · PUNE</span>
-    </div>
-
-    <!-- Redline spec -->
-    <div class="hero-redline" aria-hidden="true">
-      <div class="hero-redline__bar"></div>
-      <span class="hero-redline__chip">dark patterns: 0</span>
-    </div>
-
-    <!-- Multiplayer cursor -->
-    <div class="hero-cursor" aria-hidden="true">
-      <svg width="22" height="24" viewBox="0 0 22 24"><path d="M2 2 L19 11 L11 13 L7 21 Z" fill="#E2557F" stroke="#141414" stroke-width="1.5" stroke-linejoin="round"></path></svg>
-      <span style="position:absolute;left:16px;top:20px;white-space:nowrap;padding:4px 10px;border-radius:999px 999px 999px 4px;background:#E2557F;color:#141414;font-size:13px;font-weight:600">Mehak · let's talk</span>
     </div>
   </div>
 
@@ -649,7 +656,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
     </div>
   </div>
 
-  <!-- Stats -->
+  <!-- Stats bar -->
   <div class="hero-stats">
     <div class="hero-stat">
       <span class="hero-stat__num">100%</span>
@@ -657,11 +664,11 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
     </div>
     <div class="hero-stat">
       <span class="hero-stat__num">30K+</span>
-      <div class="hero-stat__meta"><span class="hero-stat__lbl">SCALE</span><span class="hero-stat__desc">organizations worldwide use<br>products I designed</span></div>
+      <div class="hero-stat__meta"><span class="hero-stat__lbl">SCALE</span><span class="hero-stat__desc">organizations worldwide use products I designed</span></div>
     </div>
     <div class="hero-stat">
       <span class="hero-stat__num">30+</span>
-      <div class="hero-stat__meta"><span class="hero-stat__lbl">RANGE</span><span class="hero-stat__desc">products shipped across B2B SaaS<br>and consumer apps</span></div>
+      <div class="hero-stat__meta"><span class="hero-stat__lbl">RANGE</span><span class="hero-stat__desc">products shipped across B2B SaaS and consumer apps</span></div>
     </div>
   </div>
 </div>
@@ -672,22 +679,22 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <div class="svc-strip__track-wrap">
     <div class="svc-strip__track">
       <div style="display:flex;align-items:center;gap:28px;padding-right:28px">
-        <a href="#services" class="svc-link">ENTERPRISE PRODUCT UX</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">UX AUDITS</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">DESIGN SYSTEMS</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">DESIGN STRATEGY</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">0-1 CONSULTATION</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">WEB DESIGN</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">BRAND DESIGN</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">ENTERPRISE PRODUCT UX</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">UX AUDITS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">DESIGN SYSTEMS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">DESIGN STRATEGY</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">0-1 CONSULTATION</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">WEB DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">BRAND DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
       </div>
       <div aria-hidden="true" style="display:flex;align-items:center;gap:28px;padding-right:28px">
-        <a href="#services" class="svc-link">ENTERPRISE PRODUCT UX</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">UX AUDITS</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">DESIGN SYSTEMS</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">DESIGN STRATEGY</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">0-1 CONSULTATION</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">WEB DESIGN</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">BRAND DESIGN</a><svg class="svc-star" aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">ENTERPRISE PRODUCT UX</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">UX AUDITS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">DESIGN SYSTEMS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">DESIGN STRATEGY</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">0-1 CONSULTATION</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">WEB DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+        <a href="#services" class="svc-link">BRAND DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
       </div>
     </div>
   </div>
