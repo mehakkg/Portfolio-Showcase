@@ -118,8 +118,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 /* pink period */
 .giant-dot{display:inline-block;color:#E2557F;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(72px,15.5vw,224px);line-height:.92;-webkit-text-fill-color:#E2557F}
 /* "hi, that's me" — anchored to text block, above the photo */
-.hero-hi{position:absolute;font-family:var(--hand);font-weight:700;font-size:clamp(16px,2.4vw,34px);color:#D2477A;transform:rotate(-8deg);white-space:nowrap;pointer-events:none;
-  top:clamp(4px,1vw,16px);left:clamp(80px,17vw,260px)}
+.hero-hi{position:absolute;font-family:var(--hand);font-weight:700;font-size:clamp(14px,1.8vw,26px);color:#D2477A;transform:rotate(-8deg);white-space:nowrap;pointer-events:none;z-index:10;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) rotate(-8deg)}
 /* SENIOR / location labels anchored to text block */
 .hero-senior{position:absolute;left:clamp(-90px,-7vw,-16px);bottom:clamp(32px,5.5vw,76px);font-family:var(--mono);font-size:clamp(8px,.83vw,12px);letter-spacing:.14em;color:#6A655D;white-space:nowrap;pointer-events:none}
 .hero-location{position:absolute;right:0;bottom:clamp(-22px,-1.9vw,-4px);font-family:var(--mono);font-size:clamp(8px,.83vw,12px);letter-spacing:.14em;color:#6A655D;white-space:nowrap;pointer-events:none}
@@ -133,10 +132,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .hero-note em{display:block;margin-top:6px;text-align:right;font-family:var(--hand);font-weight:700;font-size:clamp(13px,1.53vw,22px);color:#E2557F;font-style:normal}
 .hero-redline{position:absolute;right:clamp(16px,3.3vw,48px);top:clamp(220px,24vw,346px);display:flex;align-items:center;gap:8px;pointer-events:none}
 .hero-redline__bar{width:1px;height:clamp(40px,6.1vw,88px);background:#E2557F;position:relative;flex-shrink:0}
-.hero-redline__bar::before,.hero-redline__bar::after{content:'';position:absolute;left:-5px;width:11px;height:1px;background:#E2557F}
+.hero-redline__bar::before__bar::after{content:'';position:absolute;left:-5px;width:11px;height:1px;background:#E2557F}
 .hero-redline__bar::before{top:0}.hero-redline__bar::after{bottom:0}
 .hero-redline__chip{font-family:var(--mono);font-size:10px;color:#E2557F;padding:3px 6px;border:1px solid #E2557F;border-radius:4px;background:#fff;white-space:nowrap}
-.hero-cursor{position:absolute;right:clamp(16px,2.2vw,32px);top:clamp(340px,36vw,520px);pointer-events:none;animation:bnr-drift 5s ease-in-out infinite}
+.hero-cursor{position:absolute;right:clamp(20px,2.8vw,40px);bottom:clamp(80px,10vw,144px);pointer-events:none;animation:bnr-drift 5s ease-in-out infinite}
 @keyframes bnr-drift{0%,100%{transform:translate(0,0)}35%{transform:translate(-14px,-8px)}70%{transform:translate(6px,-14px)}}
 /* tagline + ctas */
 .hero-body{padding:clamp(16px,3.5vw,50px) clamp(24px,5.6vw,80px) 0;display:flex;flex-direction:column;align-items:center;gap:clamp(10px,1.25vw,18px);text-align:center}
@@ -167,8 +166,17 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .svc-link{color:#F7F5F1;text-decoration:none;transition:color .2s}.svc-link:hover{color:#E2557F}
 /* responsive */
 @media(prefers-reduced-motion:reduce){.spin,.hero-cursor,.svc-strip__track{animation:none}.face,.wig,.hero-btn{transition:none}}
-@media(max-width:1100px){.hero-note,.hero-redline,.hero-cursor,.hero-badge,.hero-senior,.hero-location,.hero-hi{display:none}}
+@media(max-width:1100px){.hero-note,.hero-cursor,.hero-badge,.hero-senior,.hero-location,.hero-hi{display:none}}
 @media(max-width:700px){.hero-stats{margin-left:0;margin-right:0;grid-template-columns:1fr 1fr}.hero-stat:last-child{justify-content:flex-start;grid-column:1/-1;border-top:1px solid #E2DDD3}.hero-stat:nth-child(2){justify-content:flex-start}}
+
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s cubic-bezier(.22,.61,.36,1)}
+.reveal.revealed{opacity:1;transform:none}
+.reveal[data-delay="1"]{transition-delay:.1s}
+.reveal[data-delay="2"]{transition-delay:.2s}
+.reveal[data-delay="3"]{transition-delay:.3s}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
 /* ============================================================ PROJECTS */
 .section{padding-top:clamp(60px,8vw,110px)}
 .sec-title{font-family:var(--serif);font-style:italic;font-weight:600;text-align:center;font-size:clamp(32px,5.5vw,72px);letter-spacing:-.01em;line-height:.95}
@@ -610,9 +618,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
       <span>the screens are the easy part.<br><mark>knowing what to build</mark> is the job.</span>
       <em>— m.</em>
     </div>
-    <div class="hero-redline" aria-hidden="true">
-      <div class="hero-redline__bar"></div>
-      <span class="hero-redline__chip">dark patterns: 0</span>
+    <span class="hero-redline__chip">dark patterns: 0</span>
     </div>
     <div class="hero-cursor" aria-hidden="true">
       <svg width="22" height="24" viewBox="0 0 22 24"><path d="M2 2 L19 11 L11 13 L7 21 Z" fill="#E2557F" stroke="#141414" stroke-width="1.5" stroke-linejoin="round"></path></svg>
@@ -620,12 +626,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
     </div>
 
     <div class="hero-text-block">
-      <!-- "hi, that's me" above photo, anchored to text block -->
-      <span class="hero-hi" aria-hidden="true">hi, that's me ↓</span>
       <span class="hero-senior" aria-hidden="true">SENIOR</span>
 
       <!-- Line 1: P r [photo=O] d u c t -->
-      <span class="giant"><span class="wig">P</span><span class="wig">r</span><a href="#about" class="face"><img src="uploads/mehak-hero.png" alt="Mehak Garg"></a><span class="wig">d</span><span class="wig">u</span><span class="wig">c</span><span class="wig">t</span></span>
+      <span class="giant"><span class="wig">P</span><span class="wig">r</span><a href="#about" class="face" style="position:relative"><img src="uploads/mehak-hero.png" alt="Mehak Garg"><span class="hero-hi" aria-hidden="true">hi, that's me ↓</span></a><span class="wig">d</span><span class="wig">u</span><span class="wig">c</span><span class="wig">t</span></span>
 
       <!-- Line 2: D e s i g n e r . -->
       <span class="giant"><span class="wig">D</span><span class="wig">e</span><span class="wig">s</span><span class="wig">i</span><span class="wig">g</span><span class="wig">n</span><span class="wig">e</span><span class="wig">r</span><span class="giant-dot">.</span></span>
@@ -635,7 +639,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   </div>
 
   <!-- Tagline + CTAs -->
-  <div class="hero-body">
+  <div class="hero-body reveal">
     <h1 class="hero-h1">Complex products only work when people trust them.<br><em>I design that trust.</em></h1>
     <p class="hero-desc">Five years designing enterprise identity and access platforms, where one unclear screen becomes a security risk. I bring that same rigor to any product where clarity drives adoption, from B2B SaaS to consumer apps.</p>
     <div class="hero-ctas">
@@ -645,7 +649,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   </div>
 
   <!-- Stats bar -->
-  <div class="hero-stats">
+  <div class="hero-stats reveal">
     <div class="hero-stat">
       <span class="hero-stat__num">100%</span>
       <div class="hero-stat__meta"><span class="hero-stat__lbl">IMPACT</span><span class="hero-stat__desc">lift in trial-to-paid conversion</span></div>
@@ -690,7 +694,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 <!-- ============================================================ PROJECTS -->
 <section class="section wrap" id="work">
-  <h2 class="sec-title stagger">My Latest Projects</h2>
+  <h2 class="sec-title stagger reveal">My Latest Projects</h2>
 
   <div class="sys-header reveal">
     <span class="sys-eyebrow">FIG. 02 — SELECTED SYSTEMS</span>
@@ -927,9 +931,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 <!-- ============================================================ SERVICES -->
 <section class="services-band" id="services">
   <div class="wrap">
-    <div class="svc-kicker"><span>[06]</span>&nbsp; WHAT I CAN DO FOR YOU</div>
-    <h2 class="sec-title stagger">What I can do <span style="font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.02em">for you.</span></h2>
-    <p class="svc-subhead">Three ways to work with me, wherever your product is today.</p>
+    <h2 class="sec-title stagger reveal">What I can do <span style="font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.02em">for you.</span></h2>
+    <p class="svc-subhead reveal" data-delay="1">Three ways to work with me, wherever your product is today.</p>
     <div class="svc-row">
 
       <!-- SVC-01 -->
@@ -999,6 +1002,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
         <span class="svc-sel svc-sel-dot" aria-hidden="true" style="right:-11px;bottom:-11px"></span>
         <div class="svc-card__hd">
           <span class="svc-card__lbl">SVC-03 · SCALE</span>
+          <span class="svc-open svc-card__start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Let's do it.</span>
         </div>
         <div class="svc-card__body">
           <span class="svc-card__title">Design Systems</span>
@@ -1018,7 +1022,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
       </a>
 
     </div>
-    <p class="svc-also">Also available: brand identity and websites for early-stage startups.</p>
+    <p class="svc-also reveal">Also available: brand identity and websites for early-stage startups.</p>
   </div>
 </section>
 
@@ -1993,6 +1997,20 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
       scrollTo({top:t.getBoundingClientRect().top+scrollY-60, behavior:reduce?"auto":"smooth"});
     });
   });
+})();
+</script>
+
+<script>
+/* ── scroll reveal ── */
+(function(){
+  var els = document.querySelectorAll('.reveal,[data-reveal]');
+  if(!('IntersectionObserver' in window))return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target);}
+    });
+  },{threshold:0.12});
+  els.forEach(function(el){io.observe(el);});
 })();
 </script>
 </body>
