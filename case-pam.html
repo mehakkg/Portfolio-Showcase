@@ -1,771 +1,307 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PAM Platform Redesign | Mehak Garg</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PAM Case Study — Mehak Garg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Caveat:wght@500;600;700&display=swap">
 <style>
-:root {
-  --bg:     #F5F5F5;
-  --card:   #FFFFFF;
-  --card-2: #F7F7F7;
-  --ink:    #0A0A0A;
-  --ink-2:  #525252;
-  --ink-3:  #9E9E9E;
-  --border: #E2E2E2;
-  --dk:     #111111;
-  --dk-2:   #1C1C1C;
-  --wh:     #F5F5F5;
-  --wh-2:   #AAAAAA;
-  --wh-3:   #666666;
-  --sans:   "Plus Jakarta Sans", system-ui, sans-serif;
-  --serif:  "DM Serif Display", Georgia, serif;
-  --mono:   "JetBrains Mono", monospace;
-  --pink:   #F8A8BC;
-  --pink-bg:#FFADC3;
-  --r:      20px;
-  --gap:    14px;
-  --pad:    clamp(28px,5vw,72px);
-  --ease:   cubic-bezier(0.22,1,0.36,1);
-}
+:root{--ink:#141414;--bg:#FFFFFF;--pink:#FF9FB2;--pink-deep:#E2557F;--rose:#B2376A;--serif:"Bodoni Moda",serif;--sans:"Hanken Grotesk",system-ui,sans-serif;--mono:"Space Mono",monospace;--hand:"Caveat",cursive;--rail:80px;--border:#E8E8E8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:none}
+a:hover{opacity:.8}
+img{display:block;max-width:100%}
 
-*{box-sizing:border-box;margin:0;padding:0;}
-@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth;}}
-body{
-  font-family:var(--sans);
-  background:var(--bg);
-  color:var(--ink);
-  font-size:17px;
-  line-height:1.65;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-a{color:inherit;text-decoration:none;}
-img{display:block;max-width:100%;}
+#pw-gate{position:fixed;inset:0;z-index:9999;background:#0A0A0A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+#pw-gate h2{margin:0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(28px,4vw,56px);color:#fff;text-align:center}
+#pw-gate p{margin:0;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:#9A958C;text-align:center}
+#pw-gate input{width:280px;padding:14px 20px;border:1.5px solid #444;border-radius:999px;background:#1A1A1A;color:#fff;font-family:var(--sans);font-size:16px;text-align:center;outline:none}
+#pw-gate input:focus{border-color:var(--pink)}
+#pw-gate button{padding:14px 32px;border-radius:999px;background:var(--pink-deep);color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer}
+#pw-error{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#E2557F;opacity:0;transition:opacity .3s;min-height:16px}
 
-/* ── Scroll progress ── */
-.sp{position:fixed;top:0;left:0;height:2px;background:var(--ink);z-index:60;width:100%;transform:scaleX(0);transform-origin:left center;}
+.cs-nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;height:64px;padding:0 var(--rail);background:#fff;border-bottom:1px solid var(--border)}
+.cs-nav-left{display:flex;align-items:center;gap:14px}
+.cs-nav-photo{width:32px;height:32px;border-radius:50%;overflow:hidden;border:1.5px solid var(--ink)}
+.cs-nav-photo img{width:100%;height:100%;object-fit:cover}
+.cs-nav-name{font-weight:700;font-size:16px}
+.cs-nav-crumb{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:#9A958C}
+.cs-nav-right{display:flex;height:64px;font-family:var(--mono);font-size:11px;letter-spacing:.14em}
+.cs-nav-right a{display:flex;align-items:center;padding:0 24px;border-left:1px solid var(--border)}
+.cs-nav-right a:last-child{border-right:1px solid var(--border)}
+.cs-nav-right .nav-active{background:var(--ink);color:#fff}
 
-/* ── Nav ── */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:50;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px clamp(20px,4vw,56px);
-  background:rgba(255,255,255,.95);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-}
-.nav-left{display:flex;align-items:center;gap:0;font-size:14px;font-weight:500;color:var(--ink-3);}
-.nav-logo{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:var(--ink);text-decoration:none;white-space:nowrap;}
-.nav-logo img{width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;}
-.nav-bc-sep{margin:0 8px;opacity:.35;font-size:13px;}
-.nav-bc-item{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;}
-.nav-bc-item:hover{color:var(--ink);}
-.nav-bc-cur{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);}
-.nav-links{display:flex;gap:0;align-items:center;font-size:13px;font-weight:500;}
-.nav-links a{padding:8px 18px;color:var(--ink-3);text-decoration:none;transition:color .2s;border-left:1px solid var(--border);}
-.nav-links a:hover{color:var(--ink);}
-.nav-links a.nav-active{background:var(--ink);color:#fff;}
-.nav-links a.nav-active:hover{color:#fff;}
-.nav-links a.nav-say-hi{display:flex;align-items:center;gap:6px;}
-@media(max-width:700px){
-  .nav-bc-item,.nav-bc-sep,.nav-bc-cur{display:none;}
-  .nav-links a:not(.nav-active):not(.nav-say-hi){display:none;}
-}
+.cs-hero{margin:0 var(--rail);display:grid;grid-template-columns:7fr 5fr;border-bottom:1px solid var(--border)}
+.cs-hero__title{padding:64px 56px 56px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:24px}
+.cs-hero__eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em}
+.cs-hero__eyebrow span{width:9px;height:9px;background:var(--pink);border:1.5px solid var(--ink);display:inline-block}
+.cs-hero__h1{margin:0;font-weight:700;font-size:clamp(36px,4.4vw,64px);line-height:1.2;letter-spacing:-.04em}
+.cs-hero__h1 em{font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.02em;background:var(--pink);padding:0 10px;border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.cs-hero__meta{padding:64px 56px 56px;display:flex;flex-direction:column;gap:32px;justify-content:center}
+.cs-hero__desc{margin:0;font-family:var(--serif);font-size:clamp(16px,1.46vw,21px);line-height:1.5}
+.cs-hero__dl{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 20px}
+.cs-hero__dl dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:#6E6E6E}
+.cs-hero__dl dd{margin:0;font-size:15px;font-weight:600}
+.cs-hero__dl .live{color:#1E6B3A}
 
-/* ── Breadcrumb (hidden — integrated into nav) ── */
-.breadcrumb{display:none;}
+.cs-stats-row{margin:0 var(--rail);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--border)}
+.cs-stat-cell{padding:26px 28px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+.cs-stat-cell:last-child{border-right:none}
+.cs-stat-cell__num{font-family:var(--serif);font-style:italic;font-size:clamp(28px,3vw,44px);line-height:1;white-space:nowrap}
+.cs-stat-cell:nth-child(2) .cs-stat-cell__num,.cs-stat-cell:nth-child(4) .cs-stat-cell__num{font-style:normal}
+.cs-stat-cell__label{font-size:14px;line-height:1.45;color:#4A4A4A}
 
-/* ════════════════════════════════════════════
-   HERO — two-column split
-════════════════════════════════════════════ */
-.cs-hero-2col{
-  background:#fff;
-  padding-top:clamp(80px,10vw,120px);
-  padding-bottom:0;
-}
-.cs-hero-inner{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:0;
-  border-top:1px solid var(--border);
-}
-.cs-hero-left{
-  padding:clamp(40px,5vw,72px) clamp(24px,4vw,64px) clamp(40px,5vw,72px) clamp(24px,5vw,80px);
-  border-right:1px solid var(--border);
-}
-.cs-hero-right{
-  padding:clamp(40px,5vw,72px) clamp(24px,5vw,80px) clamp(40px,5vw,72px) clamp(24px,4vw,64px);
-  display:flex;flex-direction:column;justify-content:space-between;
-}
-.cs-eyebrow{
-  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:28px;
-}
-.cs-eyebrow-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  border:1px solid var(--border);border-radius:999px;
-  padding:4px 12px;font-size:10.5px;letter-spacing:.1em;color:var(--ink-2);
-}
-.cs-eyebrow-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:#E2557F;flex-shrink:0;}
-.cs-h1{
-  font-family:var(--sans);font-weight:800;
-  font-size:clamp(36px,4.8vw,68px);line-height:1.02;
-  letter-spacing:-.03em;color:var(--ink);margin:0;
-}
-.cs-h1-hi{
-  display:block;
-  font-family:var(--serif);font-style:italic;font-weight:400;
-  background:var(--pink-bg);
-  padding:2px 8px;border-radius:4px;
-  letter-spacing:-.01em;
-}
-.cs-hero-sub{
-  font-size:clamp(16px,1.5vw,22px);color:var(--ink-2);
-  line-height:1.6;margin:0 0 40px;
-}
-.cs-meta-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  border-top:1px solid var(--border);
-}
-.cs-mi{
-  padding:18px 12px 18px 0;border-bottom:1px solid var(--border);
-}
-.cs-mi:nth-child(even){padding-left:20px;border-left:1px solid var(--border);}
-.cs-ml{
-  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:6px;
-}
-.cs-mv{font-size:14px;font-weight:500;color:var(--ink);line-height:1.4;}
-/* ── Stats banner ── */
-.cs-stats-banner{
-  background:#0A0A0A;color:#fff;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  border-top:1px solid #222;
-}
-.cs-stat-b{
-  padding:clamp(32px,4vw,56px) clamp(24px,3vw,48px);
-  border-right:1px solid #222;
-}
-.cs-stat-b:last-child{border-right:none;}
-.cs-stat-b__num{
-  font-family:var(--serif);font-style:italic;
-  font-size:clamp(36px,4.5vw,64px);line-height:1;
-  color:var(--pink-bg);letter-spacing:-.02em;margin-bottom:10px;
-}
-.cs-stat-b__label{font-size:14px;color:rgba(255,255,255,.55);line-height:1.4;}
-@media(max-width:900px){
-  .cs-hero-inner{grid-template-columns:1fr;}
-  .cs-hero-left{border-right:none;padding-right:clamp(24px,5vw,80px);}
-  .cs-hero-right{padding-left:clamp(24px,5vw,80px);}
-  .cs-stats-banner{grid-template-columns:1fr 1fr;}
-  .cs-stat-b:nth-child(2){border-right:none;}
-  .cs-stat-b:nth-child(3),.cs-stat-b:nth-child(4){border-top:1px solid #222;}
-}
-@media(max-width:600px){
-  .cs-stats-banner{grid-template-columns:1fr 1fr;}
-  .cs-meta-grid{grid-template-columns:1fr 1fr;}
-}
+.cs-ba{margin:0 var(--rail);border-bottom:1px solid var(--border);background:#DCE7F7;padding:36px 0 0;display:flex;flex-direction:column;align-items:center;gap:18px}
+.cs-ba__header{width:min(1040px,100% - 48px);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.cs-ba__chip{font-family:var(--mono);font-size:12px;letter-spacing:.14em;padding:6px 10px;border:1.5px solid var(--ink);border-radius:6px}
+.cs-ba__chip--before{background:#fff}
+.cs-ba__chip--after{background:var(--pink)}
+.cs-ba__caption{font-family:var(--hand);font-weight:600;font-size:clamp(16px,1.67vw,24px)}
+.cs-ba__viewer{position:relative;width:min(1040px,100% - 48px);height:580px;border-radius:12px 12px 0 0;overflow:hidden;box-shadow:0 30px 70px rgba(20,30,60,.22);background:#fff}
+.cs-ba__viewer img.cs-ba__after{position:absolute;left:0;top:0;width:100%;height:auto;max-width:none}
+.cs-ba__viewer .cs-ba__after-chip{position:absolute;right:16px;top:16px;z-index:1;font-family:var(--mono);font-size:11px;letter-spacing:.14em;padding:6px 10px;background:var(--pink);border:1.5px solid var(--ink);border-radius:6px}
+.cs-ba__divider{position:absolute;left:0;top:0;z-index:2;width:50%;height:100%;min-width:60px;max-width:100%;overflow:hidden;resize:horizontal;border-right:3px solid var(--ink);background:#fff}
+.cs-ba__divider::-webkit-resizer{background:var(--pink);border:2px solid var(--ink);border-radius:6px}
+.cs-ba__divider img{position:absolute;left:0;top:0;width:1040px;height:auto;max-width:none}
+.cs-ba__divider .cs-ba__before-chip{position:absolute;left:16px;top:16px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;padding:6px 10px;background:#fff;border:1.5px solid var(--ink);border-radius:6px}
+.cs-ba__divider-icon{position:absolute;right:8px;top:50%;margin-top:-26px;width:52px;height:52px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.cs-ba__hint{position:absolute;left:50%;bottom:14px;z-index:3;transform:translateX(-50%);pointer-events:none;font-family:var(--hand);font-weight:600;font-size:22px;padding:2px 12px;border-radius:999px;background:rgba(255,255,255,.9);border:1px solid var(--ink);white-space:nowrap}
 
-/* ════════════════════════════════════════════
-   DASHBOARD SCREENSHOT
-════════════════════════════════════════════ */
-.cs-dashboard{
-  background:#E8ECF7;
-  padding:56px clamp(24px,5vw,80px) 0;
-  position:relative;
-  overflow:hidden;
-}
-.cs-after-label{
-  font-family:var(--serif);
-  font-style:italic;
-  font-size:20px;
-  color:var(--ink-2);
-  margin-bottom:20px;
-  display:block;
-}
-.cs-dashboard-img-wrap{
-  max-width:1040px;
-  margin:0 auto;
-  border-radius:16px 16px 0 0;
-  overflow:hidden;
-  box-shadow:0 8px 48px rgba(0,0,0,.12);
-}
-.cs-dashboard-img-wrap img{
-  width:100%;
-  display:block;
-}
-.cs-ba-slider-wrap{
-  position:relative;
-  width:100%;
-  cursor:ew-resize;
-  user-select:none;
-}
-.cs-ba-slider-wrap img{display:block;width:100%;}
-.cs-ba-after{
-  position:absolute;top:0;left:0;bottom:0;
-  overflow:hidden;
-  width:30%;
-}
-.cs-ba-after img{
-  position:absolute;top:0;left:0;
-  width:100%;
-  max-width:none;
-  height:100%;
-  object-fit:cover;
-  object-position:left top;
-}
-.cs-ba-handle{
-  position:absolute;top:0;bottom:0;
-  width:2px;background:#fff;
-  left:30%;
-  cursor:ew-resize;
-  transform:translateX(-50%);
-}
-.cs-ba-handle::before,.cs-ba-handle::after{
-  content:'';position:absolute;left:50%;transform:translateX(-50%);
-  width:36px;height:36px;border-radius:50%;background:#fff;
-  box-shadow:0 2px 12px rgba(0,0,0,.2);
-  top:50%;margin-top:-18px;
-}
-.cs-ba-handle::after{
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;color:#333;
-}
-.cs-ba-btn{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:36px;height:36px;border-radius:50%;background:#fff;
-  box-shadow:0 2px 12px rgba(0,0,0,.2);
-  display:flex;align-items:center;justify-content:center;
-  z-index:2;
-  pointer-events:none;
-}
-.cs-ba-label{
-  position:absolute;bottom:14px;
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  background:rgba(0,0,0,.55);color:#fff;padding:4px 10px;border-radius:4px;
-  pointer-events:none;
-}
-.cs-ba-label-before{left:16px;}
-.cs-ba-label-after{right:16px;}
+.cs-howr{margin:0 var(--rail);display:grid;grid-template-columns:260px 1fr 1fr 2fr;border-bottom:2px solid var(--ink)}
+.cs-howr__cell{padding:24px;border-right:1px solid var(--border)}
+.cs-howr__cell:last-child{border-right:none}
+.cs-howr__eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#6E6E6E;display:flex;align-items:center}
+.cs-howr__time{font-family:var(--serif);font-style:italic;font-size:34px;line-height:1}
+.cs-howr__sub{font-size:14px;color:#4A4A4A}
+.cs-howr__sub mark{background:var(--pink);padding:0 4px}
+.cs-howr__pills{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cs-howr__pills a{padding:8px 12px;border-radius:999px;border:1px solid var(--ink);font-size:13px;font-weight:600}
 
-/* ════════════════════════════════════════════
-   HOW TO READ THIS
-════════════════════════════════════════════ */
-.cs-htr{
-  background:#fff;
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  padding:28px clamp(24px,5vw,80px);
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:20px 32px;
-}
-.cs-htr-label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ink-3);white-space:nowrap;
-}
-.cs-htr-opts{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
-.cs-htr-opt{
-  font-family:var(--serif);font-style:italic;font-size:18px;color:var(--ink-2);
-  border:1.5px solid var(--border);border-radius:999px;padding:6px 18px;
-  white-space:nowrap;
-}
-.cs-htr-opt mark{
-  background:var(--pink-bg);color:var(--ink);
-  border-radius:2px;padding:0 2px;font-style:normal;
-  font-family:var(--mono);font-size:14px;letter-spacing:0;
-}
-.cs-htr-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto;}
-.cs-htr-nav a{
-  font-family:var(--mono);font-size:11px;letter-spacing:.06em;
-  border:1.5px solid var(--border);border-radius:999px;
-  padding:6px 14px;color:var(--ink-2);transition:border-color .2s,color .2s;
-  white-space:nowrap;
-}
-.cs-htr-nav a:hover{border-color:var(--ink);color:var(--ink);}
-@media(max-width:900px){.cs-htr-nav{margin-left:0;}}
+.cs-body{margin:0 var(--rail);display:grid;grid-template-columns:260px minmax(0,1fr)}
+.cs-sidebar{padding:56px 24px;display:flex;flex-direction:column;gap:6px;font-size:14px;align-self:start;position:sticky;top:64px}
+.cs-sidebar__label{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:#6E6E6E;padding-bottom:12px}
+.cs-sidebar a{display:flex;gap:10px;padding:8px 10px;border-radius:8px;color:#5F5F5F;transition:background .2s}
+.cs-sidebar a.active{background:var(--ink);color:#fff;font-weight:600}
+.cs-sidebar a span{font-family:var(--mono);font-size:12px}
+.cs-sidebar__progress{margin-top:18px;height:4px;border-radius:2px;background:#EEE;overflow:hidden}
+.cs-sidebar__fill{display:block;width:14%;height:100%;background:var(--ink);transition:width .3s}
+.cs-sidebar__time{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:#6E6E6E;margin-top:6px}
+.cs-main{display:flex;flex-direction:column}
 
-/* ════════════════════════════════════════════
-   TWO-COLUMN STICKY LAYOUT
-════════════════════════════════════════════ */
-.cs-layout{
-  display:grid;
-  grid-template-columns:240px 1fr;
-  align-items:start;
-  background:#fff;
-}
-.cs-sidebar{
-  position:sticky;
-  top:62px;
-  height:calc(100vh - 62px);
-  display:flex;
-  flex-direction:column;
-  padding:48px 24px 40px 40px;
-  border-right:1px solid var(--border);
-  overflow:hidden;
-  box-sizing:border-box;
-}
-.cs-sidebar-label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:16px;
-}
-.cs-section-nav{flex:1;}
-.cs-section-nav ul{list-style:none;display:flex;flex-direction:column;gap:2px;padding:0;margin:0;}
-.cs-section-nav li{display:flex;align-items:center;gap:0;}
-.cs-section-nav a{
-  display:flex;align-items:center;gap:14px;
-  width:100%;padding:10px 14px;border-radius:10px;
-  font-family:var(--sans);font-size:14px;font-weight:500;color:var(--ink-3);
-  text-decoration:none;transition:background .15s,color .15s;
-}
-.cs-section-nav a:hover{color:var(--ink);}
-.cs-section-nav a.active{background:var(--ink);color:#fff;font-weight:600;}
-.cs-section-nav .sn-num{
-  font-family:var(--mono);font-size:10px;letter-spacing:.06em;
-  flex-shrink:0;width:18px;opacity:.5;
-}
-.cs-section-nav a.active .sn-num{opacity:.6;}
-.cs-sidebar-footer{padding-top:20px;border-top:1px solid var(--border);}
-.cs-sidebar-read-time{
-  font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:10px;
-}
-.cs-sidebar-progress{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
-.cs-sidebar-progress-fill{height:100%;background:var(--ink);width:0%;transition:width .1s linear;border-radius:2px;}
+.cs-art{padding:72px 0 88px 64px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:28px}
+.cs-art:last-child{border-bottom:none}
+.cs-art__hd{display:flex;align-items:baseline;gap:18px}
+.cs-art__num{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:#6E6E6E}
+.cs-art__h2{margin:0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(36px,3.6vw,52px);line-height:1}
+.cs-lede{margin:0;font-size:clamp(20px,1.94vw,28px);line-height:1.35;font-weight:600;letter-spacing:-.01em;max-width:860px}
+.cs-lede mark{background:var(--pink);padding:2px 6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.cs-body-text{margin:0;font-size:17px;line-height:1.65;color:#333;max-width:760px}
+.cs-2col{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px;font-size:17px;line-height:1.65;color:#333;max-width:900px}
+.cs-2col p{margin:0}
+.cs-metrics{display:grid;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);max-width:980px}
+.cs-metrics--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cs-metrics--4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cs-metric{padding:20px 16px;border-right:1px solid var(--border)}
+.cs-metric:last-child{border-right:none}
+.cs-metric__num{display:block;font-family:var(--serif);font-size:clamp(32px,3.6vw,52px);line-height:1;white-space:nowrap}
+.cs-metric__num--i{font-style:italic}
+.cs-metric__lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E}
+.cs-big{font-family:var(--serif);font-size:clamp(18px,1.8vw,26px);line-height:1.35;margin:0;max-width:860px}
+.cs-big i{font-weight:600}
+
+.cs-timeline-inner{background:#fff;border-radius:10px;border:1px solid var(--border);padding:28px}
+.cs-timeline-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px;flex-wrap:wrap;gap:8px}
+.cs-timeline-title{font-family:var(--serif);font-style:italic;font-weight:600;font-size:24px}
+.cs-timeline-time{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E}
+.cs-timeline-steps{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) 1.15fr;gap:18px}
+.cs-timeline-steps::before{content:'';position:absolute;left:7px;right:30px;top:6px;border-top:2px dashed #B5B5B5}
+.cs-step{display:flex;flex-direction:column;gap:8px}
+.cs-step__dot{width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid var(--ink);position:relative;z-index:1}
+.cs-step__dot--end{background:var(--pink);box-shadow:0 0 0 5px rgba(255,159,178,.33)}
+.cs-step__num{font-family:var(--mono);font-size:11px;font-weight:700}
+.cs-step__title{font-size:14px;line-height:1.3;font-weight:700}
+.cs-step__sub{font-size:13px;line-height:1.45;color:#5F5F5F}
+.cs-step__tag{align-self:flex-start;margin-top:2px;padding:3px 8px;border-radius:6px;background:var(--pink);border:1.5px solid var(--ink);font-family:var(--mono);font-size:10px;font-weight:700}
+.cs-step__end{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--rose)}
+.cs-step__end-quote{font-family:var(--serif);font-style:italic;font-weight:600;font-size:21px;line-height:1.2}
+
+.cs-rc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:980px}
+.cs-rc{border:1px solid var(--ink);border-radius:14px;padding:22px 24px;display:flex;gap:18px}
+.cs-rc__code{font-family:var(--mono);font-size:12px;color:#6E6E6E;padding-top:4px}
+.cs-rc__body{display:flex;flex-direction:column;gap:6px}
+.cs-rc__title{font-weight:700;font-size:18px}
+.cs-rc__desc{font-size:15px;line-height:1.5;color:#4A4A4A}
+
+.cs-fig{margin:8px 0 0;display:flex;flex-direction:column;gap:12px;max-width:980px}
+.cs-fig__frame{position:relative;border:1px solid var(--ink);border-radius:14px;overflow:hidden}
+.cs-fig__frame img{display:block;width:100%}
+.cs-fig__frame--bg{background:#F4F2EE;padding:24px}
+.cs-fig__frame--blue{background:#DCE7F7;padding:24px}
+.cs-figcap{display:flex;justify-content:space-between;gap:24px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E;flex-wrap:wrap}
+.cs-figcap__note{font-family:var(--hand);font-size:24px;letter-spacing:0;color:var(--ink)}
+
+.cs-decision{max-width:980px;display:grid;grid-template-columns:7fr 5fr;gap:16px;align-items:stretch}
+.cs-decision-q{border:2px solid var(--ink);border-radius:14px;padding:30px;display:flex;flex-direction:column;gap:20px}
+.cs-decision-q__label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E}
+.cs-decision-q__text{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(20px,2.1vw,30px);line-height:1.2}
+.cs-decision-q__pills{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;font-weight:600}
+.cs-decision-q__pill{padding:7px 12px;border-radius:999px;background:#F4F2EE;border:1px solid #E2DDD3}
+.cs-decision-r{display:flex;flex-direction:column;gap:16px}
+.cs-dark{border-radius:14px;padding:28px;background-color:#070707;background-image:linear-gradient(#1B1B1B 1px,transparent 1px),linear-gradient(90deg,#1B1B1B 1px,transparent 1px);background-size:40px 40px;color:#F4F2EE}
+.cs-dark__label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#9A958C}
+.cs-dark__num{font-family:var(--serif);font-style:italic;font-weight:600;font-size:40px;line-height:1}
+.cs-dark__num--pink{color:var(--pink)}
+.cs-dark__arrow{font-size:20px;color:#9A958C;padding-bottom:6px}
+.cs-dark__meta{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#9A958C}
+.cs-dark__meta--pink{color:var(--pink)}
+.cs-dark__sub{font-size:15px;line-height:1.5;color:#E5E2DB;padding-top:6px;border-top:1px solid #2A2A2A}
+.cs-hardcall{border:1px solid var(--ink);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:8px;background:#FFF6F8}
+.cs-hardcall__label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--rose)}
+.cs-hardcall__title{font-family:var(--serif);font-style:italic;font-weight:600;font-size:22px;line-height:1.2}
+.cs-hardcall__desc{font-size:14.5px;line-height:1.55;color:#333}
+
+.cs-quote-wrap{max-width:860px;display:flex;flex-direction:column;gap:10px}
+blockquote.cs-quote{margin:0;padding-left:24px;border-left:3px solid var(--pink);font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(20px,2.1vw,30px);line-height:1.3}
+.cs-quote-attr{padding-left:27px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E}
+
+.cs-opts{border:1px solid var(--ink);border-radius:14px;overflow:hidden}
+.cs-opt{display:grid;grid-template-columns:110px minmax(0,1fr);gap:14px;padding:14px 22px;align-items:baseline;border-bottom:1px solid var(--border)}
+.cs-opt:last-child{border-bottom:none}
+.cs-opt__tag{padding:2px 8px;border-radius:999px;font-size:12px;font-family:var(--mono)}
+.cs-opt__tag--no{color:#6E6E6E;border:1px solid #C9C9C9}
+.cs-opt__tag--yes{font-weight:700;background:var(--pink)}
+.cs-opt__text{font-size:15px;line-height:1.5}
+.cs-opt__text span{color:#5F5F5F}
+
+.cs-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:24px;max-width:980px;align-items:baseline}
+.cs-row--center{align-items:center}
+.cs-row__lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E}
+.cs-band{display:flex;align-items:center;gap:16px;padding:16px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.cs-band__before{font-family:var(--serif);font-size:clamp(28px,3vw,44px);line-height:1;color:#6E6E6E;text-decoration:line-through}
+.cs-band__arrow{font-size:24px}
+.cs-band__after{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(28px,3vw,44px);line-height:1;background:var(--pink);padding:0 10px;border-radius:4px}
+.cs-band__sub{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E;line-height:1.6}
+.cs-section-badge{padding:6px 10px;border-radius:6px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.12em}
+.cs-section-hd{display:flex;align-items:center;gap:14px;max-width:980px;padding-top:24px;border-top:2px solid var(--ink);margin-top:12px;flex-wrap:wrap}
+.cs-section-hd h3{margin:0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(24px,2.4vw,34px);line-height:1.1}
+.cs-section-hd__fix{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E}
+
+.cs-pills{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;font-weight:600}
+.cs-pill{padding:7px 12px;border-radius:999px;background:#F4F2EE}
+
+.cs-ob-wrap{position:relative;border:1px solid var(--ink);border-radius:14px;overflow:hidden;background:#DCE7F7;padding:24px;display:grid;grid-template-columns:6fr 5fr;gap:20px;align-items:stretch}
+.cs-ob-map{background:#fff;border-radius:10px;border:1px solid #E2DDD3;padding:22px 26px;position:relative}
+.cs-ob-map__lbl{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E;margin-bottom:8px}
+.cs-ob-line{position:absolute;left:42px;top:64px;bottom:44px;border-left:1.5px dashed #B9B2A5}
+.cs-ob-step{display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;align-items:center;position:relative;padding:10px 0}
+.cs-ob-num{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--ink);background:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;position:relative;z-index:1}
+.cs-ob-num--active{background:var(--pink)}
+.cs-ob-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:1px dashed #D6D1C8}
+.cs-ob-title{font-size:16px;font-weight:700}
+.cs-ob-verify{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#6E6E6E}
+.cs-ob-right{display:flex;flex-direction:column;justify-content:center;gap:12px}
+.cs-ob-right__lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em}
+.cs-ob-right__note{font-family:var(--hand);font-weight:600;font-size:22px;line-height:1.2}
+
+.cs-ann{position:absolute;display:flex;align-items:center;gap:6px;padding:3px 9px 3px 3px;border-radius:999px;background:#fff;border:1.5px solid var(--ink);box-shadow:0 6px 14px rgba(20,20,40,.18);white-space:nowrap}
+.cs-ann__dot{width:18px;height:18px;border-radius:50%;background:var(--pink);font-family:var(--mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.cs-ann__text{font-size:11.5px;font-weight:600}
+
+.cs-terms{border:1px solid var(--ink);border-radius:14px;overflow:hidden;font-size:15px;max-width:980px}
+.cs-terms__hd{display:grid;grid-template-columns:200px 200px minmax(0,1fr);gap:24px;padding:14px 22px;border-bottom:2px solid var(--ink)}
+.cs-terms__hd span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E}
+.cs-term{display:grid;grid-template-columns:200px 200px minmax(0,1fr);gap:24px;padding:16px 22px;align-items:baseline;border-bottom:1px solid var(--border)}
+.cs-term:last-child{border-bottom:none}
+.cs-term__before{color:#6E6E6E;text-decoration:line-through;text-decoration-color:var(--pink)}
+.cs-term__after{font-weight:700}
+.cs-term__why{color:#4A4A4A;line-height:1.5}
+
+.cs-outcome{max-width:980px;border-radius:18px;overflow:hidden;background-color:#070707;background-image:linear-gradient(#1B1B1B 1px,transparent 1px),linear-gradient(90deg,#1B1B1B 1px,transparent 1px);background-size:40px 40px;color:#F4F2EE;padding:36px 44px 20px}
+.cs-outcome__hd{display:grid;grid-template-columns:1.1fr .9fr 1fr 1.6fr;gap:20px;padding-bottom:14px;border-bottom:1px solid #444}
+.cs-outcome__hd span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#9A958C}
+.cs-outcome__row{display:grid;grid-template-columns:1.1fr .9fr 1fr 1.6fr;gap:20px;padding:20px 0;border-bottom:1px solid #2A2A2A;align-items:baseline}
+.cs-outcome__metric{font-size:15px;color:#E5E2DB}
+.cs-outcome__before{font-family:var(--serif);font-size:24px;color:#8A847C;text-decoration:line-through}
+.cs-outcome__after{font-family:var(--serif);font-style:italic;font-weight:600;font-size:32px;color:var(--pink);white-space:nowrap}
+.cs-outcome__note{font-size:14px;line-height:1.5;color:#BDB8AF}
+.cs-outcome__footer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;padding:24px 0 16px;font-size:15px;line-height:1.5;color:#E5E2DB}
+
+.cs-lessons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:980px}
+.cs-lesson{border:1px solid var(--ink);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.cs-lesson--highlight{background:#FFF6F8}
+.cs-lesson__tag{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--rose)}
+.cs-lesson__title{font-weight:700;font-size:18px}
+.cs-lesson__desc{font-size:15px;line-height:1.55;color:#4A4A4A}
+
+.cs-next{align-self:flex-start;font-size:15px;font-weight:600;padding-top:8px}
+
+.cs-ending{margin:0 var(--rail);display:grid;grid-template-columns:1fr 1.3fr 1fr;border-top:2px solid var(--ink);border-bottom:1px solid var(--border)}
+.cs-ending__cell{display:flex;align-items:center;justify-content:center;transition:background .3s;min-height:320px}
+.cs-ending__cell:hover{background:#FBF3F5}
+.cs-ending__cell--border{border-right:1px solid var(--border)}
+.cs-ending__home{gap:12px;font-family:var(--mono);font-size:13px;letter-spacing:.14em}
+.cs-ending__next{flex-direction:column;justify-content:center;gap:14px;padding:36px;border-right:1px solid var(--border)}
+.cs-ending__preview{position:relative;height:180px;border-radius:12px;overflow:hidden;background:#DBEEE4;border:1px solid var(--ink)}
+.cs-ending__preview img{position:absolute;left:0;top:0;width:100%;object-fit:cover}
+.cs-ending__next-title{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.cs-ending__next-title span:first-child{font-family:var(--serif);font-style:italic;font-weight:600;font-size:24px}
+.cs-ending__next-title span:last-child{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#6E6E6E}
+.cs-ending__related{flex-direction:column;position:relative}
+
+.cs-footer{padding:72px 160px 56px;background:#FDEBF0;display:grid;grid-template-columns:6fr 6fr;align-items:end;gap:40px}
+.cs-footer__folder{position:relative;width:440px;height:330px}
+.cs-footer__nav{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-family:var(--serif);font-size:clamp(32px,3.6vw,52px);line-height:1.1}
+.cs-footer__nav a{color:var(--rose);transition:transform .3s}
+.cs-footer__nav a:hover{transform:translateX(-8px)}
+
 @media(max-width:1100px){
-  .cs-layout{grid-template-columns:200px 1fr;}
-  .cs-sidebar{padding:40px 16px 32px 24px;}
-}
-@media(max-width:840px){
-  .cs-layout{grid-template-columns:1fr;}
-  .cs-sidebar{display:none;}
-}
-
-/* ════════════════════════════════════════════
-   CONTENT SECTIONS
-════════════════════════════════════════════ */
-.cs-content{min-width:0;}
-.cs-sec{
-  padding:72px 64px 80px;
-  border-bottom:1px solid var(--border);
-}
-.cs-sec--last{border-bottom:none;}
-@media(max-width:900px){.cs-sec{padding:56px 40px 64px;}}
-@media(max-width:600px){.cs-sec{padding:44px 24px 52px;}}
-
-/* Section heading */
-.cs-sec-hd{
-  display:flex;align-items:baseline;gap:24px;
-  margin-bottom:36px;
-}
-.cs-sec-count{
-  font-family:var(--mono);font-size:12px;letter-spacing:.08em;
-  color:var(--ink-3);white-space:nowrap;flex-shrink:0;
-}
-.cs-sec-title{
-  font-family:var(--serif);font-style:italic;font-weight:400;
-  font-size:clamp(28px,3.8vw,52px);line-height:1.0;
-  letter-spacing:-.02em;color:var(--ink);
-}
-
-/* Pink highlight sentence */
-.cs-hl-wrap{display:flex;flex-direction:column;align-items:flex-start;}
-.cs-highlight-para{display:inline-block;background:var(--pink-bg);border-radius:6px;padding:10px 16px;font-size:clamp(14px,1.35vw,17px);font-weight:600;line-height:1.5;max-width:640px;}
-
-/* Body text */
-.cs-body-p{
-  font-size:16px;line-height:1.78;color:var(--ink-2);
-  max-width:68ch;margin-bottom:20px;
-}
-.cs-body-p:last-of-type{margin-bottom:0;}
-
-/* Two-column body */
-.cs-two-col{
-  display:grid;grid-template-columns:1fr 1fr;gap:40px;
-  margin-bottom:48px;
-}
-.cs-two-col p{font-size:16px;line-height:1.78;color:var(--ink-2);margin:0;}
-@media(max-width:700px){.cs-two-col{grid-template-columns:1fr;gap:20px;}}
-
-/* Figure */
-.cs-fig-wrap{
-  margin-top:48px;margin-bottom:40px;
-  border:1px solid var(--border);border-radius:14px;overflow:hidden;
-}
-.cs-fig-wrap img{width:100%;display:block;}
-.cs-fig-footer{
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
-  padding:12px 20px;background:var(--card-2);border-top:1px solid var(--border);
-}
-.cs-fig-label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
-}
-.cs-fig-caption{
-  font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink-2);
-}
-
-/* Next link */
-.cs-sec-next{
-  margin-top:48px;font-size:15px;color:var(--ink-3);
-}
-
-/* Stats row */
-.cs-stats-row{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  border:1px solid var(--border);border-radius:14px;
-  overflow:hidden;margin:40px 0;
-}
-.cs-stat-item{
-  padding:28px 24px;
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;justify-content:flex-end;
-}
-.cs-stat-item:last-child{border-right:none;}
-.cs-stat-num{
-  font-family:var(--sans);font-weight:800;
-  font-size:clamp(36px,4vw,56px);line-height:1;
-  letter-spacing:-.04em;color:var(--ink);
-  margin-bottom:8px;
-}
-.cs-stat-num--serif{
-  font-family:var(--serif);font-style:italic;font-weight:400;
-  font-size:clamp(40px,4.5vw,62px);
-}
-.cs-stat-label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
+  :root{--rail:32px}
+  .cs-hero{grid-template-columns:1fr}
+  .cs-hero__title{border-right:none;border-bottom:1px solid var(--border)}
+  .cs-stats-row{grid-template-columns:repeat(2,1fr)}
+  .cs-stat-cell:nth-child(2){border-right:none}
+  .cs-howr{grid-template-columns:1fr 1fr}
+  .cs-howr__cell:nth-child(2){border-right:none}
+  .cs-body{grid-template-columns:1fr}
+  .cs-sidebar{display:none}
+  .cs-art{padding:48px 24px}
+  .cs-2col{grid-template-columns:1fr}
+  .cs-metrics--3,.cs-metrics--4{grid-template-columns:repeat(2,1fr)}
+  .cs-timeline-steps{grid-template-columns:repeat(2,1fr)}
+  .cs-rc-grid{grid-template-columns:1fr}
+  .cs-decision{grid-template-columns:1fr}
+  .cs-ob-wrap{grid-template-columns:1fr}
+  .cs-outcome__hd,.cs-outcome__row{grid-template-columns:1fr 1fr}
+  .cs-outcome__footer{grid-template-columns:1fr}
+  .cs-lessons{grid-template-columns:1fr}
+  .cs-ending{grid-template-columns:1fr}
+  .cs-ending__cell--border{border-right:none;border-bottom:1px solid var(--border)}
+  .cs-footer{padding:48px 24px;grid-template-columns:1fr}
+  .cs-footer__folder{width:100%;max-width:380px}
+  .cs-footer__nav{align-items:flex-start}
+  .cs-row{grid-template-columns:1fr}
+  .cs-terms__hd,.cs-term{grid-template-columns:1fr 1fr}
+  .cs-ba__viewer{height:300px}
+  .cs-ba__divider img{width:100%;height:auto}
 }
 @media(max-width:700px){
-  .cs-stats-row{grid-template-columns:1fr 1fr;}
-  .cs-stat-item{border-right:none;border-bottom:1px solid var(--border);}
-  .cs-stat-item:last-child{border-bottom:none;}
-  .cs-stat-item:nth-child(odd){border-right:1px solid var(--border);}
+  :root{--rail:20px}
+  .cs-nav-right a{padding:0 12px}
+  .cs-stats-row{grid-template-columns:1fr}
+  .cs-stat-cell{border-right:none}
 }
-
-/* Root cause grid */
-.cs-rc-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:12px;
-  margin:40px 0;
-}
-.cs-rc{
-  border:1px solid var(--border);border-radius:12px;
-  padding:28px;transition:background .2s;
-}
-.cs-rc:hover{background:var(--card-2);}
-.cs-rc-tag{
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:12px;display:block;
-}
-.cs-rc h4{font-weight:700;font-size:16px;letter-spacing:-.01em;margin-bottom:8px;color:var(--ink);}
-.cs-rc p{font-size:14px;line-height:1.65;color:var(--ink-2);margin:0;}
-@media(max-width:700px){.cs-rc-grid{grid-template-columns:1fr;}}
-
-/* Accordion */
-.cs-accordion{
-  border:1.5px dashed var(--border);border-radius:12px;
-  margin:12px 0 40px;overflow:hidden;
-}
-.cs-accordion-btn{
-  width:100%;display:flex;align-items:center;justify-content:space-between;
-  padding:20px 24px;background:none;border:none;cursor:pointer;
-  font-family:var(--sans);font-size:15px;font-weight:500;color:var(--ink);
-  text-align:left;
-}
-.cs-accordion-btn:hover{background:var(--card-2);}
-.cs-accordion-plus{
-  font-size:20px;font-weight:300;color:var(--ink-3);flex-shrink:0;
-  transition:transform .2s;
-}
-.cs-accordion-body{
-  display:none;padding:0 24px 24px;
-}
-.cs-accordion.open .cs-accordion-body{display:block;}
-.cs-accordion.open .cs-accordion-plus{transform:rotate(45deg);}
-
-/* Filter section */
-.cs-filter-cols{
-  display:grid;grid-template-columns:1fr 1fr;gap:12px;
-  margin:40px 0;
-}
-.cs-filter-card{
-  border:1px solid var(--border);border-radius:12px;
-  padding:28px;
-}
-.cs-filter-card-label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:16px;
-}
-.cs-filter-q{
-  font-family:var(--serif);font-style:italic;font-size:clamp(18px,2vw,24px);
-  line-height:1.35;color:var(--ink);margin-bottom:20px;
-}
-.cs-filter-tags{display:flex;flex-wrap:wrap;gap:8px;}
-.cs-filter-tags span{
-  font-family:var(--mono);font-size:11px;letter-spacing:.05em;
-  border:1px solid var(--border);border-radius:999px;padding:5px 12px;
-  color:var(--ink-2);
-}
-.cs-yn-table{
-  border:1px solid var(--border);border-radius:12px;overflow:hidden;
-}
-.cs-yn-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 20px;border-bottom:1px solid var(--border);
-  font-size:14px;color:var(--ink);
-}
-.cs-yn-row:last-child{border-bottom:none;}
-.cs-yn-row--deferred{color:var(--ink-3);}
-.cs-yn-yes{color:#16A34A;font-weight:600;white-space:nowrap;padding-left:16px;}
-.cs-yn-deferred{color:var(--ink-3);white-space:nowrap;padding-left:16px;}
-.cs-italic-note{
-  font-family:var(--serif);font-style:italic;font-size:17px;
-  color:var(--ink-2);margin:8px 0 40px;
-}
-@media(max-width:700px){.cs-filter-cols{grid-template-columns:1fr;}}
-
-/* System tabs */
-.cs-tabs-row{
-  display:flex;gap:0;border-bottom:1px solid var(--border);
-  margin-bottom:40px;
-}
-.cs-tab{
-  font-family:var(--sans);font-size:13px;font-weight:500;
-  padding:12px 24px;border:none;background:none;cursor:pointer;
-  color:var(--ink-3);border-bottom:2px solid transparent;
-  transition:color .2s,border-color .2s;white-space:nowrap;
-}
-.cs-tab--active{color:var(--ink);border-bottom-color:var(--ink);}
-.cs-tab-content{
-  display:grid;grid-template-columns:1fr 1fr;gap:40px;
-  align-items:start;
-  margin-bottom:32px;
-}
-.cs-tab-panel{display:none;}
-.cs-tab-panel.active{display:contents;}
-.cs-tab-left p{font-size:16px;line-height:1.78;color:var(--ink-2);max-width:48ch;}
-.cs-nav-stat{
-  display:flex;align-items:center;gap:12px;
-  margin-top:28px;padding-top:24px;border-top:1px solid var(--border);
-}
-.cs-ns-old{font-size:clamp(28px,3.5vw,48px);font-weight:800;color:var(--ink-3);letter-spacing:-.03em;}
-.cs-ns-arrow{font-size:24px;color:var(--ink-3);}
-.cs-ns-new{
-  font-size:clamp(28px,3.5vw,48px);font-weight:800;color:var(--ink);letter-spacing:-.03em;
-  background:var(--pink-bg);border-radius:6px;padding:2px 10px;
-}
-.cs-ns-labels{display:flex;flex-direction:column;gap:2px;margin-left:4px;}
-.cs-ns-labels span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase;}
-.cs-before-after-fig{
-  border:1px solid var(--border);border-radius:12px;overflow:hidden;
-}
-.cs-before-after-fig img{width:100%;display:block;}
-.cs-ba-fig-cap{
-  padding:10px 16px;background:var(--card-2);border-top:1px solid var(--border);
-  font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink-2);
-}
-@media(max-width:700px){.cs-tab-content{grid-template-columns:1fr;}}
-
-/* Proto card */
-.cs-proto-card{
-  background:var(--ink);border-radius:14px;
-  padding:32px 40px;
-  display:flex;align-items:center;justify-content:space-between;gap:20px;
-  margin:32px 0 0;
-}
-.cs-proto-label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(255,255,255,.5);margin-bottom:8px;
-}
-.cs-proto-title{
-  font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.5vw,32px);
-  color:#F5F5F5;
-}
-.cs-proto-btn{
-  font-family:var(--sans);font-size:14px;font-weight:600;
-  background:#fff;color:var(--ink);border-radius:999px;
-  padding:12px 24px;white-space:nowrap;
-  transition:opacity .2s;flex-shrink:0;
-}
-.cs-proto-btn:hover{opacity:.85;}
-
-/* Outcome */
-.cs-outcome-card{
-  display:grid;grid-template-columns:1fr 1fr;
-  background:var(--ink);border-radius:16px;overflow:hidden;
-  margin-top:0;
-}
-.cs-outcome-left{
-  padding:48px;
-  border-right:1px solid rgba(255,255,255,.1);
-}
-.cs-outcome-num{
-  font-family:var(--serif);font-style:italic;font-weight:400;
-  font-size:clamp(64px,9vw,120px);line-height:.9;
-  letter-spacing:-.03em;color:var(--pink);
-  margin-bottom:24px;display:block;
-}
-.cs-outcome-left p{
-  font-size:16px;line-height:1.7;color:rgba(255,255,255,.65);max-width:32ch;
-}
-.cs-outcome-right{padding:48px;}
-.cs-outcome-also{
-  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(255,255,255,.35);margin-bottom:24px;
-}
-.cs-outcome-item{
-  font-size:15px;line-height:1.65;color:rgba(255,255,255,.75);
-  padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1);
-  margin-bottom:18px;
-}
-.cs-outcome-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-@media(max-width:700px){
-  .cs-outcome-card{grid-template-columns:1fr;}
-  .cs-outcome-left{border-right:none;border-bottom:1px solid rgba(255,255,255,.1);padding:36px 28px;}
-  .cs-outcome-right{padding:36px 28px;}
-}
-
-/* Lessons */
-.cs-lessons-grid{
-  display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;
-  margin-top:40px;
-}
-.cs-lesson{
-  border:1px solid var(--border);border-radius:12px;padding:28px;
-  transition:background .2s;
-}
-.cs-lesson:hover{background:var(--card-2);}
-.cs-lesson h4{font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink);margin-bottom:12px;}
-.cs-lesson p{font-size:14px;line-height:1.65;color:var(--ink-2);}
-.cs-lesson--wrong{border-color:var(--pink);}
-.cs-lesson-wrong-label{
-  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--pink);margin-bottom:12px;
-}
-@media(max-width:800px){.cs-lessons-grid{grid-template-columns:1fr;}}
-
-/* ════════════════════════════════════════════
-   NAV SPLIT (before/after side-by-side)
-════════════════════════════════════════════ */
-.cs-nav-split{
-  display:grid;grid-template-columns:1fr 1fr;
-  border-radius:12px 12px 0 0;overflow:hidden;
-  min-height:340px;
-}
-.cs-nav-split-col{overflow:hidden;position:relative;}
-.cs-nav-split-col img{
-  width:100%;height:100%;object-fit:cover;object-position:left top;
-  position:absolute;top:0;left:0;display:block;
-}
-.cs-nav-split-col--before{border-right:2px solid #fff;}
-.cs-nav-split-col--before img{object-position:left top;}
-.cs-nav-split-col--after img{object-fit:contain;background:#F8F9FC;object-position:center top;}
-
-/* ════════════════════════════════════════════
-   ENDING NAV
-════════════════════════════════════════════ */
-.cs-ending-row{
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  border-top:1px solid var(--border);
-  background:#fff;
-}
-.cs-ending-back{
-  display:flex;align-items:center;
-  padding:40px 48px;border-right:1px solid var(--border);
-  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-2);transition:color .2s;
-}
-.cs-ending-back:hover{color:var(--ink);}
-.cs-ending-next{
-  padding:0;border-right:1px solid var(--border);
-  display:flex;flex-direction:column;overflow:hidden;
-}
-.cs-ending-next-img{
-  flex:1;overflow:hidden;min-height:160px;
-}
-.cs-ending-next-img img{
-  width:100%;height:100%;object-fit:cover;object-position:top left;display:block;
-}
-.cs-ending-next-info{
-  padding:20px 32px 28px;border-top:1px solid var(--border);
-  display:flex;align-items:baseline;gap:16px;
-}
-.cs-ending-next-title{
-  font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink);
-}
-.cs-ending-next-badge{
-  font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink-3);white-space:nowrap;
-}
-.cs-ending-related{
-  padding:40px 48px;
-  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:20px;
-}
-.cs-ending-related-btn{
-  display:inline-flex;align-items:center;
-  border:2px solid var(--ink);border-radius:999px;
-  padding:14px 28px;
-  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink);transition:background .2s,color .2s;
-  white-space:nowrap;
-}
-.cs-ending-related-btn:hover{background:var(--ink);color:#fff;}
-.cs-ending-related-title{
-  font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink);
-}
-@media(max-width:800px){
-  .cs-ending-row{grid-template-columns:1fr;}
-  .cs-ending-back,.cs-ending-next{border-right:none;border-bottom:1px solid var(--border);}
-  .cs-ending-next-img{min-height:120px;}
-}
-
-/* ── Footer ── */
-footer{background:var(--dk);padding:0;}
-.foot{
-  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;
-  padding:64px clamp(28px,5vw,80px) 48px;
-}
-.foot h5{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--wh-2);margin-bottom:16px;}
-.foot a{display:block;color:var(--wh-3);font-size:14px;line-height:2.2;transition:color .2s;}
-.foot a:hover{color:var(--wh);}
-.foot .mt{color:var(--wh-3);font-size:14px;line-height:1.65;}
-.foot-bot{
-  border-top:1px solid rgba(255,255,255,.08);
-  padding:20px clamp(28px,5vw,80px);
-  display:flex;justify-content:space-between;align-items:center;
-  font-size:12px;color:var(--wh-3);font-family:var(--mono);letter-spacing:.05em;
-}
-@media(max-width:800px){.foot{grid-template-columns:1fr 1fr;}}
-@media(max-width:500px){.foot{grid-template-columns:1fr;}}
-
-/* ── Reveal ── */
-.rv{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
-.rv.visible{opacity:1;transform:none;}
 </style>
-<noscript><style>.rv{opacity:1!important;transform:none!important;}</style></noscript>
 </head>
 <body>
 
-<!-- ── Password gate ── -->
-<div id="pw-gate" style="position:fixed;inset:0;z-index:9999;background:#F5F5F5;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
-  <div style="width:100%;max-width:400px;padding:0 24px;text-align:center">
-    <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(28px,5vw,42px);line-height:1.1;margin:0 0 8px">Protected work</p>
-    <p style="font-size:14px;color:#666;margin:0 0 32px;line-height:1.5">This case study is under NDA. Enter the password to view.</p>
-    <div style="position:relative;margin-bottom:12px">
-      <input id="pw-input" type="password" placeholder="Enter password" autocomplete="off"
-        style="width:100%;box-sizing:border-box;padding:14px 18px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;font-family:inherit;outline:none;background:#fff;transition:border-color .2s"
-        onfocus="this.style.borderColor='#141414'" onblur="this.style.borderColor='#ddd'">
-    </div>
-    <p id="pw-error" style="font-size:13px;color:#D23A6B;margin:0 0 12px;min-height:18px;opacity:0;transition:opacity .2s"></p>
-    <button onclick="checkPw()"
-      style="width:100%;padding:14px;border:none;border-radius:12px;background:#141414;color:#fff;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .2s"
-      onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">View case study →</button>
-    <a href="index.html" style="display:block;margin-top:20px;font-size:13px;color:#999;text-decoration:none">← Back to portfolio</a>
-  </div>
+<div id="pw-gate">
+  <h2>This case study is password&nbsp;protected.</h2>
+  <p>ENTER PASSWORD TO CONTINUE</p>
+  <input id="pw-input" type="password" placeholder="••••••••" autocomplete="off">
+  <button onclick="checkPw()">Unlock →</button>
+  <span id="pw-error"></span>
 </div>
 <script>
 (function(){
@@ -792,533 +328,477 @@ function checkPw(){
 }
 </script>
 
-<div class="sp" id="sp"></div>
-
-<nav class="nav" id="nav">
-  <div class="nav-left">
-    <a href="index.html" class="nav-logo">
-      <img src="uploads/mehak-profile.jpg" alt="Mehak Garg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <span class="nav-logo-fallback" style="display:none;width:32px;height:32px;border-radius:50%;background:#FFADC3;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#0A0A0A;flex-shrink:0;">M</span>
-      Mehak Garg
-    </a>
-    <span class="nav-bc-sep">/</span>
-    <a href="index.html#work" class="nav-bc-item">Work</a>
-    <span class="nav-bc-sep">/</span>
-    <span class="nav-bc-cur">SYS-01 · PAM</span>
+<nav class="cs-nav">
+  <div class="cs-nav-left">
+    <div class="cs-nav-photo"><img src="uploads/pam/5ee40e8ef9190bccf842103b540fe49b.png" alt="Mehak Garg"></div>
+    <span class="cs-nav-name">Mehak Garg</span>
+    <span class="cs-nav-crumb">/ WORK / SYS-01 · PAM</span>
   </div>
-  <div class="nav-links">
-    <a href="index.html#work" class="nav-active">Work</a>
-    <a href="about.html">About</a>
-    <a href="about.html#writing">Writing</a>
-    <a href="index.html#contact" class="nav-say-hi">Say Hi ↗</a>
+  <div class="cs-nav-right">
+    <a href="index.html#work" class="nav-active">WORK</a>
+    <a href="index.html#about">ABOUT</a>
+    <a href="index.html#writing">WRITING</a>
+    <a href="mailto:mehakrgarg@gmail.com">SAY HI ↗</a>
   </div>
 </nav>
 
-
-<!-- ════ HERO ════ -->
-<div class="cs-hero-2col">
-  <div class="cs-hero-inner rv">
-    <div class="cs-hero-left">
-      <div class="cs-eyebrow">
-        <span>FIG. 01 — PRIVILEGED ACCESS MANAGEMENT</span>
-        <span class="cs-eyebrow-badge">NDA · PRODUCT UNNAMED</span>
-      </div>
-      <h1 class="cs-h1">
-        I didn't just redesign<br>a PAM product.
-        <em class="cs-h1-hi">I designed how it gets bought, deployed and used.</em>
-      </h1>
-    </div>
-    <div class="cs-hero-right">
-      <p class="cs-hero-sub">A complete rethink of a B2B security platform that was feature-complete but losing enterprise deals at POC. I redesigned the structure, the onboarding, and the purchase journey — not just the screens.</p>
-      <div class="cs-meta-grid">
-        <div class="cs-mi"><div class="cs-ml">Role</div><div class="cs-mv">Lead Product Designer,<br>strategy to ship</div></div>
-        <div class="cs-mi"><div class="cs-ml">Worked With</div><div class="cs-mv">Solutions architect,<br>tech lead, PM / eng team</div></div>
-        <div class="cs-mi"><div class="cs-ml">Timeline</div><div class="cs-mv">7 months</div></div>
-        <div class="cs-mi"><div class="cs-ml">Platform</div><div class="cs-mv">B2B SaaS · admin +<br>end-user web app</div></div>
-      </div>
-    </div>
+<section class="cs-hero">
+  <div class="cs-hero__title">
+    <p class="cs-hero__eyebrow">FIG. 01 · PRIVILEGED ACCESS MANAGEMENT · NDA <span></span></p>
+    <h1 class="cs-hero__h1">From stalling at proof of concept to <em>$800K in new sales.</em></h1>
   </div>
+  <div class="cs-hero__meta">
+    <p class="cs-hero__desc">A prospect's admin would log in for a proof of concept, get lost within the hour, and the deal would stall. The expected fix was to polish the worst screens. Instead, I traced 140 issues to four root causes and rebuilt the product around the two moments that decided every deal.</p>
+    <dl class="cs-hero__dl">
+      <div><dt>DURATION</dt><dd>7 months</dd></div>
+      <div><dt>ROLE</dt><dd>Design lead</dd></div>
+      <div><dt>TEAM</dt><dd>2 PMs · 40 eng</dd></div>
+      <div><dt>USERS</dt><dd>Security admins</dd></div>
+      <div><dt>STATUS</dt><dd><span class="live">LIVE</span> in production</dd></div>
+      <div><dt>RESULT</dt><dd>$800K new sales</dd></div>
+    </dl>
+  </div>
+</section>
+
+<div class="cs-stats-row">
+  <div class="cs-stat-cell"><div class="cs-stat-cell__num">$800K</div><div class="cs-stat-cell__label">in new sales after launch</div></div>
+  <div class="cs-stat-cell"><div class="cs-stat-cell__num">11% → 18%</div><div class="cs-stat-cell__label">conversion rate, within 6 months</div></div>
+  <div class="cs-stat-cell"><div class="cs-stat-cell__num">½ the time</div><div class="cs-stat-cell__label">deployment, 3 weeks → 1.5 weeks</div></div>
+  <div class="cs-stat-cell"><div class="cs-stat-cell__num">4.8★</div><div class="cs-stat-cell__label">rated by customers on Gartner Peer Insights</div></div>
 </div>
 
-<!-- ════ STATS BANNER ════ -->
-<div class="cs-stats-banner rv">
-  <div class="cs-stat-b">
-    <div class="cs-stat-b__num">$800K</div>
-    <div class="cs-stat-b__label">in new sales<br>after launch</div>
-  </div>
-  <div class="cs-stat-b">
-    <div class="cs-stat-b__num">11→18%</div>
-    <div class="cs-stat-b__label">conversion rate,<br>within 6 months</div>
-  </div>
-  <div class="cs-stat-b">
-    <div class="cs-stat-b__num">½ time</div>
-    <div class="cs-stat-b__label">deployment: 3 weeks<br>→ 1.5 weeks</div>
-  </div>
-  <div class="cs-stat-b">
-    <div class="cs-stat-b__num">[4.8★]</div>
-    <div class="cs-stat-b__label">rated by customers on<br>Gartner Peer Insights</div>
-  </div>
-</div>
-
-
-<!-- ════ DASHBOARD SCREENSHOT ════ -->
-<div class="cs-dashboard rv">
-  <span class="cs-after-label">after ↘</span>
-  <div class="cs-dashboard-img-wrap">
-    <div class="cs-ba-slider-wrap" id="csBASlider">
-      <img src="uploads/pam-after.webp" alt="miniOrange PAM — redesigned dashboard" />
-      <div class="cs-ba-after" id="csBAAfter">
-        <img src="uploads/pam-before.webp" alt="Before — Xecrify PAM original" />
-      </div>
-      <div class="cs-ba-handle" id="csBAHandle">
-        <div class="cs-ba-btn">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M6 9H2m0 0 2.5-2.5M2 9l2.5 2.5M12 9h4m0 0-2.5-2.5M16 9l-2.5 2.5" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </div>
-      <span class="cs-ba-label cs-ba-label-before">Before</span>
-      <span class="cs-ba-label cs-ba-label-after">After</span>
+<div class="cs-ba">
+  <div class="cs-ba__header">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="cs-ba__chip cs-ba__chip--before">← BEFORE</span>
+      <span class="cs-ba__caption">14 flat items, organised by database object</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="cs-ba__caption">5 groups, organised by what the admin is trying to do</span>
+      <span class="cs-ba__chip cs-ba__chip--after">AFTER →</span>
     </div>
   </div>
-</div>
-
-
-<!-- ════ HOW TO READ THIS ════ -->
-<div class="cs-htr rv">
-  <span class="cs-htr-label">HOW TO READ THIS</span>
-  <div class="cs-htr-opts">
-    <span class="cs-htr-opt">60 sec / read only the <mark>pink lines</mark></span>
-    <span class="cs-htr-opt">6 min / the whole story</span>
+  <div class="cs-ba__viewer">
+    <img class="cs-ba__after" src="uploads/pam/12ed737607325e346cf64c9ca6c363bb.jpg" alt="">
+    <span class="cs-ba__after-chip">AFTER</span>
+    <div class="cs-ba__divider">
+      <img src="uploads/pam/204b0e83397b45514c19b4177e9aabda.jpg" alt="">
+      <span class="cs-ba__before-chip">BEFORE</span>
+      <span class="cs-ba__divider-icon" aria-hidden="true">↔</span>
+    </div>
+    <span class="cs-ba__hint">drag the bottom corner of the divider ↔</span>
   </div>
-  <nav class="cs-htr-nav" aria-label="Jump to section">
-    <a href="#s-problem">01 Problem</a>
-    <a href="#s-audit">02 Audit</a>
-    <a href="#s-filter">03 Filter</a>
-    <a href="#s-system">04 System</a>
-    <a href="#s-outcome">05 Outcome</a>
-    <a href="#s-lessons">06 Lessons</a>
-  </nav>
 </div>
 
+<div class="cs-howr">
+  <div class="cs-howr__cell cs-howr__eyebrow">HOW TO READ THIS</div>
+  <div class="cs-howr__cell">
+    <div class="cs-howr__time">60 sec</div>
+    <div class="cs-howr__sub">read only the <mark>pink lines</mark></div>
+  </div>
+  <div class="cs-howr__cell">
+    <div class="cs-howr__time">6 min</div>
+    <div class="cs-howr__sub">the whole story</div>
+  </div>
+  <div class="cs-howr__cell">
+    <div class="cs-howr__pills">
+      <a href="#s-problem">01 Problem</a>
+      <a href="#s-diagnosis">02 Diagnosis</a>
+      <a href="#s-decision">03 Decision</a>
+      <a href="#s-design">04 Design</a>
+      <a href="#s-hold">05 Making it hold</a>
+      <a href="#s-outcome">06 Outcome</a>
+      <a href="#s-lessons">07 Lessons</a>
+    </div>
+  </div>
+</div>
 
-<!-- ════ TWO-COLUMN LAYOUT ════ -->
-<div class="cs-layout">
+<div class="cs-body">
   <aside class="cs-sidebar">
-    <div class="cs-sidebar-label">You are here</div>
-    <nav class="cs-section-nav" id="csNav" aria-label="Page sections">
-      <ul>
-        <li><a href="#s-problem"><span class="sn-num">01</span>The problem</a></li>
-        <li><a href="#s-audit"><span class="sn-num">02</span>Strategy</a></li>
-        <li><a href="#s-filter"><span class="sn-num">03</span>Design explorations</a></li>
-        <li><a href="#s-system"><span class="sn-num">04</span>Rules &amp; JIT</a></li>
-        <li><a href="#s-outcome"><span class="sn-num">05</span>Coverage &amp; branding</a></li>
-        <li><a href="#s-impact"><span class="sn-num">06</span>Impact</a></li>
-        <li><a href="#s-lessons"><span class="sn-num">07</span>Lessons</a></li>
-      </ul>
-    </nav>
-    <div class="cs-sidebar-footer">
-      <div class="cs-sidebar-progress">
-        <div class="cs-sidebar-progress-fill" id="csProgressFill"></div>
-      </div>
-      <div class="cs-sidebar-read-time" id="csSidebarReadTime">~6 min left</div>
-    </div>
+    <div class="cs-sidebar__label">YOU ARE HERE</div>
+    <a href="#s-problem" class="active"><span>01</span>Problem</a>
+    <a href="#s-diagnosis"><span>02</span>Diagnosis</a>
+    <a href="#s-decision"><span>03</span>The decision</a>
+    <a href="#s-design"><span>04</span>Design</a>
+    <a href="#s-hold"><span>05</span>Making it hold</a>
+    <a href="#s-outcome"><span>06</span>Outcome</a>
+    <a href="#s-lessons"><span>07</span>Lessons</a>
+    <div class="cs-sidebar__progress"><span class="cs-sidebar__fill" id="progressFill"></span></div>
+    <div class="cs-sidebar__time" id="readTime">~6 MIN LEFT</div>
   </aside>
 
-  <div class="cs-content">
+  <main class="cs-main">
 
-    <!-- ── 01 THE PROBLEM ── -->
-    <div class="cs-sec" id="s-problem">
-      <div class="cs-sec-hd rv">
-        <span class="cs-sec-count">01 / 06</span>
-        <h2 class="cs-sec-title">The problem</h2>
+    <article id="s-problem" class="cs-art">
+      <div class="cs-art__hd"><span class="cs-art__num">01 / 07</span><h2 class="cs-art__h2">The problem</h2></div>
+      <p class="cs-lede"><mark>On paper it matched CyberArk and Delinea. In a prospect's hands, it lost the deal in the first hour.</mark></p>
+      <div class="cs-2col">
+        <p>Privileged access management decides who can touch a company's most sensitive systems: production databases, servers, admin accounts. When it fails, the cost is not a bad experience. It is a breach. So buyers judge a PAM product on one question above all others: <b>can my team run this safely from day one?</b></p>
+        <p>Our product had every capability that mattered: vaulting, session recording, access policies, discovery and MFA. Then a prospect's admin logged in for a proof of concept and found 14 ungrouped navigation items, workflows split across sections, and failures that happened without a word. Within the first hour, they were calling support. Even our own sales engineers sometimes asked me where a feature lived.</p>
       </div>
-
-      <div class="cs-hl-wrap"><p class="cs-highlight-para rv">Feature-complete on paper. Admins got lost in the first hour of a POC, so deals stalled.</p></div>
-
-      <div class="cs-two-col rv">
-        <p>The product had vaulting, session recording, access policies, discovery and MFA. On paper it competed with CyberArk and Delinea.</p>
-        <p>Then a prospect's admin opened it: 14 ungrouped nav items, workflows split across sections, failures that happened quietly. Our own SEs sometimes asked me where features were.</p>
+      <div class="cs-metrics cs-metrics--3">
+        <div class="cs-metric"><span class="cs-metric__num">11%</span><span class="cs-metric__lbl">TRIAL TO PAID CONVERSION</span></div>
+        <div class="cs-metric"><span class="cs-metric__num">3 weeks</span><span class="cs-metric__lbl">AVERAGE TIME TO DEPLOY</span></div>
+        <div class="cs-metric"><span class="cs-metric__num cs-metric__num--i">First 30 min</span><span class="cs-metric__lbl">WHERE POC DEALS STALLED</span></div>
       </div>
-
-      <div class="cs-fig-wrap rv">
-        <img src="uploads/pam-problem.png" alt="The original Xecrify product — annotated with UX failures across navigation, terminology, workflow continuity and error handling" />
-        <div class="cs-fig-footer">
-          <span class="cs-fig-label">FIG. 1 — THE ORIGINAL PRODUCT, ANNOTATED</span>
-          <em class="cs-fig-caption">the pieces were all there. nothing held them together.</em>
-        </div>
-      </div>
-
-      <p class="cs-sec-next rv">Next: how I found the real problem ↓</p>
-    </div>
-
-
-    <!-- ── 02 THE AUDIT ── -->
-    <div class="cs-sec" id="s-audit">
-      <div class="cs-sec-hd rv">
-        <span class="cs-sec-count">02 / 06</span>
-        <h2 class="cs-sec-title">The audit</h2>
-      </div>
-
-      <div class="cs-hl-wrap"><p class="cs-highlight-para rv">Before touching a screen, I audited 10 real admin scenarios. 140 issues traced back to 4 root causes.</p></div>
-
-      <p class="cs-body-p rv">The instinct was to redesign the worst screens. I pushed back for two weeks. Scenarios came from CS call recordings and support tickets: day-one onboarding, break glass during a Sev 1, rotating 200+ credentials, the audit review before a compliance call.</p>
-
-      <div class="cs-stats-row rv">
-        <div class="cs-stat-item">
-          <div class="cs-stat-num">10</div>
-          <div class="cs-stat-label">Scenarios</div>
-        </div>
-        <div class="cs-stat-item">
-          <div class="cs-stat-num">4</div>
-          <div class="cs-stat-label">Personas</div>
-        </div>
-        <div class="cs-stat-item">
-          <div class="cs-stat-num cs-stat-num--serif">140</div>
-          <div class="cs-stat-label">Issues</div>
-        </div>
-        <div class="cs-stat-item">
-          <div class="cs-stat-num">3 wks</div>
-          <div class="cs-stat-label">To find the root causes</div>
-        </div>
-      </div>
-
-      <div class="cs-rc-grid rv">
-        <div class="cs-rc">
-          <span class="cs-rc-tag">RC1</span>
-          <h4>Fragmented information architecture</h4>
-          <p>14 flat nav items. You had to know the internal object model to find anything.</p>
-        </div>
-        <div class="cs-rc">
-          <span class="cs-rc-tag">RC2</span>
-          <h4>Broken domain terminology</h4>
-          <p>New admins spent their first week translating the interface.</p>
-        </div>
-        <div class="cs-rc">
-          <span class="cs-rc-tag">RC3</span>
-          <h4>No workflow continuity</h4>
-          <p>JIT, approvals and break glass were missing or scattered.</p>
-        </div>
-        <div class="cs-rc">
-          <span class="cs-rc-tag">RC4</span>
-          <h4>Silent failure states</h4>
-          <p>Errors weren't surfaced. Admins couldn't tell what broke.</p>
-        </div>
-      </div>
-
-      <div class="cs-accordion rv" id="auditAccordion">
-        <button class="cs-accordion-btn" onclick="this.closest('.cs-accordion').classList.toggle('open')">
-          See all 10 audit scenarios · 2 were deal-breakers
-          <span class="cs-accordion-plus">+</span>
-        </button>
-        <div class="cs-accordion-body">
-          <p class="cs-body-p" style="margin-top:0;">The two deal-breakers: <strong>day-one onboarding</strong> (a new admin couldn't get to a working session in under 30 minutes without calling support) and <strong>break-glass elevation during a Sev 1</strong> (the flow required knowledge of 3 separate sections that didn't surface together). Every other issue compounded from these two.</p>
-        </div>
-      </div>
-
-      <p class="cs-sec-next rv">Next: deciding what to build ↓</p>
-    </div>
-
-
-    <!-- ── 03 ONE FILTER ── -->
-    <div class="cs-sec" id="s-filter">
-      <div class="cs-sec-hd rv">
-        <span class="cs-sec-count">03 / 06</span>
-        <h2 class="cs-sec-title">One filter</h2>
-      </div>
-
-      <div class="cs-hl-wrap"><p class="cs-highlight-para rv">I replaced the RICE vs Kano debate with one yes/no question. A big slice of the backlog was deferred in two days.</p></div>
-
-      <div class="cs-filter-cols rv">
-        <div class="cs-filter-card">
-          <div class="cs-filter-card-label">THE ONLY QUESTION</div>
-          <p class="cs-filter-q">Does this directly strengthen one of the five deal-breakers?</p>
-          <div class="cs-filter-tags">
-            <span>Vault &amp; Rotation</span>
-            <span>Discovery &amp; Inventory</span>
-            <span>Session Proxying</span>
-            <span>Access Governance</span>
-            <span>Integrations &amp; Audit</span>
-          </div>
-        </div>
-        <div class="cs-yn-table">
-          <div class="cs-yn-row"><span>Credential vaulting with rotation</span><span class="cs-yn-yes">✓ Yes</span></div>
-          <div class="cs-yn-row"><span>JIT access with approval workflow</span><span class="cs-yn-yes">✓ Yes</span></div>
-          <div class="cs-yn-row cs-yn-row--deferred"><span>Custom dashboard theming</span><span class="cs-yn-deferred">Deferred</span></div>
-          <div class="cs-yn-row cs-yn-row--deferred"><span>Stack bot notifications</span><span class="cs-yn-deferred">Deferred</span></div>
-        </div>
-      </div>
-
-      <p class="cs-italic-note rv">three sprints in, the PM called it the most useful prioritization tool we'd used.</p>
-
-      <p class="cs-sec-next rv">Next: what we actually changed ↓</p>
-    </div>
-
-
-    <!-- ── 04 THE SYSTEM ── -->
-    <div class="cs-sec" id="s-system">
-      <div class="cs-sec-hd rv">
-        <span class="cs-sec-count">04 / 06</span>
-        <h2 class="cs-sec-title">The system</h2>
-      </div>
-
-      <div class="cs-hl-wrap"><p class="cs-highlight-para rv">Three structural decisions: nav by intent, work that stays inside the resource, onboarding with checkpoints.</p></div>
-
-      <div class="cs-tabs-row" id="csTabs" role="tablist">
-        <button class="cs-tab cs-tab--active" role="tab" data-panel="tab1" aria-selected="true">01&nbsp;&nbsp;Nav by intent</button>
-        <button class="cs-tab" role="tab" data-panel="tab2" aria-selected="false">02&nbsp;&nbsp;Resource workspace</button>
-        <button class="cs-tab" role="tab" data-panel="tab3" aria-selected="false">03&nbsp;&nbsp;Onboarding checkpoints</button>
-      </div>
-
-      <div id="tab1" class="cs-tab-content rv">
-        <div class="cs-tab-left">
-          <p>The old nav was organised by database object: System Users, Groups, Certificates, Policies. The new one is organised by what the admin is trying to do. Break glass lives under Security Ops, findable on day one without the docs.</p>
-          <div class="cs-nav-stat">
-            <span class="cs-ns-old">14</span>
-            <span class="cs-ns-arrow">→</span>
-            <span class="cs-ns-new">5</span>
-            <div class="cs-ns-labels">
-              <span>Flat items →</span>
-              <span>Intent groups</span>
+      <p class="cs-big">This was not a feature gap. It was a <i>comprehension gap</i>, and it was costing us deals.</p>
+      <figure class="cs-fig">
+        <div class="cs-fig__frame cs-fig__frame--bg">
+          <div class="cs-timeline-inner">
+            <div class="cs-timeline-hd">
+              <span class="cs-timeline-title">The first 30 minutes of a proof of concept</span>
+              <span class="cs-timeline-time">00:00 → 30:00</span>
+            </div>
+            <div class="cs-timeline-steps">
+              <div class="cs-step"><span class="cs-step__dot"></span><span style="display:flex;align-items:baseline;gap:8px"><span class="cs-step__num">01</span><span class="cs-step__title">Add their first server</span></span><span class="cs-step__sub">14 nav items, none called "add a resource"</span><span class="cs-step__tag">RC1</span></div>
+              <div class="cs-step"><span class="cs-step__dot"></span><span style="display:flex;align-items:baseline;gap:8px"><span class="cs-step__num">02</span><span class="cs-step__title">Store the server's admin credential</span></span><span class="cs-step__sub">Credentials live under "System Users." Users live somewhere else.</span><span class="cs-step__tag">RC2</span></div>
+              <div class="cs-step"><span class="cs-step__dot"></span><span style="display:flex;align-items:baseline;gap:8px"><span class="cs-step__num">03</span><span class="cs-step__title">Run discovery on the network</span></span><span class="cs-step__sub">200 accounts found. No next step.</span><span class="cs-step__tag">RC3</span></div>
+              <div class="cs-step"><span class="cs-step__dot"></span><span style="display:flex;align-items:baseline;gap:8px"><span class="cs-step__num">04</span><span class="cs-step__title">Give a teammate access</span></span><span class="cs-step__sub">Resource, policy and role sit in three sections that don't talk</span><span class="cs-step__tag">RC3</span></div>
+              <div class="cs-step"><span class="cs-step__dot"></span><span style="display:flex;align-items:baseline;gap:8px"><span class="cs-step__num">05</span><span class="cs-step__title">Launch a test session</span></span><span class="cs-step__sub">It failed. Nothing said why.</span><span class="cs-step__tag">RC4</span></div>
+              <div class="cs-step"><span class="cs-step__dot cs-step__dot--end"></span><span class="cs-step__end">30:00 · THE END</span><span class="cs-step__end-quote">Calls support. Proof of concept stalls.</span></div>
             </div>
           </div>
         </div>
-        <div class="cs-tab-right">
-          <div class="cs-before-after-fig">
-            <img src="uploads/pam-nav-comparison.png" alt="Before (Xecrify, object-based) vs after (miniOrange PAM, intent-grouped)" />
-            <div class="cs-ba-fig-cap">before, by object → after, by intent</div>
+        <figcaption class="cs-figcap"><span>FIG. 1 — FIRST 30 MIN OF A POC · CS CALL RECORDINGS</span><span class="cs-figcap__note">every feature was there. the admin couldn't find any of them.</span></figcaption>
+      </figure>
+      <a href="#s-diagnosis" class="cs-next">Next: why a feature complete product felt broken ↓</a>
+    </article>
+
+    <article id="s-diagnosis" class="cs-art">
+      <div class="cs-art__hd"><span class="cs-art__num">02 / 07</span><h2 class="cs-art__h2">The diagnosis</h2></div>
+      <p class="cs-lede"><mark>Before touching a screen, I rebuilt 10 real admin scenarios. 140 issues traced back to 4 root causes, and 2 scenarios decided every deal.</mark></p>
+      <p class="cs-body-text">The instinct was to redesign the worst screens first. I pushed back for two weeks. Instead, I rebuilt real admin scenarios from customer success call recordings and support tickets: day one onboarding, break glass during a Sev 1, rotating 200+ credentials, and the audit review before a compliance call.</p>
+      <div class="cs-metrics cs-metrics--4">
+        <div class="cs-metric"><span class="cs-metric__num">10</span><span class="cs-metric__lbl">SCENARIOS</span></div>
+        <div class="cs-metric"><span class="cs-metric__num">4</span><span class="cs-metric__lbl">PERSONAS</span></div>
+        <div class="cs-metric"><span class="cs-metric__num cs-metric__num--i">140</span><span class="cs-metric__lbl">ISSUES</span></div>
+        <div class="cs-metric"><span class="cs-metric__num">3 weeks</span><span class="cs-metric__lbl">TO FIND THE ROOT CAUSES</span></div>
+      </div>
+      <div class="cs-rc-grid">
+        <div class="cs-rc"><span class="cs-rc__code">RC1</span><div class="cs-rc__body"><div class="cs-rc__title">Fragmented information architecture</div><div class="cs-rc__desc">14 flat nav items. You had to know the internal object model to find anything.</div></div></div>
+        <div class="cs-rc"><span class="cs-rc__code">RC2</span><div class="cs-rc__body"><div class="cs-rc__title">Broken domain terminology</div><div class="cs-rc__desc">New admins spent their first week translating the interface.</div></div></div>
+        <div class="cs-rc"><span class="cs-rc__code">RC3</span><div class="cs-rc__body"><div class="cs-rc__title">No workflow continuity</div><div class="cs-rc__desc">JIT, approvals and break glass were missing or scattered.</div></div></div>
+        <div class="cs-rc"><span class="cs-rc__code">RC4</span><div class="cs-rc__body"><div class="cs-rc__title">Silent failure states</div><div class="cs-rc__desc">Errors weren't surfaced, so admins couldn't tell what broke.</div></div></div>
+      </div>
+      <figure class="cs-fig">
+        <div class="cs-fig__frame cs-fig__frame--bg">
+          <div style="position:relative">
+            <img src="uploads/pam/8394b70008c31a03e63763273acf5573.jpg" alt="The original product annotated against RC1–RC4" style="display:block;width:100%;border-radius:8px">
+            <span aria-hidden="true" style="position:absolute;left:12.8%;top:15.8%;padding:4px 9px;border-radius:6px;background:var(--pink);border:1.5px solid var(--ink);font-family:var(--mono);font-size:11px;font-weight:700">RC1</span>
+            <span aria-hidden="true" style="position:absolute;left:39.4%;top:19.1%;padding:4px 9px;border-radius:6px;background:var(--pink);border:1.5px solid var(--ink);font-family:var(--mono);font-size:11px;font-weight:700">RC4</span>
+            <span aria-hidden="true" style="position:absolute;left:3.2%;top:42.7%;padding:4px 9px;border-radius:6px;background:var(--pink);border:1.5px solid var(--ink);font-family:var(--mono);font-size:11px;font-weight:700">RC2</span>
+            <span aria-hidden="true" style="position:absolute;left:2.7%;top:72.1%;padding:4px 9px;border-radius:6px;background:var(--pink);border:1.5px solid var(--ink);font-family:var(--mono);font-size:11px;font-weight:700">RC3</span>
+          </div>
+        </div>
+        <figcaption class="cs-figcap"><span>FIG. 2 — THE ORIGINAL PRODUCT, ANNOTATED AGAINST RC1–RC4</span><span class="cs-figcap__note">the pieces were all there. nothing held them together.</span></figcaption>
+      </figure>
+      <a href="#s-decision" class="cs-next">Next: deciding where to start ↓</a>
+    </article>
+
+    <article id="s-decision" class="cs-art">
+      <div class="cs-art__hd"><span class="cs-art__num">03 / 07</span><h2 class="cs-art__h2">The decision</h2></div>
+      <p class="cs-lede"><mark>140 issues. One question.</mark></p>
+      <p class="cs-body-text">Where to start. The PM wanted Kano, the eng lead wanted RICE, and the two frameworks we'd tried the quarter before had given us two different answers. I suggested something blunter.</p>
+      <div class="cs-decision">
+        <div class="cs-decision-q">
+          <div class="cs-decision-q__label">THE ONLY QUESTION</div>
+          <div class="cs-decision-q__text">Does this directly strengthen one of the five capabilities that win or lose an enterprise PAM deal?</div>
+          <div class="cs-decision-q__pills">
+            <span class="cs-decision-q__pill">Vault and Rotation</span>
+            <span class="cs-decision-q__pill">Discovery and Inventory</span>
+            <span class="cs-decision-q__pill">Session Proxying and Recording</span>
+            <span class="cs-decision-q__pill">Access Governance</span>
+            <span class="cs-decision-q__pill">Integrations and Auditability</span>
+          </div>
+        </div>
+        <div class="cs-decision-r">
+          <div class="cs-dark" style="flex:1">
+            <div class="cs-dark__label">RESULT</div>
+            <div style="display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;padding-top:8px">
+              <span class="cs-dark__num">140+</span><span class="cs-dark__arrow">→</span>
+              <span class="cs-dark__num">14</span><span class="cs-dark__arrow">→</span>
+              <span class="cs-dark__num cs-dark__num--pink">6</span>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:4px">
+              <span class="cs-dark__meta">ISSUES</span><span class="cs-dark__meta" style="margin-left:28px">PRIORITIES</span><span class="cs-dark__meta cs-dark__meta--pink" style="margin-left:16px">MUST FIX</span>
+            </div>
+            <div class="cs-dark__sub">30% of nice-to-have scope discussions cut. Engineering unblocked for two quarters.</div>
+          </div>
+          <div class="cs-hardcall">
+            <div class="cs-hardcall__label">THE HARDEST CALL</div>
+            <div class="cs-hardcall__title">Self-service access, ranked last</div>
+            <div class="cs-hardcall__desc">Self-service should scale safe access, not unsafe autonomy. It waits until the core access loop is trustworthy.</div>
           </div>
         </div>
       </div>
+      <div class="cs-quote-wrap">
+        <blockquote class="cs-quote">"Her audits are surgical. She found 140+ issues across our product and ranked them so we could ship fixes inside a quarter."</blockquote>
+        <div class="cs-quote-attr">PRADEEP KUMAR · HEAD OF PRODUCT, PAM</div>
+      </div>
+      <a href="#s-design" class="cs-next">Next: the three system decisions that followed ↓</a>
+    </article>
 
-      <div id="tab2" class="cs-tab-content rv" style="display:none;">
-        <div class="cs-tab-left">
-          <p>Resources used to be a database view. Now each resource has its own workspace: credentials, sessions, approvals, and audit history all live together. Admins never need to jump across nav sections to complete a workflow.</p>
+    <article id="s-design" class="cs-art">
+      <div class="cs-art__hd"><span class="cs-art__num">04 / 07</span><h2 class="cs-art__h2">The design</h2></div>
+      <p class="cs-lede"><mark>I redesigned in the order my audit set: fix the structure first, then rebuild the two journeys every admin depends on, getting set up and granting access.</mark></p>
+
+      <div class="cs-section-hd">
+        <span class="cs-section-badge">FOUNDATION</span>
+        <h3>Navigation by intent</h3>
+        <span class="cs-section-hd__fix">FIXES RC1</span>
+      </div>
+      <div style="display:grid;grid-template-columns:5fr 7fr;gap:40px;max-width:980px;align-items:center">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <p class="cs-body-text">The old navigation was organised by database object: System Users, Groups, Certificates, Policies. The new one is organised by what the admin is trying to do. Break glass now lives under Security Ops, and an admin can find it on day one without the docs.</p>
+          <div class="cs-band">
+            <span class="cs-band__before" style="font-size:clamp(32px,4.2vw,60px)">14</span>
+            <span class="cs-band__arrow">→</span>
+            <span class="cs-band__after" style="font-size:clamp(32px,4.2vw,60px)">5</span>
+            <span class="cs-band__sub">FLAT ITEMS →<br>INTENT GROUPS</span>
+          </div>
+          <p class="cs-body-text"><b>How I got to five groups:</b> I followed the audit's own recommendation and grouped all 14 items by workflow phase — setting up, controlling access, running security operations and configuring identity, with an overview on top. Then I walked each audit scenario through the new structure to check that the admin stayed inside one group instead of jumping across the nav.</p>
         </div>
-        <div class="cs-tab-right">
-          <div class="cs-before-after-fig">
-            <img src="uploads/pam-resource-detail.webp" alt="Resource workspace — prod-db-primary detail view" />
-            <div class="cs-ba-fig-cap">everything you need, inside the resource</div>
+        <div style="position:relative;height:520px;border-radius:14px;border:1px solid var(--ink);background:#DCE7F7;overflow:hidden">
+          <img src="uploads/pam/84a6b59b932d0e82911a64d270bfacef.jpg" alt="Old navigation organised by object" style="position:absolute;left:24px;top:32px;width:520px;border-radius:8px;filter:grayscale(1);opacity:.5">
+          <div style="position:absolute;right:40px;top:28px;width:190px;height:464px;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 24px 48px rgba(20,20,40,.22)"><img src="uploads/pam/26eca20da69556ee6be65fd3409f1fa8.jpg" alt="Redesigned navigation grouped by admin intent" style="display:block;width:100%"></div>
+          <span style="position:absolute;left:20px;bottom:18px;padding:2px 12px;border-radius:8px;background:#fff;border:1px solid var(--ink);font-family:var(--hand);font-weight:600;font-size:26px">before, by object → after, by intent</span>
+        </div>
+      </div>
+
+      <div class="cs-section-hd">
+        <span class="cs-section-badge">FLOW A</span>
+        <h3>Day one onboarding</h3>
+        <span class="cs-section-hd__fix">FIXES RC3 + RC4</span>
+      </div>
+      <div class="cs-row"><span class="cs-row__lbl">THE OLD PATH</span>
+        <p style="font-size:17px;line-height:1.65;color:#333;margin:0">Setting up identity alone meant 14 tasks spread across 4 sections: Authentication, Users, Settings and Two Factor. Role mapping was buried in the second scroll of the SSO config. A failed directory bind gave no reason, whether a wrong URL, wrong credentials or a network issue. The only way to test a synced login was hidden inside "Show Machine Scan Results." A first-time admin needed a support call every time.</p>
+      </div>
+      <div class="cs-row cs-row--center"><span></span>
+        <div class="cs-band"><span class="cs-band__before">4 sections</span><span class="cs-band__arrow">→</span><span class="cs-band__after">1 guided flow</span></div>
+      </div>
+      <div class="cs-row"><span class="cs-row__lbl">WHAT I EXPLORED</span>
+        <div class="cs-opts">
+          <div class="cs-opt"><span class="cs-opt__tag cs-opt__tag--no">REJECTED</span><span class="cs-opt__text"><b>Patch each screen where it lives</b> · <span>The audit showed these gaps were structural. One logical setup sat across four sections, and no screen-level fix could connect them.</span></span></div>
+          <div class="cs-opt"><span class="cs-opt__tag cs-opt__tag--no">REJECTED</span><span class="cs-opt__text"><b>One long setup wizard</b> · <span>The audit had already shown what happens when every field arrives at once. The LDAP form overwhelmed first-time admins.</span></span></div>
+          <div class="cs-opt"><span class="cs-opt__tag cs-opt__tag--yes">CHOSEN</span><span class="cs-opt__text"><b>Six-stage onboarding</b> · <span>It breaks setup into stages an admin can finish and verify one at a time, and it turns setup into the proof of concept itself.</span></span></div>
+        </div>
+      </div>
+      <div class="cs-row"><span class="cs-row__lbl">THE DECISION</span>
+        <p style="font-size:17px;line-height:1.65;color:#333;margin:0">Six stages in the order a real deployment happens: connect identity → add resources → vault credentials → bring in people → set policies → allocate access. Each stage ends in something the admin can confirm worked before moving on, so a proof of concept moves forward instead of stalling on a silent failure.</p>
+      </div>
+      <div class="cs-row"><span class="cs-row__lbl">STATES I DESIGNED</span>
+        <div class="cs-pills">
+          <span class="cs-pill">a failed directory bind, with the cause named</span>
+          <span class="cs-pill">sync errors such as duplicates and missing attributes, with a fix</span>
+          <span class="cs-pill">a credential validated after vaulting</span>
+          <span class="cs-pill">a test login to confirm setup worked</span>
+        </div>
+      </div>
+      <figure class="cs-fig">
+        <div class="cs-ob-wrap">
+          <div class="cs-ob-map">
+            <span class="cs-ob-map__lbl">THE SIX-STAGE MAP</span>
+            <span class="cs-ob-line" aria-hidden="true"></span>
+            <div class="cs-ob-step"><span class="cs-ob-num cs-ob-num--active">01</span><div class="cs-ob-row"><span class="cs-ob-title">Connect identity</span><span class="cs-ob-verify">VERIFY → NEXT</span></div></div>
+            <div class="cs-ob-step"><span class="cs-ob-num">02</span><div class="cs-ob-row"><span class="cs-ob-title">Add resources</span><span class="cs-ob-verify">VERIFY → NEXT</span></div></div>
+            <div class="cs-ob-step"><span class="cs-ob-num">03</span><div class="cs-ob-row"><span class="cs-ob-title">Vault credentials</span><span class="cs-ob-verify">VERIFY → NEXT</span></div></div>
+            <div class="cs-ob-step"><span class="cs-ob-num">04</span><div class="cs-ob-row"><span class="cs-ob-title">Bring in people</span><span class="cs-ob-verify">VERIFY → NEXT</span></div></div>
+            <div class="cs-ob-step"><span class="cs-ob-num">05</span><div class="cs-ob-row"><span class="cs-ob-title">Set policies</span><span class="cs-ob-verify">VERIFY → NEXT</span></div></div>
+            <div class="cs-ob-step"><span class="cs-ob-num">06</span><div class="cs-ob-row"><span class="cs-ob-title">Allocate access</span><span class="cs-ob-verify">VERIFY → NEXT</span></div></div>
+          </div>
+          <div class="cs-ob-right">
+            <span class="cs-ob-right__lbl">THE VERIFY STEP</span>
+            <img src="uploads/pam/953464e4f7dc7d58191a39cce9ab0cf6.jpg" alt="Validate and finish: a login simulation that confirms the directory bound" style="display:block;width:100%;border-radius:10px;border:1px solid #E2DDD3;box-shadow:0 18px 40px rgba(20,30,60,.16)">
+            <span class="cs-ob-right__note">a login simulation proves it works before go-live, no support call needed.</span>
           </div>
         </div>
-      </div>
+        <figcaption class="cs-figcap"><span>FIG. 3 — ONBOARDING</span><span class="cs-figcap__note">six stages, each one verified</span></figcaption>
+      </figure>
 
-      <div id="tab3" class="cs-tab-content rv" style="display:none;">
-        <div class="cs-tab-left">
-          <p>New admins previously had no guided path. We added a five-checkpoint onboarding flow that maps to real setup milestones — connect a resource, vault the first credential, create an access policy — so admins know where they are and what's left.</p>
+      <div class="cs-section-hd">
+        <span class="cs-section-badge">FLOW B</span>
+        <h3>Access, from the resource</h3>
+        <span class="cs-section-hd__fix">FIXES RC3</span>
+      </div>
+      <div class="cs-row"><span class="cs-row__lbl">THE OLD PATH</span>
+        <p style="font-size:17px;line-height:1.65;color:#333;margin:0">Granting access to one resource meant creating it, attaching a credential, mapping a policy and assigning users, each in a different section, for 4 or more nav visits per resource. Once granted, current access couldn't be viewed anywhere in the product. Requests arrived only as notification bell items, approval rules lived under Settings, and an approved ticket couldn't be revoked. Every grant was standing access. JIT, multi-level approval and break glass didn't exist.</p>
+      </div>
+      <div class="cs-row cs-row--center"><span></span>
+        <div class="cs-band"><span class="cs-band__before">4+ nav visits</span><span class="cs-band__arrow">→</span><span class="cs-band__after">1 resource record</span></div>
+      </div>
+      <div class="cs-row"><span class="cs-row__lbl">WHAT I EXPLORED</span>
+        <div class="cs-opts">
+          <div class="cs-opt"><span class="cs-opt__tag cs-opt__tag--no">REJECTED</span><span class="cs-opt__text"><b>Upgrade the notification-bell approvals</b> · <span>The audit found that access governance was a notification, not a workflow. A better bell is still a bell.</span></span></div>
+          <div class="cs-opt"><span class="cs-opt__tag cs-opt__tag--no">REJECTED</span><span class="cs-opt__text"><b>A standalone access-request module</b> · <span>Requests in one place, resource config in another and audit history in a third would rebuild the same scatter the audit diagnosed.</span></span></div>
+          <div class="cs-opt"><span class="cs-opt__tag cs-opt__tag--yes">CHOSEN</span><span class="cs-opt__text"><b>The resource as the anchor, with JIT inside it</b> · <span>Credentials, policies, access and audit history all attach to the resource, so one logical task happens in one place.</span></span></div>
         </div>
-        <div class="cs-tab-right">
-          <div class="cs-before-after-fig">
-            <img src="uploads/pam-resource-list.webp" alt="Resources list — onboarding starting point" />
-            <div class="cs-ba-fig-cap">five checkpoints, zero guessing</div>
+      </div>
+      <div class="cs-row"><span class="cs-row__lbl">THE DECISION</span>
+        <p style="font-size:17px;line-height:1.65;color:#333;margin:0">Every resource now has its own workspace with tabs for credentials, policy, access, sessions and audit trail. Access is requested and approved from inside the resource and expires when its window closes, so nothing stays standing by default. Requests get a real queue under Tickets &amp; Approvals. Recording and MFA, previously buried three levels deep in Settings, now show on the resource's security posture. Break glass sits under Security Ops as its own governed path. <b>One resource, one place, one trail.</b></p>
+      </div>
+      <div class="cs-row"><span class="cs-row__lbl">STATES I DESIGNED</span>
+        <div class="cs-pills">
+          <span class="cs-pill">approval pending</span>
+          <span class="cs-pill">multi-level approval</span>
+          <span class="cs-pill">revoking an approved grant</span>
+          <span class="cs-pill">access expiring when the window closes</span>
+          <span class="cs-pill">break glass with justification and post-incident review</span>
+        </div>
+      </div>
+      <figure class="cs-fig">
+        <div class="cs-fig__frame cs-fig__frame--blue">
+          <div style="position:relative">
+            <img src="uploads/pam/d37fefa1b62a4f0300d776ee6fe2017e.jpg" alt="The resource workspace: tab row for overview, credentials, policy, access, sessions and audit trail" style="display:block;width:100%;border-radius:8px">
+            <span class="cs-ann" style="position:absolute;left:61.8%;top:20.9%"><span class="cs-ann__dot">1</span><span class="cs-ann__text">one tab row, every task</span></span>
+            <span class="cs-ann" style="position:absolute;left:82.3%;top:50.6%"><span class="cs-ann__dot">2</span><span class="cs-ann__text">MFA + recording</span></span>
+            <span class="cs-ann" style="position:absolute;left:81.5%;top:6.6%"><span class="cs-ann__dot">3</span><span class="cs-ann__text">allocate from here</span></span>
           </div>
         </div>
+        <figcaption class="cs-figcap"><span>FIG. 4 — RESOURCE WORKSPACE</span><span class="cs-figcap__note">everything attaches to the resource</span></figcaption>
+      </figure>
+      <a href="#s-hold" class="cs-next">Next: making sure admins understand what they see ↓</a>
+    </article>
+
+    <article id="s-hold" class="cs-art">
+      <div class="cs-art__hd"><span class="cs-art__num">05 / 07</span><h2 class="cs-art__h2">Making it hold</h2></div>
+      <p class="cs-lede"><mark>Navigation fixed where things live. These two fixes made sure admins understood what they saw and knew the moment something broke.</mark></p>
+
+      <div class="cs-section-hd">
+        <span class="cs-section-badge">RC2</span>
+        <h3>Language admins already speak</h3>
+        <span class="cs-section-hd__fix">FIXES RC2</span>
+      </div>
+      <p class="cs-body-text">New admins spent their first week translating the interface. I rewrote the labels around the words admins use in their own runbooks and audit reports, not the words in our database schema.</p>
+      <div class="cs-terms">
+        <div class="cs-terms__hd"><span>BEFORE · OUR SCHEMA</span><span>AFTER · THEIR JOB</span><span>WHY IT MATTERED</span></div>
+        <div class="cs-term"><span class="cs-term__before">System Users</span><span class="cs-term__after">Credentials</span><span class="cs-term__why">Admins looked for server passwords under a label that sounded like people</span></div>
+        <div class="cs-term"><span class="cs-term__before">Users</span><span class="cs-term__after">People</span><span class="cs-term__why">Clashed with System Users, the most common first-day mix-up</span></div>
+        <div class="cs-term"><span class="cs-term__before">All Tickets</span><span class="cs-term__after">Tickets &amp; Approvals</span><span class="cs-term__why">Access requests read as a support inbox, not a governance step</span></div>
+        <div class="cs-term"><span class="cs-term__before">Rotator Instance</span><span class="cs-term__after">Admin Account</span><span class="cs-term__why">A developer label shown on every rotation setup</span></div>
       </div>
 
-      <div class="cs-proto-card rv">
-        <div>
-          <div class="cs-proto-label">LIVE PROTOTYPE</div>
-          <div class="cs-proto-title">Click through the redesign yourself</div>
+      <div class="cs-section-hd">
+        <span class="cs-section-badge">RC4</span>
+        <h3>Failures you can see</h3>
+        <span class="cs-section-hd__fix">FIXES RC4</span>
+      </div>
+      <p class="cs-body-text">Errors used to fail silently, so admins couldn't tell what broke. Now errors and reconciliation issues surface inline, on the resource where they happened, along with what to do next.</p>
+      <figure class="cs-fig">
+        <div class="cs-fig__frame cs-fig__frame--bg">
+          <div style="display:flex;flex-direction:column;gap:28px">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="display:flex;align-items:center;gap:12px">
+                <span style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;padding:5px 10px;background:#fff;border:1.5px solid var(--ink);border-radius:6px">BEFORE</span>
+                <span style="font-family:var(--hand);font-weight:600;font-size:24px">a plain user list. nothing says anything is wrong.</span>
+              </span>
+              <img src="uploads/pam/721d60a9e0235da48f4ed416711e6777.jpg" alt="The original user list with no status or sync information" style="display:block;width:100%;border-radius:8px;border:1px solid #E2DDD3">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="display:flex;align-items:center;gap:12px">
+                <span style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;padding:5px 10px;background:var(--pink);border:1.5px solid var(--ink);border-radius:6px">AFTER</span>
+                <span style="font-family:var(--hand);font-weight:600;font-size:24px">4 sync failures, counted, explained, with a next step.</span>
+              </span>
+              <img src="uploads/pam/f9c0ee48297a990c45dc2865f3c706b6.jpg" alt="The redesigned People page: sync errors counted with a Review button" style="display:block;width:100%;border-radius:8px;border:1px solid #E2DDD3">
+            </div>
+          </div>
         </div>
-        <a href="https://www.figma.com/proto/placeholder" target="_blank" rel="noopener" class="cs-proto-btn">Open ↗</a>
+        <figcaption class="cs-figcap"><span>FIG. 5 — ONE ERROR STATE, BEFORE AND AFTER</span><span class="cs-figcap__note">before, nothing · after, what broke and what to do</span></figcaption>
+      </figure>
+      <a href="#s-outcome" class="cs-next">Next: what it moved ↓</a>
+    </article>
+
+    <article id="s-outcome" class="cs-art">
+      <div class="cs-art__hd"><span class="cs-art__num">06 / 07</span><h2 class="cs-art__h2">Outcome</h2></div>
+      <p class="cs-lede"><mark>$800K in new PAM sales the quarter after release. Deals that stalled at proof of concept started closing.</mark></p>
+      <div class="cs-outcome">
+        <div class="cs-outcome__hd"><span>METRIC</span><span>BEFORE</span><span>AFTER</span><span>WHAT MOVED IT</span></div>
+        <div class="cs-outcome__row"><span class="cs-outcome__metric">Trial to paid conversion</span><span class="cs-outcome__before">11%</span><span class="cs-outcome__after">18%</span><span class="cs-outcome__note">within 6 months · admins could run a proof of concept on their own, through onboarding checkpoints and intent-based navigation</span></div>
+        <div class="cs-outcome__row"><span class="cs-outcome__metric">Time to deploy</span><span class="cs-outcome__before">3 weeks</span><span class="cs-outcome__after">1.5 weeks</span><span class="cs-outcome__note">Six-stage onboarding, each stage verified before the next</span></div>
+        <div class="cs-outcome__row"><span class="cs-outcome__metric">New sales</span><span class="cs-outcome__before">Stalling</span><span class="cs-outcome__after">$800K</span><span class="cs-outcome__note">the quarter after release · the two deal-breaker flows fixed first</span></div>
+        <div class="cs-outcome__footer"><span>Critical workflows finish without leaving the resource.</span><span>Errors and reconciliation issues surface inline. No more silent failures.</span><span>Scope debates resolved in one meeting, not a quarter of workshops.</span></div>
       </div>
+      <a href="#s-lessons" class="cs-next">Next: what I'd keep and what I'd change ↓</a>
+    </article>
 
-      <p class="cs-sec-next rv">Next: what it moved ↓</p>
-    </div>
-
-
-    <!-- ── 05 OUTCOME ── -->
-    <div class="cs-sec" id="s-outcome">
-      <div class="cs-sec-hd rv">
-        <span class="cs-sec-count">05 / 06</span>
-        <h2 class="cs-sec-title">Outcome</h2>
-      </div>
-
-      <div class="cs-outcome-card rv">
-        <div class="cs-outcome-left">
-          <span class="cs-outcome-num">$800K</span>
-          <p>in new PAM sales the quarter after release. Deals stalled at POC started closing.</p>
-        </div>
-        <div class="cs-outcome-right">
-          <div class="cs-outcome-also">ALSO</div>
-          <div class="cs-outcome-item">Critical workflows finish without leaving the resource.</div>
-          <div class="cs-outcome-item">Errors and reconciliation surface inline. No more silent failures.</div>
-          <div class="cs-outcome-item">Scope debates resolved in one meeting, not a quarter of workshops.</div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ── 06 LESSONS ── -->
-    <div class="cs-sec cs-sec--last" id="s-lessons">
-      <div class="cs-sec-hd rv">
-        <span class="cs-sec-count">06 / 06</span>
-        <h2 class="cs-sec-title">Lessons</h2>
-      </div>
-
-      <div class="cs-hl-wrap"><p class="cs-highlight-para rv">In security products, usability is a security control.</p></div>
-
-      <div class="cs-lessons-grid rv">
+    <article id="s-lessons" class="cs-art">
+      <div class="cs-art__hd"><span class="cs-art__num">07 / 07</span><h2 class="cs-art__h2">Lessons</h2></div>
+      <p class="cs-lede"><mark>In security products, usability is a security control.</mark></p>
+      <div class="cs-lessons">
         <div class="cs-lesson">
-          <h4>The audit was the whole project</h4>
-          <p>Every decision after was implementing conclusions we'd reached together.</p>
+          <div class="cs-lesson__title">The audit was the whole project</div>
+          <div class="cs-lesson__desc">Every decision after it was implementing conclusions the team had already reached together. Two weeks of pushing back on screen redesigns saved months of redesigning the wrong screens.</div>
         </div>
         <div class="cs-lesson">
-          <h4>Frameworks are conversations</h4>
-          <p>RICE and Kano failed because the team used them to avoid talking about values.</p>
+          <div class="cs-lesson__title">Frameworks are conversations</div>
+          <div class="cs-lesson__desc">RICE and Kano failed because the team used them to avoid talking about what mattered. One honest question did more than two scoring models.</div>
         </div>
-        <div class="cs-lesson cs-lesson--wrong">
-          <div class="cs-lesson-wrong-label">WHAT I GOT WRONG</div>
-          <p>Migrating customers skipped onboarding stages. A persona is incomplete without knowing what they're migrating away from.</p>
+        <div class="cs-lesson cs-lesson--highlight">
+          <div class="cs-lesson__tag">WHAT I GOT WRONG</div>
+          <div class="cs-lesson__desc">Customers migrating from another tool skipped onboarding stages, because they already knew what they wanted to set up. A persona is incomplete without knowing what the person is migrating away from. An import path that recognises existing setups would have caught this earlier.</div>
         </div>
       </div>
-    </div>
+    </article>
 
-  </div><!-- /cs-content -->
-</div><!-- /cs-layout -->
-
-
-<!-- ════ ENDING NAV ════ -->
-<div class="cs-ending-row">
-  <a href="index.html" class="cs-ending-back">‹ Return to homepage</a>
-  <div class="cs-ending-next">
-    <div class="cs-ending-next-img">
-      <img src="uploads/IDP%20DB.png" alt="Architecting enterprise IAM — Xecrify dashboard" />
-    </div>
-    <div class="cs-ending-next-info">
-      <div class="cs-ending-next-title">Architecting enterprise IAM</div>
-      <div class="cs-ending-next-badge">NEXT · NDA</div>
-    </div>
-  </div>
-  <div class="cs-ending-related">
-    <a href="#" class="cs-ending-related-btn">SEE RELATED PROJECT ›</a>
-    <div class="cs-ending-related-title">AI grading · trust UX</div>
-  </div>
+  </main>
 </div>
 
-
-<!-- ════ FOOTER ════ -->
-<footer>
-  <div class="foot">
-    <div class="col">
-      <div style="margin-bottom:12px;"><img src="assets/logo.svg" alt="Mehak Garg" style="height:26px;width:auto;filter:invert(1);opacity:.8;" /></div>
-      <p class="mt">Senior Product Designer<br/>Building enterprise software that ships.</p>
+<div class="cs-ending">
+  <a href="index.html" class="cs-ending__cell cs-ending__cell--border cs-ending__home">‹&nbsp;&nbsp;RETURN TO HOMEPAGE</a>
+  <a href="index.html#work" class="cs-ending__cell cs-ending__cell--border cs-ending__next" style="display:flex">
+    <div class="cs-ending__preview"><img src="uploads/pam/d63aad5b66fee4639c5554f538a388df.jpg" alt="Enterprise IAM dashboard"></div>
+    <div class="cs-ending__next-title">
+      <span>Architecting enterprise IAM</span>
+      <span>NEXT · NDA</span>
     </div>
-    <div class="col"><h5>Sitemap</h5><a href="index.html#work">Work</a><a href="about.html">About</a><a href="about.html#contact">Contact</a></div>
-    <div class="col"><h5>Elsewhere</h5><a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener">LinkedIn ↗</a><a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener">Behance ↗</a></div>
-    <div class="col"><h5>Located</h5><p class="mt">Pune · India<br/>Working globally</p></div>
+  </a>
+  <a href="index.html#work" class="cs-ending__cell cs-ending__related" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+    <span style="font-family:var(--mono);font-size:13px;letter-spacing:.14em">SEE RELATED PROJECT&nbsp;&nbsp;›</span>
+    <span style="font-family:var(--hand);font-weight:600;font-size:22px;color:#5F5F5F">AI grading · trust UX</span>
+  </a>
+</div>
+
+<footer id="contact" class="cs-footer">
+  <div class="cs-footer__folder">
+    <span aria-hidden="true" style="position:absolute;left:0;top:0;width:170px;height:60px;border-radius:22px 22px 0 0;background:#E2557F"></span>
+    <span aria-hidden="true" style="position:absolute;left:0;top:36px;width:440px;height:294px;border-radius:0 26px 26px 26px;background:#E2557F"></span>
+    <div style="position:absolute;left:54px;top:64px;width:330px;height:220px;background:#FFFDFB;border-radius:6px;transform:rotate(-3deg);box-shadow:0 10px 24px rgba(120,20,60,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+      <span aria-hidden="true" style="position:absolute;top:-14px;left:150px;width:30px;height:30px;border-radius:4px;background:#F4C84B;border:1.5px solid var(--ink)"></span>
+      <span style="font-family:var(--hand);font-weight:700;font-size:58px;line-height:.9">mehak's</span>
+      <span style="font-family:var(--hand);font-weight:700;font-size:58px;line-height:.9">work</span>
+      <svg width="240" height="34" viewBox="0 0 240 34" fill="none" aria-hidden="true"><path d="M6 20 q 14 -14 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0" stroke="#E2557F" stroke-width="2" stroke-linecap="round"></path><circle cx="226" cy="10" r="5" stroke="#141414" stroke-width="1.5"></circle></svg>
+    </div>
+    <span aria-hidden="true" style="position:absolute;left:0;top:250px;width:440px;height:80px;border-radius:6px 6px 26px 26px;background:#EC6F93;z-index:2"></span>
   </div>
-  <div class="foot-bot">
-    <span>© 2026 Mehak Garg</span>
-    <span>Senior Product Designer</span>
-  </div>
+  <nav class="cs-footer__nav">
+    <a href="index.html#work">Work</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#writing">Writing</a>
+    <span style="height:24px"></span>
+    <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener">Behance</a>
+    <a href="mailto:mehakrgarg@gmail.com" style="font-style:italic">Say hi &lt;3</a>
+  </nav>
 </footer>
-
-
-<script type="module" src="js/case-interactions.js"></script>
 
 <script>
 (function(){
-  /* ── Nav / breadcrumb scroll ── */
-  var nav = document.getElementById('nav');
-  var bc  = document.getElementById('breadcrumb');
-  var sp  = document.getElementById('sp');
-  function onScroll(){
-    var y = window.scrollY;
-    nav && nav.classList.toggle('on', y > 10);
-    bc  && bc.classList.toggle('on', y > 80);
-    if(sp){
-      var doc = document.documentElement;
-      var pct = y / (doc.scrollHeight - doc.clientHeight);
-      sp.style.transform = 'scaleX(' + pct + ')';
-    }
+  var arts = document.querySelectorAll('.cs-art[id]');
+  var links = document.querySelectorAll('.cs-sidebar a');
+  var fill = document.getElementById('progressFill');
+  var timeEl = document.getElementById('readTime');
+  var mins = [6,5,4,3,2,1,0];
+  function update(){
+    var scrollY = window.scrollY;
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = Math.round(scrollY/docH*100);
+    if(fill) fill.style.width = pct+'%';
+    var active = 0;
+    arts.forEach(function(a,i){if(scrollY >= a.offsetTop - 100) active = i;});
+    links.forEach(function(l,i){l.classList.toggle('active', i===active);});
+    if(timeEl) timeEl.textContent = '~'+(mins[active]||0)+' MIN LEFT';
   }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  onScroll();
-
-  /* ── Reveal on scroll ── */
-  var rvEls = document.querySelectorAll('.rv');
-  if('IntersectionObserver' in window){
-    var rvIO = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting) e.target.classList.add('visible');
-      });
-    },{threshold:0.08});
-    rvEls.forEach(function(el){ rvIO.observe(el); });
-  } else {
-    rvEls.forEach(function(el){ el.classList.add('visible'); });
-  }
-
-  /* ── Section nav active state ── */
-  var csNavLinks = Array.from(document.querySelectorAll('.cs-section-nav a'));
-  var csSections = csNavLinks.map(function(link){
-    return { link: link, el: document.getElementById(link.getAttribute('href').slice(1)) };
-  }).filter(function(s){ return s.el; });
-  if(csSections.length && 'IntersectionObserver' in window){
-    var secIO = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){
-          csSections.forEach(function(s){
-            s.link.classList.toggle('active', s.el === e.target);
-          });
-        }
-      });
-    },{rootMargin:'-30% 0px -60% 0px'});
-    csSections.forEach(function(s){ secIO.observe(s.el); });
-  }
-
-  /* ── Sidebar progress bar ── */
-  var fill = document.getElementById('csProgressFill');
-  var readTime = document.getElementById('csSidebarReadTime');
-  var content = document.querySelector('.cs-content');
-  function updateProgress(){
-    if(!fill || !content) return;
-    var rect = content.getBoundingClientRect();
-    var totalH = content.offsetHeight;
-    var scrolled = Math.max(0, -rect.top);
-    var pct = Math.min(100, (scrolled / (totalH - window.innerHeight)) * 100);
-    if(isNaN(pct) || pct < 0) pct = 0;
-    fill.style.width = pct + '%';
-    if(readTime){
-      var remaining = Math.max(0, Math.ceil(5 * (1 - pct/100)));
-      readTime.textContent = remaining <= 1 ? '~1 min left' : '~' + remaining + ' min left';
-    }
-  }
-  window.addEventListener('scroll', updateProgress, {passive:true});
-  updateProgress();
-
-  /* ── Before/After slider ── */
-  var sliderWrap = document.getElementById('csBASlider');
-  var baAfter    = document.getElementById('csBAAfter');
-  var baHandle   = document.getElementById('csBAHandle');
-  if(sliderWrap && baAfter && baHandle){
-    var dragging = false;
-    function setPos(x){
-      var rect = sliderWrap.getBoundingClientRect();
-      var pct  = Math.max(0, Math.min(100, ((x - rect.left) / rect.width) * 100));
-      baAfter.style.width  = pct + '%';
-      baHandle.style.left  = pct + '%';
-    }
-    sliderWrap.addEventListener('mousedown',  function(e){ dragging=true; setPos(e.clientX); e.preventDefault(); });
-    window.addEventListener('mousemove', function(e){ if(dragging) setPos(e.clientX); });
-    window.addEventListener('mouseup',   function(){ dragging=false; });
-    sliderWrap.addEventListener('touchstart', function(e){ dragging=true; setPos(e.touches[0].clientX); },{passive:true});
-    window.addEventListener('touchmove',  function(e){ if(dragging) setPos(e.touches[0].clientX); },{passive:true});
-    window.addEventListener('touchend',   function(){ dragging=false; });
-  }
-
-  /* ── System tabs ── */
-  var tabBtns = document.querySelectorAll('.cs-tab');
-  tabBtns.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var panelId = btn.getAttribute('data-panel');
-      tabBtns.forEach(function(b){
-        b.classList.toggle('cs-tab--active', b === btn);
-        b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
-      });
-      document.querySelectorAll('.cs-tab-content').forEach(function(p){
-        p.style.display = p.id === panelId ? 'grid' : 'none';
-      });
-    });
-  });
+  window.addEventListener('scroll', update, {passive:true});
+  update();
 })();
 </script>
 
