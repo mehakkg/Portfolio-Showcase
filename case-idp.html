@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Identity Platform — Mehak Garg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Caveat:wght@500;600;700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#FFFFFF;--ink:#141414;--fg:#2B2B2B;--sub:#6E6E6E;--line:#E8E8E8;
+  --green:#9ED4B5;--green-deep:#2B7A52;--green-light:#DBEEE4;--green-tint:#EEF7F2;--green-border:#C9E3D3;
+  --pink:#FF9FB2;--pink-deep:#E2557F;--rose:#B2376A;
+  --serif:'Bodoni Moda',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif;
+  --mono:'Space Mono',monospace;--hand:'Caveat',cursive;
+}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,h5,h6,p,blockquote,dl,figure{margin:0}
+img{display:block;max-width:100%}
+
+/* ── password gate ── */
+#pw-gate{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.pw-box{width:min(440px,90vw);display:flex;flex-direction:column;gap:24px;padding:48px;border:1px solid var(--ink);border-radius:16px}
+.pw-box h2{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(24px,4vw,36px);line-height:1.1}
+.pw-box p{font-size:15px;line-height:1.6;color:var(--sub)}
+.pw-row{display:flex;gap:10px}
+.pw-row input{flex:1;padding:12px 16px;border:1.5px solid var(--ink);border-radius:8px;font-size:15px;font-family:var(--sans);outline:none}
+.pw-row input:focus{border-color:var(--pink-deep)}
+.pw-row button{padding:12px 20px;background:var(--pink-deep);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.pw-row button:hover{background:var(--rose)}
+#pw-error{font-size:13px;color:#c0392b;opacity:0;transition:opacity .3s}
+
+/* ── nav ── */
+nav{position:relative;display:flex;justify-content:space-between;align-items:center;height:72px;padding:0 80px;border-bottom:1px solid var(--line)}
+.nav-brand{display:flex;align-items:center;gap:14px;padding-left:24px}
+.nav-brand img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid var(--ink)}
+.nav-brand span{font-weight:700;font-size:18px}
+.nav-links{display:flex;height:72px;font-family:var(--mono);font-size:11px;letter-spacing:.14em}
+.nav-links a{display:flex;align-items:center;padding:0 32px;border-left:1px solid var(--line)}
+.nav-links a:last-child{border-right:1px solid var(--line)}
+.nav-links a.active{background:var(--ink);color:#fff}
+
+/* ── hero ── */
+.hero{position:relative;margin:0 80px;display:grid;grid-template-columns:7fr 5fr;border-bottom:1px solid var(--line)}
+.hero-left{padding:64px 56px 56px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:24px}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em}
+.hero-dot{width:9px;height:9px;background:var(--green);border:1.5px solid var(--ink)}
+.hero-h1{font-weight:700;font-size:clamp(40px,4.2vw,60px);line-height:1.12;letter-spacing:-.04em}
+.hero-h1 em{font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.02em;background:var(--green);padding:0 10px;border-radius:4px;white-space:nowrap}
+.hero-nda{font-size:13px;color:var(--sub)}
+.hero-right{padding:64px 56px 56px;display:flex;flex-direction:column;gap:22px;justify-content:center}
+.hero-p{font-family:var(--serif);font-size:20px;line-height:1.55}
+.hero-dl{margin-top:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 20px}
+.hero-dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--sub)}
+.hero-dd{font-size:15px;font-weight:600}
+
+/* ── stats bar ── */
+.stats{position:relative;margin:0 80px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.stat{padding:26px 28px;display:flex;flex-direction:column;gap:8px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:var(--serif);font-style:italic;font-size:48px;line-height:1;white-space:nowrap}
+.stat-label{font-size:14px;line-height:1.45;color:#4A4A4A}
+
+/* ── green intro section ── */
+.g-section{position:relative;background:var(--green-light);padding:56px;display:flex;flex-direction:column;gap:52px}
+.g-hero-img{width:1040px;max-width:100%;margin:0 auto;border-radius:12px;border:1px solid var(--green-border);box-shadow:0 30px 70px rgba(20,60,40,.22)}
+.g-cards{display:flex;flex-direction:column;gap:26px}
+.g-caption{font-family:var(--hand);font-weight:600;font-size:28px}
+.g-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.g-card{background:#fff;border:1.5px solid var(--ink);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 18px 40px rgba(20,60,40,.14)}
+.g-card-q{font-family:var(--mono);font-size:11px;letter-spacing:.12em}
+.g-card-h{font-family:var(--serif);font-style:italic;font-weight:600;font-size:30px;line-height:1.1}
+.g-card-rule{height:8px;border-radius:4px;background:repeating-linear-gradient(90deg,#E8E8E8 0 18px,transparent 18px 24px)}
+.g-card-sub{font-size:13px;color:#5F5F5F}
+
+/* ── how to read ── */
+.htr{position:relative;margin:0 80px;display:grid;grid-template-columns:260px 1fr 1fr 2fr;border-bottom:1.5px solid var(--ink);background:var(--bg)}
+.htr-label{padding:24px;border-right:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--sub);display:flex;align-items:center}
+.htr-cell{padding:24px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.htr-num{font-family:var(--serif);font-style:italic;font-size:34px;line-height:1}
+.htr-sub{font-size:14px;color:#4A4A4A}
+.htr-mark{background:var(--green);padding:0 4px}
+.htr-pills{padding:24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:600}
+.htr-pills a{padding:8px 12px;border-radius:999px;border:1px solid var(--ink)}
+
+/* ── body grid ── */
+.body-grid{position:relative;margin:0 80px;display:grid;grid-template-columns:260px minmax(0,1fr)}
+.sidebar{padding:56px 24px;display:flex;flex-direction:column;gap:6px;font-size:14px;align-self:start;position:sticky;top:24px}
+.sidebar-you{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--sub);padding-bottom:12px}
+.sidebar-link{display:flex;gap:10px;padding:8px 10px;color:#5F5F5F}
+.sidebar-link.active{border-radius:8px;background:var(--ink);color:#fff;font-weight:600}
+.sidebar-link span{font-family:var(--mono);font-size:12px}
+.sidebar-progress{margin-top:18px;height:4px;border-radius:2px;background:#eee;overflow:hidden}
+.sidebar-bar{display:block;width:28%;height:100%;background:var(--ink)}
+.sidebar-time{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--sub)}
+main{display:flex;flex-direction:column}
+
+/* ── articles ── */
+article{padding:72px 0 88px 64px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:26px}
+article:last-child{padding-bottom:96px;border-bottom:none}
+.art-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--sub);white-space:nowrap}
+.art-h{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(36px,3.5vw,50px);line-height:1.05}
+.art-p{font-size:17px;line-height:1.7;color:var(--fg);max-width:760px}
+.art-big{max-width:860px;font-family:var(--serif);font-size:26px;line-height:1.35}
+.art-h3{font-family:var(--serif);font-style:italic;font-weight:600;font-size:32px;line-height:1.15;max-width:860px;margin:16px 0 0}
+.art-next{align-self:flex-start;max-width:760px;margin-top:8px;padding-top:20px;border-top:1px solid var(--ink);font-size:18px;font-weight:600;line-height:1.5}
+
+/* highlights */
+.hl{background:var(--green);padding:1px 5px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.bq{margin:8px 0;max-width:860px;padding-left:28px;border-left:3px solid var(--green);font-family:var(--serif);font-style:italic;font-weight:600;font-size:32px;line-height:1.3}
+.code{font-family:var(--mono);font-size:14px;background:var(--green-tint);border:1px solid var(--green-border);border-radius:6px;padding:1px 7px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+/* decision cards */
+.dc{max-width:956px;border:1px solid var(--ink);border-radius:14px;overflow:hidden}
+.dc-head{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--ink);background:#fff}
+.dc-num{width:26px;height:26px;border-radius:50%;background:var(--green-deep);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dc-tag{padding:4px 9px;border-radius:6px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em}
+.dc-title{font-family:var(--serif);font-style:italic;font-weight:600;font-size:24px;line-height:1.2}
+.dc-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.dc-what{padding:20px 24px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.dc-cost{padding:20px 24px;background:var(--green-tint);display:flex;flex-direction:column;gap:8px}
+.dc-kicker-what{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sub)}
+.dc-kicker-cost{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--green-deep)}
+.dc-text{font-size:15.5px;line-height:1.6;color:#333}
+
+/* figures */
+.fig{margin:4px 0 0;display:flex;flex-direction:column;gap:12px;max-width:956px}
+.fig-wrap{border:1px solid var(--ink);border-radius:14px;background:var(--green-light);padding:24px}
+.fig-img{display:block;width:100%;border-radius:8px;border:1px solid var(--green-border)}
+.fig-cap{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sub);display:flex;justify-content:space-between;gap:24px}
+.cost-note{max-width:760px;padding:18px 22px;border-radius:12px;background:var(--green-tint);border:1px solid var(--green-border);display:flex;flex-direction:column;gap:8px}
+
+/* annotated img overlay */
+.ann{position:relative}
+.ann-box{position:absolute;border:2.5px solid var(--green-deep);border-radius:8px;background:rgba(158,212,181,.14)}
+.ann-badge{position:absolute;right:-13px;top:-13px;width:26px;height:26px;border-radius:50%;background:var(--green-deep);color:#fff;border:2px solid #fff;font-family:var(--mono);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+
+/* numbered list */
+.num-list{display:flex;flex-direction:column;gap:24px;max-width:760px}
+.num-row{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:baseline}
+.num{font-family:var(--mono);font-size:12px;color:var(--sub)}
+
+/* close cards */
+.close-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:956px}
+.close-card{border:1px solid var(--ink);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.close-card.green{background:var(--green-tint)}
+.close-num{font-family:var(--mono);font-size:12px;color:var(--sub)}
+.close-num.green{color:var(--green-deep)}
+.close-h{font-weight:700;font-size:18px;line-height:1.3}
+.close-p{font-size:15px;line-height:1.6;color:#4A4A4A}
+
+/* ── ending ── */
+.ending{position:relative;margin:0 80px;display:grid;grid-template-columns:1fr 1.3fr 1fr;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--line);height:380px}
+.end-cell{transition:background-color .3s ease}
+.end-cell:hover{background:var(--green-tint)}
+.end-home{display:flex;align-items:center;justify-content:center;gap:12px;border-right:1px solid var(--line);font-family:var(--mono);font-size:13px;letter-spacing:.14em}
+.end-next{position:relative;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:36px;border-right:1px solid var(--line)}
+.end-thumb{position:relative;height:210px;border-radius:12px;overflow:hidden;background:#DCE7F7;border:1px solid var(--ink)}
+.end-thumb img{position:absolute;left:24px;top:24px;width:520px;border-radius:8px}
+.end-meta{display:flex;justify-content:space-between;align-items:baseline}
+.end-title{font-family:var(--serif);font-style:italic;font-weight:600;font-size:24px}
+.end-tag{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sub)}
+.end-related{position:relative;display:flex;align-items:center;justify-content:center}
+.end-related-label{position:relative;font-family:var(--mono);font-size:13px;letter-spacing:.14em}
+.end-related-hand{position:absolute;bottom:64px;font-family:var(--hand);font-weight:600;font-size:22px;color:#5F5F5F}
+
+/* ── footer ── */
+footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;display:grid;grid-template-columns:6fr 6fr;align-items:end;gap:40px}
+.footer-card{position:relative;width:440px;height:330px}
+.footer-card-bg{position:absolute;left:0;top:0;width:170px;height:60px;border-radius:22px 22px 0 0;background:var(--pink-deep)}
+.footer-card-main{position:absolute;left:0;top:36px;width:440px;height:294px;border-radius:0 26px 26px 26px;background:var(--pink-deep)}
+.footer-card-inner{position:absolute;left:54px;top:64px;width:330px;height:220px;background:#FFFDFB;border-radius:6px;transform:rotate(-3deg);box-shadow:0 10px 24px rgba(120,20,60,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.footer-card-tape{position:absolute;top:-14px;left:150px;width:30px;height:30px;border-radius:4px;background:#F4C84B;border:1.5px solid var(--ink)}
+.footer-name{font-family:var(--hand);font-weight:700;font-size:58px;line-height:.9;color:var(--ink)}
+.footer-card-bottom{position:absolute;left:0;top:250px;width:440px;height:80px;border-radius:6px 6px 26px 26px;background:#EC6F93;z-index:2}
+.footer-nav{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-family:var(--serif);font-size:52px;line-height:1.1}
+.footer-nav a{color:var(--rose);transition:transform .3s ease}
+.footer-nav a:hover{transform:translateX(-8px)}
+
+/* ── reveal ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ── responsive ── */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links a{padding:0 14px}
+  .hero,.stats-wrap,.htr,.body-grid,.ending{margin:0 20px}
+  .hero{grid-template-columns:1fr}
+  .hero-left{border-right:none;border-bottom:1px solid var(--line);padding:40px 24px}
+  .hero-right{padding:32px 24px}
+  .body-grid{grid-template-columns:1fr}
+  .sidebar{display:none}
+  article{padding:48px 0 60px 0}
+  .dc-body{grid-template-columns:1fr}
+  .dc-what{border-right:none;border-bottom:1px solid var(--line)}
+  .close-grid{grid-template-columns:1fr}
+  footer{padding:48px 24px 40px;grid-template-columns:1fr}
+  .footer-card{display:none}
+  .g-grid{grid-template-columns:1fr 1fr}
+  .ending{grid-template-columns:1fr;height:auto}
+  .end-home{height:60px;border-right:none;border-bottom:1px solid var(--line)}
+  .end-next{border-right:none;border-bottom:1px solid var(--line)}
+  .g-section{padding:32px 24px}
+  .g-hero-img{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- ── PASSWORD GATE ── -->
+<div id="pw-gate">
+  <div class="pw-box">
+    <h2>This project is password protected</h2>
+    <p>It contains work under NDA. If you have the password, enter it below.</p>
+    <div class="pw-row">
+      <input id="pw-input" type="password" placeholder="Password" autocomplete="current-password">
+      <button onclick="checkPw()">Enter</button>
+    </div>
+    <span id="pw-error">Incorrect password. Try again.</span>
+  </div>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-brand" href="index.html">
+    <img src="uploads/idp/5ee40e8ef9190bccf842103b540fe49b.png" alt="Mehak Garg">
+    <span>Mehak Garg</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#work" class="active">WORK</a>
+    <a href="index.html#about">ABOUT</a>
+    <a href="index.html#writing">WRITING</a>
+    <a href="index.html#contact">SAY HI ↗</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="s-open">
+  <div class="hero-left">
+    <span class="hero-eyebrow">01 / 07 · IDENTITY PLATFORM · NDA <span class="hero-dot"></span></span>
+    <h1 class="hero-h1">Building the <em>decision layer</em> of an enterprise identity platform</h1>
+    <span class="hero-nda">Confidential work. Some details changed or left out. Opinions mine.</span>
+  </div>
+  <div class="hero-right">
+    <p class="hero-p">Every identity platform answers the same four questions. Who are you. What can you do. Is it really you. Can we prove it happened.</p>
+    <p class="hero-p">The product had a surface for each. Built separately, years apart, by different teams, each one correct on its own and none of them aware the others existed. I spent a year on this product, and the thing I got most wrong was how long it took me to see that.</p>
+    <dl class="hero-dl">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <dt class="hero-dt">ROLE</dt>
+        <dd class="hero-dd">Strategic design partner, embedded with the Head of Architecture and Product Owners</dd>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <dt class="hero-dt">PRODUCT</dt>
+        <dd class="hero-dd">Enterprise identity provider (IdP)</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ── STATS + GREEN ── -->
+<section style="position:relative;margin:0 80px;border-bottom:1px solid var(--line)">
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-num">12</span>
+      <span class="stat-label">internal teams interviewed before designing onboarding</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">8–10</span>
+      <span class="stat-label">decisions reversed before they reached build</span>
+    </div>
+    <div class="stat" style="border-right:none">
+      <span class="stat-num">1 quarter</span>
+      <span class="stat-label">of engineering work unblocked</span>
+    </div>
+  </div>
+  <div class="g-section">
+    <img class="g-hero-img reveal" src="uploads/idp/0a906801c99646d8b4c236db0e5453e7.jpg" alt="The identity platform's admin dashboard with the Customize widget panel open, product name blurred">
+    <div class="g-cards">
+      <span class="g-caption">four questions, four screens, zero conversation between them ↓</span>
+      <div class="g-grid">
+        <div class="g-card" style="transform:rotate(-2deg)">
+          <span class="g-card-q">Q1</span>
+          <span class="g-card-h">Who are you?</span>
+          <span class="g-card-rule"></span>
+          <span class="g-card-sub">a separate screen, built separately</span>
+        </div>
+        <div class="g-card" style="transform:rotate(1.5deg)">
+          <span class="g-card-q">Q2</span>
+          <span class="g-card-h">What can you do?</span>
+          <span class="g-card-rule"></span>
+          <span class="g-card-sub">a separate screen, built separately</span>
+        </div>
+        <div class="g-card" style="transform:rotate(-1deg)">
+          <span class="g-card-q">Q3</span>
+          <span class="g-card-h">Is it really you?</span>
+          <span class="g-card-rule"></span>
+          <span class="g-card-sub">a separate screen, built separately</span>
+        </div>
+        <div class="g-card" style="transform:rotate(2deg)">
+          <span class="g-card-q">Q4</span>
+          <span class="g-card-h">Can we prove it?</span>
+          <span class="g-card-rule"></span>
+          <span class="g-card-sub">a separate screen, built separately</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW TO READ ── -->
+<section class="htr">
+  <div class="htr-label">HOW TO READ THIS</div>
+  <div class="htr-cell">
+    <span class="htr-num">60 sec</span>
+    <span class="htr-sub">read only the <span class="htr-mark">green lines</span></span>
+  </div>
+  <div class="htr-cell">
+    <span class="htr-num">6 min</span>
+    <span class="htr-sub">the whole story</span>
+  </div>
+  <div class="htr-pills">
+    <a href="#s-open">01 Opening</a>
+    <a href="#s-review">02 The review</a>
+    <a href="#s-fix">03 The fix</a>
+    <a href="#s-research">04 The research</a>
+    <a href="#s-denominator">05 The denominator</a>
+    <a href="#s-pattern">06 The pattern</a>
+    <a href="#s-close">07 Close</a>
+  </div>
+</section>
+
+<!-- ── BODY ── -->
+<div class="body-grid">
+  <!-- sidebar -->
+  <aside class="sidebar">
+    <span class="sidebar-you">YOU ARE HERE</span>
+    <a href="#s-open" class="sidebar-link"><span>01</span>Opening</a>
+    <a href="#s-review" class="sidebar-link active"><span>02</span>The review</a>
+    <a href="#s-fix" class="sidebar-link"><span>03</span>The fix</a>
+    <a href="#s-research" class="sidebar-link"><span>04</span>The research</a>
+    <a href="#s-denominator" class="sidebar-link"><span>05</span>The denominator</a>
+    <a href="#s-pattern" class="sidebar-link"><span>06</span>The pattern</a>
+    <a href="#s-close" class="sidebar-link"><span>07</span>Close</a>
+    <div class="sidebar-progress"><span class="sidebar-bar"></span></div>
+    <span class="sidebar-time">~7 MIN LEFT</span>
+  </aside>
+
+  <main>
+
+    <!-- 02 THE REVIEW -->
+    <article id="s-review" class="reveal">
+      <div style="display:flex;align-items:baseline;gap:18px">
+        <span class="art-eyebrow">02 / 07</span>
+        <h2 class="art-h">The architecture was signed off before I got there.</h2>
+      </div>
+      <p class="art-p">The model was clean. Every group gets a policy, every policy belongs to a group. It had been through review and nobody had a problem with it.</p>
+      <p class="art-p">It took me about a week to find the hole, and once I saw it I couldn't unsee it. <span class="hl">Put someone in two groups and the system has two valid answers and no rule for choosing.</span> Engineering says authenticator app. Contractors says hardware key. Both correct, both active, no precedence. The admin gets a lockout they can't explain and a user whose manager is now asking questions.</p>
+      <blockquote class="bq">It survived review because it's flawless for anyone in one group. Which is most people, most of the time, in most demos.</blockquote>
+      <p class="art-p">I wrote up exactly how it fails, modelled an alternative, and took it to the Head of Architecture and the product owners. That's not a comfortable meeting. You're telling a room that something they already approved is wrong, and all you have is a worked example.</p>
+      <p class="art-p">It got changed before anyone built on it.</p>
+      <a href="#s-fix" class="art-next">But the reversal isn't the interesting part. What the fix turned out to be is. <span aria-hidden="true">↓</span></a>
+    </article>
+
+    <!-- 03 THE FIX -->
+    <article id="s-fix" class="reveal">
+      <div style="display:flex;align-items:baseline;gap:18px">
+        <span class="art-eyebrow">03 / 07</span>
+        <h2 class="art-h">My first instinct was a better error message.</h2>
+      </div>
+      <p class="art-p">Show both policies, let the admin choose. Which is solving it at the wrong end. By the time there's a conflict, someone is already locked out and someone else is already on the phone.</p>
+      <p class="art-p">So scope moved to the front. You pick groups before you can write a condition at all: <span class="code">"Select the group(s) this rule targets. The conditions below only evaluate users in these groups."</span> You can't build a rule that collides with another one, because the system knows who you've scoped to before you've written anything.</p>
+      <p class="art-p"><span class="hl">Everything else in the builder follows from that one move.</span></p>
+
+      <!-- FIG 1 -->
+      <figure class="fig">
+        <div class="fig-wrap">
+          <div class="ann">
+            <img class="fig-img" src="uploads/idp/e98e8d978ba2d95137f067d94493ee00.jpg" alt="The policy builder: a Flow column of ordered rules with No match arrows and a locked default rule, a rule asking which groups it applies to before any conditions, a live count of matching users, and a rail of reusable zones, device posture profiles and method sets">
+            <span class="ann-box" style="left:25.78%;top:24.88%;width:32.81%;height:7.81%"><span class="ann-badge">1</span></span>
+            <span class="ann-box" style="left:79.58%;top:16.47%;width:16.51%;height:68.51%"><span class="ann-badge">2</span></span>
+            <span class="ann-box" style="left:3.54%;top:21.88%;width:19.38%;height:77.88%"><span class="ann-badge">3</span></span>
+            <span class="ann-box" style="left:3.65%;top:10.82%;width:19.79%;height:3.85%"><span class="ann-badge">4</span></span>
+          </div>
+        </div>
+        <figcaption class="fig-cap">FIG. 1 — THE POLICY BUILDER · 1 SCOPE FIRST · 2 OBJECTS · 3 ORDER · 4 BLAST RADIUS</figcaption>
+      </figure>
+
+      <div class="dc">
+        <div class="dc-head">
+          <span class="dc-num">2</span>
+          <span class="dc-tag">DECISION</span>
+          <span class="dc-title">Conditions became objects, not text you type</span>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <span class="dc-kicker-what">WHAT I DID</span>
+            <span class="dc-text">Zones, Device Posture profiles and Method Sets each got their own page and their own object, dragged into rules from a rail. "Office Network" is one object holding six IP ranges. Change it once and every rule using it changes.</span>
+          </div>
+          <div class="dc-cost">
+            <span class="dc-kicker-cost">WHAT IT COST</span>
+            <span class="dc-text">Indirection. Read a rule and you see "Office Network," not the six ranges. There's a Change link to open it up. I traded reading-at-a-glance for not maintaining the same list in twelve places.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dc">
+        <div class="dc-head">
+          <span class="dc-num">3</span>
+          <span class="dc-tag">DECISION</span>
+          <span class="dc-title">Evaluation order goes on the canvas</span>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <span class="dc-kicker-what">WHAT I DID</span>
+            <span class="dc-text"><span class="code">"Top to bottom. First match wins,"</span> printed on the panel, with <span class="code">"No match ↓"</span> between every rule and a locked default at the bottom so there is always a terminal case.</span>
+          </div>
+          <div class="dc-cost">
+            <span class="dc-kicker-cost">WHAT IT COST</span>
+            <span class="dc-text">The order is now something admins can get wrong by dragging. Visible beats hidden, but visible also means editable.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dc">
+        <div class="dc-head">
+          <span class="dc-num">4</span>
+          <span class="dc-tag">DECISION</span>
+          <span class="dc-title">You see the blast radius while you build</span>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <span class="dc-kicker-what">WHAT I DID</span>
+            <span class="dc-text"><span class="code">"~120 users match current rules across 1 app"</span> in the header, <span class="code">"~108 users match"</span> beside the conditions, both updating live.</span>
+          </div>
+          <div class="dc-cost">
+            <span class="dc-kicker-cost">WHAT IT COST</span>
+            <span class="dc-text">Every count is an estimate, and an estimate presented confidently will eventually be wrong in a way someone notices.</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="#s-research" class="art-next">I thought that was the lesson. Catch the structural problem early, fix it at the root, move on. <span aria-hidden="true">↓</span></a>
+    </article>
+
+    <!-- 04 THE RESEARCH -->
+    <article id="s-research" class="reveal">
+      <div style="display:flex;align-items:baseline;gap:18px">
+        <span class="art-eyebrow">04 / 07</span>
+        <h2 class="art-h">I ran the research myself. Then I ignored a quarter of it.</h2>
+      </div>
+      <p class="art-p">Onboarding had no design owner and no research behind it, so I did it. Twelve teams inside the IdP org: support, engineering, customer success, sales engineering, each seeing a different slice of where new admins got stuck.</p>
+      <p class="art-p">Four things came up with everyone. No mental model of how the pieces connect. Setup order arbitrary, with some routes leaving the product half-working. MFA skipped because it felt unrelated to everything they'd just done. And no definition of finished.</p>
+      <p class="art-big"><span class="hl">Then I designed a questionnaire with fourteen questions in it.</span></p>
+      <p class="art-p">The reasoning felt airtight. Learn enough up front, company size, directory type, compliance posture, what they're migrating from, and I can tailor the whole path. More questions, better fit.</p>
+      <p class="art-p">People abandoned it. Not because the questions were bad. Because you'd answer fourteen things and still not have set anything up. It was a form standing between the admin and the product.</p>
+      <p class="art-p">So I cut it to eight. Better, still wrong. Five. Drop-off mostly stopped, and now the tailoring was thin enough that I had to ask what the form was still doing there.</p>
+      <blockquote class="bq">Three rounds in, I finally read my own research properly.</blockquote>
+      <a href="#s-denominator" class="art-next" style="font-size:15px">Next ↓</a>
+    </article>
+
+    <!-- 05 THE DENOMINATOR -->
+    <article id="s-denominator" class="reveal">
+      <div style="display:flex;align-items:baseline;gap:18px">
+        <span class="art-eyebrow">05 / 07</span>
+        <h2 class="art-h">It was never a data problem.</h2>
+      </div>
+      <p class="art-p">I'd been solving data collection. It was sequencing. Twelve teams told me admins didn't know what order to do things in, and my answer was to add a step before the order even began.</p>
+      <p class="art-p">The fourth finding was the one I kept skimming. No definition of finished. That isn't something you fix with better tailoring. <span class="hl">It's something you fix with a number.</span></p>
+      <p class="art-p">The questions didn't need to branch the product. They needed to name a goal so the product could show a finite list.</p>
+
+      <div class="dc">
+        <div class="dc-head">
+          <span class="dc-tag">DECISION</span>
+          <span class="dc-title">Three questions, and what they produce is a denominator</span>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <span class="dc-kicker-what">WHAT I DID</span>
+            <span class="dc-text"><span class="code">"To Do for Use-Case: Adaptive Multi-Factor Authentication · 2 of 7."</span> Seven is what done means. Two is where you are. Customize sits directly underneath, so a wrong answer at the start is something you change rather than something you restart.</span>
+          </div>
+          <div class="dc-cost">
+            <span class="dc-kicker-cost">WHAT IT COST</span>
+            <span class="dc-text">An admin who'd rather explore is now looking at a recommended path they didn't ask for. And the list is only as good as the use case they picked, so a wrong answer stays wrong until someone finds Customize.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FIG 2 -->
+      <figure class="fig">
+        <div class="fig-wrap">
+          <div class="ann">
+            <img class="fig-img" src="uploads/idp/91b478499d4cb2b71515141de89ab64c.jpg" alt="Getting Started checklist: To Do for Use-Case Adaptive Multi Factor Authentication, 2 of 7, with a Customize link under the title">
+            <span class="ann-box" style="left:89.55%;top:28.41%;width:8.91%;height:11.95%"></span>
+            <span class="ann-box" style="left:2.55%;top:34.39%;width:8.91%;height:3.90%"></span>
+          </div>
+        </div>
+        <figcaption class="fig-cap">FIG. 2 — SEVEN IS WHAT DONE MEANS. CUSTOMIZE SITS RIGHT UNDER IT.</figcaption>
+      </figure>
+
+      <p class="art-p">Three calls came out of the same reframe.</p>
+
+      <div class="num-list">
+        <div class="num-row">
+          <span class="num">01</span>
+          <p class="art-p">The first screen asks who you are, not what you want: <span class="code">"I use Plugins like Wordpress, Drupal"</span> against <span class="code">"I am here to explore Identity &amp; Access Management features."</span> Those two people need different products, and once you know which, nothing downstream has to hedge.</p>
+        </div>
+      </div>
+
+      <!-- FIG 3 -->
+      <figure class="fig">
+        <div class="fig-wrap">
+          <div style="max-width:620px;margin:0 auto">
+            <img class="fig-img" src="uploads/idp/afc6c3923c80845e646246f81bd32e55.jpg" alt="First screen: two cards, I use Plugins like Wordpress Drupal and I am here to explore Identity and Access Management features">
+          </div>
+        </div>
+        <figcaption class="fig-cap">FIG. 3 — WHO YOU ARE, NOT WHAT YOU WANT</figcaption>
+      </figure>
+
+      <div class="num-list">
+        <div class="num-row">
+          <span class="num">02</span>
+          <p class="art-p"><span class="code">"Not sure, need help!"</span> is a real option in the use-case list, and <span class="code">"Not sure, want to start fresh"</span> in the directory step. The research said admins had no mental model. That belongs in the UI, not a help doc.</p>
+        </div>
+      </div>
+
+      <!-- FIG 4 -->
+      <figure class="fig">
+        <div class="fig-wrap">
+          <div style="display:grid;grid-template-columns:5fr 9fr;gap:20px;align-items:start">
+            <div class="ann">
+              <img class="fig-img" src="uploads/idp/77c6b6b96b0cd49592f1239145fc4667.jpg" alt="Use-case list ending in Not sure, need help!">
+              <span class="ann-box" style="left:8.63%;top:85.22%;width:52.88%;height:12.17%"></span>
+            </div>
+            <div class="ann">
+              <img class="fig-img" src="uploads/idp/86c97d5af6210efa4e6df684f3903752.jpg" alt="Directory step: where are your users stored, with Not sure, want to start fresh as an option">
+              <span class="ann-box" style="left:50.89%;top:82.75%;width:47.86%;height:14.51%"></span>
+            </div>
+          </div>
+        </div>
+        <figcaption class="fig-cap">FIG. 4 — "NOT SURE" IS A REAL ANSWER, TWICE</figcaption>
+      </figure>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:48px;max-width:956px;align-items:start">
+        <div class="num-row">
+          <span class="num">03</span>
+          <p class="art-p">Help is ranked by what it costs us: Documentation, then Video, then Request a Demo.</p>
+        </div>
+        <!-- FIG help panel -->
+        <div style="border:1px solid var(--ink);border-radius:14px;background:var(--green-light);padding:20px 20px 20px 28px">
+          <div class="ann" style="position:relative">
+            <img class="fig-img" src="uploads/idp/23b632afab889b479d700881a72f0330.jpg" alt="Help panel with Documentation first, then Video, then Request a Demo">
+            <span class="ann-badge" style="position:absolute;left:-15px;top:19%">1</span>
+            <span class="ann-badge" style="position:absolute;left:-15px;top:49.5%">2</span>
+            <span class="ann-badge" style="position:absolute;left:-15px;top:78.5%">3</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="#s-pattern" class="art-next">I'd made the same mistake the architecture review made. Designed for the clean case, from the inside, without checking what the user was actually asking. <span aria-hidden="true">↓</span></a>
+    </article>
+
+    <!-- 06 THE PATTERN -->
+    <article id="s-pattern" class="reveal">
+      <div style="display:flex;align-items:baseline;gap:18px">
+        <span class="art-eyebrow">06 / 07</span>
+        <h2 class="art-h">By the third area I knew what I was looking for.</h2>
+      </div>
+      <p class="art-big">Not "what's wrong with this screen." <span class="hl">What question is this screen failing to answer.</span></p>
+
+      <h3 class="art-h3">Authentication methods looked like an ordering problem.</h3>
+      <p class="art-p">Fifteen methods in a flat list, sorted by when they were built, a hardware key sitting next to an SMS code as though they were equivalent choices. They aren't, and the page was silent on the only distinction that matters.</p>
+      <p class="art-p">So the tiers don't describe what a method does. They describe what it survives. <span class="code">"Cryptographically bound credentials. Cannot be replayed or intercepted,"</span> against <span class="code">"One-time codes and push notifications. Effective but susceptible to phishing."</span> We tell admins the weakness of methods we're selling them.</p>
+
+      <!-- FIG 5 -->
+      <figure class="fig">
+        <div class="fig-wrap">
+          <div class="ann">
+            <img class="fig-img" src="uploads/idp/4cc03b623b3d906744b117d0a044b730.png" alt="Methods page: Phishing-Resistant tier above Standard MFA, each with a description of what it survives">
+            <span class="ann-box" style="left:0.43%;top:8.90%;width:60%;height:8.38%"></span>
+            <span class="ann-box" style="left:0.43%;top:89.53%;width:63.48%;height:8.90%"></span>
+          </div>
+        </div>
+        <figcaption class="fig-cap">FIG. 5 — THE TIER SAYS WHAT A METHOD SURVIVES</figcaption>
+      </figure>
+
+      <p class="art-p">WebAuthn ended up as two cards rather than one: technically one protocol, split by whether the user has to carry something. That's the only difference anyone will ever notice.</p>
+      <p class="art-p">And enabled and used are separate facts on the page. SMS reads <span class="code">"512 enrolled · 0 policy rules."</span> It's on, people registered it, nothing references it.</p>
+
+      <!-- FIG 6 -->
+      <figure class="fig">
+        <div class="fig-wrap">
+          <div style="max-width:540px;margin:0 auto">
+            <div class="ann">
+              <img class="fig-img" src="uploads/idp/10688374ece0862ff1c37c8f6c952585.png" alt="Method drawer: 1203 enrolled, 2 policy rules, last used 1 day ago, with the two rules named">
+              <span class="ann-box" style="left:2.29%;top:37.62%;width:95.22%;height:60.40%"></span>
+            </div>
+          </div>
+        </div>
+        <figcaption class="fig-cap">FIG. 6 — ENROLLED AND REFERENCED, COUNTED SEPARATELY</figcaption>
+      </figure>
+
+      <div class="cost-note">
+        <span class="dc-kicker-cost">WHAT IT COST</span>
+        <span class="dc-text">Methods between tiers had to land somewhere and some admins will disagree. The tier is also a judgment that ages. What's phishing-resistant now may not be in three years, and this makes reclassification a visible event instead of a quiet one.</span>
+      </div>
+
+      <h3 class="art-h3">Devices looked like a scoring problem, until I noticed we were pretending to have data we didn't.</h3>
+      <p class="art-p">A Chromebook with no agent and a Linux server failing every posture check were both going to show up as a number. So no-signal shows a dash and failure shows 0% in red.</p>
+
+      <!-- FIG 7 -->
+      <figure class="fig">
+        <div class="fig-wrap">
+          <div class="ann">
+            <img class="fig-img" src="uploads/idp/b76e3c8032479c1181cd3ead54be2615.png" alt="Device list: a browser-only Chrome device shows a dash for trust, an Ubuntu server shows 0% in red">
+            <span class="ann-box" style="left:80.33%;top:37.96%;width:11.67%;height:8.76%"></span>
+            <span class="ann-box" style="left:80.33%;top:51.09%;width:11.67%;height:9.12%"></span>
+          </div>
+        </div>
+        <figcaption class="fig-cap">FIG. 7 — NO SIGNAL IS A DASH. FAILURE IS 0%.</figcaption>
+      </figure>
+
+      <div class="cost-note">
+        <span class="dc-kicker-cost">WHAT IT COST</span>
+        <span class="dc-text">Admins have to learn what a dash means. I made the common case slightly harder to stop a dangerous one: reading unmonitored devices as compliant.</span>
+      </div>
+
+      <p class="art-p">The other thing devices needed was memory. Not a log of what happened, which already existed, but a record of what was true. Expand any login and the inputs are frozen at decision time: profile match 7 of 7, posture healthy, location allowed, network trusted, no attribute changes from the previous trusted profile.</p>
+
+      <!-- FIG 8 -->
+      <figure class="fig">
+        <div class="fig-wrap">
+          <div class="ann">
+            <img class="fig-img" src="uploads/idp/aede99ecf2d9615a1e45fa21e80338d8.png" alt="Device audit: login permitted, posture check 7/7 attributes match, configuration changed, each row expandable">
+            <span class="ann-box" style="left:0.18%;top:8.83%;width:99.65%;height:18.04%"></span>
+          </div>
+        </div>
+        <figcaption class="fig-cap">FIG. 8 — WHAT WAS TRUE, KEPT PER DECISION</figcaption>
+      </figure>
+
+      <blockquote class="bq">That line closes the loop back to page three. Four months later an auditor asks why this person had access in June, and the system answers with reasoning instead of an outcome.</blockquote>
+      <a href="#s-close" class="art-next" style="font-size:15px">Next ↓</a>
+    </article>
+
+    <!-- 07 CLOSE -->
+    <article id="s-close" class="reveal">
+      <div style="display:flex;align-items:baseline;gap:18px">
+        <span class="art-eyebrow">07 / 07</span>
+        <h2 class="art-h">Four questions, one system.</h2>
+      </div>
+      <p class="art-p">Three of these came from the same place. <span class="hl">The approved policy model, my fourteen-question form, the flat method list: each designed correctly for the case in front of it, by someone who hadn't checked what question the thing was actually being asked.</span></p>
+      <p class="art-p">Eight to ten decisions got overturned on this project. None because I was senior. Every one because someone showed a failure case clearly enough that the better option became obvious, and in one case the someone was me, showing it to myself, three iterations late.</p>
+
+      <div class="close-grid">
+        <div class="close-card">
+          <span class="close-num">01</span>
+          <span class="close-h">Architecture is a design problem.</span>
+          <span class="close-p">By the time you're drawing the policy builder, the decision that determines whether it can work was made somewhere else, weeks earlier. The work that mattered most here was written documents and dependency maps.</span>
+        </div>
+        <div class="close-card">
+          <span class="close-num">02</span>
+          <span class="close-h">Approved doesn't mean right.</span>
+          <span class="close-p">Raising a flawed decision late is expensive. Raising it with a worked alternative and a clear failure case is just the job.</span>
+        </div>
+        <div class="close-card">
+          <span class="close-num">03</span>
+          <span class="close-h">Research can be right while you're reading it wrong.</span>
+          <span class="close-p">Twelve teams told me admins didn't know when they were done. I answered with a form three times before I understood they needed a number.</span>
+        </div>
+        <div class="close-card green">
+          <span class="close-num green">04</span>
+          <span class="close-h">What I'd change.</span>
+          <span class="close-p">Map the dependencies in week one, not week five. And start the questionnaire at three questions and add upward, rather than starting at fourteen and cutting down.</span>
+        </div>
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<!-- ── ENDING ── -->
+<section class="ending">
+  <a href="index.html" class="end-cell end-home">‹&nbsp;&nbsp;RETURN TO HOMEPAGE</a>
+  <a href="case-pam.html" class="end-cell end-next">
+    <span class="end-thumb"><img src="uploads/idp/12ed737607325e346cf64c9ca6c363bb.jpg" alt="The redesigned privileged access dashboard"></span>
+    <span class="end-meta">
+      <span class="end-title">From stalling at POC to $800K</span>
+      <span class="end-tag">NEXT · NDA</span>
+    </span>
+  </a>
+  <a href="index.html#work" class="end-cell end-related">
+    <svg width="300" height="110" viewBox="0 0 300 110" fill="none" aria-hidden="true" style="position:absolute;left:50%;top:50%;margin:-55px 0 0 -150px"><path d="M30 60 C 20 20, 150 8, 250 22 C 300 30, 296 82, 230 92 C 150 104, 40 98, 22 70 C 12 52, 60 30, 120 26" stroke="#141414" stroke-width="2.2" stroke-linecap="round" opacity=".75"/></svg>
+    <span class="end-related-label">SEE ALL WORK&nbsp;&nbsp;›</span>
+    <span class="end-related-hand">back to the index</span>
+  </a>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer id="contact">
+  <div class="footer-card">
+    <span aria-hidden="true" class="footer-card-bg"></span>
+    <span aria-hidden="true" class="footer-card-main"></span>
+    <div class="footer-card-inner">
+      <span aria-hidden="true" class="footer-card-tape"></span>
+      <span class="footer-name">mehak's</span>
+      <span class="footer-name">work</span>
+      <svg width="240" height="34" viewBox="0 0 240 34" fill="none" aria-hidden="true"><path d="M6 20 q 14 -14 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0" stroke="#E2557F" stroke-width="2" stroke-linecap="round"/><circle cx="226" cy="10" r="5" stroke="#141414" stroke-width="1.5"/></svg>
+    </div>
+    <span aria-hidden="true" class="footer-card-bottom"></span>
+  </div>
+  <nav class="footer-nav">
+    <a href="index.html#work">Work</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#writing">Writing</a>
+    <span style="height:24px"></span>
+    <a href="https://www.linkedin.com/in/mehakrajeshgarg/">LinkedIn</a>
+    <a href="https://www.behance.net/mehakgarg5">Behance</a>
+    <a href="mailto:mehakrgarg@gmail.com" style="font-style:italic">Say hi &lt;3</a>
+  </nav>
+</footer>
+
+<script>
+(function(){
+  if(sessionStorage.getItem('idp_auth')==='1'){
+    document.getElementById('pw-gate').style.display='none';
+  }
+  document.getElementById('pw-input').addEventListener('keydown',function(e){
+    if(e.key==='Enter') checkPw();
+  });
+})();
+
+function checkPw(){
+  var v=document.getElementById('pw-input').value;
+  var err=document.getElementById('pw-error');
+  if(v==='mehak123'){
+    sessionStorage.setItem('idp_auth','1');
+    document.getElementById('pw-gate').style.display='none';
+  } else {
+    err.textContent='Incorrect password. Try again.';
+    err.style.opacity='1';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+    setTimeout(function(){err.style.opacity='0';},2500);
+  }
+}
+
+// sidebar scroll highlight
+(function(){
+  var sections=['s-open','s-review','s-fix','s-research','s-denominator','s-pattern','s-close'];
+  var links=document.querySelectorAll('.sidebar-link');
+  function update(){
+    var cur='s-open';
+    sections.forEach(function(id){
+      var el=document.getElementById(id);
+      if(el&&el.getBoundingClientRect().top<120) cur=id;
+    });
+    links.forEach(function(l){
+      var href=l.getAttribute('href').replace('#','');
+      l.classList.toggle('active',href===cur);
+    });
+  }
+  window.addEventListener('scroll',update,{passive:true});
+})();
+
+// reveal on scroll
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting) e.target.classList.add('in');
+    });
+  },{threshold:0.08});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
+</body>
+</html>
