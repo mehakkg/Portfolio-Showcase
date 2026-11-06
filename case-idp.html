@@ -22,16 +22,14 @@ h1,h2,h3,h4,h5,h6,p,blockquote,dl,figure{margin:0}
 img{display:block;max-width:100%}
 
 /* ── password gate ── */
-#pw-gate{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
-.pw-box{width:min(440px,90vw);display:flex;flex-direction:column;gap:24px;padding:48px;border:1px solid var(--ink);border-radius:16px}
-.pw-box h2{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(24px,4vw,36px);line-height:1.1}
-.pw-box p{font-size:15px;line-height:1.6;color:var(--sub)}
-.pw-row{display:flex;gap:10px}
-.pw-row input{flex:1;padding:12px 16px;border:1.5px solid var(--ink);border-radius:8px;font-size:15px;font-family:var(--sans);outline:none}
-.pw-row input:focus{border-color:var(--pink-deep)}
-.pw-row button{padding:12px 20px;background:var(--pink-deep);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans)}
-.pw-row button:hover{background:var(--rose)}
-#pw-error{font-size:13px;color:#c0392b;opacity:0;transition:opacity .3s}
+#pw-gate{position:fixed;inset:0;z-index:9999;background:#0A0A0A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:24px}
+#pw-gate h2{margin:0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(28px,4vw,52px);color:#fff;text-align:center;line-height:1.1}
+#pw-gate p{margin:0;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:#9A958C;text-align:center}
+#pw-gate input{width:min(280px,90vw);padding:14px 20px;border:1.5px solid #444;border-radius:999px;background:#1A1A1A;color:#fff;font-family:var(--sans);font-size:16px;text-align:center;outline:none}
+#pw-gate input:focus{border-color:var(--green)}
+#pw-gate button{padding:14px 32px;border-radius:999px;background:var(--pink-deep);color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;font-family:var(--sans)}
+#pw-gate button:hover{background:var(--rose)}
+#pw-error{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#E2557F;opacity:0;transition:opacity .3s;min-height:16px}
 
 /* ── nav ── */
 nav{position:relative;display:flex;justify-content:space-between;align-items:center;height:72px;padding:0 80px;border-bottom:1px solid var(--line)}
@@ -187,25 +185,39 @@ footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;dis
 /* ── responsive ── */
 @media(max-width:900px){
   nav{padding:0 20px}
+  .nav-brand{padding-left:0}
   .nav-links a{padding:0 14px}
-  .hero,.stats-wrap,.htr,.body-grid,.ending{margin:0 20px}
+  .hero,.stats,.htr,.body-grid,.ending{margin:0 20px}
   .hero{grid-template-columns:1fr}
   .hero-left{border-right:none;border-bottom:1px solid var(--line);padding:40px 24px}
   .hero-right{padding:32px 24px}
+  .hero-dl{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:none}
+  .htr{grid-template-columns:1fr;overflow:hidden}
+  .htr-label{border-right:none;border-bottom:1px solid var(--line)}
+  .htr-cell{border-right:none;border-bottom:1px solid var(--line)}
   .body-grid{grid-template-columns:1fr}
   .sidebar{display:none}
-  article{padding:48px 0 60px 0}
+  main{border-left:none}
+  article{padding:48px 24px 60px}
   .dc-body{grid-template-columns:1fr}
   .dc-what{border-right:none;border-bottom:1px solid var(--line)}
   .close-grid{grid-template-columns:1fr}
-  footer{padding:48px 24px 40px;grid-template-columns:1fr}
-  .footer-card{display:none}
   .g-grid{grid-template-columns:1fr 1fr}
   .ending{grid-template-columns:1fr;height:auto}
-  .end-home{height:60px;border-right:none;border-bottom:1px solid var(--line)}
+  .end-home{min-height:60px;border-right:none;border-bottom:1px solid var(--line)}
   .end-next{border-right:none;border-bottom:1px solid var(--line)}
   .g-section{padding:32px 24px}
   .g-hero-img{width:100%}
+  footer{padding:48px 24px 40px;grid-template-columns:1fr}
+  .footer-card{display:none}
+  .footer-nav{align-items:flex-start;font-size:40px}
+}
+@media(max-width:480px){
+  .nav-links a{padding:0 10px;font-size:10px}
+  .g-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -213,15 +225,11 @@ footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;dis
 
 <!-- ── PASSWORD GATE ── -->
 <div id="pw-gate">
-  <div class="pw-box">
-    <h2>This project is password protected</h2>
-    <p>It contains work under NDA. If you have the password, enter it below.</p>
-    <div class="pw-row">
-      <input id="pw-input" type="password" placeholder="Password" autocomplete="current-password">
-      <button onclick="checkPw()">Enter</button>
-    </div>
-    <span id="pw-error">Incorrect password. Try again.</span>
-  </div>
+  <h2>This case study is password&nbsp;protected.</h2>
+  <p>ENTER PASSWORD TO CONTINUE</p>
+  <input id="pw-input" type="password" placeholder="••••••••" autocomplete="off">
+  <button onclick="checkPw()">Unlock →</button>
+  <span id="pw-error"></span>
 </div>
 
 <!-- ── NAV ── -->

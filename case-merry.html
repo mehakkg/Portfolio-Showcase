@@ -227,6 +227,8 @@ footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;dis
 /* ── responsive ── */
 @media(max-width:900px){
   .cs-nav{padding:0 20px}
+  .cs-nav-crumb{display:none}
+  .cs-nav-links{display:none}
   .hero,.stats,.meta-row,.htr,.body-grid,.ending{margin:0 20px}
   .hero{grid-template-columns:1fr}
   .hero-left{border-right:none;border-bottom:1px solid var(--line);padding:40px 20px}
@@ -234,18 +236,34 @@ footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;dis
   .meta-row{grid-template-columns:1fr 1fr}
   .meta-cell:nth-child(2){border-right:none}
   .meta-cell:nth-child(3){border-top:1px solid var(--line)}
+  .meta-cell:nth-child(4){border-right:none}
   .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:none}
   .body-grid{grid-template-columns:1fr}
   .sidebar{display:none}
   main{border-left:none}
-  article{padding:44px 0 56px 0}
-  .dc-body,.flow-compare,.fig-row,.fig-row-2,.phase-grid,.close-grid,.kpi-grid{grid-template-columns:1fr}
+  article{padding:44px 20px 56px}
+  .dc-body,.flow-compare,.fig-row,.fig-row-2,.phase-grid,.kpi-grid{grid-template-columns:1fr}
+  .close-grid{grid-template-columns:1fr !important}
   .dc-what{border-right:none;border-bottom:1px solid var(--line)}
-  .audit-table{overflow-x:auto}
+  .audit-table{overflow-x:auto;max-width:calc(100vw - 40px)}
+  .audit-head,.audit-row{min-width:580px}
   .ending{grid-template-columns:1fr;height:auto}
+  .end-home{min-height:60px;border-right:none;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+  .end-next{border-right:none;border-bottom:1px solid var(--line);padding:28px 20px}
+  .end-related{min-height:120px}
+  .htr{margin:0 20px}
   footer{padding:48px 24px 40px;grid-template-columns:1fr}
   .footer-card{display:none}
   .footer-nav{align-items:flex-start;font-size:40px}
+}
+@media(max-width:480px){
+  .meta-row{grid-template-columns:1fr}
+  .meta-cell:nth-child(2),.meta-cell:nth-child(4){border-right:none}
+  .meta-cell:nth-child(2),.meta-cell:nth-child(3),.meta-cell:nth-child(4){border-top:1px solid var(--line)}
+  .stats{grid-template-columns:1fr}
+  .stat{border-right:none}
+  .hero-h1{font-size:36px}
 }
 @media(prefers-reduced-motion:reduce){
   .reveal{transition:none}

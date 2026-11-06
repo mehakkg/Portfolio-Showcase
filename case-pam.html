@@ -288,9 +288,13 @@ blockquote.cs-quote{margin:0;padding-left:24px;border-left:3px solid var(--blue)
 }
 @media(max-width:700px){
   :root{--rail:20px}
-  .cs-nav-right a{padding:0 12px}
+  .cs-nav-crumb{display:none}
+  .cs-nav-right a{padding:0 10px}
   .cs-stats-row{grid-template-columns:1fr}
   .cs-stat-cell{border-right:none}
+  .cs-footer__folder{display:none}
+  .cs-5-7-grid{grid-template-columns:1fr !important}
+  .cs-terms__hd,.cs-term{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -547,7 +551,7 @@ function checkPw(){
         <h3>Navigation by intent</h3>
         <span class="cs-section-hd__fix">FIXES RC1</span>
       </div>
-      <div style="display:grid;grid-template-columns:5fr 7fr;gap:40px;max-width:980px;align-items:center">
+      <div class="cs-5-7-grid" style="display:grid;grid-template-columns:5fr 7fr;gap:40px;max-width:980px;align-items:center">
         <div style="display:flex;flex-direction:column;gap:20px">
           <p class="cs-body-text">The old navigation was organised by database object: System Users, Groups, Certificates, Policies. The new one is organised by what the admin is trying to do. Break glass now lives under Security Ops, and an admin can find it on day one without the docs.</p>
           <div class="cs-band">
