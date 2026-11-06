@@ -1,890 +1,1041 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Merry Health: Healthcare Coordination | Mehak Garg</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,400&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merry Health — Mehak Garg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Caveat:wght@500;600;700&display=swap">
 <style>
-.case-display {
-  font-family: var(--serif);
-  font-size: clamp(30px, 4.5vw, 60px);
-  font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  color: var(--ink);
-  max-width: 22ch;
-  margin-bottom: 32px;
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#FFFFFF;--ink:#141414;--fg:#2B2B2B;--sub:#6E6E6E;--line:#E8E8E8;
+  --orange:#E8865A;--orange-deep:#B4532A;--orange-light:#F6E6DA;--orange-tint:#FDF3EE;--orange-border:#EDD5C5;
+  --pink:#FF9FB2;--pink-deep:#E2557F;--rose:#B2376A;
+  --serif:'Bodoni Moda',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif;
+  --mono:'Space Mono',monospace;--hand:'Caveat',cursive;
+  --t:.25s ease;
 }
-.case-display .em { font-style: italic; color: var(--accent); }
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,h5,h6,p,blockquote,dl,figure{margin:0}
+img{display:block;max-width:100%}
 
-/* Role table */
-.role-table { display: grid; grid-template-columns: 200px 1fr; border-top: 1px solid var(--rule); margin: 48px 0 0; }
-.role-table .rt-key { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; padding: 18px 0; border-bottom: 1px solid var(--rule); }
-.role-table .rt-val { font-family: var(--serif); font-size: 17px; color: var(--ink); padding: 18px 0; border-bottom: 1px solid var(--rule); }
+/* ── nav ── */
+.cs-nav{position:sticky;top:0;z-index:100;background:var(--bg);display:flex;justify-content:space-between;align-items:center;height:72px;padding:0 80px;border-bottom:1px solid var(--line)}
+a.cs-nav-left{display:flex;align-items:center;gap:14px;padding:0;cursor:pointer;text-decoration:none;color:inherit}
+.cs-nav-photo{width:34px;height:34px;border-radius:50%;overflow:hidden;border:1.5px solid var(--ink);flex-shrink:0}
+.cs-nav-photo img{width:100%;height:100%;object-fit:cover}
+.cs-nav-name{font-weight:700;font-size:17px}
+.cs-nav-crumb{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--sub)}
+.cs-nav-links{display:flex;height:72px;font-family:var(--mono);font-size:11px;letter-spacing:.14em}
+.cs-nav-links a{display:flex;align-items:center;padding:0 28px;border-left:1px solid var(--line)}
+.cs-nav-links a:last-child{border-right:1px solid var(--line)}
+.cs-nav-links a:hover{background:var(--orange-tint)}
 
-/* Dispatch UI */
-.dispatch-ui { display: grid; grid-template-columns: 260px 1fr 220px; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; background: var(--paper-2); margin: 48px 0; font-family: var(--mono); }
-.du-panel { padding: 24px 20px; border-right: 1px solid var(--rule); }
-.du-panel:last-child { border-right: none; }
-.du-panel-header { font-size: 10px; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
-.du-incident { background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
-.du-incident.p1 { border-color: #c0392b; background: #fdf2f0; }
-[data-theme="dark"] .du-incident.p1 { background: #2a1210; }
-.du-priority { font-size: 9px; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-.du-priority::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
-.du-incident.p1 .du-priority { color: #c0392b; }
-.du-incident.p1 .du-priority::before { background: #c0392b; }
-.du-patient { font-family: var(--serif); font-size: 18px; color: var(--ink); line-height: 1.2; margin-bottom: 4px; }
-.du-loc { font-size: 11px; color: var(--muted); }
-.du-map { position: relative; overflow: hidden; background-image: repeating-linear-gradient(var(--rule) 0 1px, transparent 1px 32px), repeating-linear-gradient(90deg, var(--rule) 0 1px, transparent 1px 32px); background-size: 32px 32px; background-color: var(--paper-2); min-height: 340px; }
-.du-dot { position: absolute; border-radius: 50%; }
-.du-dot-label { position: absolute; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; background: var(--paper); border: 1px solid var(--rule-2); padding: 4px 8px; border-radius: 4px; white-space: nowrap; color: var(--ink-2); }
-.du-fleet-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--rule); gap: 10px; }
-.du-fleet-row:last-child { border-bottom: none; }
-.du-fleet-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.du-fleet-info { flex: 1; }
-.du-fleet-name { font-family: var(--serif); font-size: 15px; color: var(--ink); }
-.du-fleet-status { font-size: 10px; color: var(--muted); margin-top: 2px; }
-.du-fleet-eta { font-size: 12px; color: var(--muted); }
+/* ── hero ── */
+.hero{position:relative;margin:0 80px;display:grid;grid-template-columns:7fr 5fr;border-bottom:1px solid var(--line)}
+.hero-left{padding:64px 56px 56px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:24px}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em}
+.hero-dot{width:9px;height:9px;background:var(--orange);border:1.5px solid var(--ink)}
+.hero-num{font-family:var(--serif);font-style:italic;font-size:clamp(80px,9vw,128px);line-height:.85;color:var(--orange-light);-webkit-text-stroke:1.5px var(--orange-border);text-stroke:1.5px var(--orange-border);letter-spacing:-.04em;user-select:none}
+.hero-h1{font-weight:700;font-size:clamp(32px,3.5vw,52px);line-height:1.1;letter-spacing:-.03em}
+.hero-h1 em{font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.02em;background:var(--orange-light);padding:0 8px;border-radius:4px}
+.hero-right{padding:64px 56px 56px;display:flex;flex-direction:column;gap:22px;justify-content:center}
+.hero-p{font-family:var(--serif);font-size:19px;line-height:1.55}
+.hero-dl{margin-top:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 20px}
+.hero-dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--sub)}
+.hero-dd{font-size:15px;font-weight:600;line-height:1.4}
 
-/* Workflow diagram */
-.workflow-fig { background: var(--paper-2); border: 1px solid var(--rule); border-radius: 12px; padding: 40px 40px 0; margin: 48px 0; overflow: hidden; }
-.workflow-fig svg { width: 100%; height: auto; display: block; overflow: visible; }
-.wf-footer { padding: 20px 0; border-top: 1px solid var(--rule); margin-top: 20px; display: flex; gap: 24px; align-items: baseline; }
-.wf-footer .wf-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); white-space: nowrap; }
-.wf-footer .wf-caption { font-size: 13px; color: var(--muted); line-height: 1.4; }
+/* ── stats bar ── */
+.stats{position:relative;margin:0 80px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.stat{padding:24px 28px;display:flex;flex-direction:column;gap:8px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:var(--serif);font-style:italic;font-size:clamp(32px,3.5vw,48px);line-height:1;white-space:nowrap;color:var(--orange-deep)}
+.stat-label{font-size:14px;line-height:1.45;color:#4A4A4A}
 
-/* Research steps */
-.research-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-top: 1px solid var(--rule); margin-top: 48px; }
-.rs-item { padding: 28px 24px 28px 0; border-right: 1px solid var(--rule); }
-.rs-item:last-child { border-right: none; padding-right: 0; }
-.rs-n { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 16px; }
-.rs-n::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-.rs-t { font-family: var(--serif); font-size: 19px; color: var(--ink); line-height: 1.2; margin-bottom: 12px; }
-.rs-d { font-size: 13px; color: var(--muted); line-height: 1.55; }
+/* ── orange intro section ── */
+.o-section{position:relative;background:var(--orange-light);padding:56px;display:flex;flex-direction:column;gap:52px}
+.o-hero-img{width:1040px;max-width:100%;margin:0 auto;border-radius:12px;border:1px solid var(--orange-border);box-shadow:0 30px 70px rgba(80,30,10,.2)}
 
-/* Design principles: Behavior Trust etc */
-.principles-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin: 48px 0; }
-.ps-item { padding: 32px 28px; border-right: 1px solid var(--rule); }
-.ps-item:last-child { border-right: none; }
-.ps-keyword { font-family: var(--serif); font-size: clamp(20px, 2.5vw, 28px); color: var(--ink); margin-bottom: 12px; letter-spacing: -0.01em; }
-.ps-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+/* ── how-to-read bar ── */
+.htr{position:relative;margin:0 80px;display:grid;grid-template-columns:200px 1fr;border-bottom:1.5px solid var(--ink);background:var(--bg)}
+.htr-label{padding:20px 24px;border-right:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--sub);display:flex;align-items:center}
+.htr-pills{padding:20px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;font-weight:600}
+.htr-pills a{padding:7px 12px;border-radius:999px;border:1px solid var(--ink);transition:background var(--t),color var(--t)}
+.htr-pills a:hover{background:var(--ink);color:#fff}
 
-/* Insights large 2x2 */
-.insights-large { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); margin-top: 48px; }
-.il-item { padding: 48px 44px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-.il-n { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; }
-.il-t { font-family: var(--serif); font-size: clamp(22px, 2.8vw, 34px); color: var(--ink); line-height: 1.15; letter-spacing: -0.015em; margin-bottom: 20px; font-weight: 400; }
-.il-d { font-size: 15px; color: var(--ink-2); line-height: 1.6; max-width: none; margin: 0; }
-.il-d em { font-style: italic; color: var(--ink); }
+/* ── body grid ── */
+.body-grid{position:relative;margin:0 80px;display:grid;grid-template-columns:240px minmax(0,1fr)}
+.sidebar{padding:48px 20px;display:flex;flex-direction:column;gap:4px;font-size:13.5px;align-self:start;position:sticky;top:72px;border-right:1px solid var(--line);max-height:calc(100vh - 72px);overflow-y:auto}
+.sidebar-you{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--sub);padding-bottom:10px}
+.sidebar-link{display:flex;gap:9px;padding:7px 10px;color:#5F5F5F;border-radius:7px;transition:background var(--t),color var(--t)}
+.sidebar-link:hover{color:var(--ink)}
+.sidebar-link.active{background:var(--ink);color:#fff;font-weight:600}
+.sidebar-link span{font-family:var(--mono);font-size:11.5px}
+.sidebar-progress{margin-top:16px;height:3px;border-radius:2px;background:#eee;overflow:hidden}
+.sidebar-bar{display:block;height:100%;background:var(--orange-deep);transition:width .3s ease}
+main{display:flex;flex-direction:column;border-left:1px solid var(--line)}
 
-/* Adaptive comparison */
-.adaptive-table { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; margin-top: 48px; }
-.adaptive-table .at-head { padding: 16px 24px; background: var(--paper-2); font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid var(--rule); }
-.adaptive-table .at-head.left { border-right: 1px solid var(--rule); }
-.adaptive-table .at-l, .adaptive-table .at-r { padding: 20px 24px; border-bottom: 1px solid var(--rule); font-size: 14px; line-height: 1.6; }
-.adaptive-table .at-l { border-right: 1px solid var(--rule); color: var(--muted); }
-.adaptive-table .at-r { color: var(--ink-2); }
-.adaptive-table .at-r strong { color: var(--ink); font-weight: 500; }
-.adaptive-table .at-l:last-of-type, .adaptive-table .at-r:last-of-type { border-bottom: none; }
+/* ── articles ── */
+article{padding:64px 0 80px 60px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:24px}
+article:last-child{padding-bottom:88px;border-bottom:none}
+.art-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--sub)}
+.art-h{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(32px,3.2vw,46px);line-height:1.05}
+.art-p{font-size:17px;line-height:1.72;color:var(--fg);max-width:760px}
+.art-big{max-width:860px;font-family:var(--serif);font-size:24px;line-height:1.35}
+.art-h3{font-family:var(--serif);font-style:italic;font-weight:600;font-size:28px;line-height:1.15;max-width:860px;margin:16px 0 0}
+.art-next{align-self:flex-start;max-width:760px;margin-top:8px;padding-top:20px;border-top:1px solid var(--ink);font-size:17px;font-weight:600;line-height:1.5}
 
-/* Solution cards */
-.solution-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
-.sol-card { background: var(--paper-2); border: 1px solid var(--rule); border-radius: 12px; padding: 32px 28px; }
-.sol-n { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
-.sol-t { font-family: var(--serif); font-size: 22px; color: var(--ink); line-height: 1.2; margin-bottom: 16px; }
-.sol-d { font-size: 14px; color: var(--muted); line-height: 1.6; }
+/* highlights */
+.hl{background:var(--orange-light);padding:1px 5px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.bq{margin:8px 0;max-width:860px;padding-left:28px;border-left:3px solid var(--orange);font-family:var(--serif);font-style:italic;font-weight:600;font-size:28px;line-height:1.3}
+.code{font-family:var(--mono);font-size:14px;background:var(--orange-tint);border:1px solid var(--orange-border);border-radius:6px;padding:1px 7px}
 
-/* Before/after architecture */
-.arch-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; margin-top: 48px; }
-.arch-compare .ac-head { padding: 14px 24px; background: var(--paper-2); font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid var(--rule); }
-.arch-compare .ac-head.left { border-right: 1px solid var(--rule); }
-.arch-compare .ac-body { padding: 24px; }
-.arch-compare .ac-body.left { border-right: 1px solid var(--rule); }
-.arch-compare .ac-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 14px; line-height: 1.5; }
-.arch-compare .ac-row:last-child { border-bottom: none; }
-.arch-compare .ac-row .ac-icon { font-size: 12px; flex-shrink: 0; margin-top: 2px; }
-.arch-compare .ac-body.left .ac-row { color: var(--muted); }
-.arch-compare .ac-body.right .ac-row { color: var(--ink-2); }
-.arch-compare .ac-body.right .ac-row strong { color: var(--ink); font-weight: 500; }
+/* figures */
+.fig{margin:4px 0 0;display:flex;flex-direction:column;gap:12px;max-width:956px}
+.fig-wrap{border:1px solid var(--ink);border-radius:14px;background:var(--orange-light);padding:24px}
+.fig-img{display:block;width:100%;border-radius:8px;border:1px solid var(--orange-border)}
+.fig-cap{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sub);display:flex;justify-content:space-between;gap:24px}
+.fig-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.fig-row-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 
-/* Screen mockup sections */
-.screen-section { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; padding: 72px 0; border-top: 1px solid var(--rule); }
-.screen-section.reverse { direction: rtl; }
-.screen-section.reverse > * { direction: ltr; }
-.ss-text .ss-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 20px; }
-.ss-text h3 { font-family: var(--serif); font-size: clamp(28px, 4vw, 44px); color: var(--ink); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 20px; }
-.ss-text p { font-size: 16px; color: var(--ink-2); line-height: 1.65; margin-bottom: 24px; max-width: 44ch; }
-.ss-bullets { list-style: none; padding: 0; border-top: 1px solid var(--rule); }
-.ss-bullets li { padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 14px; color: var(--muted); display: flex; align-items: baseline; gap: 10px; }
-.ss-bullets li::before { content: '·'; color: var(--accent); font-size: 16px; flex-shrink: 0; }
+/* annotated img */
+.ann{position:relative}
+.ann-badge{position:absolute;right:-11px;top:-11px;width:24px;height:24px;border-radius:50%;background:var(--orange-deep);color:#fff;border:2px solid #fff;font-family:var(--mono);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.2)}
 
-/* Incident queue mockup */
-.inc-queue { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
-.iq-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em; }
-.iq-header .iq-live { display: flex; align-items: center; gap: 6px; }
-.iq-header .iq-live::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #e05050; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-.iq-row { display: grid; grid-template-columns: 40px 1fr 60px 120px; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--rule); gap: 12px; }
-.iq-row:last-child { border-bottom: none; }
-.iq-row.active { background: #fdf2f0; }
-.iq-badge { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: 0.04em; }
-.iq-badge.p1 { background: #c0392b; color: #fff; }
-.iq-badge.p2 { background: #e0a050; color: #fff; }
-.iq-badge.p3 { background: #9a9085; color: #fff; }
-.iq-info .iq-patient { font-family: var(--serif); font-size: 16px; color: var(--ink); }
-.iq-info .iq-loc { font-size: 11px; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; margin-top: 2px; }
-.iq-elapsed { font-family: var(--mono); font-size: 13px; color: var(--muted); }
-.iq-btn { padding: 8px 14px; border-radius: 6px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-align: center; cursor: pointer; }
-.iq-btn.dispatch { background: var(--accent); color: #fff; }
-.iq-btn.assign { background: var(--paper-2); border: 1px solid var(--rule); color: var(--ink); }
-.iq-btn.schedule { background: transparent; border: 1px solid var(--rule-2); color: var(--muted); }
+/* decision cards */
+.dc{max-width:956px;border:1px solid var(--ink);border-radius:14px;overflow:hidden}
+.dc-head{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--ink);background:#fff}
+.dc-num{width:26px;height:26px;border-radius:50%;background:var(--orange-deep);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dc-tag{padding:4px 9px;border-radius:6px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em}
+.dc-title{font-family:var(--serif);font-style:italic;font-weight:600;font-size:22px;line-height:1.2}
+.dc-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.dc-what{padding:20px 24px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.dc-cost{padding:20px 24px;background:var(--orange-tint);display:flex;flex-direction:column;gap:8px}
+.dc-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sub)}
+.dc-kicker-trade{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--orange-deep)}
+.dc-text{font-size:15px;line-height:1.6;color:#333}
 
-/* Assignment mockup */
-.assign-mock { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
-.am-header { padding: 14px 20px; border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; }
-.am-incident { background: #fdf2f0; border: 1px solid #e8c0b8; margin: 16px 16px 0; border-radius: 8px; padding: 16px; }
-.am-incident .ami-patient { font-family: var(--serif); font-size: 20px; color: var(--ink); margin-bottom: 4px; }
-.am-incident .ami-loc { font-family: var(--mono); font-size: 10px; color: #c0392b; letter-spacing: 0.08em; }
-.am-units-head { padding: 14px 20px 10px; font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em; }
-.am-unit-row { display: grid; grid-template-columns: 40px 1fr 60px 80px; align-items: center; padding: 14px 16px; margin: 0 4px; border-radius: 8px; gap: 12px; border: 1px solid transparent; }
-.am-unit-row.top { background: #14110e; border-color: #3a342c; margin-bottom: 4px; }
-.am-unit-row.other { background: var(--paper-2); border-color: var(--rule); margin-bottom: 4px; }
-.am-unit-code { font-family: var(--mono); font-size: 10px; color: #9a9085; letter-spacing: 0.06em; }
-.am-unit-row.top .am-unit-code { color: #5a5045; }
-.am-unit-info .am-unit-name { font-family: var(--serif); font-size: 16px; color: var(--ink); }
-.am-unit-row.top .am-unit-info .am-unit-name { color: #f4efe5; }
-.am-unit-info .am-unit-driver { font-size: 11px; color: var(--muted); }
-.am-unit-row.top .am-unit-info .am-unit-driver { color: #5a5045; }
-.am-unit-eta { font-family: var(--mono); font-size: 14px; color: var(--muted); }
-.am-unit-row.top .am-unit-eta { color: #a09080; }
-.am-unit-send { padding: 8px 14px; border-radius: 6px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; cursor: pointer; }
-.am-unit-row.top .am-unit-send { background: var(--accent); color: #fff; }
-.am-unit-row.other .am-unit-send { background: transparent; border: 1px solid var(--rule-2); color: var(--muted); }
+/* audit table */
+.audit-table{max-width:956px;border:1px solid var(--ink);border-radius:14px;overflow:hidden}
+.audit-head{display:grid;grid-template-columns:140px 110px minmax(0,1fr) minmax(0,1fr);background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.12em}
+.audit-head div{padding:12px 16px;border-right:1px solid rgba(255,255,255,.12)}
+.audit-head div:last-child{border-right:none}
+.audit-row{display:grid;grid-template-columns:140px 110px minmax(0,1fr) minmax(0,1fr);border-top:1px solid var(--line)}
+.audit-row:hover{background:var(--orange-tint)}
+.audit-cell{padding:16px;border-right:1px solid var(--line);font-size:14.5px;line-height:1.55}
+.audit-cell:last-child{border-right:none}
+.audit-phase{font-weight:700}
+.sev-critical{display:inline-block;padding:3px 10px;border-radius:999px;background:#FEE2E2;color:#991B1B;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em}
+.sev-major{display:inline-block;padding:3px 10px;border-radius:999px;background:#FEF3C7;color:#92400E;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em}
+.sev-workaround{display:inline-block;padding:3px 10px;border-radius:999px;background:#F3F4F6;color:#374151;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em}
 
-/* Driver companion mobile mockup */
-.driver-mock-wrap { display: flex; justify-content: center; align-items: center; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 16px; padding: 48px; }
-.driver-mock { width: 240px; background: #1a1614; border-radius: 28px; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.3); }
-.dm-header { background: var(--accent); padding: 20px 20px 16px; }
-.dm-active { font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.7); letter-spacing: 0.12em; margin-bottom: 6px; }
-.dm-patient { font-family: var(--serif); font-size: 22px; color: #fff; line-height: 1.15; margin-bottom: 4px; }
-.dm-loc { font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.7); letter-spacing: 0.1em; }
-.dm-steps { padding: 20px; }
-.dm-step { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
-.dm-step-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.dm-step-dot.done { background: #2ea44f; }
-.dm-step-dot.active { background: #e05050; }
-.dm-step-dot.pending { background: #3a342c; }
-.dm-step-label { font-size: 13px; color: #c8bfb0; line-height: 1.2; }
-.dm-step-label.active { color: #f4efe5; }
-.dm-step-label.pending { color: #5a5045; }
-.dm-btn { margin: 4px 20px 20px; background: #f4efe5; border-radius: 10px; padding: 14px; text-align: center; font-family: var(--serif); font-size: 16px; color: #14110e; cursor: pointer; }
+/* numbered list */
+.num-list{display:flex;flex-direction:column;gap:22px;max-width:760px}
+.num-row{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:baseline}
+.num{font-family:var(--mono);font-size:12px;color:var(--sub)}
 
-/* Designed for moments of stress */
-.stress-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--rule); margin-top: 48px; }
-.sg-item { padding: 32px 28px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-.sg-item:nth-child(3n) { border-right: none; }
-.sg-n { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
-.sg-t { font-family: var(--serif); font-size: 18px; color: var(--ink); line-height: 1.25; margin-bottom: 10px; }
-.sg-item p { font-size: 13px; color: var(--muted); line-height: 1.55; max-width: none; margin: 0; }
+/* kpi cards */
+.kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:860px}
+.kpi-card{border:1px solid var(--ink);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px}
+.kpi-card--accent{background:var(--orange-tint);border-color:var(--orange-border)}
+.kpi-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--orange-deep);font-weight:700}
+.kpi-val{font-family:var(--serif);font-style:italic;font-size:clamp(28px,2.5vw,38px);line-height:1}
+.kpi-sub{font-size:14px;color:var(--sub);line-height:1.45}
 
-/* Pull quote */
-.case-pull-quote { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 72px 0; margin: 72px 0; text-align: center; }
-.case-pull-quote blockquote { font-family: var(--serif); font-size: clamp(26px, 3.5vw, 46px); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); max-width: 24ch; margin: 0 auto; }
-.case-pull-quote blockquote .em { font-style: italic; color: var(--accent); }
-.case-pull-quote .attr { margin-top: 20px; font-size: 13px; color: var(--muted); }
+/* stakeholder rows */
+.stake-tier{max-width:860px;border:1px solid var(--ink);border-radius:14px;overflow:hidden;margin:4px 0}
+.stake-head{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--ink);background:var(--ink);color:#fff}
+.stake-head-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em}
+.stake-desc{font-size:14px;opacity:.75}
+.stake-body{padding:18px 20px;font-size:15px;line-height:1.6;color:var(--fg)}
 
-/* Learned */
-.learned-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rule); margin-top: 48px; }
-.lg-item { padding: 32px 28px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-.lg-item:nth-child(3n) { border-right: none; }
-.lg-n { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
-.lg-t { font-family: var(--serif); font-size: 18px; color: var(--ink); line-height: 1.25; margin-bottom: 10px; }
-.lg-item p { font-size: 13px; color: var(--muted); line-height: 1.55; max-width: none; margin: 0; }
+/* flow comparison */
+.flow-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:860px}
+.flow-box{border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.flow-box--old{background:#FEF2F2;border:1px solid #FECACA}
+.flow-box--new{background:var(--orange-tint);border:1px solid var(--orange-border)}
+.flow-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;font-weight:700}
+.flow-label--old{color:#991B1B}
+.flow-label--new{color:var(--orange-deep)}
+.flow-step{display:flex;align-items:flex-start;gap:10px;font-size:15px;line-height:1.5}
+.flow-arrow{color:var(--sub);font-family:var(--mono);font-size:13px;flex-shrink:0;padding-top:2px}
 
-@media (max-width: 1000px) {
-  .dispatch-ui { grid-template-columns: 1fr; }
-  .research-steps { grid-template-columns: 1fr 1fr; }
-  .rs-item { border-right: none; border-bottom: 1px solid var(--rule); padding: 24px 0; }
-  .insights-large { grid-template-columns: 1fr; }
-  .il-item { border-right: none; }
-  .adaptive-table { grid-template-columns: 1fr; }
-  .adaptive-table .at-l { border-right: none; }
-  .adaptive-table .at-head.left { border-right: none; }
-  .solution-cards { grid-template-columns: 1fr; }
-  .arch-compare { grid-template-columns: 1fr; }
-  .arch-compare .ac-body.left { border-right: none; }
-  .arch-compare .ac-head.left { border-right: none; }
-  .screen-section { grid-template-columns: 1fr; direction: ltr; }
-  .screen-section.reverse { direction: ltr; }
-  .principles-strip { grid-template-columns: 1fr 1fr; }
-  .ps-item { border-right: none; border-bottom: 1px solid var(--rule); }
-  .stress-grid { grid-template-columns: 1fr; }
-  .sg-item { border-right: none !important; }
-  .learned-grid { grid-template-columns: 1fr; }
-  .lg-item { border-right: none !important; }
-  .role-table { grid-template-columns: 140px 1fr; }
+/* phase roadmap */
+.phase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:860px}
+.phase-card{border:1px solid var(--ink);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.phase-card--now{background:var(--orange-tint);border-color:var(--orange-border)}
+.phase-num{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--sub)}
+.phase-title{font-weight:700;font-size:17px}
+.phase-desc{font-size:14px;line-height:1.55;color:var(--sub)}
+
+/* close cards */
+.close-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:956px}
+.close-card{border:1px solid var(--ink);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.close-card--accent{background:var(--orange-tint);border-color:var(--orange-border)}
+.close-num{font-family:var(--mono);font-size:12px;color:var(--sub)}
+.close-h{font-weight:700;font-size:17px;line-height:1.3}
+.close-p{font-size:14.5px;line-height:1.6;color:#4A4A4A}
+
+/* experience screens */
+.exp-block{max-width:956px;border:1px solid var(--ink);border-radius:14px;overflow:hidden}
+.exp-head{display:flex;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid var(--line);background:var(--bg)}
+.exp-num{font-family:var(--mono);font-size:11px;letter-spacing:.12em;background:var(--orange-deep);color:#fff;padding:3px 9px;border-radius:5px}
+.exp-title{font-weight:700;font-size:17px}
+.exp-body{padding:0 24px 24px}
+.exp-bullets{display:flex;flex-direction:column;gap:6px;padding:16px 0}
+.exp-bullet{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;font-size:14.5px;line-height:1.5;align-items:start}
+.exp-dash{color:var(--orange-deep);font-weight:700}
+.exp-img{display:block;width:100%;border-radius:8px;border:1px solid var(--line);margin-top:4px}
+
+/* ── ending ── */
+.ending{position:relative;margin:0 80px;display:grid;grid-template-columns:1fr 1.3fr 1fr;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--line);height:380px}
+.end-cell{transition:background-color .3s ease}
+.end-cell:hover{background:var(--orange-tint)}
+.end-home{display:flex;align-items:center;justify-content:center;gap:12px;border-right:1px solid var(--line);font-family:var(--mono);font-size:13px;letter-spacing:.14em}
+.end-next{position:relative;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:36px;border-right:1px solid var(--line)}
+.end-thumb{position:relative;height:210px;border-radius:12px;overflow:hidden;background:var(--orange-light);border:1px solid var(--ink)}
+.end-thumb img{position:absolute;left:24px;top:16px;width:520px;border-radius:8px}
+.end-meta{display:flex;justify-content:space-between;align-items:baseline}
+.end-title{font-family:var(--serif);font-style:italic;font-weight:600;font-size:22px}
+.end-tag{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sub)}
+.end-related{position:relative;display:flex;align-items:center;justify-content:center}
+.end-related-label{position:relative;font-family:var(--mono);font-size:13px;letter-spacing:.14em}
+.end-related-hand{position:absolute;bottom:64px;font-family:var(--hand);font-weight:600;font-size:22px;color:#5F5F5F}
+
+/* ── footer ── */
+footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;display:grid;grid-template-columns:6fr 6fr;align-items:end;gap:40px}
+.footer-card{position:relative;width:440px;height:330px}
+.footer-card-bg{position:absolute;left:0;top:0;width:170px;height:60px;border-radius:22px 22px 0 0;background:var(--pink-deep)}
+.footer-card-main{position:absolute;left:0;top:36px;width:440px;height:294px;border-radius:0 26px 26px 26px;background:var(--pink-deep)}
+.footer-card-inner{position:absolute;left:54px;top:64px;width:330px;height:220px;background:#FFFDFB;border-radius:6px;transform:rotate(-3deg);box-shadow:0 10px 24px rgba(120,20,60,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.footer-card-tape{position:absolute;top:-14px;left:150px;width:30px;height:30px;border-radius:4px;background:#F4C84B;border:1.5px solid var(--ink)}
+.footer-name{font-family:var(--hand);font-weight:700;font-size:58px;line-height:.9;color:var(--ink)}
+.footer-card-bottom{position:absolute;left:0;top:250px;width:440px;height:80px;border-radius:6px 6px 26px 26px;background:#EC6F93;z-index:2}
+.footer-nav{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-family:var(--serif);font-size:52px;line-height:1.1}
+.footer-nav a{color:var(--rose);transition:transform .3s ease}
+.footer-nav a:hover{transform:translateX(-8px)}
+
+/* ── reveal ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ── responsive ── */
+@media(max-width:900px){
+  .cs-nav{padding:0 20px}
+  .hero,.stats,.htr,.body-grid,.ending{margin:0 20px}
+  .hero{grid-template-columns:1fr}
+  .hero-left{border-right:none;border-bottom:1px solid var(--line);padding:40px 20px}
+  .hero-right{padding:28px 20px}
+  .stats{grid-template-columns:1fr 1fr}
+  .body-grid{grid-template-columns:1fr}
+  .sidebar{display:none}
+  main{border-left:none}
+  article{padding:44px 0 56px 0}
+  .dc-body,.flow-compare,.fig-row,.fig-row-2,.phase-grid,.close-grid,.kpi-grid{grid-template-columns:1fr}
+  .dc-what{border-right:none;border-bottom:1px solid var(--line)}
+  .audit-table{overflow-x:auto}
+  .ending{grid-template-columns:1fr;height:auto}
+  footer{padding:48px 24px 40px;grid-template-columns:1fr}
+  .footer-card{display:none}
+  .footer-nav{align-items:flex-start;font-size:40px}
 }
-@media (max-width: 640px) {
-  .research-steps { grid-template-columns: 1fr; }
-  .principles-strip { grid-template-columns: 1fr; }
+@media(prefers-reduced-motion:reduce){
+  .reveal{transition:none}
 }
 </style>
 </head>
 <body>
 
-<div class="scroll-progress"></div>
-
-<nav class="nav">
-  <a href="index.html" class="nav-logo" data-cursor="hover">
-    <span class="dot"></span>
-    <img src="assets/logo.svg" alt="Mehak Garg" />
+<!-- NAV -->
+<nav class="cs-nav">
+  <a class="cs-nav-left" href="index.html">
+    <div class="cs-nav-photo">
+      <img src="uploads/merry/5ee40e8ef9190bccf842103b540fe49b.png" alt="Mehak Garg">
+    </div>
+    <span class="cs-nav-name">Mehak Garg</span>
+    <span class="cs-nav-crumb">/ WORK / SYS-03 · CARE OPS</span>
   </a>
-  <div class="nav-links">
-    <a href="index.html#work" data-cursor="hover">Work</a>
-    <a href="about.html" data-cursor="hover">About</a>
-    <a href="about.html#contact" class="cta" data-cursor="hover">Book a call</a>
+  <div class="cs-nav-links">
+    <a href="index.html#work">WORK</a>
+    <a href="index.html#about">ABOUT</a>
+    <a href="index.html#contact">SAY HI ↗</a>
   </div>
 </nav>
 
-<div class="wrap">
-  <div class="case-hero">
-    <div class="breadcrumbs">Work / Merry Health</div>
-    <h1 class="reveal">A healthcare coordination system built for <span class="em">operational pressure.</span></h1>
-    <p class="sub reveal">Emergency coordinators were managing dispatch across phone calls, WhatsApp, and paper notes. I designed a unified operational system built around how coordinators actually think under pressure, not how the data was structured.</p>
-    <div class="case-meta reveal">
-      <div class="it"><div class="l">Client</div><div class="v serif">Vedaang · Merry Health</div></div>
-      <div class="it"><div class="l">Timeline</div><div class="v serif">4 weeks</div></div>
-      <div class="it"><div class="l">Team</div><div class="v serif">1 designer, 1 PM, 2 engineers, 1 clinical ops advisor</div></div>
-      <div class="it"><div class="l">Domain</div><div class="v serif">Emergency Healthcare Ops</div></div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <div class="hero-dot"></div>
+      CASE STUDY · HEALTHCARE OPERATIONS
     </div>
+    <div class="hero-num" aria-hidden="true">01</div>
+    <h1 class="hero-h1">Emergency <em>Ambulance</em> Coordination</h1>
+    <p style="font-size:14px;color:var(--sub);font-family:var(--mono);letter-spacing:.08em">MERRY HEALTH · 2025</p>
+  </div>
+  <div class="hero-right">
+    <p class="hero-p">An adoption-first command layer for hospitals that dispatch ambulances over WhatsApp.</p>
+    <dl class="hero-dl">
+      <div>
+        <dt class="hero-dt">CLIENT</dt>
+        <dd class="hero-dd">Merry Health</dd>
+      </div>
+      <div>
+        <dt class="hero-dt">MY ROLE</dt>
+        <dd class="hero-dd">UX strategy &amp; design, hospital admin experience</dd>
+      </div>
+      <div>
+        <dt class="hero-dt">TEAM</dt>
+        <dd class="hero-dd">Multi-designer team (Career Reactor) with Merry Health's founders</dd>
+      </div>
+      <div>
+        <dt class="hero-dt">DELIVERABLES</dt>
+        <dd class="hero-dd">System audit, workflows, wireframes, hi-fi prototype, WhatsApp integration docs</dd>
+      </div>
+    </dl>
   </div>
 </div>
 
-<div class="wrap">
-
-  <!-- Stats -->
-  <div class="case-section reveal" style="border-top:none;padding-top:0;">
-    <div class="stats">
-      <div class="stat"><div class="n serif">4<span class="em">m</span></div><div class="l">Average dispatch delay from manual cross-referencing between 3 tools</div></div>
-      <div class="stat"><div class="n serif"><span class="em">↓</span>32<span class="em">sec</span></div><div class="l">Reduction in average dispatch decision time after redesign</div></div>
-      <div class="stat"><div class="n serif">3 <span class="em">→</span> 1</div><div class="l">Fragmented systems consolidated into a single operational view</div></div>
-      <div class="stat"><div class="n serif">2<span class="em">wk</span></div><div class="l">Embedded research to production-ready prototype handoff</div></div>
-    </div>
+<!-- STATS BAR -->
+<div class="stats">
+  <div class="stat reveal">
+    <div class="stat-num">95%</div>
+    <div class="stat-label">of ride requests arrived over WhatsApp, not the dashboard</div>
   </div>
-
-  <!-- Dispatch UI illustration -->
-  <div class="case-section reveal" style="border-top:none;padding-top:0;">
-    <div class="dispatch-ui">
-      <div class="du-panel">
-        <div class="du-panel-header">ACTIVE INCIDENTS · 04</div>
-        <div class="du-incident p1">
-          <div class="du-priority">P1 · CARDIAC</div>
-          <div class="du-patient">M · 58 yrs</div>
-          <div class="du-loc">Koregaon Park · 02:14 elapsed</div>
-        </div>
-        <div class="du-incident">
-          <div class="du-priority">P2 · ACCIDENT</div>
-          <div class="du-patient">F · 24 yrs</div>
-          <div class="du-loc">FC Road · 04:32 elapsed</div>
-        </div>
-        <div class="du-incident">
-          <div class="du-priority">P2 · OBSTETRIC</div>
-          <div class="du-patient">F · 31 yrs</div>
-          <div class="du-loc">Aundh · 06:11 elapsed</div>
-        </div>
-      </div>
-      <div class="du-map">
-        <div class="du-dot" style="width:14px;height:14px;background:#9a9085;top:22%;left:52%;transform:translate(-50%,-50%);"></div>
-        <div class="du-dot-label" style="top:calc(22% + 10px);left:52%;transform:translateX(-50%);">UNIT 09 · queued</div>
-        <div class="du-dot" style="width:16px;height:16px;background:#c0392b;top:50%;left:36%;transform:translate(-50%,-50%);"></div>
-        <div class="du-dot-label" style="top:calc(50% + 10px);left:36%;transform:translateX(-50%);">UNIT 14 · 4 min</div>
-        <div style="position:absolute;top:50%;left:36%;width:32%;height:0;border-top:1.5px dashed #b8442a;transform-origin:0 0;transform:rotate(28deg);opacity:0.5;"></div>
-        <div class="du-dot" style="width:14px;height:14px;background:#14110e;border-radius:3px;top:68%;left:58%;transform:translate(-50%,-50%);"></div>
-        <div class="du-dot-label" style="top:calc(68% + 10px);left:58%;transform:translateX(-50%);">SASOON HOSP</div>
-        <div class="du-dot" style="width:16px;height:16px;background:#2ea44f;top:78%;left:30%;transform:translate(-50%,-50%);"></div>
-        <div class="du-dot-label" style="top:calc(78% + 10px);left:30%;transform:translateX(-50%);">UNIT 22 · idle</div>
-      </div>
-      <div class="du-panel">
-        <div class="du-panel-header">FLEET · 6 UNITS</div>
-        <div class="du-fleet-row"><div class="du-fleet-dot" style="background:#2ea44f;"></div><div class="du-fleet-info"><div class="du-fleet-name">Unit 14</div><div class="du-fleet-status">Dispatching</div></div><div class="du-fleet-eta">4 min</div></div>
-        <div class="du-fleet-row"><div class="du-fleet-dot" style="background:#e0a050;"></div><div class="du-fleet-info"><div class="du-fleet-name">Unit 22</div><div class="du-fleet-status">Idle · ready</div></div><div class="du-fleet-eta">7 min</div></div>
-        <div class="du-fleet-row"><div class="du-fleet-dot" style="background:#9a9085;"></div><div class="du-fleet-info"><div class="du-fleet-name">Unit 09</div><div class="du-fleet-status">Queued</div></div><div class="du-fleet-eta">11 min</div></div>
-        <div class="du-fleet-row"><div class="du-fleet-dot" style="background:#5a5045;"></div><div class="du-fleet-info"><div class="du-fleet-name">Unit 03</div><div class="du-fleet-status">Off-shift</div></div><div class="du-fleet-eta">N/A</div></div>
-        <div class="du-fleet-row"><div class="du-fleet-dot" style="background:#e0a050;"></div><div class="du-fleet-info"><div class="du-fleet-name">Unit 27</div><div class="du-fleet-status">Returning</div></div><div class="du-fleet-eta">14 min</div></div>
-      </div>
-    </div>
+  <div class="stat reveal" data-delay="1">
+    <div class="stat-num">3 of 5</div>
+    <div class="stat-label">dispatch phases audited and rated Critical</div>
   </div>
-
-  <!-- When seconds matter -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">The problem</p>
-    <p class="case-display">When seconds matter, fragmentation becomes <span class="em">dangerous.</span></p>
-    <div class="two-col" style="gap:48px;margin-top:32px;margin-bottom:0;">
-      <div>
-        <p>Merry Health's emergency coordination team was running three separate tools to manage a single dispatch: a legacy CAD for incident logging, a spreadsheet for unit availability, and WhatsApp plus phone calls for hospital capacity. None of them talked to each other.</p>
-        <p>During peak load, coordinators switched tabs, checked rows, and managed phone calls simultaneously while handling multiple active incidents. Decisions got delayed. Vehicles got misrouted. And the system designed to save lives was adding minutes to every response.</p>
-      </div>
-      <div>
-        <p>The error was not human. It was architectural. Every tool was built for data entry, not decision-making. Information existed in three places, three formats, at three different moments in time. Nobody had designed the layer between the data and the people who needed to act on it.</p>
-        <p>The brief: one system, one screen, built around how coordinators actually think under pressure, not how the database was structured.</p>
-      </div>
-    </div>
-
-    <!-- Fig. 01: Pre-Merry workflow diagram with SVG lines -->
-    <div class="workflow-fig">
-      <svg viewBox="0 0 1100 390" xmlns="http://www.w3.org/2000/svg" style="min-height:280px;">
-        <defs>
-          <style>
-            .wn-box { fill: var(--paper,#f6f3ec); stroke: var(--rule-2,#c5bdac); stroke-width: 1.5; rx: 10; }
-            .wn-box-actor { fill: var(--paper,#f6f3ec); stroke: var(--ink,#1a1714); stroke-width: 1.5; }
-            .wn-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: var(--muted,#6b645a); letter-spacing: 2px; text-transform: uppercase; }
-            .wn-title { font-family: 'Spectral', Georgia, serif; font-size: 16px; fill: var(--ink,#1a1714); }
-            .wn-title-lg { font-family: 'Spectral', Georgia, serif; font-size: 18px; fill: var(--ink,#1a1714); font-weight: 400; }
-            .conn { stroke: var(--rule-2,#c5bdac); stroke-width: 1.5; stroke-dasharray: 6,5; fill: none; }
-            .annot { font-family: 'Spectral', Georgia, serif; font-size: 13px; fill: #b8442a; font-style: italic; }
-          </style>
-        </defs>
-
-        <!-- Connecting lines (drawn first, behind nodes) -->
-        <!-- Patient call → Hospital admin -->
-        <path class="conn" d="M190,55 L290,55"/>
-        <!-- Hospital admin → Ambulance owner -->
-        <path class="conn" d="M490,55 L590,55"/>
-        <!-- Ambulance owner → Driver -->
-        <path class="conn" d="M810,55 L880,55"/>
-
-        <!-- Patient call → Calls+WhatsApp (diagonal) -->
-        <path class="conn" d="M100,92 C100,140 140,175 160,188"/>
-        <!-- Hospital admin → Calls+WhatsApp (diagonal) -->
-        <path class="conn" d="M380,92 C340,130 240,170 218,188"/>
-        <!-- Ambulance owner → Paper notes (diagonal) -->
-        <path class="conn" d="M700,92 C740,130 820,165 838,188"/>
-        <!-- Driver → Paper notes (diagonal) -->
-        <path class="conn" d="M960,92 C960,140 920,165 898,188"/>
-
-        <!-- Calls+WhatsApp → Patient (vertical) -->
-        <path class="conn" d="M195,240 L195,278"/>
-        <!-- Paper notes → Hospital tracking (vertical) -->
-        <path class="conn" d="M868,240 L868,278"/>
-
-        <!-- Patient → Hospital tracking (long bottom) -->
-        <path class="conn" d="M310,315 C500,345 700,345 790,315"/>
-
-        <!-- Actor nodes (top row, highlighted with stronger border) -->
-        <!-- Patient call -->
-        <rect class="wn-box-actor" x="20" y="20" width="170" height="70" rx="10"/>
-        <text class="wn-tag" x="36" y="41">Origin</text>
-        <text class="wn-title-lg" x="36" y="66">Patient call</text>
-
-        <!-- Hospital admin -->
-        <rect class="wn-box-actor" x="290" y="20" width="200" height="70" rx="10"/>
-        <text class="wn-tag" x="306" y="41">Receives</text>
-        <text class="wn-title-lg" x="306" y="66">Hospital admin</text>
-
-        <!-- Ambulance owner -->
-        <rect class="wn-box-actor" x="590" y="20" width="220" height="70" rx="10"/>
-        <text class="wn-tag" x="606" y="41">Coordinates</text>
-        <text class="wn-title-lg" x="606" y="66">Ambulance owner</text>
-
-        <!-- Driver -->
-        <rect class="wn-box-actor" x="880" y="20" width="160" height="70" rx="10"/>
-        <text class="wn-tag" x="896" y="41">Executes</text>
-        <text class="wn-title-lg" x="896" y="66">Driver</text>
-
-        <!-- Annotation: three channels -->
-        <text class="annot" x="420" y="138">↙ three channels, no single</text>
-        <text class="annot" x="440" y="156">record</text>
-
-        <!-- Channel nodes (middle row) -->
-        <rect class="wn-box" x="100" y="188" width="195" height="52" rx="10"/>
-        <text class="wn-tag" x="116" y="204">Channel</text>
-        <text class="wn-title" x="116" y="228">Calls + WhatsApp</text>
-
-        <rect class="wn-box" x="768" y="188" width="160" height="52" rx="10"/>
-        <text class="wn-tag" x="784" y="204">Channel</text>
-        <text class="wn-title" x="784" y="228">Paper notes</text>
-
-        <!-- Annotation: no status -->
-        <text class="annot" x="420" y="235">↙ no status, no ETA</text>
-
-        <!-- Bottom outcome nodes -->
-        <rect class="wn-box" x="100" y="278" width="210" height="60" rx="10"/>
-        <text class="wn-tag" x="116" y="297">Stays anxious</text>
-        <text class="wn-title-lg" x="116" y="322">Patient</text>
-
-        <rect class="wn-box" x="768" y="278" width="210" height="60" rx="10"/>
-        <text class="wn-tag" x="784" y="297">Loses sight</text>
-        <text class="wn-title-lg" x="784" y="322">Hospital tracking</text>
-      </svg>
-
-      <div class="wf-footer">
-        <div class="wf-label">FRICTION AT EVERY HANDOFF</div>
-        <div class="wf-caption">FIG. 01 · The pre-Merry workflow. Every node is a person, every line is a phone call or message.</div>
-      </div>
-    </div>
+  <div class="stat reveal" data-delay="2">
+    <div class="stat-num">36</div>
+    <div class="stat-label">concepts explored with 6-Ups across 6 screens</div>
   </div>
-
-  <!-- The system already existed -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">The context</p>
-    <p class="case-display">The system already existed. It just <span class="em">wasn't designed.</span></p>
-    <div class="two-col" style="gap:48px;margin-top:32px;">
-      <div>
-        <p>Merry Health had incident logs, unit tracking, and hospital capacity data. The problem was not missing data. It was that no one had designed the layer between the data and the coordinators who needed to act on it.</p>
-        <p>Each tool was built by a different team for a different purpose. The CAD for logging. The spreadsheet as a coordinator workaround. The phone lines because neither answered which hospital had a bed right now. Three tools, zero coordination.</p>
-      </div>
-      <div>
-        <p>The design challenge was not technical. It was: figure out what coordinators actually need to see, when they need to see it, and what action they need to take, all under operational pressure with no time to think. Nobody had attempted this. There was zero prior UX research on coordinator mental models in this context.</p>
-        <div class="insight" style="margin-top:28px;">"We don't need a better dashboard. We need to stop switching between three apps during a cardiac call."</div>
-      </div>
-    </div>
+  <div class="stat reveal" data-delay="3">
+    <div class="stat-num">4 wks</div>
+    <div class="stat-label">from discovery to final client handover</div>
   </div>
-
-  <!-- Role / engagement -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">The engagement</p>
-    <p class="case-display">Leading UX strategy under <span class="em">operational constraints.</span></p>
-    <p style="max-width:60ch;color:var(--ink-2);margin-top:24px;">Four weeks, cross-timezone. Two weeks of embedded research feeding directly into two weeks of design. No discovery-then-throw-over-wall. Every research step produced output the design step consumed immediately.</p>
-    <div class="role-table">
-      <div class="rt-key">Client</div><div class="rt-val">Vedaang · Merry Health</div>
-      <div class="rt-key">My role</div><div class="rt-val">Lead Designer: research, IA, interaction design, prototype, handoff</div>
-      <div class="rt-key">Team</div><div class="rt-val">1 designer, 1 PM, 2 engineers, 1 clinical ops advisor · cross-timezone</div>
-      <div class="rt-key">Timeline</div><div class="rt-val">4 weeks total · 2 weeks research + 2 weeks design to handoff</div>
-      <div class="rt-key">Research</div><div class="rt-val">4 coordinator shifts observed, 8 debrief interviews, 3 stakeholder sessions</div>
-    </div>
-  </div>
-
-  <!-- Research process -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">§ 05 · Research process</p>
-    <h2 class="serif" style="font-size:clamp(32px,4.5vw,54px);letter-spacing:-0.02em;line-height:1.1;max-width:14ch;margin-bottom:32px;">Understanding pressure before designing screens.</h2>
-    <p style="max-width:56ch;color:var(--ink-2);font-size:18px;line-height:1.6;">Five steps. Two weeks of research. Two weeks of design. No discovery-then-throw-over-wall. Every step fed the next.</p>
-    <div class="research-steps">
-      <div class="rs-item">
-        <div class="rs-n">STEP 01</div>
-        <div class="rs-t">Data audit</div>
-        <p class="rs-d">Identified the minimum operational data required to dispatch under pressure, without paralysis from a hundred fields.</p>
-      </div>
-      <div class="rs-item">
-        <div class="rs-n">STEP 02</div>
-        <div class="rs-t">User journey mapping</div>
-        <p class="rs-d">Mapped patient anxiety, admin overload, and driver communication gaps as one continuous story.</p>
-      </div>
-      <div class="rs-item">
-        <div class="rs-n">STEP 03</div>
-        <div class="rs-t">Product audit</div>
-        <p class="rs-d">Located the fragmented workflows, the broken visibility, and the operational trust deficit the existing tools couldn't address.</p>
-      </div>
-      <div class="rs-item">
-        <div class="rs-n">STEP 04</div>
-        <div class="rs-t">Scenario mapping</div>
-        <p class="rs-d">Built workflows around emergency dispatch, assignment, live tracking, delayed response, and confirmation loops.</p>
-      </div>
-      <div class="rs-item">
-        <div class="rs-n">STEP 05</div>
-        <div class="rs-t">Prioritization</div>
-        <p class="rs-d">Locked focus on the highest-impact operational bottlenecks. Resisted the urge to expand surface area.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Four insights -->
-  <div class="case-section reveal">
-    <h2 class="serif">Four insights reshaped the product direction.</h2>
-    <p class="lead">After four coordinator shifts and eight debrief interviews, four findings changed everything and simplified the solution considerably.</p>
-    <div class="insights-large">
-      <div class="il-item">
-        <div class="il-n">Insight 01</div>
-        <div class="il-t">Admins needed operational clarity, not more dashboards.</div>
-        <p class="il-d">What looks like a tooling problem on the surface is a clarity problem underneath. We didn't need richer charts. We needed a single screen that answered <em>"what's happening right now, and who's doing what?"</em></p>
-      </div>
-      <div class="il-item">
-        <div class="il-n">Insight 02</div>
-        <div class="il-t">Behavioral adoption mattered more than technical sophistication.</div>
-        <p class="il-d">Drivers were on feature phones. Admins were on WhatsApp. A "better" product that ignored where people already worked would be route-around'd on day one. We had to meet behavior where it lived.</p>
-      </div>
-      <div class="il-item">
-        <div class="il-n">Insight 03</div>
-        <div class="il-t">Drivers required low-complexity interaction models.</div>
-        <p class="il-d">One action per screen. Big tap targets. No multi-step decision trees mid-emergency. The driver's job is to drive. The product had to keep up with them, not the other way around.</p>
-      </div>
-      <div class="il-item">
-        <div class="il-n">Insight 04</div>
-        <div class="il-t">Trust had to exist before automation.</div>
-        <p class="il-d">No one would let an algorithm dispatch in their place until they trusted the system to be operationally accurate. Trust comes from consistency and visibility, not from feature labels.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Design principles: Behavior, Trust, Centralization, Adoption, Automation -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:32px;">Design principles</p>
-    <h2 class="serif" style="margin-bottom:40px;">Five principles every decision ran through.</h2>
-    <div class="principles-strip">
-      <div class="ps-item">
-        <div class="ps-keyword">Behavior</div>
-        <p class="ps-desc">Design around what people already do, not what they should do. Admins were on WhatsApp. Drivers were on cheap Androids. The product had to integrate with existing behavior, not replace it.</p>
-      </div>
-      <div class="ps-item">
-        <div class="ps-keyword">Trust</div>
-        <p class="ps-desc">Every recommendation had to be explainable. Coordinators only rely on a system they understand. Every suggestion shows its reasoning. Nothing happens without human confirmation.</p>
-      </div>
-      <div class="ps-item">
-        <div class="ps-keyword">Centralization</div>
-        <p class="ps-desc">Three tools became one screen. Every action a coordinator takes, every status update a driver sends, every bed count from a hospital: one place, one truth, no switching.</p>
-      </div>
-      <div class="ps-item">
-        <div class="ps-keyword">Adoption</div>
-        <p class="ps-desc">A system nobody uses does nothing. We made switching costs low, learning time under one shift, and immediate value obvious. Adoption was a design constraint, not an afterthought.</p>
-      </div>
-      <div class="ps-item">
-        <div class="ps-keyword">Automation</div>
-        <p class="ps-desc">Automation earns its place after trust is established. V1 suggests, never decides. Recommendations with visible reasoning build the trust that makes automation safe to introduce in V2.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Adaptive before automation -->
-  <div class="case-section reveal">
-    <h2 class="serif">Adaptive before automation.</h2>
-    <p class="lead">The system adapts to the coordinator. Automation comes only after the adaptive layer earns trust.</p>
-    <div class="adaptive-table">
-      <div class="at-head left">Automation-first thinking</div>
-      <div class="at-head">Adaptive-first thinking (what we built)</div>
-      <div class="at-l">"The system should auto-dispatch the optimal unit."</div>
-      <div class="at-r"><strong>System recommends the optimal unit with reasoning visible. Coordinator confirms in one tap.</strong> Authority stays with the human.</div>
-      <div class="at-l">"Alerts should fire automatically when an incident is unassigned for 2+ minutes."</div>
-      <div class="at-r"><strong>Unassigned incidents visually escalate in place</strong>, growing in prominence and changing colour. No modal interruptions during active dispatching.</div>
-      <div class="at-l">"Shift handoff should generate an automated report."</div>
-      <div class="at-r"><strong>Handoff mode surfaces what the incoming coordinator needs to know immediately.</strong> Generated from live data, reviewed and accepted before transfer.</div>
-      <div class="at-l">"The system should learn from past dispatch patterns."</div>
-      <div class="at-r"><strong>Not in v1.</strong> Trust in the recommendation engine had to be established first. Learning comes after coordinators believe the system understands the domain.</div>
-    </div>
-  </div>
-
-  <!-- Pull quote (once only) -->
-  <div class="case-pull-quote reveal">
-    <blockquote>"The best operational systems don't just facilitate. They <span class="em">orchestrate.</span>"</blockquote>
-    <div class="attr">Design principle, Merry Health coordination system, 2025</div>
-  </div>
-
-  <!-- § 08 Solution architecture -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">§ 08 · Solution architecture</p>
-    <h2 class="serif" style="font-size:clamp(32px,4.5vw,54px);letter-spacing:-0.02em;line-height:1.1;max-width:16ch;margin-bottom:24px;">One operational source of truth.</h2>
-    <p style="max-width:56ch;color:var(--ink-2);font-size:17px;line-height:1.65;">Three solution layers, built to layer on top of existing behavior, not replace it.</p>
-    <div class="solution-cards">
-      <div class="sol-card">
-        <div class="sol-n">Solution 01</div>
-        <div class="sol-t">WhatsApp-assisted coordination</div>
-        <p class="sol-d">Preserve the existing behavior. Capture information through the channel admins already use, then route it into the system automatically.</p>
-      </div>
-      <div class="sol-card">
-        <div class="sol-n">Solution 02</div>
-        <div class="sol-t">Centralized operational dashboard</div>
-        <p class="sol-d">A single coordination layer. Real-time visibility, audit-friendly workflows, and incident processing in one place.</p>
-      </div>
-      <div class="sol-card">
-        <div class="sol-n">Solution 03</div>
-        <div class="sol-t">Dashboard + WhatsApp integration</div>
-        <p class="sol-d">An alternate coordination flow that fuses booking and tracking through the channel admins trust. Reduced communication delays.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Before vs after architecture -->
-  <div class="case-section reveal">
-    <h2 class="serif" style="margin-bottom:40px;">Before vs. after architecture.</h2>
-    <div class="arch-compare">
-      <div class="ac-head left">Before (3 disconnected tools)</div>
-      <div class="ac-head">After (1 unified system)</div>
-      <div class="ac-body left">
-        <div class="ac-row"><span class="ac-icon">✕</span>Incident logged in CAD, unit availability in spreadsheet, hospital capacity via phone</div>
-        <div class="ac-row"><span class="ac-icon">✕</span>Driver updates sent through WhatsApp to admin, no system record</div>
-        <div class="ac-row"><span class="ac-icon">✕</span>Shift handoff verbal, no structured summary, incidents dropped</div>
-        <div class="ac-row"><span class="ac-icon">✕</span>Hospital capacity confirmed by phone call at dispatch time</div>
-        <div class="ac-row"><span class="ac-icon">✕</span>No visibility into which unit is closest without checking spreadsheet separately</div>
-      </div>
-      <div class="ac-body right">
-        <div class="ac-row"><span class="ac-icon" style="color:#2ea44f;">✓</span><strong>All three data sources merged into one live screen.</strong> One tab, full picture.</div>
-        <div class="ac-row"><span class="ac-icon" style="color:#2ea44f;">✓</span><strong>Driver status updates through companion app</strong>, synced in real time to admin dashboard.</div>
-        <div class="ac-row"><span class="ac-icon" style="color:#2ea44f;">✓</span><strong>Structured handoff summary</strong> auto-generated, reviewed and accepted before shift transfer.</div>
-        <div class="ac-row"><span class="ac-icon" style="color:#2ea44f;">✓</span><strong>Hospital capacity shown directly on dispatch recommendation card.</strong> No phone call needed.</div>
-        <div class="ac-row"><span class="ac-icon" style="color:#2ea44f;">✓</span><strong>Best-match unit surfaced by ETA + capacity + on-duty status</strong>, calculated automatically.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Screen 01: Incident Queue -->
-  <div class="case-section reveal" style="padding:0;">
-    <div class="screen-section">
-      <div class="ss-text">
-        <div class="ss-eyebrow">SCREEN 01 · INCIDENT QUEUE</div>
-        <h3>The first screen the admin sees.</h3>
-        <p>Priority-first, time-elapsed visible, and the next action one tap away. The queue is the home screen. Everything else hangs off it.</p>
-        <ul class="ss-bullets">
-          <li>Color-coded priority replaces a sorting modal.</li>
-          <li>Time-elapsed visible without hover. It's the most-asked question.</li>
-          <li>Action button right-aligned for one-handed dispatch.</li>
-        </ul>
-      </div>
-      <div>
-        <div class="inc-queue">
-          <div class="iq-header">
-            <div class="iq-live">04 INCIDENTS · LIVE</div>
-            <span>PUNE · 14:08</span>
-          </div>
-          <div class="iq-row active">
-            <div class="iq-badge p1">P1</div>
-            <div class="iq-info"><div class="iq-patient">M · 58 yrs · Cardiac</div><div class="iq-loc">Koregaon Park</div></div>
-            <div class="iq-elapsed">02:14</div>
-            <div class="iq-btn dispatch">Dispatch →</div>
-          </div>
-          <div class="iq-row">
-            <div class="iq-badge p2">P2</div>
-            <div class="iq-info"><div class="iq-patient">F · 24 yrs · Accident</div><div class="iq-loc">FC Road</div></div>
-            <div class="iq-elapsed">04:32</div>
-            <div class="iq-btn assign">Assign →</div>
-          </div>
-          <div class="iq-row">
-            <div class="iq-badge p2">P2</div>
-            <div class="iq-info"><div class="iq-patient">F · 31 yrs · Obstetric</div><div class="iq-loc">Aundh</div></div>
-            <div class="iq-elapsed">06:11</div>
-            <div class="iq-btn assign">Assign →</div>
-          </div>
-          <div class="iq-row">
-            <div class="iq-badge p3">P3</div>
-            <div class="iq-info"><div class="iq-patient">M · 67 yrs · Transfer</div><div class="iq-loc">Kalyani Nagar</div></div>
-            <div class="iq-elapsed">09:46</div>
-            <div class="iq-btn schedule">Schedule</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Screen 02: Ambulance Assignment -->
-  <div class="case-section reveal" style="padding:0;">
-    <div class="screen-section reverse">
-      <div class="ss-text">
-        <div class="ss-eyebrow">SCREEN 02 · AMBULANCE ASSIGNMENT</div>
-        <h3>The decision under pressure.</h3>
-        <p>The system suggests the closest unit but never auto-dispatches. The admin keeps agency, but with the cognitive load lifted off their shoulders.</p>
-        <ul class="ss-bullets">
-          <li>Best-match unit visually surfaced. Override is one tap.</li>
-          <li>ETA + traffic + on-duty status fused into a single number.</li>
-          <li>Final action requires intent: a tap, not a hover.</li>
-        </ul>
-      </div>
-      <div>
-        <div class="assign-mock">
-          <div class="am-header">ASSIGN · P1 INCIDENT</div>
-          <div class="am-incident">
-            <div class="ami-patient">M · 58 yrs · Cardiac</div>
-            <div class="ami-loc">KOREGAON PARK · 02:14 ELAPSED</div>
-          </div>
-          <div class="am-units-head">SUGGESTED UNITS · BY ETA</div>
-          <div class="am-unit-row top">
-            <div class="am-unit-code">U14</div>
-            <div class="am-unit-info"><div class="am-unit-name">Unit 14</div><div class="am-unit-driver">Driver: Suresh K · ALS</div></div>
-            <div class="am-unit-eta" style="color:#c8bfb0;">4 min</div>
-            <div class="am-unit-send">Send</div>
-          </div>
-          <div class="am-unit-row other">
-            <div class="am-unit-code">U22</div>
-            <div class="am-unit-info"><div class="am-unit-name">Unit 22</div><div class="am-unit-driver">Driver: Ravi M · BLS</div></div>
-            <div class="am-unit-eta">7 min</div>
-            <div class="am-unit-send">Send</div>
-          </div>
-          <div class="am-unit-row other" style="margin-bottom:16px;">
-            <div class="am-unit-code">U09</div>
-            <div class="am-unit-info"><div class="am-unit-name">Unit 09</div><div class="am-unit-driver">Driver: Anil R · BLS</div></div>
-            <div class="am-unit-eta">11 min</div>
-            <div class="am-unit-send">Send</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Screen 03: Driver companion -->
-  <div class="case-section reveal" style="padding:0;">
-    <div class="screen-section">
-      <div class="ss-text">
-        <div class="ss-eyebrow">SCREEN 03 · DRIVER COMPANION</div>
-        <h3>One screen, one action.</h3>
-        <p>A progressive-web-app that runs on feature phones and low-spec Android. Stage-by-stage flow: accept, en-route, arrived, transporting, handoff. Nothing optional, nothing decorative.</p>
-        <ul class="ss-bullets">
-          <li>Each stage has exactly one tap target.</li>
-          <li>Patient info read-only. No edit during transport.</li>
-          <li>Hospital + admin auto-synced. Driver doesn't notify.</li>
-        </ul>
-      </div>
-      <div class="driver-mock-wrap">
-        <div class="driver-mock">
-          <div class="dm-header">
-            <div class="dm-active">ACTIVE · P1</div>
-            <div class="dm-patient">M · 58 yrs<br>Cardiac</div>
-            <div class="dm-loc">KOREGAON PARK · ETA 4 MIN</div>
-          </div>
-          <div class="dm-steps">
-            <div class="dm-step"><div class="dm-step-dot done"></div><span class="dm-step-label">Dispatch accepted</span></div>
-            <div class="dm-step"><div class="dm-step-dot active"></div><span class="dm-step-label active">En-route to scene</span></div>
-            <div class="dm-step"><div class="dm-step-dot pending"></div><span class="dm-step-label pending">Arrived · patient onboard</span></div>
-            <div class="dm-step"><div class="dm-step-dot pending"></div><span class="dm-step-label pending">Transport to hospital</span></div>
-            <div class="dm-step"><div class="dm-step-dot pending"></div><span class="dm-step-label pending">Handoff complete</span></div>
-          </div>
-          <div class="dm-btn">I've arrived</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Designed for moments of stress -->
-  <div class="case-section reveal">
-    <h2 class="serif">Designed for moments of stress.</h2>
-    <p class="lead">Every design decision was tested against the worst-case scenario: surge mode, mass casualty, shift changeover with active incidents. If a feature didn't hold up under stress, it didn't ship.</p>
-    <div class="stress-grid">
-      <div class="sg-item">
-        <div class="sg-n">Stress test 01</div>
-        <div class="sg-t">Surge mode</div>
-        <p>One-click mode strips the interface to essential controls. Non-critical notifications hide, secondary panels collapse, incident cards enlarge. Designed for 8 to 12 incident load at MCI scale.</p>
-      </div>
-      <div class="sg-item">
-        <div class="sg-n">Stress test 02</div>
-        <div class="sg-t">Zero reading time</div>
-        <p>Coordinators process by colour and position during surge, not by text. Every status is a colour. Every priority is a badge. The screen communicates in under a second without requiring a single word to be read.</p>
-      </div>
-      <div class="sg-item">
-        <div class="sg-n">Stress test 03</div>
-        <div class="sg-t">Shift handoff under load</div>
-        <p>Structured handoff mode generates a live summary at shift change: active incidents, units in transit, pending decisions, unconfirmed beds. Incoming coordinator reviews and accepts. No verbal briefing from memory.</p>
-      </div>
-      <div class="sg-item">
-        <div class="sg-n">Stress test 04</div>
-        <div class="sg-t">Hospital capacity failure</div>
-        <p>If the nearest hospital is at capacity for the incident type, the system reroutes to the next available before dispatch is confirmed. No phone calls. No mid-dispatch discovery.</p>
-      </div>
-      <div class="sg-item">
-        <div class="sg-n">Stress test 05</div>
-        <div class="sg-t">Feature phone constraints</div>
-        <p>Driver companion runs as a PWA on sub-$80 Android devices. No animations, no complex layouts, no gestures. One button per state. Works at 2G speeds with occasional connectivity drops.</p>
-      </div>
-      <div class="sg-item">
-        <div class="sg-n">Stress test 06</div>
-        <div class="sg-t">One-tap undo window</div>
-        <p>Dispatch is a single tap with a 5-second undo window. No confirmation dialogs on the critical path. For a decision made 40 times per shift, removing one click saves minutes across the day.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Outcomes -->
-  <div class="case-section reveal">
-    <p class="eyebrow" style="margin-bottom:40px;">Results</p>
-    <h2 class="serif">From fragmented coordination to operational clarity.</h2>
-    <div class="stats">
-      <div class="stat"><div class="n serif"><span class="em">↓</span>68<span class="em">%</span></div><div class="l">Reduction in average dispatch decision time in usability testing</div></div>
-      <div class="stat"><div class="n serif"><span class="em">↓</span>3<span class="em">×</span></div><div class="l">Fewer system switches per incident vs. the legacy three-tool workflow</div></div>
-      <div class="stat"><div class="n serif">100<span class="em">%</span></div><div class="l">Coordinator trust score: "would use this in a real shift"</div></div>
-      <div class="stat"><div class="n serif">0</div><div class="l">Incidents dropped in structured handoff testing vs. 2 to 3 per shift previously</div></div>
-    </div>
-  </div>
-
-  <!-- Constraints shaped the product -->
-  <div class="case-section reveal">
-    <h2 class="serif">Constraints shaped the product.</h2>
-    <p class="lead">Three constraints that most designers would try to work around became the product's core strengths instead.</p>
-    <div class="problem-list">
-      <div class="it">
-        <div class="lab">Constraint 01</div>
-        <h4 class="serif">Aging hardware</h4>
-        <p>The dispatch centre runs on machines from 2016. No animation-heavy UIs, no live map rerendering. The constraint forced the design into a layout that's genuinely faster to parse because it has no visual noise.</p>
-        <div class="insight">"If it looks fancy, it probably won't run. We've been burned by that before."</div>
-      </div>
-      <div class="it">
-        <div class="lab">Constraint 02</div>
-        <h4 class="serif">No time for training</h4>
-        <p>Coordinators can't take training days. The system had to be learnable in one shift. This forced every interaction to be self-evident. Labelling and layout carry all the weight with no tooltips or onboarding flows.</p>
-        <div class="insight">"We don't have time to train people. They figure it out on the job or they don't."</div>
-      </div>
-      <div class="it">
-        <div class="lab">Constraint 03</div>
-        <h4 class="serif">Experts, not beginners</h4>
-        <p>The users are domain experts. They don't need the system to explain emergency medicine. They need it to remove friction between their expertise and the outcome. Every "helpful" affordance that slowed an expert got cut.</p>
-        <div class="insight">"I've done this for 11 years. Don't make me click through a tutorial."</div>
-      </div>
-      <div class="it">
-        <div class="lab">Constraint 04</div>
-        <h4 class="serif">Four weeks, not four months</h4>
-        <p>A 4-week timeline forced ruthless prioritisation. One scoring rubric: impact on decision speed × frequency of use × feasibility. Anything not in the top 40% was explicitly deferred with a reason on record.</p>
-        <div class="insight">Scope discipline is a design skill. Most of what got deferred was correct prioritisation, not failure.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- What this project taught me -->
-  <div class="case-section reveal">
-    <h2 class="serif">What this project taught me.</h2>
-    <p class="lead">Three things I now apply on every high-stakes operational design problem.</p>
-    <div class="learned-grid">
-      <div class="lg-item">
-        <div class="lg-n">Lesson 01</div>
-        <div class="lg-t">Research in the environment, not about it</div>
-        <p>Reading about emergency coordination and observing it are two entirely different inputs. The four shifts I spent embedded changed almost every assumption I brought in. No desk research would have surfaced that coordinators don't read during surge.</p>
-      </div>
-      <div class="lg-item">
-        <div class="lg-n">Lesson 02</div>
-        <div class="lg-t">Transparent systems earn trust. Opaque ones get ignored.</div>
-        <p>Every time the design surfaced a recommendation without showing its reasoning, coordinators said they'd override it. Make the reasoning visible and experienced professionals will start relying on the system.</p>
-      </div>
-      <div class="lg-item">
-        <div class="lg-n">Lesson 03</div>
-        <div class="lg-t">Constraints are design material, not obstacles</div>
-        <p>The aging hardware constraint I initially tried to work around became the reason the final interface was faster to parse than anything I'd have built without it. The no-training constraint produced more intuitive labelling than any usability test alone.</p>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-<div class="next-case wrap reveal">
-  <span class="eyebrow">Next case study</span>
-  <h3 class="serif"><a href="case-educaitors.html">Designing trust into AI-graded <span class="em">academic submission</span></a></h3>
+<!-- ORANGE INTRO WITH HERO IMAGE -->
+<div class="o-section">
+  <figure class="reveal">
+    <img class="o-hero-img" src="uploads/merry/526eb5fdb355eeab363ed6a610c833d2.jpg" alt="Ride Details: ride health summary, live vehicle map and event timeline side by side">
+  </figure>
 </div>
 
+<!-- HOW TO READ / NAV PILLS -->
+<div class="htr">
+  <div class="htr-label">YOU ARE HERE</div>
+  <div class="htr-pills">
+    <a href="#s02">02 Business</a>
+    <a href="#s03">03 The gap</a>
+    <a href="#s04">04 Stakeholders</a>
+    <a href="#s05">05 Process</a>
+    <a href="#s06">06 Audit</a>
+    <a href="#s07">07 Strategy shift</a>
+    <a href="#s08">08 Strategy</a>
+    <a href="#s09">09 Workflow</a>
+    <a href="#s10">10 Design decisions</a>
+    <a href="#s11">11 Experience</a>
+    <a href="#s12">12 Outcome</a>
+    <a href="#s13">13 Constraints</a>
+    <a href="#s14">14 Reflection</a>
+  </div>
+</div>
+
+<!-- BODY GRID -->
+<div class="body-grid">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Section navigation">
+    <div class="sidebar-you">YOU ARE HERE</div>
+    <a class="sidebar-link" href="#s02"><span>02</span> The business</a>
+    <a class="sidebar-link" href="#s03"><span>03</span> The gap</a>
+    <a class="sidebar-link" href="#s04"><span>04</span> Who's in the chain</a>
+    <a class="sidebar-link" href="#s05"><span>05</span> Process</a>
+    <a class="sidebar-link" href="#s06"><span>06</span> The audit</a>
+    <a class="sidebar-link" href="#s07"><span>07</span> What changed</a>
+    <a class="sidebar-link" href="#s08"><span>08</span> Strategy</a>
+    <a class="sidebar-link" href="#s09"><span>09</span> Workflow</a>
+    <a class="sidebar-link" href="#s10"><span>10</span> Design decisions</a>
+    <a class="sidebar-link" href="#s11"><span>11</span> The experience</a>
+    <a class="sidebar-link" href="#s12"><span>12</span> Outcome</a>
+    <a class="sidebar-link" href="#s13"><span>13</span> Constraints</a>
+    <a class="sidebar-link" href="#s14"><span>14</span> Reflection</a>
+    <div class="sidebar-progress" style="margin-top:20px"><span class="sidebar-bar" style="width:0%" id="progress-bar"></span></div>
+    <div class="sidebar-time" style="margin-top:8px">~12 min read</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- 02 THE BUSINESS -->
+    <article id="s02">
+      <div class="art-eyebrow">02 — THE BUSINESS</div>
+      <h2 class="art-h">A B2B product whose revenue depends on hospitals actually using it.</h2>
+      <p class="art-p">Merry Health connects Tier-2 and Tier-3 private hospitals (200+ beds) with ambulance partners. It sells to hospital heads of sales and marketing — faster pickups from smaller-town catchments mean more admissions.</p>
+      <p class="art-p">About 30 hospitals were live, and 50–60% of rides were hospital-to-hospital transfers. The pricing history explains the stakes: a <span class="hl">₹3,000/month subscription failed</span> because hospitals are price-sensitive. Merry Health moved to a <span class="hl">₹200 platform fee per ride</span>, so revenue now scales with every request that goes through the system — and disappears with every one that doesn't.</p>
+      <div class="close-grid" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        <div class="close-card close-card--accent reveal">
+          <div class="close-num" style="color:var(--orange-deep)">GOAL 01</div>
+          <div class="close-h">Grow ride volume on-platform</div>
+          <div class="close-p">More rides through the system = more revenue. Every off-platform WhatsApp request is lost billing.</div>
+        </div>
+        <div class="close-card reveal" data-delay="1">
+          <div class="close-num">GOAL 02</div>
+          <div class="close-h">Clean, timestamped data</div>
+          <div class="close-p">Reporting, billing and SLAs all depend on records being accurate — not filled in after the shift.</div>
+        </div>
+        <div class="close-card reveal" data-delay="2">
+          <div class="close-num">GOAL 03</div>
+          <div class="close-h">Sign up more hospitals</div>
+          <div class="close-p">Prove reliability to hospital management. A platform that ops teams actually use is the only pitch that works.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 03 THE GAP -->
+    <article id="s03">
+      <div class="art-eyebrow">03 — THE GAP</div>
+      <h2 class="art-h">The workflow on paper and the workflow on the ground were two different systems.</h2>
+      <div class="flow-compare reveal">
+        <div class="flow-box flow-box--old">
+          <div class="flow-label flow-label--old">DESIGNED FLOW · ~5% OF REQUESTS</div>
+          <div class="flow-step"><span class="flow-arrow">→</span><span>Admin logs in, dashboard kept open at ED desk</span></div>
+          <div class="flow-step"><span class="flow-arrow">→</span><span>Add booking: phone, Maps pin, ambulance type</span></div>
+          <div class="flow-step"><span class="flow-arrow">→</span><span>Ops assigns nearest ambulance from recommended list</span></div>
+          <div class="flow-step"><span class="flow-arrow">→</span><span>Statuses update — 5-step ladder to ride completed</span></div>
+        </div>
+        <div class="flow-box flow-box--new">
+          <div class="flow-label flow-label--new">ACTUAL FLOW · ~95% OF REQUESTS</div>
+          <div class="flow-step"><span class="flow-arrow">→</span><span>Admin types name, area, phone into WhatsApp group</span></div>
+          <div class="flow-step"><span class="flow-arrow">→</span><span>Merry Health ops re-enters it into the dashboard</span></div>
+          <div class="flow-step"><span class="flow-arrow">→</span><span>Driver gets called on feature phone, verbal confirmation</span></div>
+          <div class="flow-step"><span class="flow-arrow">→</span><span>Statuses toggled manually, posted back to WhatsApp</span></div>
+        </div>
+      </div>
+      <div class="fig reveal">
+        <div class="fig-wrap">
+          <img class="fig-img" src="uploads/merry/9d6d7f08a8582fc273a348c04730d2e0.jpg" alt="Current system flow from patient call to closed case — manual loops flagged in red">
+        </div>
+        <div class="fig-cap"><span>FIG. 1 — THE CURRENT SYSTEM FLOW, MANUAL LOOPS FLAGGED IN RED</span></div>
+      </div>
+      <h3 class="art-h3">Why it happened, and what it cost.</h3>
+      <div class="close-grid" style="grid-template-columns:1fr 1fr">
+        <div class="close-card reveal">
+          <div class="close-num">WHY IT HAPPENED</div>
+          <div class="close-p">Emergency staff are overstretched, on the move and rarely at a desk. Many aren't comfortable with digital tools — WhatsApp needs no learning. No regulation requires digital tracking, so the dashboard was a nice-to-have.</div>
+        </div>
+        <div class="close-card close-card--accent reveal" data-delay="1">
+          <div class="close-num" style="color:var(--orange-deep)">WHAT IT COST</div>
+          <div class="close-p">The ops team became a human integration layer, 24×7. Timestamps — and the reports and invoices built on them — were only as good as manual entry. Hospitals saw the dashboard as a month-end report, not a live tool.</div>
+        </div>
+      </div>
+      <div class="art-next reveal">Two incidents that shaped the data model.<br>
+        <span style="font-weight:400;font-size:15px;color:var(--sub)">01 A 130 kg patient on a third floor with no lift and narrow stairs. Lift, floor and stretcher-fit became booking fields.<br>02 An ambulance dispatched without oxygen after a verbal miscommunication. Equipment became an explicit selection, never a phone-call detail.</span>
+      </div>
+    </article>
+
+    <!-- 04 STAKEHOLDERS -->
+    <article id="s04">
+      <div class="art-eyebrow">04 — WHO'S IN THE CHAIN</div>
+      <h2 class="art-h">Ten actors touch every ride. One of them decides whether the product gets used.</h2>
+      <p class="art-p">I mapped every stakeholder by how directly they affect adoption, dispatch speed and data quality. <span class="hl">Hospital admins came out as the lever</span> — they start every request, so their channel choice decides whether a ride is recorded, billed and tracked at all.</p>
+      <div class="stake-tier reveal">
+        <div class="stake-head"><span class="stake-head-label">PRIMARY · DESIGN FOR NOW</span><span class="stake-desc">— Hospital admins, Ambulance drivers, Patients &amp; families</span></div>
+        <div class="stake-body">These directly decide adoption, response time and trust. The hospital admin starts every request; their channel choice is the product's adoption rate. Drivers determine tracking reliability. Patients and families set the bar for what "good" looks like.</div>
+      </div>
+      <div class="stake-tier reveal" data-delay="1">
+        <div class="stake-head" style="background:var(--orange-deep)"><span class="stake-head-label">SECONDARY · DESIGN WITH</span><span class="stake-desc">— Merry Health ops team, Hospital management</span></div>
+        <div class="stake-body">They run the backend and sign renewals but aren't the focus of phase 1. The ops team is the most affected by the current manual process — their workload drops directly when admins log requests on-platform.</div>
+      </div>
+      <div class="stake-tier reveal" data-delay="2">
+        <div class="stake-head" style="background:#5F5F5F"><span class="stake-head-label">TERTIARY · INDIRECT</span><span class="stake-desc">— Marketing desks, Call centres, Fleet owners, Hospital IT, Regulators</span></div>
+        <div class="stake-body">They affect data quality at the edges or matter at scale. Not the primary design target, but their constraints (feature phones, compliance requirements, billing cycles) shaped every recommendation.</div>
+      </div>
+    </article>
+
+    <!-- 05 PROCESS -->
+    <article id="s05">
+      <div class="art-eyebrow">05 — PROCESS</div>
+      <h2 class="art-h">Understand the decisions before designing the screens.</h2>
+      <p class="art-p">Every step produced an artifact the next one depended on. Research came before any screens — an emergency workflow you don't understand will fail in ways no usability test catches.</p>
+      <div class="num-list">
+        <div class="num-row reveal">
+          <span class="num">01</span>
+          <div><strong>Admin decision map</strong><br><span style="font-size:15px;color:var(--sub)">Every decision a hospital admin makes, with the information each needs, why it matters, the channel (WhatsApp, call, dashboard), who they talk to, the actions taken, how they verify, and what "done" means.</span></div>
+        </div>
+        <div class="num-row reveal" data-delay="1">
+          <span class="num">02</span>
+          <div><strong>Data audit</strong><br><span style="font-size:15px;color:var(--sub)">Every data point mapped to source, user, purpose and frequency — then cut to the minimum needed to dispatch: phone number, pickup pin, ambulance type. Everything else became conditional or deferred.</span></div>
+        </div>
+        <div class="num-row reveal" data-delay="2">
+          <span class="num">03</span>
+          <div><strong>Scenario &amp; journey mapping</strong><br><span style="font-size:15px;color:var(--sub)">A patient collapses at home in a Tier-2 city. I traced the admin's 8-step flow, covering touchpoints, thoughts, feelings and expectations, then mapped the ideal journey for high-priority scenarios.</span></div>
+        </div>
+        <div class="num-row reveal" data-delay="3">
+          <span class="num">04</span>
+          <div><strong>Phase-wise system audit</strong><br><span style="font-size:15px;color:var(--sub)">UX and UI issues in each dispatch phase, scored by probability × impact and checked against Nielsen's heuristics, then merged into a severity for each phase.</span></div>
+        </div>
+        <div class="num-row reveal" data-delay="4">
+          <span class="num">05</span>
+          <div><strong>Workflow, design problems &amp; opportunities</strong><br><span style="font-size:15px;color:var(--sub)">A screen-level workflow with happy paths, error states, design problems ("how might we…") and design opportunities for every screen.</span></div>
+        </div>
+        <div class="num-row reveal" data-delay="5">
+          <span class="num">06</span>
+          <div><strong>6-Ups ideation → hi-fi</strong><br><span style="font-size:15px;color:var(--sub)">Six concepts for each screen, judged on pros, cons and heuristics. I chose a hybrid for each, then produced annotated sketches, UI specs, a hi-fi prototype and the final client walkthrough.</span></div>
+        </div>
+      </div>
+      <div class="fig reveal">
+        <div class="fig-wrap">
+          <img class="fig-img" src="uploads/merry/7278a56586f36b66c7e3fcfc63bbd022.jpg" alt="Step 05 in practice: Scenario 2, multiple ongoing rides — every screen with its goal, error states, design problems and opportunities">
+        </div>
+        <div class="fig-cap"><span>FIG. 2 — STEP 05 IN PRACTICE: SCENARIO 2, MULTIPLE ONGOING RIDES. EVERY SCREEN WITH ITS GOAL, ERROR STATES, DESIGN PROBLEMS AND OPPORTUNITIES</span></div>
+      </div>
+    </article>
+
+    <!-- 06 THE AUDIT -->
+    <article id="s06">
+      <div class="art-eyebrow">06 — THE AUDIT</div>
+      <h2 class="art-h">Three of five phases were critical, and none of them were UI problems.</h2>
+      <p class="art-p">I set myself one rule for recommendations: <span class="hl">no interface words</span>. Button, tab, menu, icon, color, layout were all off-limits. Each recommendation had to state the failing workflow step, how it should be restructured, the expected impact, and what it fixes in other phases.</p>
+      <div class="audit-table reveal">
+        <div class="audit-head">
+          <div>PHASE</div>
+          <div>SEVERITY</div>
+          <div>WHAT BROKE</div>
+          <div>WORKFLOW RECOMMENDATION</div>
+        </div>
+        <div class="audit-row">
+          <div class="audit-cell audit-phase">Intake</div>
+          <div class="audit-cell"><span class="sev-critical">CRITICAL</span></div>
+          <div class="audit-cell">Details go on paper first, then get retyped. WhatsApp requests are re-entered. Simultaneous calls overwrite each other.</div>
+          <div class="audit-cell">Progressive capture: dispatch on the minimum data, complete the rest after the emergency is under control, and never lose an entry to an interruption.</div>
+        </div>
+        <div class="audit-row">
+          <div class="audit-cell audit-phase">Assign</div>
+          <div class="audit-cell"><span class="sev-critical">CRITICAL</span></div>
+          <div class="audit-cell">Ops call driver after driver. Urgency lives in someone's memory. Hospitals get no confirmation that dispatch happened.</div>
+          <div class="audit-cell">System-led assignment with urgency surfaced up front, plus confirmation sent back to the hospital the moment a driver accepts.</div>
+        </div>
+        <div class="audit-row">
+          <div class="audit-cell audit-phase">En route</div>
+          <div class="audit-cell"><span class="sev-critical">CRITICAL</span></div>
+          <div class="audit-cell">No live tracking. Admins chase drivers for status. Active rides are buried in a flat table.</div>
+          <div class="audit-cell">Continuous tracking that pushes status changes and exceptions to the admin, so nobody has to call to find out.</div>
+        </div>
+        <div class="audit-row">
+          <div class="audit-cell audit-phase">Handover</div>
+          <div class="audit-cell"><span class="sev-major">MAJOR</span></div>
+          <div class="audit-cell">Arrival is confirmed by hand, so the timestamps behind SLAs and billing are unreliable.</div>
+          <div class="audit-cell">A verified handover step: arrival confirmed by geofence where it works, by a structured checklist where it doesn't.</div>
+        </div>
+        <div class="audit-row">
+          <div class="audit-cell audit-phase">Close case</div>
+          <div class="audit-cell"><span class="sev-workaround">WORKAROUND</span></div>
+          <div class="audit-cell">Bulk closures at end of shift. Unchecked closures overwrite data. Reports don't match across hospitals.</div>
+          <div class="audit-cell">Closure as a validation step: the system flags missing or conflicting events before a trip can be closed.</div>
+        </div>
+      </div>
+      <p class="art-p" style="font-size:14px;color:var(--sub)">Severity = probability × impact. Critical phases directly affect whether the ambulance arrives on time; Major and Workaround affect data, reporting and accountability.</p>
+      <div class="fig reveal">
+        <div class="fig-wrap">
+          <img class="fig-img" src="uploads/merry/c8357685ab54cded77552e42fbed48aa.jpg" alt="Table mapping each inefficiency to an observed failure, its impact across phases, and the workflow recommendation">
+        </div>
+        <div class="fig-cap"><span>FIG. 3 — PHASE-WISE AUDIT: INEFFICIENCY MAPPED TO OBSERVED FAILURE AND WORKFLOW RECOMMENDATION</span></div>
+      </div>
+    </article>
+
+    <!-- 07 WHAT CHANGED -->
+    <article id="s07">
+      <div class="art-eyebrow">07 — WHAT CHANGED IN THE PLAN</div>
+      <h2 class="art-h">Adoption before automation.</h2>
+      <p class="art-p">The brief pointed at automation — the team's first idea was AI-assisted dispatch: record the hospital's call, convert speech to text, auto-fill and auto-assign. In the vision call it fell apart. It needed integration with hospital phone systems, low-confidence fields would bring humans back in to verify, drivers didn't trust automated calls, and a voice note still can't give a precise pickup pin.</p>
+      <div class="bq reveal">Instead of replacing behaviour, the product had to absorb it: meet admins in WhatsApp, structure what they already send, and earn trust in the record before adding intelligence on top.</div>
+      <div class="phase-grid reveal">
+        <div class="phase-card phase-card--now">
+          <div class="phase-num">PHASE 1 · NOW</div>
+          <div class="phase-title">Stabilise &amp; drive adoption</div>
+          <div class="phase-desc">Dashboard + WhatsApp sync, reliable tracking, less manual dependency.</div>
+        </div>
+        <div class="phase-card reveal" data-delay="1">
+          <div class="phase-num">PHASE 2 · NEXT</div>
+          <div class="phase-title">Assistive automation</div>
+          <div class="phase-desc">Structured WhatsApp entry, voice input for staff, rule-based dispatch suggestions.</div>
+        </div>
+        <div class="phase-card reveal" data-delay="2">
+          <div class="phase-num">PHASE 3 · GATED</div>
+          <div class="phase-title">Voice intelligence</div>
+          <div class="phase-desc">AI call-to-dispatch — only once adoption reaches 70% and manual fallbacks are tested.</div>
+        </div>
+      </div>
+      <div class="fig reveal">
+        <div class="fig-wrap">
+          <img class="fig-img" src="uploads/merry/4916b06c65fce955c1862b7a8d49968d.jpg" alt="Three ideal-state system flows side by side: Dashboard + WhatsApp integration, WhatsApp only, and Patient-to-system maximum automation">
+        </div>
+        <div class="fig-cap"><span>FIG. 4 — THREE IDEAL FLOWS EXPLORED: DASHBOARD + WHATSAPP INTEGRATION, WHATSAPP ONLY, AND PATIENT-TO-SYSTEM MAXIMUM AUTOMATION</span></div>
+      </div>
+    </article>
+
+    <!-- 08 STRATEGY -->
+    <article id="s08">
+      <div class="art-eyebrow">08 — STRATEGY</div>
+      <h2 class="art-h">Three decisions, signed off by the client.</h2>
+      <div class="dc reveal">
+        <div class="dc-head">
+          <div class="dc-num">1</div>
+          <div class="dc-tag">DECISION</div>
+          <div class="dc-title">WhatsApp stays the front door.</div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <div class="dc-kicker">THE DECISION</div>
+            <div class="dc-text">Requests and status broadcasts flow through the channel admins already use. Fighting it had already cost the product its adoption.</div>
+          </div>
+          <div class="dc-cost">
+            <div class="dc-kicker-trade">WHY IT MATTERS</div>
+            <div class="dc-text">Every interface that requires a login competes with a habit. WhatsApp doesn't. The decision freed the design to focus on what happens after the request arrives, not on capturing the request itself.</div>
+          </div>
+        </div>
+      </div>
+      <div class="dc reveal" data-delay="1">
+        <div class="dc-head">
+          <div class="dc-num">2</div>
+          <div class="dc-tag">DECISION</div>
+          <div class="dc-title">The dashboard becomes the record.</div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <div class="dc-kicker">THE DECISION</div>
+            <div class="dc-text">Every update — from any channel — lands in one timestamped source of truth for tracking, reporting, billing and future compliance.</div>
+          </div>
+          <div class="dc-cost">
+            <div class="dc-kicker-trade">WHY IT MATTERS</div>
+            <div class="dc-text">Hospitals weren't using the dashboard because it didn't reflect reality. Making it the definitive record — not a copy of reality — changes what it's worth to open.</div>
+          </div>
+        </div>
+      </div>
+      <div class="dc reveal" data-delay="2">
+        <div class="dc-head">
+          <div class="dc-num">3</div>
+          <div class="dc-tag">DECISION</div>
+          <div class="dc-title">A manual fallback in every critical journey.</div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <div class="dc-kicker">THE DECISION</div>
+            <div class="dc-text">Ambulances are life-critical. Every automated step has a human path for when GPS, network or a driver fails.</div>
+          </div>
+          <div class="dc-cost">
+            <div class="dc-kicker-trade">WHY IT MATTERS</div>
+            <div class="dc-text">An emergency product that only works when connectivity is perfect isn't an emergency product. The fallback isn't a workaround — it's the design standard.</div>
+          </div>
+        </div>
+      </div>
+      <div class="fig reveal">
+        <div class="fig-wrap">
+          <div class="fig-row">
+            <div class="ann">
+              <img class="fig-img" src="uploads/merry/2f7c22742e22c29a8fd65f15e3f339d1.jpg" alt="WhatsApp chat: the admin sends a location pin and a request, gets a case ID and tracking link back">
+              <span class="ann-badge" style="background:var(--orange-deep)">A</span>
+            </div>
+            <div class="ann">
+              <img class="fig-img" src="uploads/merry/d994d975419cbfb989f064c6cc09ac70.jpg" alt="WhatsApp group: status broadcasts for one case, from request received to request closed">
+              <span class="ann-badge" style="background:var(--orange-deep)">B</span>
+            </div>
+            <div class="ann">
+              <img class="fig-img" src="uploads/merry/d47440d38cbf5df54dc323e3357ec754.jpg" alt="WhatsApp chat: the driver gets the case with Accept/Decline, and sends status updates">
+              <span class="ann-badge" style="background:var(--orange-deep)">C</span>
+            </div>
+          </div>
+        </div>
+        <div class="fig-cap">
+          <span>FIG. 5 — WHATSAPP AS THE FRONT DOOR: (A) HOSPITAL ADMIN VIEW · (B) HOSPITAL GROUP BROADCASTS · (C) DRIVER VIEW</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- 09 WORKFLOW -->
+    <article id="s09">
+      <div class="art-eyebrow">09 — WORKFLOW</div>
+      <h2 class="art-h">Designing for the worst hour: five rides live at once.</h2>
+      <p class="art-p">I built the workflow around the hardest real scenario: several emergencies running in parallel, updates scattered across chats and calls, nurses and families asking "where is the ambulance?" The admin needed to <span class="hl">spot the ride in trouble, act, and close every trip with clean data.</span></p>
+      <div class="close-grid" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+        <div class="close-card close-card--accent reveal">
+          <div class="close-num" style="color:var(--orange-deep)">SCREEN 1.0</div>
+          <div class="close-h">Dashboard</div>
+          <div class="close-p">Spot what needs attention across all live rides.</div>
+        </div>
+        <div class="close-card reveal" data-delay="1">
+          <div class="close-num">2.0 → 2.1</div>
+          <div class="close-h">Active Rides → Ride Details</div>
+          <div class="close-p">Compare all live trips, then drill into one for the full picture.</div>
+        </div>
+        <div class="close-card reveal" data-delay="2">
+          <div class="close-num">2.2 → 3.0</div>
+          <div class="close-h">Delay Alert → Handover</div>
+          <div class="close-p">Act on exceptions, then verify arrival with a structured step.</div>
+        </div>
+        <div class="close-card reveal" data-delay="3">
+          <div class="close-num">SCREEN 4.0</div>
+          <div class="close-h">Trip Closure</div>
+          <div class="close-p">Close with clean, validated data — no bulk end-of-shift closures.</div>
+        </div>
+      </div>
+      <p class="art-p">Each screen was specified with its goal, entry and exit, primary actions, error states, design problems and design opportunities before any ideation began.</p>
+    </article>
+
+    <!-- 10 DESIGN DECISIONS -->
+    <article id="s10">
+      <div class="art-eyebrow">10 — DESIGN DECISIONS</div>
+      <h2 class="art-h">Six concepts per screen, one hybrid, and the trade-off stated.</h2>
+      <div class="dc reveal">
+        <div class="dc-head">
+          <div class="dc-num">2.0</div>
+          <div class="dc-tag">ACTIVE RIDES</div>
+          <div class="dc-title">A priority list that sorts itself.</div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <div class="dc-kicker">THE DECISION</div>
+            <div class="dc-text">Rides cluster into Critical, At Risk and On Track. No update for several minutes, or a slipping ETA, moves a ride up. It works the same at 3 rides or 50.</div>
+          </div>
+          <div class="dc-cost">
+            <div class="dc-kicker-trade">TRADE-OFF</div>
+            <div class="dc-text">Overrides chronological order and needs thresholds tuned with the ops team.</div>
+          </div>
+        </div>
+      </div>
+      <div class="dc reveal" data-delay="1">
+        <div class="dc-head">
+          <div class="dc-num">2.1</div>
+          <div class="dc-tag">RIDE DETAILS</div>
+          <div class="dc-title">Ride health in two seconds.</div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <div class="dc-kicker">THE DECISION</div>
+            <div class="dc-text">A health summary on top (status, ETA, driver state, halts), then the live map and event timeline side by side, with alerts that suggest the next action.</div>
+          </div>
+          <div class="dc-cost">
+            <div class="dc-kicker-trade">TRADE-OFF</div>
+            <div class="dc-text">Depends on reliable GPS and needs firm visual hierarchy to avoid density.</div>
+          </div>
+        </div>
+      </div>
+      <div class="dc reveal" data-delay="2">
+        <div class="dc-head">
+          <div class="dc-num">2.1.1</div>
+          <div class="dc-tag">MAP VIEW</div>
+          <div class="dc-title">Planned vs actual route.</div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <div class="dc-kicker">THE DECISION</div>
+            <div class="dc-text">Deviations are highlighted, with state labels like "No movement 3+ min" or "Off-route", and a mini timeline strip so context isn't lost while zoomed in.</div>
+          </div>
+          <div class="dc-cost">
+            <div class="dc-kicker-trade">TRADE-OFF</div>
+            <div class="dc-text">Higher engineering effort for route and traffic data.</div>
+          </div>
+        </div>
+      </div>
+      <div class="dc reveal">
+        <div class="dc-head">
+          <div class="dc-num">2.2</div>
+          <div class="dc-tag">DELAY ALERT</div>
+          <div class="dc-title">Root cause first, then the action.</div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <div class="dc-kicker">THE DECISION</div>
+            <div class="dc-text">The panel says why (a halt, a network drop, an ETA jump), puts three actions up front (call driver, call ops, notify hospital), and codes severity so minor delays stay quiet.</div>
+          </div>
+          <div class="dc-cost">
+            <div class="dc-kicker-trade">TRADE-OFF</div>
+            <div class="dc-text">False alerts erode trust, so thresholds must be conservative.</div>
+          </div>
+        </div>
+      </div>
+      <div class="dc reveal" data-delay="1">
+        <div class="dc-head">
+          <div class="dc-num">3.0</div>
+          <div class="dc-tag">HANDOVER</div>
+          <div class="dc-title">Its own step, not a field on a page.</div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <div class="dc-kicker">THE DECISION</div>
+            <div class="dc-text">I kept handover out of Ride Details on purpose: tracking is for watching, handover is for verifying. A dedicated panel runs geofence arrival with a checklist fallback across hospital, driver and admin.</div>
+          </div>
+          <div class="dc-cost">
+            <div class="dc-kicker-trade">TRADE-OFF</div>
+            <div class="dc-text">One extra step — kept because it creates the timestamp billing depends on.</div>
+          </div>
+        </div>
+      </div>
+      <div class="dc reveal" data-delay="2">
+        <div class="dc-head">
+          <div class="dc-num">4.0</div>
+          <div class="dc-tag">TRIP CLOSURE</div>
+          <div class="dc-title">The system checks before the human signs.</div>
+        </div>
+        <div class="dc-body">
+          <div class="dc-what">
+            <div class="dc-kicker">THE DECISION</div>
+            <div class="dc-text">Auto-validation flags missing timestamps, conflicting arrival data and bulk-closure patterns. A trip can't close until its record is complete — which ends end-of-shift bulk closing.</div>
+          </div>
+          <div class="dc-cost">
+            <div class="dc-kicker-trade">TRADE-OFF</div>
+            <div class="dc-text">Requires standardised status events from the driver side.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 11 THE EXPERIENCE -->
+    <article id="s11">
+      <div class="art-eyebrow">11 — THE EXPERIENCE</div>
+      <h2 class="art-h">Built for an admin with a phone in one hand.</h2>
+      <div class="exp-block reveal">
+        <div class="exp-head">
+          <span class="exp-num">01 · DASHBOARD</span>
+          <span class="exp-title">A command centre, not a monthly report.</span>
+        </div>
+        <div class="exp-body">
+          <div class="exp-bullets">
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Notification centre for delays, arrivals and unresponsive drivers</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Live ride status map of everything heading to the hospital</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Case severity trends for staffing and peak hours</span></div>
+          </div>
+          <img class="exp-img" src="uploads/merry/c919471e5939bbc3dc0dc6e9c0e1cc88.jpg" alt="Dashboard: KPIs, a map of rides coming to the hospital, severity trend and active rides list">
+        </div>
+      </div>
+      <div class="exp-block reveal" data-delay="1">
+        <div class="exp-head">
+          <span class="exp-num">02 · ADD RIDE</span>
+          <span class="exp-title">Dispatch on the minimum, complete the rest later.</span>
+        </div>
+        <div class="exp-body">
+          <div class="exp-bullets">
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Map-based pickup and drop — no long address typing</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Emergency short form showing only the essential fields</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Equipment and facilities as explicit selections</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Missing-field indicators instead of blocking validation</span></div>
+          </div>
+          <img class="exp-img" src="uploads/merry/e92cf0f77f94a35eb34053ff0a0eda95.jpg" alt="Add ride: map-based pickup and drop, emergency type selector, equipment checklist">
+        </div>
+      </div>
+      <div class="exp-block reveal">
+        <div class="exp-head">
+          <span class="exp-num">03 · RIDE DETAILS</span>
+          <span class="exp-title">Answers "where is it?" without a phone call.</span>
+        </div>
+        <div class="exp-body">
+          <div class="exp-bullets">
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Trip timeline and live vehicle map together</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Status snapshot: last update, distance left, speed</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Call driver and escalate when the system can't resolve it</span></div>
+          </div>
+          <img class="exp-img" src="uploads/merry/526eb5fdb355eeab363ed6a610c833d2.jpg" alt="Ride Details: ride health summary on top, live map and event timeline side by side">
+        </div>
+      </div>
+      <div class="exp-block reveal" data-delay="1">
+        <div class="exp-head">
+          <span class="exp-num">04 · MARK HANDOVER</span>
+          <span class="exp-title">An audit trail by design.</span>
+        </div>
+        <div class="exp-body">
+          <div class="exp-bullets">
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Hospital → driver → admin confirmations, in order</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Detected hospital, arrival time and GPS confidence shown</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Close is enabled only when every check passes</span></div>
+          </div>
+          <img class="exp-img" src="uploads/merry/765fb3bb2da7116fdb847726b31310a7.jpg" alt="Track ambulance: every ambulance on the map with live status and ETA, with the handover panel open">
+        </div>
+      </div>
+      <div class="exp-block reveal" data-delay="2">
+        <div class="exp-head">
+          <span class="exp-num">05 · ANALYTICS &amp; REPORTS</span>
+          <span class="exp-title">Proof of value for hospital leadership.</span>
+        </div>
+        <div class="exp-body">
+          <div class="exp-bullets">
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>KPI cards for trips, billing, response time and turnaround</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>Filters by date, case type, status and ambulance type</span></div>
+            <div class="exp-bullet"><span class="exp-dash">—</span><span>PDF, CSV and Excel exports for month-end reviews</span></div>
+          </div>
+          <img class="exp-img" src="uploads/merry/8f24987944f1e4addb6752b607c76052.jpg" alt="Analytics report: filters by date range, case type and ambulance type, with KPI summary and trend charts">
+        </div>
+      </div>
+    </article>
+
+    <!-- 12 OUTCOME -->
+    <article id="s12">
+      <div class="art-eyebrow">12 — OUTCOME</div>
+      <h2 class="art-h">An agreed roadmap and a measurable definition of success.</h2>
+      <p class="art-p">The engagement ended with a 20-minute strategy pitch to the client and a final walkthrough of the hi-fi prototype. Because the real problem was adoption, not "a better dashboard", I aligned the client on four KPIs to track after launch.</p>
+      <div class="kpi-grid reveal">
+        <div class="kpi-card kpi-card--accent">
+          <div class="kpi-label">ADOPTION</div>
+          <div class="kpi-val">≥70%</div>
+          <div class="kpi-sub">Share of requests raised through the dashboard or WhatsApp automation. Baseline ~5%. Phase 3 gate.</div>
+        </div>
+        <div class="kpi-card reveal" data-delay="1">
+          <div class="kpi-label">OPERATIONS</div>
+          <div class="kpi-val">&lt;20 min</div>
+          <div class="kpi-sub">Average dispatch response time, from request to pickup. On time = under 20 min.</div>
+        </div>
+        <div class="kpi-card reveal" data-delay="2">
+          <div class="kpi-label">RELIABILITY</div>
+          <div class="kpi-val">En route ✓</div>
+          <div class="kpi-sub">Tracking link delivery success rate to patient families. En Route was rated Critical in the audit.</div>
+        </div>
+        <div class="kpi-card reveal" data-delay="3">
+          <div class="kpi-label">ENGAGEMENT</div>
+          <div class="kpi-val">30+ hospitals</div>
+          <div class="kpi-sub">Weekly active hospitals across dashboard and WhatsApp. Starting base: ~30 live hospitals.</div>
+        </div>
+      </div>
+      <div class="art-next reveal">
+        <strong>Before:</strong> Chats, calls, paper notes — a dashboard filled in after the fact.<br>
+        <strong>Designed for:</strong> One record fed by the channel admins already use, with push updates and verified closure.
+      </div>
+      <p class="art-p" style="font-size:14px;color:var(--sub)">The engagement ended at design handover. These are the KPIs the client committed to tracking after launch, not measured results.</p>
+    </article>
+
+    <!-- 13 CONSTRAINTS -->
+    <article id="s13">
+      <div class="art-eyebrow">13 — CONSTRAINTS</div>
+      <h2 class="art-h">What I worked within, and how I handled it.</h2>
+      <div class="close-grid" style="grid-template-columns:1fr 1fr">
+        <div class="close-card reveal">
+          <div class="close-num">WHAT I WORKED WITHIN</div>
+          <div class="close-p">
+            → Four weeks from brief to handover<br>
+            → A distributed team across time zones<br>
+            → Client inputs arriving late<br>
+            → Drivers on feature phones; GPS and network unreliable<br>
+            → Price-sensitive buyers: nothing could add cost or training load
+          </div>
+        </div>
+        <div class="close-card close-card--accent reveal" data-delay="1">
+          <div class="close-num" style="color:var(--orange-deep)">HOW I HANDLED IT</div>
+          <div class="close-p">
+            → Used severity scores to decide what <em>not</em> to design<br>
+            → Used workflow maps as the shared language with the client and team<br>
+            → Wrote recommendations engineers could size, not mockups to admire<br>
+            → Designed a fallback for every automated step
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 14 REFLECTION -->
+    <article id="s14">
+      <div class="art-eyebrow">14 — REFLECTION</div>
+      <h2 class="art-h">I could have designed the smartest dispatch system. I designed the one hospitals would actually use first.</h2>
+      <div class="num-list">
+        <div class="num-row reveal">
+          <span class="num">01</span>
+          <p class="art-p">Fixing individual screens wouldn't have moved adoption. <span class="hl">Changing the workflow could.</span></p>
+        </div>
+        <div class="num-row reveal" data-delay="1">
+          <span class="num">02</span>
+          <p class="art-p">In emergency software, the product's real competitor is WhatsApp — and you can't out-feature it. <span class="hl">You have to integrate with it.</span></p>
+        </div>
+        <div class="num-row reveal" data-delay="2">
+          <span class="num">03</span>
+          <p class="art-p">A team moves fastest when each person owns a slice end to end. <span class="hl">Mine was the hospital admin.</span></p>
+        </div>
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<!-- ENDING -->
+<section class="ending">
+  <a href="index.html" class="end-cell end-home">‹&nbsp;&nbsp;RETURN TO HOMEPAGE</a>
+  <a href="index.html#work" class="end-cell end-next">
+    <div class="end-thumb" style="background:#F4F2EE;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:12px;color:var(--sub);letter-spacing:.08em;text-transform:uppercase">More work coming soon</div>
+    <div class="end-meta">
+      <span class="end-title">See all work</span>
+      <span class="end-tag">BACK TO PORTFOLIO</span>
+    </div>
+  </a>
+  <a href="index.html#work" class="end-cell end-related">
+    <svg width="300" height="110" viewBox="0 0 300 110" fill="none" aria-hidden="true" style="position:absolute;left:50%;top:50%;margin:-55px 0 0 -150px"><path d="M30 60 C 20 20, 150 8, 250 22 C 300 30, 296 82, 230 92 C 150 104, 40 98, 22 70 C 12 52, 60 30, 120 26" stroke="#141414" stroke-width="2.2" stroke-linecap="round" opacity=".75"/></svg>
+    <span class="end-related-label">SEE ALL WORK&nbsp;&nbsp;›</span>
+    <span class="end-related-hand">back to the index</span>
+  </a>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  <div class="foot">
-    <div class="col">
-      <div class="name" style="margin-bottom:12px;"><img src="assets/logo.svg" alt="Mehak Garg" style="height:32px;width:auto;" /></div>
-      <p class="meta">Senior Product Designer<br>Building enterprise software that ships.</p>
+  <div class="footer-card" aria-hidden="true">
+    <div class="footer-card-bg"></div>
+    <div class="footer-card-main"></div>
+    <div class="footer-card-inner">
+      <div class="footer-card-tape"></div>
+      <span class="footer-name">Mehak</span>
+      <span class="footer-name">Garg.</span>
     </div>
-    <div class="col">
-      <h5>Sitemap</h5>
-      <a href="index.html#work">Work</a>
-      <a href="about.html">About</a>
-      <a href="about.html#contact">Contact</a>
-    </div>
-    <div class="col">
-      <h5>Elsewhere</h5>
-      <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener">Behance</a>
-    </div>
-    <div class="col">
-      <h5>Located</h5>
-      <p class="meta">Pune · India<br>Working globally</p>
-    </div>
+    <div class="footer-card-bottom"></div>
   </div>
-  <div class="foot-bottom">
-    <span>© 2026 Mehak Garg</span>
-    <span>Mehak Garg · Senior Product Designer</span>
-  </div>
+  <nav class="footer-nav" aria-label="Footer navigation">
+    <a href="index.html">Home</a>
+    <a href="index.html#work">Work</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
 </footer>
 
-<script src="app.js"></script>
+<script>
+// Reveal on scroll
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var d = parseFloat(e.target.dataset.delay||0);
+        setTimeout(function(){e.target.classList.add('in')},d*120);
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:.12});
+  els.forEach(function(el){obs.observe(el)});
+})();
+
+// Sidebar highlight
+(function(){
+  var links = document.querySelectorAll('.sidebar-link');
+  var articles = document.querySelectorAll('article[id]');
+  var bar = document.getElementById('progress-bar');
+  var total = articles.length;
+  var active = 0;
+
+  function update(){
+    var scrollY = window.scrollY + 160;
+    var current = null;
+    articles.forEach(function(a){
+      if(a.offsetTop <= scrollY) current = a.id;
+    });
+    links.forEach(function(l){
+      var match = current && l.getAttribute('href')==='#'+current;
+      l.classList.toggle('active', match);
+    });
+    // Progress
+    var idx = 0;
+    articles.forEach(function(a,i){if(a.id===current) idx=i+1;});
+    if(bar) bar.style.width = (idx/total*100)+'%';
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+</script>
 </body>
 </html>
