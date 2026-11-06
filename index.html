@@ -224,46 +224,41 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.tslide{transition:opacity .3s}.tmark::before{transition:none;transform:scaleX(1)}}
 
 /* ============================================================ SERVICES */
-/* ── Services band ── */
+/* ── Services band – ladder layout ── */
 .services-band{background:#F4F2EE;background-image:linear-gradient(#E9E6DF 1px,transparent 1px),linear-gradient(90deg,#E9E6DF 1px,transparent 1px);background-size:40px 40px;color:#141414;padding:clamp(64px,8vw,116px) 0 clamp(54px,7vw,92px)}
 .services-band .sec-title{color:#141414;text-align:left}
-.svc-kicker{font-family:var(--mono);font-size:13px;letter-spacing:.12em;margin-bottom:24px;background:#F4F2EE;display:inline-block;padding:2px 6px}
-.svc-kicker span{color:#D23A6B}
-.svc-subhead{font-size:clamp(16px,1.5vw,22px);line-height:1.5;color:#4A4A4A;margin-top:16px;background:#F4F2EE;display:inline-block;padding-right:12px}
-.svc-row{display:flex;gap:24px;margin-top:44px;height:clamp(380px,39vw,560px)}
-.svc-card{position:relative;flex:1 1 0;min-width:0;border-radius:18px;background:#fff;color:#141414;display:flex;flex-direction:column;justify-content:space-between;padding:30px;transition:flex .55s cubic-bezier(.22,.61,.36,1),background-color .4s ease,color .4s ease;outline:none;text-decoration:none}
-.svc-card .svc-open{opacity:0;max-height:0;overflow:hidden;transition:opacity .35s ease,max-height .45s ease}
-.svc-card .svc-sel{opacity:0;transition:opacity .3s ease}
-.svc-card.on{flex:1.7 1 0;background:#0B0B0B;color:#fff}
-.svc-card.on .svc-open{opacity:1;max-height:460px}
-.svc-card.on .svc-sel{opacity:1}
-.svc-row:hover .svc-card.on{flex:1 1 0;background:#fff;color:#141414}
-.svc-row:hover .svc-card.on .svc-open{opacity:0;max-height:0}
-.svc-row:hover .svc-card.on .svc-sel{opacity:0}
-.svc-row:hover .svc-card:hover{flex:1.7 1 0;background:#0B0B0B;color:#fff}
-.svc-row:hover .svc-card:hover .svc-open{opacity:1;max-height:460px}
-.svc-row:hover .svc-card:hover .svc-sel{opacity:1}
-.svc-card__hd{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:32px}
-.svc-card__lbl{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;opacity:.75}
-.svc-card__start{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:10px;background:var(--pink);color:#141414;font-size:14px;font-weight:600}
-.svc-card__body{display:flex;flex-direction:column;gap:16px}
-.svc-card__title{font-weight:700;font-size:clamp(20px,2.2vw,36px);line-height:1.05;letter-spacing:-.03em}
-.svc-card__blurb{font-size:clamp(13px,1.1vw,16px);line-height:1.55;opacity:.8}
-.svc-open-inner{display:flex;flex-direction:column;gap:18px;padding-top:4px}
-.svc-open-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--pink)}
-.svc-open-text{font-size:clamp(13px,1.1vw,16px);line-height:1.55}
-.svc-open-proof{display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid rgba(255,255,255,.18)}
-.svc-open-quote{font-family:var(--serif);font-style:italic;font-size:clamp(14px,1.3vw,19px);line-height:1.35}
-.svc-cta{align-self:flex-start;padding:13px 20px;border-radius:999px;background:var(--pink);color:#141414;font-size:clamp(13px,1vw,15px);font-weight:600;text-decoration:none;margin-top:4px;display:inline-block}
-.svc-sel-ring{position:absolute;inset:-7px;border:2px solid var(--pink);border-radius:22px;pointer-events:none}
-.svc-sel-dot{position:absolute;width:8px;height:8px;background:#fff;border:2px solid var(--pink)}
-.svc-also{margin-top:36px;text-align:center;font-size:16px;color:#6A6760}
-@media(prefers-reduced-motion:reduce){.svc-card,.svc-card .svc-open,.svc-card .svc-sel{transition:none}}
+.svc-subhead{font-size:clamp(16px,1.5vw,21px);line-height:1.5;color:#4A4A4A;margin-top:16px}
+.svc-ladder{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:56px;position:relative;align-items:start}
+.svc-col{display:flex;flex-direction:column;position:relative}
+.svc-col:nth-child(1){margin-top:180px}
+.svc-col:nth-child(2){margin-top:90px}
+.svc-col:nth-child(3){margin-top:0}
+.svc-lcard{border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:20px;position:relative}
+.svc-lcard--dark{background:#0B0B0B;color:#fff}
+.svc-lcard--light{background:#fff;color:#141414;border:1.5px solid #E5E2DB}
+.svc-lcard__tier{font-family:var(--mono);font-size:12px;letter-spacing:.12em;opacity:.5;margin-bottom:-8px}
+.svc-lcard__title{font-weight:700;font-size:clamp(22px,2.2vw,32px);line-height:1.05;letter-spacing:-.03em}
+.svc-lcard__blurb{font-size:clamp(14px,1.1vw,16px);line-height:1.6;opacity:.75}
+.svc-lcard__divider{border:none;border-top:1px solid rgba(128,128,128,.18);margin:0}
+.svc-lcard__label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--pink);margin-bottom:6px}
+.svc-lcard--dark .svc-lcard__label{color:#9ED4B5}
+.svc-lcard__body{font-size:clamp(13px,1vw,15px);line-height:1.6;opacity:.8}
+.svc-lcard__proof{font-family:var(--serif);font-style:italic;font-size:clamp(15px,1.2vw,18px);line-height:1.4;opacity:.85}
+.svc-lcard__price{display:inline-block;border:1.5px dashed rgba(255,255,255,.35);border-radius:999px;padding:5px 14px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;opacity:.6;width:max-content}
+.svc-cta-pink{display:inline-block;padding:13px 22px;border-radius:999px;background:var(--pink);color:#141414;font-size:14px;font-weight:600;text-decoration:none;width:max-content}
+.svc-cta-outline{display:inline-block;padding:12px 20px;border-radius:999px;border:1.5px solid currentColor;color:inherit;font-size:14px;font-weight:600;text-decoration:none;width:max-content;opacity:.8}
+.svc-cta-outline:hover,.svc-cta-pink:hover{opacity:.85}
+.svc-annot{font-family:var(--hand);font-size:19px;line-height:1.1;pointer-events:none;position:absolute}
+.svc-annot--start{color:#D2477A;transform:rotate(-4deg);top:-36px;left:4px;white-space:nowrap}
+.svc-annot--then{color:#6A655D;transform:rotate(-12deg);font-size:17px}
+.svc-annot--then1{right:-18px;top:140px}
+.svc-annot--then2{right:-18px;top:140px}
+.svc-also{margin-top:48px;text-align:center;font-size:15px;color:#6A6760}
+@media(max-width:900px){.svc-ladder{grid-template-columns:1fr;gap:20px}.svc-col:nth-child(1),.svc-col:nth-child(2),.svc-col:nth-child(3){margin-top:0}.svc-annot--then{display:none}}
+@media(prefers-reduced-motion:reduce){.svc-cta-pink,.svc-cta-outline{transition:none}}
 .contact-link{display:block;width:max-content;margin:clamp(44px,5vw,64px) auto 0;font-family:var(--serif);font-style:italic;font-size:clamp(18px,2vw,24px);text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
 .contact-link .ar{display:inline-block;transition:transform var(--t)}
-.contact-link:hover .ar{transform:translateX(5px)}
-
-/* ============================================================ WRITING + CREATING (carousel) */
+.contact-link:hover .ar{transform:translateX(5px)}/* ============================================================ WRITING + CREATING (carousel) */
 .writing{padding:clamp(64px,8vw,116px) 0}
 .writing-inner{padding-inline:var(--gut);display:grid;grid-template-columns:3fr 9fr;gap:56px;align-items:start}
 .writing-left{display:flex;flex-direction:column;gap:18px;position:sticky;top:100px}
@@ -928,94 +923,75 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 <section class="services-band" id="services">
   <div class="wrap">
     <h2 class="sec-title stagger reveal">What I can do <span style="font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.02em">for you.</span></h2>
-    <p class="svc-subhead reveal" data-delay="1">Three ways to work with me, wherever your product is today.</p>
-    <div class="svc-row">
+    <p class="svc-subhead reveal" data-delay="1">Start small. Go as far as your product needs.</p>
+    <div class="svc-ladder">
 
-      <!-- SVC-01 -->
-      <a href="#contact" class="svc-card on">
-        <span class="svc-sel svc-sel-ring" aria-hidden="true"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="left:-11px;top:-11px"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="left:-11px;bottom:-11px"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="right:-11px;top:-11px"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="right:-11px;bottom:-11px"></span>
-        <div class="svc-card__hd">
-          <span class="svc-card__lbl">SVC-01 · ENTRY</span>
-          <span class="svc-open svc-card__start">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>
-            Start here.
-          </span>
-        </div>
-        <div class="svc-card__body">
-          <span class="svc-card__title">Product Audit</span>
-          <span class="svc-card__blurb">Your product works, but users struggle, support tickets pile up, or trials don't convert.</span>
-          <div class="svc-open svc-open-inner">
-            <div>
-              <div class="svc-open-label">WHAT YOU GET</div>
-              <div class="svc-open-text">A ranked audit of every usability gap in your product, each one tied to its business impact, with a fix roadmap your team can ship within a quarter. Fixed scope, fixed timeline.</div>
-            </div>
-            <div class="svc-open-proof">
-              <div class="svc-open-label">PROOF</div>
-              <div class="svc-open-quote">140+ usability gaps found and prioritized across miniOrange's PAM platform.</div>
-            </div>
-            <span class="svc-cta">Book an audit call →</span>
+      <!-- COL 01 · ENTRY -->
+      <div class="svc-col">
+        <div class="svc-lcard svc-lcard--dark reveal">
+          <span class="svc-annot svc-annot--start">start here ↓</span>
+          <div>
+            <div class="svc-lcard__tier">SVC-01 · ENTRY</div>
+            <div class="svc-lcard__title">Product Audit</div>
           </div>
+          <p class="svc-lcard__blurb">Your product works, but users struggle, support tickets pile up, or trials don't convert.</p>
+          <hr class="svc-lcard__divider">
+          <div>
+            <div class="svc-lcard__label">WHAT YOU GET</div>
+            <p class="svc-lcard__body">A ranked audit of every usability gap in your product, each one tied to its business impact, with a fix roadmap your team can ship within a quarter. Fixed scope, fixed timeline.</p>
+          </div>
+          <div class="svc-lcard__price">Fixed scope · Fixed timeline</div>
+          <div>
+            <div class="svc-lcard__label">PROOF</div>
+            <p class="svc-lcard__proof">140+ usability gaps found and prioritized across an enterprise PAM platform.</p>
+          </div>
+          <a href="#contact" class="svc-cta-pink">Book an audit call →</a>
         </div>
-      </a>
+      </div>
 
-      <!-- SVC-02 -->
-      <a href="#contact" class="svc-card">
-        <span class="svc-sel svc-sel-ring" aria-hidden="true"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="left:-11px;top:-11px"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="left:-11px;bottom:-11px"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="right:-11px;top:-11px"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="right:-11px;bottom:-11px"></span>
-        <div class="svc-card__hd">
-          <span class="svc-card__lbl">SVC-02 · CORE</span>
-        </div>
-        <div class="svc-card__body">
-          <span class="svc-card__title">Enterprise Product Design</span>
-          <span class="svc-card__blurb">You're building or rebuilding a complex B2B product, and it needs to feel obvious to admins, buyers and security teams.</span>
-          <div class="svc-open svc-open-inner">
-            <div>
-              <div class="svc-open-label">WHAT YOU GET</div>
-              <div class="svc-open-text">Research, information architecture, user flows and production-ready UI, whether you're going from zero to one or redesigning what already exists.</div>
-            </div>
-            <div class="svc-open-proof">
-              <div class="svc-open-label">PROOF</div>
-              <div class="svc-open-quote">An admin flow redesign that measurably reduced support tickets within the first month.</div>
-            </div>
-            <span class="svc-cta">Discuss your product →</span>
+      <!-- COL 02 · CORE -->
+      <div class="svc-col" style="position:relative">
+        <span class="svc-annot svc-annot--then svc-annot--then1" style="position:absolute;right:-14px;top:60px;z-index:2">then ↗</span>
+        <div class="svc-lcard svc-lcard--light reveal" data-delay="1">
+          <div>
+            <div class="svc-lcard__tier">SVC-02 · CORE</div>
+            <div class="svc-lcard__title">Enterprise Product Design</div>
           </div>
+          <p class="svc-lcard__blurb">You're building or rebuilding a complex B2B product, and it needs to feel obvious to admins, buyers and security teams.</p>
+          <hr class="svc-lcard__divider">
+          <div>
+            <div class="svc-lcard__label">WHAT YOU GET</div>
+            <p class="svc-lcard__body">Research, information architecture, user flows and production-ready UI, whether you're going from zero to one or redesigning what already exists.</p>
+          </div>
+          <div>
+            <div class="svc-lcard__label">PROOF</div>
+            <p class="svc-lcard__proof">An admin flow redesign that measurably reduced support tickets within the first month.</p>
+          </div>
+          <a href="#contact" class="svc-cta-outline">Discuss your product →</a>
         </div>
-      </a>
+      </div>
 
-      <!-- SVC-03 -->
-      <a href="#contact" class="svc-card">
-        <span class="svc-sel svc-sel-ring" aria-hidden="true"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="left:-11px;top:-11px"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="left:-11px;bottom:-11px"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="right:-11px;top:-11px"></span>
-        <span class="svc-sel svc-sel-dot" aria-hidden="true" style="right:-11px;bottom:-11px"></span>
-        <div class="svc-card__hd">
-          <span class="svc-card__lbl">SVC-03 · SCALE</span>
-          <span class="svc-open svc-card__start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Let's do it.</span>
-        </div>
-        <div class="svc-card__body">
-          <span class="svc-card__title">Design Systems</span>
-          <span class="svc-card__blurb">Every new feature looks slightly different and engineering keeps asking for specs.</span>
-          <div class="svc-open svc-open-inner">
-            <div>
-              <div class="svc-open-label">WHAT YOU GET</div>
-              <div class="svc-open-text">A component library with documentation that your developers can adopt directly, so design and engineering ship from the same source of truth.</div>
-            </div>
-            <div class="svc-open-proof">
-              <div class="svc-open-label">PROOF</div>
-              <div class="svc-open-quote">Adopted by Equip9's engineering team without a single re-spec meeting.</div>
-            </div>
-            <span class="svc-cta">Discuss your system →</span>
+      <!-- COL 03 · SCALE -->
+      <div class="svc-col" style="position:relative">
+        <span class="svc-annot svc-annot--then svc-annot--then2" style="position:absolute;right:-14px;top:60px;z-index:2">then ↗</span>
+        <div class="svc-lcard svc-lcard--light reveal" data-delay="2">
+          <div>
+            <div class="svc-lcard__tier">SVC-03 · SCALE</div>
+            <div class="svc-lcard__title">Design Systems</div>
           </div>
+          <p class="svc-lcard__blurb">Every new feature looks slightly different and engineering keeps asking for specs.</p>
+          <hr class="svc-lcard__divider">
+          <div>
+            <div class="svc-lcard__label">WHAT YOU GET</div>
+            <p class="svc-lcard__body">A component library with documentation that your developers can adopt directly, so design and engineering ship from the same source of truth.</p>
+          </div>
+          <div>
+            <div class="svc-lcard__label">PROOF</div>
+            <p class="svc-lcard__proof">Adopted by Equip9's engineering team without a single re-spec meeting.</p>
+          </div>
+          <a href="#contact" class="svc-cta-outline">Discuss your system →</a>
         </div>
-      </a>
+      </div>
 
     </div>
     <p class="svc-also reveal">Also available: brand identity and websites for early-stage startups.</p>
