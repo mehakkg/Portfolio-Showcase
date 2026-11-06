@@ -409,6 +409,18 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   .card--reel{width:clamp(150px,48vw,200px)}
 }
 
+
+/* ── Mobile view (≤767px) ── */
+.m-only{display:none}
+@media(max-width:767px){
+  .m-only{display:block}
+  .nav,.hero-banner,#work,#testi,.services-band,.writing.wrap,footer.ft{display:none!important}
+  .svc-strip{display:none!important}
+  #m-nav{position:sticky;top:0;z-index:200;background:#fff;display:flex;justify-content:space-between;align-items:center;height:64px;padding:0 22px;border-bottom:1px solid #E5E2DD}
+  #m-menu.is-open{display:flex!important}
+  body.m-menu-open{overflow:hidden}
+}
+
 /*MARK_STYLE*/
 
 /* ─── SYS CARDS (FIG.02 grid) ───────────────────────────────────────────── */
@@ -1052,8 +1064,186 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
     </div>
   </div>
 </section>
+
+<!-- ===== MOBILE VIEW ===== -->
+<div class="m-only" id="m-view">
+
+<header id="m-nav">
+  <a href="#m-view" style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:22px;letter-spacing:-.02em;color:#141414;text-decoration:none">m<span style="color:#E2557F">.</span>g</a>
+  <button id="m-menu-btn" onclick="openMobileMenu()" style="display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;background:none;border:none;cursor:pointer;color:#141414;padding:0">MENU <span style="width:7px;height:7px;border-radius:50%;background:#E2557F;display:inline-block"></span></button>
+</header>
+
+<!-- M HERO -->
+<section id="m-hero" style="padding:34px 22px 0">
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="width:52px;height:52px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1.5px solid #141414;display:block"><img src="assets/5ee40e8ef9190bccf842103b540fe49b.png" alt="Mehak" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"></span>
+    <span style="font-family:'Caveat',cursive;font-weight:600;font-size:22px;line-height:1.1;color:#141414">← hi, that's me.<br><span style="font-size:17px;color:#76716A">Mehak, Pune</span></span>
+  </div>
+  <h1 style="margin:34px 0 0;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:clamp(60px,18vw,80px);line-height:.88;letter-spacing:-.055em">Product<br><span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;letter-spacing:-.035em">Designer</span><span style="color:#E2557F">.</span></h1>
+  <div style="margin-top:18px;display:flex;justify-content:space-between"><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">SENIOR · ENTERPRISE &amp; CONSUMER · AI</span><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">(01)</span></div>
+  <p style="margin:40px 0 0;font-family:'Bodoni Moda',serif;font-size:25px;line-height:1.28;letter-spacing:-.01em">Complex products only work when people trust them.<br><em style="font-style:italic;background:linear-gradient(180deg,transparent 62%,rgba(226,85,127,.35) 62%)">I design that trust.</em></p>
+  <p style="margin:18px 0 0;font-size:15.5px;line-height:1.65;color:#4F4A43">Five years designing enterprise identity and access platforms, where one unclear screen becomes a security risk. I bring that same rigor to any product where clarity drives adoption, from B2B SaaS to consumer apps.</p>
+  <div style="margin-top:28px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <a href="#m-ft" style="padding:15px 24px;border-radius:999px;background:#141414;color:#fff;font-size:15px;font-weight:600;text-decoration:none;display:inline-block">Work with me ↗</a>
+    <a href="case-pam.html" style="font-size:15px;font-weight:600;border-bottom:1.5px solid #E2557F;padding-bottom:2px;color:#141414;text-decoration:none">Read the PAM audit →</a>
+  </div>
+  <dl style="margin:48px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-top:18px;border-top:1px solid #E5E2DD">
+    <div style="display:flex;flex-direction:column;gap:6px"><dt style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:32px;line-height:1;letter-spacing:-.02em;margin:0">100%</dt><dd style="margin:0;font-size:12px;line-height:1.4;color:#76716A">lift in trial-to-paid conversion</dd></div>
+    <div style="display:flex;flex-direction:column;gap:6px"><dt style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:32px;line-height:1;letter-spacing:-.02em;margin:0">30K+</dt><dd style="margin:0;font-size:12px;line-height:1.4;color:#76716A">organizations use products I designed</dd></div>
+    <div style="display:flex;flex-direction:column;gap:6px"><dt style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:32px;line-height:1;letter-spacing:-.02em;margin:0">30+</dt><dd style="margin:0;font-size:12px;line-height:1.4;color:#76716A">products shipped, B2B SaaS and consumer</dd></div>
+  </dl>
+  <p style="margin:40px 0 0;padding:18px 0;border-top:1px solid #E5E2DD;border-bottom:1px solid #E5E2DD;font-family:'Caveat',cursive;font-weight:600;font-size:23px;line-height:1.15;text-align:center">the screens are the easy part.<br>knowing what to build is the job. <span style="color:#E2557F">— m.</span></p>
+</section>
+
+<!-- M WORK -->
+<section id="m-work" style="padding:72px 22px 0">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;border-bottom:1px solid #141414">
+    <h2 style="margin:0;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:30px;letter-spacing:-.03em;line-height:1">Selected work</h2>
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">(06)</span>
+  </div>
+  <a href="case-pam.html" style="display:flex;flex-direction:column;gap:14px;padding:22px 0 26px;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
+    <span style="position:relative;display:block;height:220px;border-radius:4px;overflow:hidden;background:#DCE7F7">
+      <img src="assets/aba7651c0f1385901a19c961eebdec2f.png" alt="PAM dashboard" style="position:absolute;left:22px;top:26px;width:460px;border-radius:6px;box-shadow:0 12px 30px rgba(20,20,40,.14)">
+      <span style="position:absolute;right:12px;top:12px;padding:5px 10px;border-radius:999px;background:#141414;color:#fff;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em">CASE STUDY</span>
+    </span>
+    <span style="display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px">
+      <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">01</span>
+      <span style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-family:'Bodoni Moda',serif;font-size:24px;line-height:1.18;letter-spacing:-.01em">Turning a fragmented PAM into an enterprise-ready platform</span>
+        <span style="display:flex;justify-content:space-between"><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">ENTERPRISE SECURITY</span><span style="font-size:14px;font-weight:600;border-bottom:1.5px solid #E2557F">Read →</span></span>
+      </span>
+    </span>
+  </a>
+  <a href="case-idp.html" style="display:grid;grid-template-columns:30px minmax(0,1fr) 54px;gap:8px;align-items:center;padding:18px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">02</span>
+    <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Architecting enterprise IAM from the ground up</span><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">ENTERPRISE SECURITY · NDA</span></span>
+    <span style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:#DBEEE4;position:relative;flex-shrink:0;display:block"><img src="assets/ed5c6a160117d54eb89eff3fbcdc3ea8.png" alt="" style="position:absolute;left:8px;top:10px;width:140px"></span>
+  </a>
+  <a href="case-merry.html" style="display:grid;grid-template-columns:30px minmax(0,1fr) 54px;gap:8px;align-items:center;padding:18px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">03</span>
+    <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">A healthcare coordination system built for operational pressure</span><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">HEALTHCARE OPS · NDA</span></span>
+    <span style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:#FBE7D9;position:relative;flex-shrink:0;display:block"><img src="assets/1ce57235976d7a3dc578104957c53761.png" alt="" style="position:absolute;left:8px;top:10px;width:140px"></span>
+  </a>
+  <a href="#m-work" style="display:grid;grid-template-columns:30px minmax(0,1fr) 54px;gap:8px;align-items:center;padding:18px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">04</span>
+    <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Designing trust into AI-graded academic submissions</span><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">EDTECH AI · NDA</span></span>
+    <span style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:#F8DAE9;position:relative;flex-shrink:0;display:block"><img src="assets/e073eab625b640d1a058be9f0cef79ed.png" alt="" style="position:absolute;left:8px;top:10px;width:140px"></span>
+  </a>
+  <a href="#m-work" style="display:grid;grid-template-columns:30px minmax(0,1fr) 54px;gap:8px;align-items:center;padding:18px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">05</span>
+    <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Salt Peppr — a premium food sustainability platform</span><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">SAAS · FOOD TECH · NDA</span></span>
+    <span style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:#E4E8FA;position:relative;flex-shrink:0;display:block"><img src="assets/81368dd91fd13497bbf05e50836cce7c.png" alt="" style="position:absolute;left:8px;top:10px;width:140px"></span>
+  </a>
+  <a href="#m-work" style="display:grid;grid-template-columns:30px minmax(0,1fr) 54px;gap:8px;align-items:center;padding:18px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">06</span>
+    <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">HRMS platform built for enhanced operations</span><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">ENTERPRISE HR · NDA</span></span>
+    <span style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:#F6F1C8;position:relative;flex-shrink:0;display:block"><img src="assets/c812bcbab823ae965b0010e4a45e73b9.png" alt="" style="position:absolute;left:8px;top:10px;width:140px"></span>
+  </a>
+  <div style="margin-top:40px;display:flex;justify-content:space-between;align-items:baseline">
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">WEBSITES (04) · NDA, ASK ME</span>
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">SWIPE →</span>
+  </div>
+  <div style="margin:16px -22px 0 0;display:flex;gap:12px;overflow-x:auto;padding-right:22px;scrollbar-width:none;-webkit-overflow-scrolling:touch">
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#DCE8F8"><img src="assets/d8aa1a36b645ea8b4fff04a719bb1076.jpg" alt="GenAI analytics" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">Product Analytics for GenAI Applications</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#111"><img src="assets/5c4284756c66ac4ee11d58e74f9606dc.jpg" alt="Fitness influencer" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">Fitness Influencer (5M+) Personal Training</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#FDF0EE"><img src="assets/14bda0d13625decfdb0015bfaa47a15e.jpg" alt="Moms" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">Empowering Moms to Balance Ambitions &amp; Motherhood</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:flex;height:200px;border-radius:4px;overflow:hidden;background:#ECE8E1;align-items:center;justify-content:center;border:1.5px dashed #E2557F"><span style="font-family:'Space Mono',monospace;font-size:10px;color:#B23A62;text-align:center;padding:10px">Services LP · Digital Marketing Agency</span></span><span style="font-size:13px;line-height:1.35">Services LP for a Digital Marketing Agency</span></span>
+  </div>
+</section>
+
+<!-- M TESTI -->
+<section id="m-testi" style="padding:80px 22px 0">
+  <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">WHAT PEOPLE SAY</span>
+  <blockquote id="m-tquote" style="margin:22px 0 0;font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:28px;line-height:1.22;letter-spacing:-.01em"><span style="color:#E2557F">"</span>Her audits are surgical. She found 140+ issues across our product and ranked them so we could ship fixes inside a quarter.<span style="color:#E2557F">"</span></blockquote>
+  <div style="margin-top:22px;display:flex;justify-content:space-between;align-items:flex-end">
+    <span style="display:flex;flex-direction:column;gap:2px"><span id="m-tname" style="font-weight:600;font-size:15px">Pradeep Kumar</span><span id="m-trole" style="font-size:13px;color:#76716A">Head of Product, PAM · miniOrange</span></span>
+    <span style="display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:12px"><button onclick="mTestiPrev()" style="background:none;border:none;cursor:pointer;color:#76716A;font-family:'Space Mono',monospace;font-size:14px;padding:0">←</button><span id="m-tcount">01 / 04</span><button onclick="mTestiNext()" style="background:none;border:none;cursor:pointer;color:#141414;font-family:'Space Mono',monospace;font-size:14px;padding:0">→</button></span>
+  </div>
+  <div style="margin-top:16px;height:2px;background:#E5E2DD"><span id="m-tbar" style="display:block;width:25%;height:100%;background:#141414;transition:width .4s ease"></span></div>
+</section>
+
+<!-- M SERVICES -->
+<section id="m-svc" style="padding:80px 22px 0">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;border-bottom:1px solid #141414">
+    <h2 style="margin:0;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:30px;letter-spacing:-.03em;line-height:1">What I can do for you</h2>
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">(03)</span>
+  </div>
+  <p style="margin:16px 0 30px;font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:19px;color:#4F4A43">Start small. Go as far as your product needs.</p>
+  <div style="position:relative;display:grid;grid-template-columns:26px minmax(0,1fr);gap:16px;padding-bottom:34px">
+    <span style="position:relative;display:flex;justify-content:center"><span style="margin-top:4px;width:13px;height:13px;border-radius:50%;background:#E2557F;border:1.5px solid #141414;z-index:1;display:block"></span><span aria-hidden="true" style="position:absolute;top:18px;bottom:-34px;left:12.25px;border-left:1.5px solid #141414"></span></span>
+    <span style="display:flex;flex-direction:column;gap:8px"><span style="display:flex;gap:10px;align-items:baseline"><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">01 · ENTRY</span><span style="font-family:'Caveat',cursive;font-weight:700;font-size:20px;color:#E2557F">start here</span></span><span style="font-family:'Bodoni Moda',serif;font-size:26px;line-height:1.1;letter-spacing:-.01em">Product Audit</span><span style="font-size:15px;line-height:1.55;color:#4F4A43">Your product works, but users struggle, support tickets pile up, or trials don't convert.</span><a href="#m-ft" style="margin-top:6px;align-self:flex-start;padding:13px 20px;border-radius:999px;background:#141414;color:#fff;font-size:14px;font-weight:600;text-decoration:none;display:inline-block">Book an audit call →</a></span>
+  </div>
+  <div style="position:relative;display:grid;grid-template-columns:26px minmax(0,1fr);gap:16px;padding-bottom:34px">
+    <span style="position:relative;display:flex;justify-content:center"><span style="margin-top:4px;width:13px;height:13px;border-radius:50%;background:#fff;border:1.5px solid #141414;z-index:1;display:block"></span><span aria-hidden="true" style="position:absolute;top:18px;bottom:-34px;left:12.25px;border-left:1.5px dashed #141414"></span></span>
+    <span style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">02 · CORE</span><span style="font-family:'Bodoni Moda',serif;font-size:26px;line-height:1.1;letter-spacing:-.01em">Enterprise Product Design</span><span style="font-size:15px;line-height:1.55;color:#4F4A43">You're building or rebuilding a complex B2B product, and it needs to feel obvious to admins, buyers and security teams.</span><a href="#m-ft" style="align-self:flex-start;font-size:14px;font-weight:600;border-bottom:1.5px solid #E2557F;color:#141414;text-decoration:none">Discuss your product →</a></span>
+  </div>
+  <div style="position:relative;display:grid;grid-template-columns:26px minmax(0,1fr);gap:16px">
+    <span style="display:flex;justify-content:center"><span style="margin-top:4px;width:13px;height:13px;border-radius:50%;background:#fff;border:1.5px solid #141414;z-index:1;display:block"></span></span>
+    <span style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">03 · SCALE</span><span style="font-family:'Bodoni Moda',serif;font-size:26px;line-height:1.1;letter-spacing:-.01em">Design Systems</span><span style="font-size:15px;line-height:1.55;color:#4F4A43">Every new feature looks slightly different and engineering keeps asking for specs.</span><a href="#m-ft" style="align-self:flex-start;font-size:14px;font-weight:600;border-bottom:1.5px solid #E2557F;color:#141414;text-decoration:none">Discuss your system →</a></span>
+  </div>
+  <p style="margin:30px 0 0;font-size:13px;color:#76716A">Also available: brand identity and websites for early-stage startups.</p>
+</section>
+
+<!-- M WRITING -->
+<section id="m-writing" style="padding:80px 22px 0">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;border-bottom:1px solid #141414">
+    <h2 style="margin:0;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:30px;letter-spacing:-.03em;line-height:1">Notes from the work</h2>
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">(05)</span>
+  </div>
+  <p style="margin:16px 0 6px;font-size:15px;line-height:1.55;color:#4F4A43">Essays on how I decide what to build. Reels on the person doing it.</p>
+  <a href="https://medium.com/@mehakrgarg/designing-for-deal-breakers-the-lens-i-use-before-i-touch-a-roadmap-2e369ea792f1" target="_blank" rel="noopener" style="display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#141414">ESSAY</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Designing for deal breakers — the only prioritization framework</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">MEDIUM · 6 MIN</span></span><span>↗</span></a>
+  <a href="https://medium.com/@mehakrgarg/why-the-best-designers-are-ignoring-the-biggest-design-problem-5d585c84d4cd" target="_blank" rel="noopener" style="display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#141414">ESSAY</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Why the best designers are ignoring the biggest design problem</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">MEDIUM · 6 MIN</span></span><span>↗</span></a>
+  <a href="https://www.instagram.com/p/C2Pw5l8oe5F/" target="_blank" rel="noopener" style="display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#E2557F">REEL</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Unveiling my skillset</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">INSTAGRAM</span></span><span>↗</span></a>
+  <a href="https://www.instagram.com/p/C2KuqtOo2Ga/?img_index=1" target="_blank" rel="noopener" style="display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#E2557F">REEL</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">My design journey</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">INSTAGRAM</span></span><span>↗</span></a>
+  <a href="https://www.instagram.com/p/C2WR-f1oNaQ/" target="_blank" rel="noopener" style="display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#E2557F">REEL</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">How I deal with creative blocks</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">INSTAGRAM</span></span><span>↗</span></a>
+</section>
+
+</div><!-- end #m-view -->
+
+<!-- MOBILE MENU OVERLAY -->
+<div id="m-menu" class="m-only" style="display:none;position:fixed;inset:0;z-index:999;background:#fff;box-sizing:border-box;padding:0 22px 26px;flex-direction:column;overflow-y:auto">
+  <div style="display:flex;justify-content:space-between;align-items:center;height:64px;flex-shrink:0">
+    <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:22px;color:#141414">m<span style="color:#E2557F">.</span>g</span>
+    <button onclick="closeMobileMenu()" style="background:none;border:none;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;color:#141414;padding:0">CLOSE ×</button>
+  </div>
+  <nav style="margin-top:60px;display:flex;flex-direction:column;gap:4px">
+    <a href="#m-hero" onclick="closeMobileMenu()" style="display:flex;align-items:baseline;gap:14px;color:#141414;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#76716A;flex-shrink:0">01</span><span style="font-weight:600;font-size:clamp(44px,13vw,54px);line-height:1.05;letter-spacing:-.04em">Home</span><span style="width:9px;height:9px;border-radius:50%;background:#E2557F;display:inline-block;margin-bottom:4px;flex-shrink:0"></span></a>
+    <a href="#m-work" onclick="closeMobileMenu()" style="display:flex;align-items:baseline;gap:14px;color:#141414;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#76716A;flex-shrink:0">02</span><span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:clamp(44px,13vw,54px);line-height:1.05;letter-spacing:-.04em">Work</span></a>
+    <a href="#m-svc" onclick="closeMobileMenu()" style="display:flex;align-items:baseline;gap:14px;color:#141414;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#76716A;flex-shrink:0">03</span><span style="font-weight:600;font-size:clamp(44px,13vw,54px);line-height:1.05;letter-spacing:-.04em">Services</span></a>
+    <a href="#m-writing" onclick="closeMobileMenu()" style="display:flex;align-items:baseline;gap:14px;color:#141414;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#76716A;flex-shrink:0">04</span><span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:clamp(44px,13vw,54px);line-height:1.05;letter-spacing:-.04em">Writing</span></a>
+    <a href="#m-ft" onclick="closeMobileMenu()" style="display:flex;align-items:baseline;gap:14px;color:#141414;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#76716A;flex-shrink:0">05</span><span style="font-weight:600;font-size:clamp(44px,13vw,54px);line-height:1.05;letter-spacing:-.04em">Contact</span></a>
+  </nav>
+  <div style="margin-top:auto;display:flex;flex-direction:column;gap:16px;padding-top:30px">
+    <a href="#m-ft" onclick="closeMobileMenu()" style="display:block;padding:16px;border-radius:999px;background:#141414;color:#fff;text-align:center;font-size:15px;font-weight:600;text-decoration:none">Say hi ↗</a>
+    <div style="display:flex;justify-content:space-between">
+      <a href="uploads/Mehak-Garg-Resume.pdf" download style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414;text-decoration:none">RESUME ↓</a>
+      <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414;text-decoration:none">LINKEDIN ↗</a>
+      <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414;text-decoration:none">MEDIUM ↗</a>
+    </div>
+  </div>
+</div>
+
 <!--MARK_BODY-->
 </main>
+
+<!-- MOBILE FOOTER -->
+<footer id="m-ft" class="m-only" style="margin-top:88px;padding:56px 22px 26px;background:#141414;color:#fff">
+  <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#E2557F">SAY HI</span>
+  <h2 style="margin:16px 0 0;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:clamp(44px,13vw,54px);line-height:.95;letter-spacing:-.045em">Let's <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;color:#E2557F">(work)</span><br>together.</h2>
+  <p style="margin:14px 0 0;font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:19px;color:#BDB8AF">or just say hi &lt;3</p>
+  <a href="mailto:mehakrgarg@gmail.com" style="display:block;margin-top:30px;padding-bottom:8px;border-bottom:1.5px solid #fff;font-size:21px;font-weight:500;letter-spacing:-.01em;color:#fff;text-decoration:none">mehakrgarg@gmail.com <span style="float:right">↗</span></a>
+  <a href="uploads/Mehak-Garg-Resume.pdf" download style="display:block;margin-top:18px;padding-bottom:8px;border-bottom:1px solid #3A3A3A;font-size:21px;font-weight:500;letter-spacing:-.01em;color:#fff;text-decoration:none">Download resume <span style="float:right">↓</span></a>
+  <div style="margin-top:40px;display:flex;flex-wrap:wrap;gap:10px 18px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em">
+    <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">LINKEDIN ↗</a>
+    <a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">BEHANCE ↗</a>
+    <a href="https://dribbble.com/mehakkg" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">DRIBBBLE ↗</a>
+    <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">MEDIUM ↗</a>
+  </div>
+  <div style="margin-top:44px;display:flex;justify-content:space-between;align-items:flex-end">
+    <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:64px;line-height:.8;letter-spacing:-.03em">m<span style="color:#E2557F">.</span>g</span>
+    <span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#8C877E">© 2026 · PUNE · <a href="#m-view" style="color:#8C877E;text-decoration:none">TOP ↑</a></span>
+  </div>
+</footer>
 
 <!-- ============================================================ FOOTER -->
 <footer class="ft" id="contact">
@@ -2004,6 +2194,39 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   },{threshold:0.12});
   els.forEach(function(el){io.observe(el);});
 })();
+
+// Mobile menu
+function openMobileMenu(){
+  var m=document.getElementById('m-menu');
+  m.style.display='flex';
+  document.body.classList.add('m-menu-open');
+}
+function closeMobileMenu(){
+  var m=document.getElementById('m-menu');
+  m.style.display='none';
+  document.body.classList.remove('m-menu-open');
+}
+
+// Mobile testimonial carousel
+var mTData=[
+  {q:'Her audits are surgical. She found 140+ issues across our product and ranked them so we could ship fixes inside a quarter.',n:'Pradeep Kumar',r:'Head of Product, PAM · miniOrange'},
+  {q:'She redesigned our admin flow and we saw a measurable drop in support tickets within the first month. The kind of output you rarely see from a solo designer.',n:'Aditya Kumar',r:'Sr Developer, miniOrange'},
+  {q:'Mehak handled multiple client projects from day one and consistently delivered work that shifted how stakeholders saw the role of design in our products.',n:'Mandar Raje',r:'Business Head, vConstruct'},
+  {q:'Design that engineers respect — that\'s rare. Our team adopted her component library without a single re-spec meeting.',n:'Gaurav',r:'Founder, Equip9'}
+];
+var mTIdx=0;
+function mTUpdate(){
+  var d=mTData[mTIdx];
+  var q=document.getElementById('m-tquote');
+  if(q) q.innerHTML='<span style="color:#E2557F">“</span>'+d.q+'<span style="color:#E2557F">”</span>';
+  var n=document.getElementById('m-tname');if(n)n.textContent=d.n;
+  var r=document.getElementById('m-trole');if(r)r.textContent=d.r;
+  var c=document.getElementById('m-tcount');if(c)c.textContent=String(mTIdx+1).padStart(2,'0')+' / 0'+mTData.length;
+  var b=document.getElementById('m-tbar');if(b)b.style.width=((mTIdx+1)/mTData.length*100)+'%';
+}
+function mTestiNext(){mTIdx=(mTIdx+1)%mTData.length;mTUpdate();}
+function mTestiPrev(){mTIdx=(mTIdx-1+mTData.length)%mTData.length;mTUpdate();}
+
 </script>
 </body>
 </html>
