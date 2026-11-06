@@ -36,17 +36,19 @@ a.cs-nav-left{display:flex;align-items:center;gap:14px;padding:0;cursor:pointer;
 
 /* ── hero ── */
 .hero{position:relative;margin:0 80px;display:grid;grid-template-columns:7fr 5fr;border-bottom:1px solid var(--line)}
-.hero-left{padding:64px 56px 56px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:24px}
+.hero-left{padding:64px 56px 56px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:28px;justify-content:center}
 .hero-eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em}
 .hero-dot{width:9px;height:9px;background:var(--orange);border:1.5px solid var(--ink)}
-.hero-num{font-family:var(--serif);font-style:italic;font-size:clamp(80px,9vw,128px);line-height:.85;color:var(--orange-light);-webkit-text-stroke:1.5px var(--orange-border);text-stroke:1.5px var(--orange-border);letter-spacing:-.04em;user-select:none}
-.hero-h1{font-weight:700;font-size:clamp(32px,3.5vw,52px);line-height:1.1;letter-spacing:-.03em}
+.hero-h1{font-weight:700;font-size:clamp(40px,4.5vw,64px);line-height:1.08;letter-spacing:-.03em}
 .hero-h1 em{font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.02em;background:var(--orange-light);padding:0 8px;border-radius:4px}
 .hero-right{padding:64px 56px 56px;display:flex;flex-direction:column;gap:22px;justify-content:center}
-.hero-p{font-family:var(--serif);font-size:19px;line-height:1.55}
-.hero-dl{margin-top:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 20px}
-.hero-dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--sub)}
-.hero-dd{font-size:15px;font-weight:600;line-height:1.4}
+.hero-p{font-family:var(--serif);font-size:19px;line-height:1.6}
+/* meta row below stats */
+.meta-row{margin:0 80px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.meta-cell{padding:22px 28px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:7px}
+.meta-cell:last-child{border-right:none}
+.meta-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--sub)}
+.meta-val{font-size:15px;font-weight:600;line-height:1.45}
 
 /* ── stats bar ── */
 .stats{position:relative;margin:0 80px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -225,10 +227,13 @@ footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;dis
 /* ── responsive ── */
 @media(max-width:900px){
   .cs-nav{padding:0 20px}
-  .hero,.stats,.htr,.body-grid,.ending{margin:0 20px}
+  .hero,.stats,.meta-row,.htr,.body-grid,.ending{margin:0 20px}
   .hero{grid-template-columns:1fr}
   .hero-left{border-right:none;border-bottom:1px solid var(--line);padding:40px 20px}
   .hero-right{padding:28px 20px}
+  .meta-row{grid-template-columns:1fr 1fr}
+  .meta-cell:nth-child(2){border-right:none}
+  .meta-cell:nth-child(3){border-top:1px solid var(--line)}
   .stats{grid-template-columns:1fr 1fr}
   .body-grid{grid-template-columns:1fr}
   .sidebar{display:none}
@@ -270,32 +275,12 @@ footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;dis
   <div class="hero-left">
     <div class="hero-eyebrow">
       <div class="hero-dot"></div>
-      CASE STUDY · HEALTHCARE OPERATIONS
+      01 / EMERGENCY AMBULANCE COORDINATION
     </div>
-    <div class="hero-num" aria-hidden="true">01</div>
-    <h1 class="hero-h1">Emergency <em>Ambulance</em> Coordination</h1>
-    <p style="font-size:14px;color:var(--sub);font-family:var(--mono);letter-spacing:.08em">MERRY HEALTH · 2025</p>
+    <h1 class="hero-h1">An <em>adoption-first</em> command layer for hospitals that dispatch ambulances over WhatsApp.</h1>
   </div>
   <div class="hero-right">
-    <p class="hero-p">An adoption-first command layer for hospitals that dispatch ambulances over WhatsApp.</p>
-    <dl class="hero-dl">
-      <div>
-        <dt class="hero-dt">CLIENT</dt>
-        <dd class="hero-dd">Merry Health</dd>
-      </div>
-      <div>
-        <dt class="hero-dt">MY ROLE</dt>
-        <dd class="hero-dd">UX strategy &amp; design, hospital admin experience</dd>
-      </div>
-      <div>
-        <dt class="hero-dt">TEAM</dt>
-        <dd class="hero-dd">Multi-designer team (Career Reactor) with Merry Health's founders</dd>
-      </div>
-      <div>
-        <dt class="hero-dt">DELIVERABLES</dt>
-        <dd class="hero-dd">System audit, workflows, wireframes, hi-fi prototype, WhatsApp integration docs</dd>
-      </div>
-    </dl>
+    <p class="hero-p">Merry Health had a dashboard that hospitals didn't use. I audited the whole dispatch system, from first call to closed trip, and redesigned the hospital admin experience around how admins actually work under pressure.</p>
   </div>
 </div>
 
@@ -316,6 +301,26 @@ footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;dis
   <div class="stat reveal" data-delay="3">
     <div class="stat-num">4 wks</div>
     <div class="stat-label">from discovery to final client handover</div>
+  </div>
+</div>
+
+<!-- META ROW -->
+<div class="meta-row">
+  <div class="meta-cell">
+    <div class="meta-label">CLIENT</div>
+    <div class="meta-val">Merry Health</div>
+  </div>
+  <div class="meta-cell">
+    <div class="meta-label">MY ROLE</div>
+    <div class="meta-val">UX strategy &amp; design, owner of the hospital admin experience</div>
+  </div>
+  <div class="meta-cell">
+    <div class="meta-label">TEAM</div>
+    <div class="meta-val">Multi-designer team (Career Reactor) with Merry Health's founders</div>
+  </div>
+  <div class="meta-cell">
+    <div class="meta-label">DELIVERABLES</div>
+    <div class="meta-val">System audit, workflows, wireframes, hi-fi prototype, WhatsApp integration docs</div>
   </div>
 </div>
 
