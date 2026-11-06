@@ -251,8 +251,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .svc-annot{font-family:var(--hand);font-size:19px;line-height:1.1;pointer-events:none;position:absolute}
 .svc-annot--start{color:#D2477A;transform:rotate(-4deg);top:-36px;left:4px;white-space:nowrap}
 .svc-annot--then{color:#6A655D;transform:rotate(-12deg);font-size:17px}
-.svc-annot--then1{right:-18px;top:140px}
-.svc-annot--then2{right:-18px;top:140px}
 .svc-also{margin-top:48px;text-align:center;font-size:15px;color:#6A6760}
 @media(max-width:900px){.svc-ladder{grid-template-columns:1fr;gap:20px}.svc-col:nth-child(1),.svc-col:nth-child(2),.svc-col:nth-child(3){margin-top:0}.svc-annot--then{display:none}}
 @media(prefers-reduced-motion:reduce){.svc-cta-pink,.svc-cta-outline{transition:none}}
@@ -927,7 +925,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
     <div class="svc-ladder">
 
       <!-- COL 01 · ENTRY -->
-      <div class="svc-col">
+      <div class="svc-col" style="position:relative">
+        <span class="svc-annot svc-annot--then" style="position:absolute;right:-18px;top:48px;z-index:2">then ↗</span>
         <div class="svc-lcard svc-lcard--dark reveal">
           <span class="svc-annot svc-annot--start">start here ↓</span>
           <div>
@@ -951,7 +950,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
       <!-- COL 02 · CORE -->
       <div class="svc-col" style="position:relative">
-        <span class="svc-annot svc-annot--then svc-annot--then1" style="position:absolute;right:-14px;top:60px;z-index:2">then ↗</span>
+        <span class="svc-annot svc-annot--then" style="position:absolute;right:-18px;top:48px;z-index:2">then ↗</span>
         <div class="svc-lcard svc-lcard--light reveal" data-delay="1">
           <div>
             <div class="svc-lcard__tier">SVC-02 · CORE</div>
@@ -972,8 +971,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
       </div>
 
       <!-- COL 03 · SCALE -->
-      <div class="svc-col" style="position:relative">
-        <span class="svc-annot svc-annot--then svc-annot--then2" style="position:absolute;right:-14px;top:60px;z-index:2">then ↗</span>
+      <div class="svc-col">
         <div class="svc-lcard svc-lcard--light reveal" data-delay="2">
           <div>
             <div class="svc-lcard__tier">SVC-03 · SCALE</div>
