@@ -417,7 +417,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .m-only{display:none}
 @media(max-width:767px){
   .m-only{display:block}
-  .nav,.hero-banner,#work,#testi,.services-band,.writing.wrap,footer.ft{display:none!important}
+  .nav,.hero-banner,#home,#start,#work,#more,#testi,#testimonials,#services,#writing,.services-band,.writing.wrap,footer.ft,.ft{display:none!important}
   .svc-strip{display:none!important}
   #m-nav{position:sticky;top:0;z-index:200;background:#fff;display:flex;justify-content:space-between;align-items:center;height:64px;padding:0 22px;border-bottom:1px solid #E5E2DD}
   #m-menu.is-open{display:flex!important}
@@ -437,6 +437,26 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 #mx:checked~.mwrap{max-height:none}#mx:checked~.mwrap .mfade{display:none}#mx:checked~.mless{display:block}
 @media(min-width:768px){.nav{display:none!important}}
 @media(prefers-reduced-motion:reduce){.peek img,.v10row img,.v10arr,.mw span:first-child{transition:none}}
+.srow{display:flex;gap:24px}
+.scard{position:relative;flex:1 1 0;min-width:0;border-radius:18px;background:#FFFFFF;color:#141414;transition:flex .55s cubic-bezier(.22,.61,.36,1),background-color .4s ease,color .4s ease;outline:none}
+.scard .open{opacity:0;max-height:0;overflow:hidden;transition:opacity .35s ease,max-height .45s ease}
+.scard .sel{opacity:0;transition:opacity .3s ease}
+.scard.on{flex:1.7 1 0;background:#0B0B0B;color:#FFFFFF}
+.scard.on .open{opacity:1;max-height:460px}
+.scard.on .sel{opacity:1}
+.srow:hover .scard.on{flex:1 1 0;background:#FFFFFF;color:#141414}
+.srow:hover .scard.on .open{opacity:0;max-height:0}
+.srow:hover .scard.on .sel{opacity:0}
+.srow:hover .scard:hover,.srow .scard:focus-visible{flex:1.7 1 0;background:#0B0B0B;color:#FFFFFF}
+.srow:hover .scard:hover .open,.srow .scard:focus-visible .open{opacity:1;max-height:460px}
+.srow:hover .scard:hover .sel,.srow .scard:focus-visible .sel{opacity:1}
+@media(prefers-reduced-motion:reduce){.scard,.scard .open,.scard .sel{transition:none}}
+.flink{display:inline-block;transition:transform .3s ease}.flink:hover,.flink:focus-visible{transform:translateX(6px)}
+.folder .card{transition:transform .4s cubic-bezier(.22,.61,.36,1)}.folder:hover .card,.folder:focus-visible .card{transform:rotate(0deg) translateY(-18px)}
+@media(prefers-reduced-motion:reduce){.flink,.folder .card{transition:none}}
+.tq{transition:transform .3s ease}.tq:hover{transform:translateY(-4px)}@media(prefers-reduced-motion:reduce){.tq{transition:none}}
+.pinksky{animation:skypan 60s ease-in-out infinite alternate}@media(prefers-reduced-motion:reduce){.pinksky{animation:none}}
+.front{animation:drift 40s ease-in-out infinite alternate}@keyframes drift{from{transform:translateX(-12px)}to{transform:translateX(12px)}}@media(prefers-reduced-motion:reduce){.front{animation:none}}
 /*MARK_STYLE*/
 
 /* ─── SYS CARDS (FIG.02 grid) ───────────────────────────────────────────── */
@@ -605,23 +625,20 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 <!-- ============================================================ V10 HERO -->
 <div id="home" style="background:#fff;position:relative">
-  <!-- Sky card -->
   <div class="skyp" style="margin:16px;border-radius:28px;overflow:hidden;background:#3D8FE8 url('assets/cb254ac10403398ba1efcb0803b8b1a2.jpg') center bottom/cover no-repeat;color:#fff">
-    <!-- Integrated nav -->
     <nav style="display:flex;justify-content:space-between;align-items:center;height:84px;padding:0 clamp(24px,5.6vw,80px)">
-      <a href="#top" style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:28px;letter-spacing:-0.02em;color:#fff;text-decoration:none">m<span style="color:#E2557F">.</span>g</a>
+      <a href="#home" style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:28px;letter-spacing:-0.02em;color:#fff;text-decoration:none">m<span style="color:#E2557F">.</span>g</a>
       <div style="display:flex;gap:40px;font-size:15px;font-weight:500">
-        <a href="#start" style="color:#fff;text-decoration:none;border-bottom:1.5px solid transparent;padding-bottom:2px;transition:border-color .2s">Work</a>
-        <a href="#services" style="color:#fff;text-decoration:none;border-bottom:1.5px solid transparent;padding-bottom:2px;transition:border-color .2s">Services</a>
-        <a href="#writing" style="color:#fff;text-decoration:none;border-bottom:1.5px solid transparent;padding-bottom:2px;transition:border-color .2s">Writing</a>
-        <a href="#services" style="color:#fff;text-decoration:none;border-bottom:1.5px solid transparent;padding-bottom:2px;transition:border-color .2s">About</a>
+        <a href="#start" class="nl" style="color:#fff">Work</a>
+        <a href="#services" class="nl" style="color:#fff">Services</a>
+        <a href="#writing" class="nl" style="color:#fff">Writing</a>
+        <a href="#contact" class="nl" style="color:#fff">About</a>
       </div>
       <div style="display:flex;gap:10px;font-size:14px;font-weight:600">
-        <a href="Mehak-Garg-Resume.pdf" download style="padding:11px 20px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.85);color:#fff;text-decoration:none">Resume ↓</a>
-        <a href="mailto:mehakrgarg@gmail.com" style="padding:11px 20px;border-radius:999px;background:#fff;color:#141414;text-decoration:none">Say hi →</a>
+        <a href="Mehak-Garg-Resume.pdf" download class="btn" style="padding:11px 20px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.85);color:#fff;text-decoration:none">Resume ↓</a>
+        <a href="mailto:mehakrgarg@gmail.com" class="btn" style="padding:11px 20px;border-radius:999px;background:#fff;color:#141414;text-decoration:none">Say hi ↗</a>
       </div>
     </nav>
-    <!-- Hero content -->
     <section style="display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:80px;padding:44px clamp(24px,4.4vw,64px) 60px">
       <div style="display:flex;flex-direction:column">
         <div style="display:flex;align-items:center;gap:14px">
@@ -632,30 +649,20 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
         <h1 style="color:#fff;text-shadow:0 2px 24px rgba(10,40,100,0.18);margin:36px 0 0;font-weight:600;font-size:clamp(40px,4.6vw,66px);line-height:1.02;letter-spacing:-0.05em;max-width:860px">Complex products only work when people trust them.<br><span style="font-family:var(--serif);font-style:italic;font-weight:500;white-space:nowrap;letter-spacing:-0.025em;background:linear-gradient(180deg,transparent 70%,#E2557FCC 70%,#E2557FCC 86%,transparent 86%)">I design that trust.</span></h1>
         <p style="margin:26px 0 0;font-size:18px;line-height:1.55;color:rgba(255,255,255,0.92);max-width:620px">Five years on enterprise security, plus healthcare operations, edtech and the food industry. Different domains, same job: make the system clear enough to trust.</p>
         <div style="margin-top:32px;display:flex;align-items:center;gap:26px">
-          <a href="#start" style="padding:18px 30px;border-radius:999px;background:#fff;color:#141414;font-size:16px;font-weight:600;text-decoration:none;box-shadow:0 10px 28px rgba(10,40,100,0.22)">Start with the work ↓</a>
-          <a href="mailto:mehakrgarg@gmail.com" style="font-size:16px;font-weight:600;padding-bottom:3px;border-bottom:2px solid #fff;color:#fff;text-decoration:none">Work with me →</a>
+          <a href="#start" class="btn" style="padding:18px 30px;border-radius:999px;background:#fff;color:#141414;font-size:16px;font-weight:600;text-decoration:none;box-shadow:0 10px 28px rgba(10,40,100,0.22)">Start with the work ↓</a>
+          <a href="mailto:mehakrgarg@gmail.com" style="font-size:16px;font-weight:600;padding-bottom:3px;border-bottom:2px solid #fff;color:#fff;text-decoration:none">Work with me ↗</a>
         </div>
       </div>
       <div style="align-self:start;margin-top:60px;display:flex;flex-direction:column">
         <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.14em;color:rgba(255,255,255,0.8)">TRACK RECORD</span>
         <div style="margin-top:6px">
-          <div style="display:flex;flex-direction:column;gap:6px;padding:18px 0">
-            <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:44px;line-height:1;letter-spacing:-0.03em;color:#fff">30K+</span>
-            <span style="font-size:14px;line-height:1.4;color:rgba(255,255,255,0.86)">organizations use products I designed</span>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:6px;padding:18px 0;border-top:1px solid rgba(255,255,255,0.35)">
-            <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:44px;line-height:1;letter-spacing:-0.03em;color:#fff">30+</span>
-            <span style="font-size:14px;line-height:1.4;color:rgba(255,255,255,0.86)">products shipped across B2B SaaS and consumer apps</span>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:6px;padding:18px 0;border-top:1px solid rgba(255,255,255,0.35)">
-            <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:44px;line-height:1;letter-spacing:-0.03em;color:#fff">11% → 18%</span>
-            <span style="font-size:14px;line-height:1.4;color:rgba(255,255,255,0.86)">trial-to-paid conversion, within 6 months of the PAM redesign</span>
-          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding:18px 0"><span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:44px;line-height:1;letter-spacing:-0.03em;color:#fff">30K+</span><span style="font-size:14px;line-height:1.4;color:rgba(255,255,255,0.86)">organizations use products I designed</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding:18px 0;border-top:1px solid rgba(255,255,255,0.35)"><span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:44px;line-height:1;letter-spacing:-0.03em;color:#fff">30+</span><span style="font-size:14px;line-height:1.4;color:rgba(255,255,255,0.86)">products shipped across B2B SaaS and consumer apps</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;padding:18px 0;border-top:1px solid rgba(255,255,255,0.35)"><span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:44px;line-height:1;letter-spacing:-0.03em;color:#fff">11% → 18%</span><span style="font-size:14px;line-height:1.4;color:rgba(255,255,255,0.86)">trial-to-paid conversion, within 6 months of the PAM redesign</span></div>
         </div>
       </div>
     </section>
   </div>
-  <!-- PAM Peek strip -->
   <a href="#start" class="peek" style="display:grid;grid-template-columns:220px 1fr auto;align-items:start;gap:32px;padding:22px clamp(24px,5.6vw,80px) 0;border-top:1px solid #141414;text-decoration:none;color:inherit">
     <span style="display:flex;flex-direction:column;gap:8px"><span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#141414">01 · START HERE</span><span style="font-family:var(--hand);font-weight:600;font-size:21px;color:#76716A">if you only read one ↓</span></span>
     <span style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600;font-size:22px;letter-spacing:-0.02em">PAM · enterprise security</span><span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:22px;color:#4F4A43">A redesign that brought in $800K in new sales.</span></span>
@@ -663,94 +670,76 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   </a>
 </div>
 
-<!-- Services ticker -->
-<div class="svc-strip">
-  <span class="svc-strip__label">SERVICES —</span>
-  <div class="svc-strip__track-wrap">
-    <div class="svc-strip__track">
-      <div style="display:flex;align-items:center;gap:28px;padding-right:28px">
-        <a href="#services" class="svc-link">ENTERPRISE PRODUCT UX</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">UX AUDITS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">DESIGN SYSTEMS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">DESIGN STRATEGY</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">0-1 CONSULTATION</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">WEB DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">BRAND DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-      </div>
-      <div aria-hidden="true" style="display:flex;align-items:center;gap:28px;padding-right:28px">
-        <a href="#services" class="svc-link">ENTERPRISE PRODUCT UX</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">UX AUDITS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">DESIGN SYSTEMS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">DESIGN STRATEGY</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">0-1 CONSULTATION</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">WEB DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-        <a href="#services" class="svc-link">BRAND DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================ V10 FEATURED PAM -->
+<!-- ============================================================ FEATURED PAM -->
 <section id="start" style="padding:clamp(64px,7vw,104px) clamp(24px,5.6vw,80px) 0;background:#fff">
   <div style="display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:64px;align-items:center">
     <a href="case-pam.html" style="position:relative;display:block;height:560px;border-radius:8px;overflow:hidden;background:#DCE7F7;text-decoration:none"><img src="assets/9ca9166345804b4ba02a198712468a5e.png" alt="Redesigned PAM admin dashboard" style="position:absolute;left:48px;top:56px;width:860px;border-radius:8px;box-shadow:0 24px 60px rgba(20,30,60,0.18)"></a>
     <div style="display:flex;flex-direction:column">
       <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#76716A">01 · ENTERPRISE SECURITY</span>
       <h2 style="margin:18px 0 0;font-weight:600;font-size:clamp(32px,3.6vw,52px);line-height:1;letter-spacing:-0.04em">Privileged Access <span style="font-family:var(--serif);font-style:italic;font-weight:500">Management</span></h2>
-      <div style="margin-top:40px;padding-top:28px;border-top:1px solid #E5E2DD;display:flex;flex-direction:column;gap:6px">
-        <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(60px,6.4vw,92px);line-height:0.9;letter-spacing:-0.04em">$800K</span>
-        <span style="font-size:16px;color:#76716A">in new sales after the redesign</span>
-      </div>
-      <div style="margin-top:24px;display:flex;align-items:baseline;gap:14px">
-        <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:30px;line-height:1">11% → 18%</span>
-        <span style="font-size:15px;color:#76716A">trial-to-paid, within 6 months</span>
-      </div>
-      <a href="case-pam.html" style="margin-top:40px;align-self:flex-start;padding:17px 28px;border-radius:999px;background:#141414;color:#fff;font-size:16px;font-weight:600;text-decoration:none">Read the PAM case study →</a>
+      <div style="margin-top:40px;padding-top:28px;border-top:1px solid #E5E2DD;display:flex;flex-direction:column;gap:6px"><span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(60px,6.4vw,92px);line-height:0.9;letter-spacing:-0.04em">$800K</span><span style="font-size:16px;color:#76716A">in new sales after the redesign</span></div>
+      <div style="margin-top:24px;display:flex;align-items:baseline;gap:14px"><span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:30px;line-height:1">11% → 18%</span><span style="font-size:15px;color:#76716A">trial-to-paid, within 6 months</span></div>
+      <a href="case-pam.html" class="btn" style="margin-top:40px;align-self:flex-start;padding:17px 28px;border-radius:999px;background:#141414;color:#fff;font-size:16px;font-weight:600;text-decoration:none">Read the PAM case study →</a>
     </div>
   </div>
 </section>
 
-<!-- ============================================================ V10 CASE ROWS -->
+<!-- ============================================================ CASE ROWS -->
 <section id="work" style="padding:clamp(80px,8vw,120px) clamp(24px,5.6vw,80px) clamp(72px,7vw,112px);background:#fff">
   <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;padding-bottom:20px;border-bottom:1px solid #141414">
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em">THEN, KEEP READING</span>
-      <h2 style="margin:0;font-weight:600;font-size:clamp(28px,3vw,44px);line-height:1.05;letter-spacing:-0.04em">Same way of working, <span style="font-family:var(--serif);font-style:italic;font-weight:500">three more domains</span></h2>
-    </div>
+    <div style="display:flex;flex-direction:column;gap:12px"><span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em">THEN, KEEP READING</span><h2 style="margin:0;font-weight:600;font-size:clamp(28px,3vw,44px);line-height:1.05;letter-spacing:-0.04em">Same way of working, <span style="font-family:var(--serif);font-style:italic;font-weight:500">three more domains</span></h2></div>
     <p style="margin:0;max-width:360px;font-size:16px;line-height:1.55;color:#4F4A43">Across 30+ products shipped, used by 30K+ organizations.</p>
   </div>
-  <a href="case-merry.html" class="v10row" style="display:grid;grid-template-columns:90px 220px minmax(0,1fr) 260px 40px;align-items:center;gap:32px;padding:26px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
+  <a href="case-merry.html" class="row" style="display:grid;grid-template-columns:90px 220px minmax(0,1fr) 260px 40px;align-items:center;gap:32px;padding:26px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
     <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:40px;line-height:1;color:#76716A">02</span>
     <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">HEALTHCARE OPS</span><span style="font-weight:600;font-size:22px;letter-spacing:-0.02em">Merry Health</span></span>
     <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:28px;line-height:1.15">Dispatch for ~30 live hospitals</span>
     <span style="position:relative;height:120px;border-radius:6px;overflow:hidden;background:#FBE7D9"><img src="assets/1ce57235976d7a3dc578104957c53761.png" alt="" style="position:absolute;left:18px;top:18px;width:360px;border-radius:5px;box-shadow:0 10px 24px rgba(20,20,40,0.14)"></span>
-    <span class="v10arr" style="font-size:26px;justify-self:end">→</span>
+    <span class="arr" style="font-size:26px;justify-self:end">→</span>
   </a>
-  <a href="case-idp.html" class="v10row" style="display:grid;grid-template-columns:90px 220px minmax(0,1fr) 260px 40px;align-items:center;gap:32px;padding:26px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
+  <a href="#" class="row" style="display:grid;grid-template-columns:90px 220px minmax(0,1fr) 260px 40px;align-items:center;gap:32px;padding:26px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
     <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:40px;line-height:1;color:#76716A">03</span>
-    <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">ENTERPRISE SECURITY</span><span style="font-weight:600;font-size:22px;letter-spacing:-0.02em">IAM / IdP</span></span>
-    <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:28px;line-height:1.15">Architecting enterprise IAM from the ground up</span>
-    <span style="position:relative;height:120px;border-radius:6px;overflow:hidden;background:#DDEDE0"><img src="assets/cards/iam-base.png" alt="" style="position:absolute;left:18px;top:18px;width:360px;border-radius:5px;box-shadow:0 10px 24px rgba(20,20,40,0.14)"></span>
-    <span class="v10arr" style="font-size:26px;justify-self:end">→</span>
-  </a>
-  <a href="#" class="v10row" style="display:grid;grid-template-columns:90px 220px minmax(0,1fr) 260px 40px;align-items:center;gap:32px;padding:26px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
-    <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:40px;line-height:1;color:#76716A">04</span>
     <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">EDTECH</span><span style="font-weight:600;font-size:22px;letter-spacing:-0.02em">EducAItors</span></span>
     <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:28px;line-height:1.15">Led 6 designers, 4 weeks</span>
     <span style="position:relative;height:120px;border-radius:6px;overflow:hidden;background:#F8DAE9"><img src="assets/e073eab625b640d1a058be9f0cef79ed.png" alt="" style="position:absolute;left:18px;top:18px;width:360px;border-radius:5px;box-shadow:0 10px 24px rgba(20,20,40,0.14)"></span>
-    <span class="v10arr" style="font-size:26px;justify-self:end">→</span>
+    <span class="arr" style="font-size:26px;justify-self:end">→</span>
   </a>
-  <a href="#" class="v10row" style="display:grid;grid-template-columns:90px 220px minmax(0,1fr) 260px 40px;align-items:center;gap:32px;padding:26px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
-    <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:40px;line-height:1;color:#76716A">05</span>
+  <a href="#" class="row" style="display:grid;grid-template-columns:90px 220px minmax(0,1fr) 260px 40px;align-items:center;gap:32px;padding:26px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
+    <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:40px;line-height:1;color:#76716A">04</span>
     <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">FOOD INDUSTRY</span><span style="font-weight:600;font-size:22px;letter-spacing:-0.02em">Salt Peppr</span></span>
     <span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:28px;line-height:1.15">Premium food sustainability platform</span>
     <span style="position:relative;height:120px;border-radius:6px;overflow:hidden;background:#E4E8FA"><img src="assets/81368dd91fd13497bbf05e50836cce7c.png" alt="" style="position:absolute;left:18px;top:18px;width:360px;border-radius:5px;box-shadow:0 10px 24px rgba(20,20,40,0.14)"></span>
-    <span class="v10arr" style="font-size:26px;justify-self:end">→</span>
+    <span class="arr" style="font-size:26px;justify-self:end">→</span>
   </a>
   <a href="case-idp.html" style="display:inline-block;margin-top:28px;font-size:15px;font-weight:600;padding-bottom:3px;border-bottom:2px solid #E2557F;color:#141414;text-decoration:none">Also: IAM, 12 teams interviewed before design →</a>
 </section>
 
-<!-- ============================================================ V10 MORE WORK -->
+<!-- ============================================================ SERVICES TICKER -->
+<div class="svc-strip" style="height:60px;display:flex;align-items:stretch;background:#141414;color:#F7F5F1;font-family:var(--mono);font-size:13px;letter-spacing:.14em;white-space:nowrap">
+  <span class="svc-strip__label">SERVICES —</span>
+  <div class="svc-strip__track-wrap"><div class="svc-strip__track">
+    <div style="display:flex;align-items:center;gap:28px;padding-right:28px">
+      <a href="#services" class="svc-link">ENTERPRISE PRODUCT UX</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">UX AUDITS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">DESIGN SYSTEMS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">DESIGN STRATEGY</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">0-1 CONSULTATION</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">WEB DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">BRAND DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+    </div>
+    <div aria-hidden="true" style="display:flex;align-items:center;gap:28px;padding-right:28px">
+      <a href="#services" class="svc-link">ENTERPRISE PRODUCT UX</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">UX AUDITS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">DESIGN SYSTEMS</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">DESIGN STRATEGY</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">0-1 CONSULTATION</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">WEB DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+      <a href="#services" class="svc-link">BRAND DESIGN</a><svg aria-hidden="true" viewBox="0 0 40 40" width="12" height="12"><path d="M20 2 C22 14 26 18 38 20 C26 22 22 26 20 38 C18 26 14 22 2 20 C14 18 18 14 20 2 Z" fill="#E2557F"></path></svg>
+    </div>
+  </div></div>
+</div>
+
+<!-- ============================================================ MORE WORK -->
 <section id="more" style="padding:clamp(64px,6vw,96px) clamp(24px,5.6vw,80px) clamp(48px,5vw,72px);background:#fff">
   <input type="radio" name="mf" id="mf-all" class="mfr" checked>
   <input type="radio" name="mf" id="mf-web" class="mfr">
@@ -758,213 +747,156 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <input type="radio" name="mf" id="mf-brand" class="mfr">
   <input type="radio" name="mf" id="mf-critique" class="mfr">
   <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;padding-bottom:18px;border-bottom:1px solid #141414">
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em">BEYOND THE CASE STUDIES</span>
-      <h2 style="margin:0;font-weight:600;font-size:clamp(28px,3.3vw,48px);line-height:1;letter-spacing:-0.04em">More <span style="font-family:var(--serif);font-style:italic;font-weight:500">work</span></h2>
-    </div>
+    <div style="display:flex;flex-direction:column;gap:12px"><span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em">BEYOND THE CASE STUDIES</span><h2 style="margin:0;font-weight:600;font-size:clamp(28px,3.3vw,48px);line-height:1;letter-spacing:-0.04em">More <span style="font-family:var(--serif);font-style:italic;font-weight:500">work</span></h2></div>
     <p style="margin:0;max-width:420px;font-size:16px;line-height:1.55;color:#4F4A43">Websites, branding and product work for clients and teams. NDA on most; ask me for a walkthrough.</p>
   </div>
   <div class="mbar" style="display:flex;gap:8px;padding:20px 0 30px">
-    <label for="mf-all" class="mchip mchip-all" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600">All · 09</label>
-    <label for="mf-web" class="mchip mchip-web" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600">Web design · 04</label>
-    <label for="mf-product" class="mchip mchip-product" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600">Product · 04</label>
-    <label for="mf-brand" class="mchip mchip-brand" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600">Branding · 01</label>
-    <label for="mf-critique" class="mchip mchip-critique" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600">UX critique · 01</label>
+    <label for="mf-all" class="mchip mchip-all" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600;cursor:pointer">All · 11</label>
+    <label for="mf-web" class="mchip mchip-web" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600;cursor:pointer">Web design · 05</label>
+    <label for="mf-product" class="mchip mchip-product" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600;cursor:pointer">Product · 04</label>
+    <label for="mf-brand" class="mchip mchip-brand" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600;cursor:pointer">Branding · 01</label>
+    <label for="mf-critique" class="mchip mchip-critique" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600;cursor:pointer">UX critique · 01</label>
   </div>
-  <input type="checkbox" id="mx" class="mfr">
-  <div class="mwrap" style="position:relative;max-height:440px;overflow:hidden">
+  <input type="checkbox" id="mx" class="mfr" checked>
+  <div class="mwrap" style="position:relative;overflow:hidden">
     <div class="mgrid" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px 24px">
-      <a href="#more" class="mw mw-product" style="text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#F2F2F4"><img src="assets/d62221efa34ff0ff019e77c6ecb7c37b.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px;padding-top:4px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">PRODUCT DESIGN · HEALTHCARE</span><span style="font-weight:600;font-size:17px">CI Vantage</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Product design for an informative healthcare portal.</span></span></a>
-      <a href="#more" class="mw mw-brand" style="text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#C8102E"><img src="assets/16ae025c1ccd303b2279181038b11f26.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:50% 11%"></span><span style="display:flex;flex-direction:column;gap:5px;padding-top:4px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">BRANDING · LOGO</span><span style="font-weight:600;font-size:17px">Albeli</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Brand and logo design.</span></span></a>
-      <a href="#more" class="mw mw-web" style="text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#F2F2F4"><img src="assets/6d7ab24839ca057f63a835710fe86514.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px;padding-top:4px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">WEB DESIGN · MARKET RESEARCH</span><span style="font-weight:600;font-size:17px">Growth Market Reports</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Website redesign.</span></span></a>
-      <a href="#more" class="mw mw-web" style="text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#111111"><img src="assets/5c4284756c66ac4ee11d58e74f9606dc.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px;padding-top:4px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">WEB DESIGN · FITNESS</span><span style="font-weight:600;font-size:17px">FITFRHOME</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Site for a 5M+ fitness influencer's personal training business.</span></span></a>
-      <a href="#more" class="mw mw-critique" style="text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#EAF3FB"><img src="assets/52249c212c7673079a7c55c1149dd619.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px;padding-top:4px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">UX CRITIQUE · TRAVEL</span><span style="font-weight:600;font-size:17px">SeaScanner</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Pragmatic UX design critique.</span></span></a>
-      <a href="#more" class="mw mw-web" style="text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#FDF0EE"><img src="assets/14bda0d13625decfdb0015bfaa47a15e.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px;padding-top:4px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">WEB DESIGN · COMMUNITY</span><span style="font-weight:600;font-size:17px">Keeping Moms Real</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Web design for a community helping moms balance ambition and motherhood.</span></span></a>
-      <a href="#more" class="mw mw-web" style="text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#DCE8F8"><img src="assets/d8aa1a36b645ea8b4fff04a719bb1076.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px;padding-top:4px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">WEB DESIGN · AI</span><span style="font-weight:600;font-size:17px">AxisAI</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Product analytics for GenAI applications.</span></span></a>
-      <a href="#more" class="mw mw-product" style="text-decoration:none;color:inherit"><span style="display:flex;align-items:flex-end;height:200px;box-sizing:border-box;padding:18px;border-radius:6px;background:#EEF3FB"><span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:64px;line-height:0.9;letter-spacing:-0.03em">5,000+</span></span><span style="display:flex;flex-direction:column;gap:5px;padding-top:4px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">DESIGN SYSTEMS · MINIORANGE</span><span style="font-weight:600;font-size:17px">Design system</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Co-created a system supporting 5,000+ pages. +20% conversion, −35% bounce.</span></span></a>
-      <a href="#more" class="mw mw-product" style="text-decoration:none;color:inherit"><span style="display:flex;align-items:flex-end;height:200px;box-sizing:border-box;padding:18px;border-radius:6px;background:#EEF7F2"><span style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:64px;line-height:0.9;letter-spacing:-0.03em">20k+</span></span><span style="display:flex;flex-direction:column;gap:5px;padding-top:4px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">ENTERPRISE UX · MINIORANGE</span><span style="font-weight:600;font-size:17px">Payment portal</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Admin interfaces for a payment portal used by 20k+ users.</span></span></a>
+      <a href="#more" class="mw mw-brand" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#C8102E"><img src="assets/16ae025c1ccd303b2279181038b11f26.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:50% 11%"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">BRANDING · LOGO</span><span style="font-weight:600;font-size:17px">Albeli</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Brand and logo design.</span></span></a>
+      <a href="#more" class="mw mw-web" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#FDF0EE"><img src="assets/14bda0d13625decfdb0015bfaa47a15e.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">WEB DESIGN · COMMUNITY</span><span style="font-weight:600;font-size:17px">Keeping Moms Real</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Web design for a community helping moms balance ambition and motherhood.</span></span></a>
+      <a href="#more" class="mw mw-web" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#111111"><img src="assets/5c4284756c66ac4ee11d58e74f9606dc.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">WEB DESIGN · FITNESS</span><span style="font-weight:600;font-size:17px">FITFRHOME</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Site for a 5M+ fitness influencer's personal training business.</span></span></a>
+      <a href="#more" class="mw mw-web" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#F2F2F4"><img src="assets/6d7ab24839ca057f63a835710fe86514.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">WEB DESIGN · MARKET RESEARCH</span><span style="font-weight:600;font-size:17px">Growth Market Reports</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Website redesign.</span></span></a>
+      <a href="#more" class="mw mw-product" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#F2F2F4"><img src="assets/d62221efa34ff0ff019e77c6ecb7c37b.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">PRODUCT DESIGN · HEALTHCARE</span><span style="font-weight:600;font-size:17px">CI Vantage</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Product design for an informative healthcare portal.</span></span></a>
+      <a href="#more" class="mw mw-web" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#DCE8F8"><img src="assets/d8aa1a36b645ea8b4fff04a719bb1076.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">WEB DESIGN · AI</span><span style="font-weight:600;font-size:17px">AxisAI</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Product analytics for GenAI applications.</span></span></a>
+      <a href="#more" class="mw mw-critique" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#EAF3FB"><img src="assets/52249c212c7673079a7c55c1149dd619.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">UX CRITIQUE · TRAVEL</span><span style="font-weight:600;font-size:17px">SeaScanner</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Pragmatic UX design critique.</span></span></a>
+      <a href="#more" class="mw mw-product" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#F3F2EC"><img src="assets/6b1cd99a37a4104f1f9f70d4bdf7146b.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">MOBILE APP · QUICK COMMERCE</span><span style="font-weight:600;font-size:17px">EcoCart</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Eco-conscious quick commerce mobile application.</span></span></a>
+      <a href="#more" class="mw mw-web" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#141414"><img src="assets/106f61a2b9c1f8920be16da3cb789a85.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top center"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">WEB DESIGN · MARKETING</span><span style="font-weight:600;font-size:17px">Services LP</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Landing page for a digital marketing agency.</span></span></a>
+      <a href="#more" class="mw mw-product" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#F4F4F6"><img src="assets/d09ce95c5d5261a0251576f7e73b11f2.png" alt="" style="width:100%;height:100%;object-fit:cover;object-position:top center"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">ENTERPRISE UX · CYBERSECURITY</span><span style="font-weight:600;font-size:17px">Payment portal</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Admin interfaces for a payment portal used by 20k+ users.</span></span></a>
+      <a href="#more" class="mw mw-product" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#fff"><img src="assets/23b09b9c42b9b40c5a60a77ffb412f0e.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">MOBILE · AI</span><span style="font-weight:600;font-size:17px">Heavy-equipment app</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">140+ screen AI-powered mobile platform. Top 3 of 40+ teams, 4.9 app rating.</span></span></a>
     </div>
-    <div class="mfade" style="position:absolute;left:0;right:0;bottom:0;height:130px;display:flex;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,rgba(255,255,255,0) 0,#fff 70%)"><label for="mx" style="padding:13px 24px;border-radius:999px;background:#141414;color:#fff;font-size:14px;font-weight:600;cursor:pointer">Show all 9 ↓</label></div>
+    <div class="mfade" style="position:absolute;left:0;right:0;bottom:0;height:130px;display:flex;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,rgba(255,255,255,0) 0,#fff 70%)"><label for="mx" style="padding:13px 24px;border-radius:999px;background:#141414;color:#fff;font-size:14px;font-weight:600;cursor:pointer">Show all 11 ↓</label></div>
   </div>
-  <label for="mx" class="mless" style="display:none;margin:32px auto 0;width:max-content;padding:13px 24px;border-radius:999px;border:1.5px solid #141414;font-size:14px;font-weight:600;cursor:pointer">Show less ↑</label>
+  <label for="mx" class="mless" style="margin:32px auto 0;width:max-content;padding:13px 24px;border-radius:999px;border:1.5px solid #141414;font-size:14px;font-weight:600;cursor:pointer">Show less ↑</label>
 </section>
 
-  <!-- ============================================================ TESTIMONIALS -->
-  <div class="testi reveal" id="testi">
-    <span class="testi__glyph" data-par="-3" aria-hidden="true">&rdquo;</span>
-    <div class="testi__eyebrow">What people say</div>
-    <div class="testi__stage" id="testiStage">
-      <figure class="tslide is-active" data-i="0">
-        <blockquote class="tquote">Mehak handled multiple client projects from day one and consistently delivered work that shifted how stakeholders saw the <span class="tmark">role of design</span> in our products.</blockquote>
-        <figcaption class="tmeta">
-          <span class="tav">M</span>
-          <span class="tmeta__txt"><span class="tname">Mandar Raje</span><span class="trole">Business Head, vConstruct</span></span>
-        </figcaption>
-      </figure>
-      <figure class="tslide" data-i="1">
-        <blockquote class="tquote">She redesigned our admin flow and we saw a measurable drop in <span class="tmark">support tickets</span> within the first month. The kind of output you rarely see from a solo designer.</blockquote>
-        <figcaption class="tmeta">
-          <span class="tav">A</span>
-          <span class="tmeta__txt"><span class="tname">Aditya Kumar</span><span class="trole">Sr Developer, miniOrange</span></span>
-        </figcaption>
-      </figure>
-      <figure class="tslide" data-i="2">
-        <blockquote class="tquote">Her audits are surgical. She found <span class="tmark">140+ issues</span> across our product and ranked them so we could ship fixes inside a quarter.</blockquote>
-        <figcaption class="tmeta">
-          <span class="tav">P</span>
-          <span class="tmeta__txt"><span class="tname">Pradeep Kumar</span><span class="trole">Head of Product, PAM · miniOrange</span></span>
-        </figcaption>
-      </figure>
-      <figure class="tslide" data-i="3">
-        <blockquote class="tquote">Design that engineers respect — that's rare. Our team adopted her component library without a single <span class="tmark">re-spec meeting</span>.</blockquote>
-        <figcaption class="tmeta">
-          <span class="tav">G</span>
-          <span class="tmeta__txt"><span class="tname">Gaurav</span><span class="trole">Founder, Equip9</span></span>
-        </figcaption>
-      </figure>
-    </div>
-    <div class="tdots" id="tdots" role="tablist">
-      <button class="cur" aria-label="Testimonial 1"></button>
-      <button aria-label="Testimonial 2"></button>
-      <button aria-label="Testimonial 3"></button>
-      <button aria-label="Testimonial 4"></button>
-    </div>
+<!-- ============================================================ TESTIMONIALS -->
+<section id="testimonials" style="padding:clamp(80px,8vw,120px) clamp(24px,5.6vw,80px);background:#fff;border-top:1px solid #E5E2DD">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:56px">
+    <div style="display:flex;flex-direction:column;gap:12px"><span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em">KIND WORDS</span><h2 style="margin:0;font-weight:600;font-size:clamp(28px,3.3vw,48px);line-height:1;letter-spacing:-0.04em">What people <span style="font-family:var(--serif);font-style:italic;font-weight:500">say</span></h2></div>
+    <span style="font-family:var(--hand);font-weight:600;font-size:22px;color:#76716A;transform:rotate(-2deg)">from people I've shipped with</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px;align-items:stretch">
+    <figure class="tq" style="margin:0;display:flex;flex-direction:column;gap:28px;padding-top:28px;border-top:2px solid #141414">
+      <span aria-hidden="true" style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:88px;line-height:0.5;height:34px;color:#E2557F">"</span>
+      <blockquote style="margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:24px;line-height:1.38;letter-spacing:-0.01em">Mehak handled multiple client projects from day one and consistently delivered work that shifted how stakeholders saw the role of design in our products.</blockquote>
+      <figcaption style="margin-top:auto;display:flex;align-items:center;gap:14px;padding-top:22px;border-top:1px solid #E5E2DD"><span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:#FDEBF0;color:#B2376A;font-weight:700;font-size:17px">M</span><span style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600;font-size:16px">Mandar Raje</span><span style="font-size:14px;color:#76716A">Business Head, vConstruct</span></span></figcaption>
+    </figure>
+    <figure class="tq" style="margin:0;display:flex;flex-direction:column;gap:28px;padding-top:28px;border-top:2px solid #141414">
+      <span aria-hidden="true" style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:88px;line-height:0.5;height:34px;color:#E2557F">"</span>
+      <blockquote style="margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:24px;line-height:1.38;letter-spacing:-0.01em">She redesigned our admin flow and we saw a measurable drop in support tickets within the first month. The kind of output you rarely see from a solo designer.</blockquote>
+      <figcaption style="margin-top:auto;display:flex;align-items:center;gap:14px;padding-top:22px;border-top:1px solid #E5E2DD"><span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:#FDEBF0;color:#B2376A;font-weight:700;font-size:17px">A</span><span style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600;font-size:16px">Aditya Kumar</span><span style="font-size:14px;color:#76716A">Sr Developer, cybersecurity company</span></span></figcaption>
+    </figure>
+    <figure class="tq" style="margin:0;display:flex;flex-direction:column;gap:28px;padding-top:28px;border-top:2px solid #141414">
+      <span aria-hidden="true" style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:88px;line-height:0.5;height:34px;color:#E2557F">"</span>
+      <blockquote style="margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:24px;line-height:1.38;letter-spacing:-0.01em">Her audits are surgical. She found 140+ issues across our product and ranked them so we could ship fixes inside a quarter.</blockquote>
+      <figcaption style="margin-top:auto;display:flex;align-items:center;gap:14px;padding-top:22px;border-top:1px solid #E5E2DD"><span style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:#FDEBF0;color:#B2376A;font-weight:700;font-size:17px">P</span><span style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600;font-size:16px">Pradeep Kumar</span><span style="font-size:14px;color:#76716A">Head of Product, PAM</span></span></figcaption>
+    </figure>
   </div>
 </section>
 
 <!-- ============================================================ SERVICES -->
-<section class="services-band" id="services">
-  <div class="wrap">
-    <h2 class="sec-title stagger reveal">What I can do <span style="font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.02em">for you.</span></h2>
-    <p class="svc-subhead reveal" data-delay="1">Start small. Go as far as your product needs.</p>
-    <div class="svc-ladder">
-
-      <!-- COL 01 · ENTRY -->
-      <div class="svc-col" style="position:relative">
-        <span class="svc-annot svc-annot--then" style="position:absolute;right:-18px;top:48px;z-index:2">then ↗</span>
-        <div class="svc-lcard svc-lcard--dark reveal">
-          <span class="svc-annot svc-annot--start">start here ↓</span>
-          <div>
-            <div class="svc-lcard__tier">SVC-01 · ENTRY</div>
-            <div class="svc-lcard__title">Product Audit</div>
-          </div>
-          <p class="svc-lcard__blurb">Your product works, but users struggle, support tickets pile up, or trials don't convert.</p>
-          <hr class="svc-lcard__divider">
-          <div>
-            <div class="svc-lcard__label">WHAT YOU GET</div>
-            <p class="svc-lcard__body">A ranked audit of every usability gap in your product, each one tied to its business impact, with a fix roadmap your team can ship within a quarter. Fixed scope, fixed timeline.</p>
-          </div>
-          <div class="svc-lcard__price">Fixed scope · Fixed timeline</div>
-          <div>
-            <div class="svc-lcard__label">PROOF</div>
-            <p class="svc-lcard__proof">140+ usability gaps found and prioritized across an enterprise PAM platform.</p>
-          </div>
-          <a href="#contact" class="svc-cta-pink">Book an audit call →</a>
-        </div>
-      </div>
-
-      <!-- COL 02 · CORE -->
-      <div class="svc-col" style="position:relative">
-        <span class="svc-annot svc-annot--then" style="position:absolute;right:-18px;top:48px;z-index:2">then ↗</span>
-        <div class="svc-lcard svc-lcard--light reveal" data-delay="1">
-          <div>
-            <div class="svc-lcard__tier">SVC-02 · CORE</div>
-            <div class="svc-lcard__title">Enterprise Product Design</div>
-          </div>
-          <p class="svc-lcard__blurb">You're building or rebuilding a complex B2B product, and it needs to feel obvious to admins, buyers and security teams.</p>
-          <hr class="svc-lcard__divider">
-          <div>
-            <div class="svc-lcard__label">WHAT YOU GET</div>
-            <p class="svc-lcard__body">Research, information architecture, user flows and production-ready UI, whether you're going from zero to one or redesigning what already exists.</p>
-          </div>
-          <div>
-            <div class="svc-lcard__label">PROOF</div>
-            <p class="svc-lcard__proof">An admin flow redesign that measurably reduced support tickets within the first month.</p>
-          </div>
-          <a href="#contact" class="svc-cta-outline">Discuss your product →</a>
-        </div>
-      </div>
-
-      <!-- COL 03 · SCALE -->
-      <div class="svc-col">
-        <div class="svc-lcard svc-lcard--light reveal" data-delay="2">
-          <div>
-            <div class="svc-lcard__tier">SVC-03 · SCALE</div>
-            <div class="svc-lcard__title">Design Systems</div>
-          </div>
-          <p class="svc-lcard__blurb">Every new feature looks slightly different and engineering keeps asking for specs.</p>
-          <hr class="svc-lcard__divider">
-          <div>
-            <div class="svc-lcard__label">WHAT YOU GET</div>
-            <p class="svc-lcard__body">A component library with documentation that your developers can adopt directly, so design and engineering ship from the same source of truth.</p>
-          </div>
-          <div>
-            <div class="svc-lcard__label">PROOF</div>
-            <p class="svc-lcard__proof">Adopted by Equip9's engineering team without a single re-spec meeting.</p>
-          </div>
-          <a href="#contact" class="svc-cta-outline">Discuss your system →</a>
-        </div>
-      </div>
-
-    </div>
-    <p class="svc-also reveal">Also available: brand identity and websites for early-stage startups.</p>
+<section id="services" style="padding:clamp(80px,8vw,120px) clamp(24px,5.6vw,80px);background-color:#F4F2EE;background-image:linear-gradient(#E9E6DF 1px,transparent 1px),linear-gradient(90deg,#E9E6DF 1px,transparent 1px);background-size:40px 40px;color:#141414;font-family:'Hanken Grotesk',system-ui,sans-serif;display:flex;flex-direction:column">
+  <span style="font-family:var(--mono);font-size:13px;letter-spacing:0.12em;align-self:flex-start;background:#F4F2EE;padding:2px 6px">SERVICES</span>
+  <h2 style="margin:24px 0 0;font-weight:700;font-size:clamp(48px,6vw,88px);line-height:1;letter-spacing:-0.045em;align-self:flex-start;background:#F4F2EE;padding-right:12px">What I can do <span style="font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-0.02em">for you.</span></h2>
+  <p style="margin:20px 0 0;font-size:clamp(16px,1.5vw,22px);line-height:1.5;color:#4A4A4A;align-self:flex-start;background:#F4F2EE;padding-right:12px">Three ways to work with me, wherever your product is today.</p>
+  <div class="srow" style="margin-top:40px;height:560px">
+    <a href="mailto:mehakrgarg@gmail.com" class="scard on" style="display:flex;flex-direction:column;justify-content:space-between;padding:30px;text-decoration:none">
+      <span class="sel" aria-hidden="true" style="position:absolute;inset:-7px;border:2px solid #FF9FB2;border-radius:22px;pointer-events:none"></span>
+      <span style="display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:32px"><span style="font-family:var(--mono);font-size:12.5px;letter-spacing:0.1em;opacity:0.75">SVC-01 · ENTRY</span><span class="open"><span style="display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:10px;background:#FF9FB2;color:#141414;font-size:14px;font-weight:600">Start here.</span></span></span>
+      <span style="display:flex;flex-direction:column;gap:16px">
+        <span style="font-weight:700;font-size:36px;line-height:1.05;letter-spacing:-0.03em">Product Audit</span>
+        <span style="font-size:16px;line-height:1.55;opacity:0.8">Your product works, but users struggle, support tickets pile up, or trials don't convert.</span>
+        <span class="open" style="display:flex;flex-direction:column;gap:18px;padding-top:4px">
+          <span style="display:flex;flex-direction:column;gap:8px"><span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#FF9FB2">WHAT YOU GET</span><span style="font-size:16px;line-height:1.55">A ranked audit of every usability gap in your product, each one tied to its business impact, with a fix roadmap your team can ship within a quarter.</span></span>
+          <span style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.18)"><span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#FF9FB2">PROOF</span><span style="font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.35">140+ usability gaps found and prioritized across an enterprise PAM platform.</span></span>
+          <span style="align-self:flex-start;padding:13px 20px;border-radius:999px;background:#FF9FB2;color:#141414;font-size:15px;font-weight:600">Book an audit call →</span>
+        </span>
+      </span>
+    </a>
+    <a href="mailto:mehakrgarg@gmail.com" class="scard" style="display:flex;flex-direction:column;justify-content:space-between;padding:30px;text-decoration:none">
+      <span class="sel" aria-hidden="true" style="position:absolute;inset:-7px;border:2px solid #FF9FB2;border-radius:22px;pointer-events:none"></span>
+      <span style="display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:32px"><span style="font-family:var(--mono);font-size:12.5px;letter-spacing:0.1em;opacity:0.75">SVC-02 · CORE</span></span>
+      <span style="display:flex;flex-direction:column;gap:16px">
+        <span style="font-weight:700;font-size:36px;line-height:1.05;letter-spacing:-0.03em">Enterprise Product Design</span>
+        <span style="font-size:16px;line-height:1.55;opacity:0.8">You're building or rebuilding a complex B2B product, and it needs to feel obvious to admins, buyers and security teams.</span>
+        <span class="open" style="display:flex;flex-direction:column;gap:18px;padding-top:4px">
+          <span style="display:flex;flex-direction:column;gap:8px"><span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#FF9FB2">WHAT YOU GET</span><span style="font-size:16px;line-height:1.55">Research, information architecture, user flows and production ready UI, whether you're going from zero to one or redesigning what already exists.</span></span>
+          <span style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.18)"><span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#FF9FB2">PROOF</span><span style="font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.35">An admin flow redesign that measurably reduced support tickets within the first month.</span></span>
+          <span style="align-self:flex-start;padding:13px 20px;border-radius:999px;background:#FF9FB2;color:#141414;font-size:15px;font-weight:600">Discuss your product →</span>
+        </span>
+      </span>
+    </a>
+    <a href="mailto:mehakrgarg@gmail.com" class="scard" style="display:flex;flex-direction:column;justify-content:space-between;padding:30px;text-decoration:none">
+      <span class="sel" aria-hidden="true" style="position:absolute;inset:-7px;border:2px solid #FF9FB2;border-radius:22px;pointer-events:none"></span>
+      <span style="display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:32px"><span style="font-family:var(--mono);font-size:12.5px;letter-spacing:0.1em;opacity:0.75">SVC-03 · SCALE</span></span>
+      <span style="display:flex;flex-direction:column;gap:16px">
+        <span style="font-weight:700;font-size:36px;line-height:1.05;letter-spacing:-0.03em">Design Systems</span>
+        <span style="font-size:16px;line-height:1.55;opacity:0.8">Every new feature looks slightly different and engineering keeps asking for specs.</span>
+        <span class="open" style="display:flex;flex-direction:column;gap:18px;padding-top:4px">
+          <span style="display:flex;flex-direction:column;gap:8px"><span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#FF9FB2">WHAT YOU GET</span><span style="font-size:16px;line-height:1.55">A component library with documentation that your developers can adopt directly, so design and engineering ship from the same source of truth.</span></span>
+          <span style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.18)"><span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#FF9FB2">PROOF</span><span style="font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.35">Adopted by Equip9's engineering team without a single re-spec meeting.</span></span>
+          <span style="align-self:flex-start;padding:13px 20px;border-radius:999px;background:#FF9FB2;color:#141414;font-size:15px;font-weight:600">Discuss your system →</span>
+        </span>
+      </span>
+    </a>
   </div>
+  <p style="margin:36px 0 0;text-align:center;font-size:16px;color:#6A6760">Also available: brand identity and websites for early stage startups.</p>
 </section>
 
-<!-- ============================================================ WRITING + CREATING -->
-<section class="writing wrap" id="writing">
-  <div class="writing-inner reveal">
-    <div class="writing-left">
-      <span class="writing-kicker">INDEX · 05 PIECES</span>
-      <h2 class="writing-h2">Notes from the work</h2>
-      <p class="writing-sub">Essays on how I decide what to build. Reels on the person doing it.</p>
-      <div class="writing-filters">
-        <button class="writing-filter active" onclick="filterWriting('all',this)">All</button>
-        <button class="writing-filter" onclick="filterWriting('essay',this)">Essays · 2</button>
-        <button class="writing-filter" onclick="filterWriting('reel',this)">Reels · 3</button>
-      </div>
-      <span class="writing-hint">hover a reel to preview it →</span>
-    </div>
-    <div class="writing-list">
-      <a class="writing-row" data-type="essay" href="https://medium.com/@mehakrgarg/designing-for-deal-breakers-the-lens-i-use-before-i-touch-a-roadmap-2e369ea792f1" target="_blank" rel="noopener">
-        <span class="writing-row__num">01</span>
-        <span class="writing-row__badge writing-row__badge--essay">ESSAY</span>
-        <span class="writing-row__title-essay">Designing for deal breakers — the only prioritization framework</span>
-        <span class="writing-row__meta">MEDIUM · 6 MIN</span>
-        <span class="writing-row__arrow">↗</span>
-      </a>
-      <a class="writing-row" data-type="essay" href="https://medium.com/@mehakrgarg/why-the-best-designers-are-ignoring-the-biggest-design-problem-5d585c84d4cd" target="_blank" rel="noopener">
-        <span class="writing-row__num">02</span>
-        <span class="writing-row__badge writing-row__badge--essay">ESSAY</span>
-        <span class="writing-row__title-essay">Why the best designers are ignoring the biggest design problem</span>
-        <span class="writing-row__meta">MEDIUM · 6 MIN</span>
-        <span class="writing-row__arrow">↗</span>
-      </a>
-      <a class="writing-row reel-row" data-type="reel" href="https://www.instagram.com/p/C2Pw5l8oe5F/" target="_blank" rel="noopener">
-        <span class="writing-row__num">03</span>
-        <span class="writing-row__badge">REEL</span>
-        <span class="writing-row__title-reel">Unveiling my skillset</span>
-        <span class="writing-row__meta">INSTAGRAM</span>
-        <span class="writing-row__arrow">↗</span>
-        <span class="writing-row__thumb" aria-hidden="true"><img src="uploads/reel-1.jpg" alt=""></span>
-      </a>
-      <a class="writing-row reel-row" data-type="reel" href="https://www.instagram.com/p/C2KuqtOo2Ga/?img_index=1" target="_blank" rel="noopener">
-        <span class="writing-row__num">04</span>
-        <span class="writing-row__badge">REEL</span>
-        <span class="writing-row__title-reel">My design journey</span>
-        <span class="writing-row__meta">INSTAGRAM</span>
-        <span class="writing-row__arrow">↗</span>
-        <span class="writing-row__thumb" aria-hidden="true"><img src="uploads/reel-2.jpg" alt=""></span>
-      </a>
-      <a class="writing-row reel-row" data-type="reel" href="https://www.instagram.com/p/C2WR-f1oNaQ/" target="_blank" rel="noopener">
-        <span class="writing-row__num">05</span>
-        <span class="writing-row__badge">REEL</span>
-        <span class="writing-row__title-reel">How I deal with creative blocks</span>
-        <span class="writing-row__meta">INSTAGRAM</span>
-        <span class="writing-row__arrow">↗</span>
-        <span class="writing-row__thumb" aria-hidden="true"><img src="uploads/reel-3.jpg" alt=""></span>
-      </a>
-    </div>
+<!-- ============================================================ WRITING -->
+<section id="writing" style="padding:clamp(80px,8vw,120px) clamp(24px,5.6vw,80px);background:#fff;display:grid;grid-template-columns:4fr 8fr;gap:56px">
+  <div style="display:flex;flex-direction:column;gap:18px">
+    <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#6A655D">INDEX · 05 PIECES</span>
+    <h2 style="margin:0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(44px,4.7vw,68px);line-height:1;letter-spacing:-0.02em">Notes from the work</h2>
+    <p style="margin:0;font-size:17px;line-height:1.6;color:#5A554D">Essays on how I decide what to build. Reels on the person doing it.</p>
+    <div style="display:flex;gap:10px;font-size:14px;font-weight:600;padding-top:6px"><span style="padding:9px 14px;border-radius:999px;background:#141414;color:#F7F5F1">All</span><span style="padding:9px 14px;border-radius:999px;border:1px solid #141414">Essays · 2</span><span style="padding:9px 14px;border-radius:999px;border:1px solid #141414">Reels · 3</span></div>
+    <span style="margin-top:auto;font-family:var(--hand);font-size:24px;transform:rotate(-2deg)">hover a reel to preview it →</span>
+  </div>
+  <div style="border-top:2px solid #141414">
+    <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;text-decoration:none;color:inherit">
+      <span style="font-family:var(--mono);font-size:12px;color:#6A655D">01</span>
+      <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.12em;padding:4px 9px;border-radius:6px;border:1px solid #141414;background:#141414;color:#F7F5F1">ESSAY</span>
+      <span style="font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(20px,2vw,30px);line-height:1.15">Designing for deal breakers — the only prioritization framework</span>
+      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#6A655D">MEDIUM · 6 MIN</span>
+      <span style="font-size:20px">↗</span>
+    </a>
+    <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;text-decoration:none;color:inherit">
+      <span style="font-family:var(--mono);font-size:12px;color:#6A655D">02</span>
+      <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.12em;padding:4px 9px;border-radius:6px;border:1px solid #141414;background:#141414;color:#F7F5F1">ESSAY</span>
+      <span style="font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(20px,2vw,30px);line-height:1.15">Why the best designers are ignoring the biggest design problem</span>
+      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#6A655D">MEDIUM · 6 MIN</span>
+      <span style="font-size:20px">↗</span>
+    </a>
+    <a href="https://www.instagram.com/p/C2Pw5l8oe5F/" target="_blank" rel="noopener" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;background:#FF9FB2;text-decoration:none;color:inherit">
+      <span style="font-family:var(--mono);font-size:12px;color:#6A655D">03</span>
+      <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.12em;padding:4px 9px;border-radius:6px;border:1px solid #141414;background:#fff">REEL</span>
+      <span style="font-weight:600;font-size:22px;line-height:1.15">Unveiling my skillset</span>
+      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#6A655D">INSTAGRAM</span>
+      <span style="font-size:20px">↗</span>
+      <span aria-hidden="true" style="position:absolute;right:70px;top:-48px;width:150px;aspect-ratio:1;border-radius:12px;overflow:hidden;border:3px solid #fff;box-shadow:0 24px 48px rgba(20,20,20,.28);transform:rotate(4deg);z-index:2;pointer-events:none"><img src="assets/f438b9e2c691259b592c12fa143e55a6.jpg" alt="" style="width:100%;height:100%;object-fit:cover"></span>
+    </a>
+    <a href="https://www.instagram.com/mehakkg/" target="_blank" rel="noopener" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;text-decoration:none;color:inherit">
+      <span style="font-family:var(--mono);font-size:12px;color:#6A655D">04</span>
+      <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.12em;padding:4px 9px;border-radius:6px;border:1px solid #141414;background:#fff">REEL</span>
+      <span style="font-weight:600;font-size:22px;line-height:1.15">My design journey</span>
+      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#6A655D">INSTAGRAM</span>
+      <span style="font-size:20px">↗</span>
+    </a>
+    <a href="https://www.instagram.com/mehakkg/" target="_blank" rel="noopener" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;text-decoration:none;color:inherit">
+      <span style="font-family:var(--mono);font-size:12px;color:#6A655D">05</span>
+      <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.12em;padding:4px 9px;border-radius:6px;border:1px solid #141414;background:#fff">REEL</span>
+      <span style="font-weight:600;font-size:22px;line-height:1.15">How I deal with creative blocks</span>
+      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#6A655D">INSTAGRAM</span>
+      <span style="font-size:20px">↗</span>
+    </a>
   </div>
 </section>
 
@@ -1156,42 +1088,45 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   </div>
 </footer>
 
-<!-- ============================================================ FOOTER -->
-<footer class="ft" id="contact">
-  <div class="ft__hero">
-    <h2 class="ft__big">Let's <span class="ft__mark">(work)</span> together</h2>
-    <span class="ft__sub">or just say hi &lt;3</span>
-    <a href="mailto:mehakrgarg@gmail.com" class="ft__email">mehakrgarg@gmail.com ↗</a>
+<!-- ============================================================ NEW FOOTER -->
+<footer id="contact" style="position:relative;overflow:hidden;background:#E9C7E3 url('assets/70dc1f2ecf3997887f73dd3230b97874.jpg') center top/cover no-repeat;color:#141414;font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:clamp(700px,76vw,1100px)">
+  <div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:180px;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0) 100%);pointer-events:none"></div>
+  <div style="position:absolute;left:0;right:0;top:clamp(100px,9.7vw,140px);display:flex;flex-direction:column;align-items:center;text-align:center;z-index:1">
+    <span style="font-family:var(--mono);font-size:12px;letter-spacing:0.22em;color:#B2376A">THE END OF THE SCROLL · THE START OF SOMETHING</span>
+    <h2 style="margin:34px 0 0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(100px,14.7vw,212px);line-height:0.88;letter-spacing:-0.035em;color:#fff;text-shadow:0 10px 60px rgba(150,40,110,0.22)">Let's <span style="color:#B2376A">(work)</span><br>together</h2>
   </div>
-  <div class="ft__mid wrap">
-    <a href="uploads/Mehak-Garg-Resume.pdf" download class="ft__folder" aria-label="Download Mehak's resume">
-      <span class="ft__tab" aria-hidden="true"></span>
-      <span class="ft__pocket" aria-hidden="true"></span>
-      <span class="ft__card">
-        <span class="ft__pin" aria-hidden="true"></span>
-        <span class="ft__name">mehak's</span>
-        <span class="ft__name">resume</span>
-        <span class="ft__tap">TAP TO DOWNLOAD</span>
+  <img class="front" src="assets/0817ca79958dccfa34732ced94032ba5.png" alt="" aria-hidden="true" style="position:absolute;left:-1%;top:0;width:102%;pointer-events:none;z-index:2">
+  <div style="position:absolute;left:0;right:0;top:clamp(400px,44vw,640px);display:flex;flex-direction:column;align-items:center;gap:14px;z-index:3">
+    <a href="mailto:mehakrgarg@gmail.com" class="btn" style="padding:20px 36px;border-radius:999px;background:#141414;color:#fff;font-size:18px;font-weight:600;text-decoration:none;box-shadow:0 14px 34px rgba(120,30,80,0.25)">mehakrgarg@gmail.com ↗</a>
+    <span style="font-family:var(--hand);font-weight:600;font-size:30px;color:#B2376A;transform:rotate(-2deg)">or just say hi &lt;3</span>
+  </div>
+  <div style="position:absolute;left:clamp(24px,5.6vw,80px);right:clamp(24px,5.6vw,80px);top:clamp(500px,54.9vw,790px);display:grid;grid-template-columns:5fr 3fr 3fr;align-items:start;gap:40px;z-index:3">
+    <a href="Mehak-Garg-Resume.pdf" download class="folder" aria-label="Download Mehak's resume" style="position:relative;display:block;width:280px;height:214px;text-decoration:none">
+      <span aria-hidden="true" style="position:absolute;left:0;top:0;width:104px;height:40px;border-radius:16px 16px 0 0;background:#E2557F"></span>
+      <span aria-hidden="true" style="position:absolute;left:0;top:22px;width:280px;height:192px;border-radius:0 20px 20px 20px;background:#E2557F"></span>
+      <span class="card" style="position:absolute;left:34px;top:40px;width:212px;height:140px;box-sizing:border-box;background:#FFFDFB;border-radius:6px;transform:rotate(-3deg);box-shadow:0 10px 24px rgba(120,20,60,0.18);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1">
+        <span aria-hidden="true" style="position:absolute;top:-11px;left:93px;width:24px;height:24px;border-radius:4px;background:#F4C84B;border:1.5px solid #141414"></span>
+        <span style="font-family:var(--hand);font-weight:700;font-size:40px;line-height:0.9">mehak's</span><span style="font-family:var(--hand);font-weight:700;font-size:40px;line-height:0.9">resume</span>
+        <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.12em;color:#B2376A;padding-top:6px">TAP TO DOWNLOAD</span>
       </span>
-      <span class="ft__flap" aria-hidden="true"></span>
+      <span aria-hidden="true" style="position:absolute;left:0;top:166px;width:280px;height:48px;border-radius:6px 6px 20px 20px;background:#EC6F93;z-index:2"></span>
     </a>
-    <nav aria-label="Explore" class="ft__nav">
-      <span class="ft__nav-label">EXPLORE</span>
-      <a class="ft__navlink" href="#work">Work</a>
-      <a class="ft__navlink" href="#about">About</a>
-      <a class="ft__navlink" href="#writing">Writing</a>
+    <nav aria-label="Explore" style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#B2376A;padding-bottom:10px">EXPLORE</span>
+      <a class="flink" href="#start" style="font-family:var(--serif);font-style:italic;font-size:32px;line-height:1.2;color:#B2376A;text-decoration:none">Work</a>
+      <a class="flink" href="#contact" style="font-family:var(--serif);font-style:italic;font-size:32px;line-height:1.2;color:#B2376A;text-decoration:none">About</a>
+      <a class="flink" href="#writing" style="font-family:var(--serif);font-style:italic;font-size:32px;line-height:1.2;color:#B2376A;text-decoration:none">Writing</a>
     </nav>
-    <nav aria-label="Elsewhere" class="ft__nav">
-      <span class="ft__nav-label">ELSEWHERE</span>
-      <a class="ft__navlink" href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener">LinkedIn ↗</a>
-      <a class="ft__navlink" href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener">Behance ↗</a>
-      <a class="ft__navlink" href="https://dribbble.com/mehakkg" target="_blank" rel="noopener">Dribbble ↗</a>
-      <a class="ft__navlink" href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener">Medium ↗</a>
+    <nav aria-label="Elsewhere" style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#B2376A;padding-bottom:10px">ELSEWHERE</span>
+      <a class="flink" href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener" style="font-family:var(--serif);font-style:italic;font-size:32px;line-height:1.2;color:#B2376A;text-decoration:none">LinkedIn ↗</a>
+      <a class="flink" href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener" style="font-family:var(--serif);font-style:italic;font-size:32px;line-height:1.2;color:#B2376A;text-decoration:none">Behance ↗</a>
+      <a class="flink" href="https://dribbble.com/mehakkg" target="_blank" rel="noopener" style="font-family:var(--serif);font-style:italic;font-size:32px;line-height:1.2;color:#B2376A;text-decoration:none">Dribbble ↗</a>
+      <a class="flink" href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="font-family:var(--serif);font-style:italic;font-size:32px;line-height:1.2;color:#B2376A;text-decoration:none">Medium ↗</a>
     </nav>
   </div>
-  <div class="ft__bottom wrap">
-    <span>© 2026 MEHAK GARG · PUNE, INDIA</span>
-    <a href="#home">BACK TO TOP ↑</a>
+  <div style="position:absolute;left:clamp(24px,5.6vw,80px);right:clamp(24px,5.6vw,80px);bottom:0;height:64px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(178,55,106,0.25);font-family:var(--mono);font-size:11px;letter-spacing:0.12em;color:#8A3256;z-index:3">
+    <span>© 2026 MEHAK GARG · PUNE, INDIA</span><a href="#home" style="color:#8A3256;text-decoration:none">BACK TO TOP ↑</a>
   </div>
 </footer>
 <script id="image-slot-lib">
