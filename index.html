@@ -417,7 +417,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .m-only{display:none}
 @media(max-width:767px){
   .m-only{display:block}
-  .nav,.hero-banner,#home,#start,#work,#more,#testi,#testimonials,#services,#writing,.services-band,.writing.wrap,footer.ft,.ft{display:none!important}
+  .nav,.hero-banner,#home,#start,#work,#more,#testi,#testimonials,#services,#writing,.services-band,.writing.wrap,footer.ft,.ft,#contact{display:none!important}
   .svc-strip{display:none!important}
   #m-nav{position:sticky;top:0;z-index:200;background:#fff;display:flex;justify-content:space-between;align-items:center;height:64px;padding:0 22px;border-bottom:1px solid #E5E2DD}
   #m-menu.is-open{display:flex!important}
@@ -434,7 +434,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 #mf-product:checked~.mwrap .mgrid .mw:not(.mw-product){display:none}
 #mf-brand:checked~.mwrap .mgrid .mw:not(.mw-brand){display:none}
 #mf-critique:checked~.mwrap .mgrid .mw:not(.mw-critique){display:none}
-#mx:checked~.mwrap{max-height:none}#mx:checked~.mwrap .mfade{display:none}#mx:checked~.mless{display:block}
+.mwrap{max-height:280px}#mx:checked~.mwrap{max-height:none}#mx:checked~.mwrap .mfade{display:none}#mx:checked~.mless{display:flex}.mless{display:none}
 @media(min-width:768px){.nav{display:none!important}}
 @media(prefers-reduced-motion:reduce){.peek img,.v10row img,.v10arr,.mw span:first-child{transition:none}}
 .srow{display:flex;gap:24px}
@@ -457,6 +457,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .tq{transition:transform .3s ease}.tq:hover{transform:translateY(-4px)}@media(prefers-reduced-motion:reduce){.tq{transition:none}}
 .pinksky{animation:skypan 60s ease-in-out infinite alternate}@media(prefers-reduced-motion:reduce){.pinksky{animation:none}}
 .front{animation:drift 40s ease-in-out infinite alternate}@keyframes drift{from{transform:translateX(-12px)}to{transform:translateX(12px)}}@media(prefers-reduced-motion:reduce){.front{animation:none}}
+.writing-reel:hover{background:#FF9FB2}
+.reel-thumb{position:absolute;right:70px;top:-54px;width:150px;aspect-ratio:1;border-radius:12px;overflow:hidden;border:3px solid #fff;box-shadow:0 24px 48px rgba(20,20,20,.28);transform:rotate(4deg);z-index:2;pointer-events:none;opacity:0;transition:opacity .2s ease}
+.writing-reel:hover .reel-thumb{opacity:1}
+@media(prefers-reduced-motion:reduce){.reel-thumb{transition:none}}
 /*MARK_STYLE*/
 
 /* ─── SYS CARDS (FIG.02 grid) ───────────────────────────────────────────── */
@@ -648,7 +652,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
         </div>
         <h1 style="color:#fff;text-shadow:0 2px 24px rgba(10,40,100,0.18);margin:36px 0 0;font-weight:600;font-size:clamp(40px,4.6vw,66px);line-height:1.02;letter-spacing:-0.05em;max-width:860px">Complex products only work when people trust them.<br><span style="font-family:var(--serif);font-style:italic;font-weight:500;white-space:nowrap;letter-spacing:-0.025em;background:linear-gradient(180deg,transparent 70%,#E2557FCC 70%,#E2557FCC 86%,transparent 86%)">I design that trust.</span></h1>
         <p style="margin:26px 0 0;font-size:18px;line-height:1.55;color:rgba(255,255,255,0.92);max-width:620px">Five years on enterprise security, plus healthcare operations, edtech and the food industry. Different domains, same job: make the system clear enough to trust.</p>
-        <div style="margin-top:32px;display:flex;align-items:center;gap:26px">
+        <div style="margin-top:32px;display:flex;align-items:center;gap:26px;position:relative;z-index:1">
           <a href="#start" class="btn" style="padding:18px 30px;border-radius:999px;background:#fff;color:#141414;font-size:16px;font-weight:600;text-decoration:none;box-shadow:0 10px 28px rgba(10,40,100,0.22)">Start with the work ↓</a>
           <a href="mailto:mehakrgarg@gmail.com" style="font-size:16px;font-weight:600;padding-bottom:3px;border-bottom:2px solid #fff;color:#fff;text-decoration:none">Work with me ↗</a>
         </div>
@@ -757,7 +761,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
     <label for="mf-brand" class="mchip mchip-brand" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600;cursor:pointer">Branding · 01</label>
     <label for="mf-critique" class="mchip mchip-critique" style="padding:8px 15px;border-radius:999px;border:1.5px solid #141414;font-size:13px;font-weight:600;cursor:pointer">UX critique · 01</label>
   </div>
-  <input type="checkbox" id="mx" class="mfr" checked>
+  <input type="checkbox" id="mx" class="mfr">
   <div class="mwrap" style="position:relative;overflow:hidden">
     <div class="mgrid" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px 24px">
       <a href="#more" class="mw mw-brand" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit"><span style="display:block;height:200px;border-radius:6px;overflow:hidden;background:#C8102E"><img src="assets/16ae025c1ccd303b2279181038b11f26.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:50% 11%"></span><span style="display:flex;flex-direction:column;gap:5px"><span style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:#76716A">BRANDING · LOGO</span><span style="font-weight:600;font-size:17px">Albeli</span><span style="font-size:14px;line-height:1.5;color:#4F4A43">Brand and logo design.</span></span></a>
@@ -875,27 +879,29 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
       <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#6A655D">MEDIUM · 6 MIN</span>
       <span style="font-size:20px">↗</span>
     </a>
-    <a href="https://www.instagram.com/p/C2Pw5l8oe5F/" target="_blank" rel="noopener" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;background:#FF9FB2;text-decoration:none;color:inherit">
+    <a href="https://www.instagram.com/p/C2Pw5l8oe5F/" target="_blank" rel="noopener" class="writing-reel" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;text-decoration:none;color:inherit;transition:background .15s ease">
       <span style="font-family:var(--mono);font-size:12px;color:#6A655D">03</span>
       <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.12em;padding:4px 9px;border-radius:6px;border:1px solid #141414;background:#fff">REEL</span>
       <span style="font-weight:600;font-size:22px;line-height:1.15">Unveiling my skillset</span>
       <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#6A655D">INSTAGRAM</span>
       <span style="font-size:20px">↗</span>
-      <span aria-hidden="true" style="position:absolute;right:70px;top:-48px;width:150px;aspect-ratio:1;border-radius:12px;overflow:hidden;border:3px solid #fff;box-shadow:0 24px 48px rgba(20,20,20,.28);transform:rotate(4deg);z-index:2;pointer-events:none"><img src="assets/f438b9e2c691259b592c12fa143e55a6.jpg" alt="" style="width:100%;height:100%;object-fit:cover"></span>
+      <span class="reel-thumb" aria-hidden="true"><img src="assets/f438b9e2c691259b592c12fa143e55a6.jpg" alt="" style="width:100%;height:100%;object-fit:cover"></span>
     </a>
-    <a href="https://www.instagram.com/mehakkg/" target="_blank" rel="noopener" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;text-decoration:none;color:inherit">
+    <a href="https://www.instagram.com/mehakkg/" target="_blank" rel="noopener" class="writing-reel" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;text-decoration:none;color:inherit;transition:background .15s ease">
       <span style="font-family:var(--mono);font-size:12px;color:#6A655D">04</span>
       <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.12em;padding:4px 9px;border-radius:6px;border:1px solid #141414;background:#fff">REEL</span>
       <span style="font-weight:600;font-size:22px;line-height:1.15">My design journey</span>
       <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#6A655D">INSTAGRAM</span>
       <span style="font-size:20px">↗</span>
+      <span class="reel-thumb" aria-hidden="true"><img src="assets/f438b9e2c691259b592c12fa143e55a6.jpg" alt="" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(30deg)"></span>
     </a>
-    <a href="https://www.instagram.com/mehakkg/" target="_blank" rel="noopener" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;text-decoration:none;color:inherit">
+    <a href="https://www.instagram.com/mehakkg/" target="_blank" rel="noopener" class="writing-reel" style="position:relative;display:grid;grid-template-columns:56px 92px minmax(0,1fr) 170px 30px;align-items:center;gap:16px;padding:22px 20px;border-bottom:1px solid #141414;text-decoration:none;color:inherit;transition:background .15s ease">
       <span style="font-family:var(--mono);font-size:12px;color:#6A655D">05</span>
       <span style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.12em;padding:4px 9px;border-radius:6px;border:1px solid #141414;background:#fff">REEL</span>
       <span style="font-weight:600;font-size:22px;line-height:1.15">How I deal with creative blocks</span>
       <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:#6A655D">INSTAGRAM</span>
       <span style="font-size:20px">↗</span>
+      <span class="reel-thumb" aria-hidden="true"><img src="assets/f438b9e2c691259b592c12fa143e55a6.jpg" alt="" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(60deg)"></span>
     </a>
   </div>
 </section>
@@ -983,14 +989,21 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
     <span style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:#F6F1C8;position:relative;flex-shrink:0;display:block"><img src="assets/c812bcbab823ae965b0010e4a45e73b9.png" alt="" style="position:absolute;left:8px;top:10px;width:140px"></span>
   </a>
   <div style="margin-top:40px;display:flex;justify-content:space-between;align-items:baseline">
-    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">WEBSITES (04) · NDA, ASK ME</span>
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">MORE WORK (11) · NDA, ASK ME</span>
     <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">SWIPE →</span>
   </div>
   <div style="margin:16px -22px 0 0;display:flex;gap:12px;overflow-x:auto;padding-right:22px;scrollbar-width:none;-webkit-overflow-scrolling:touch">
-    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#DCE8F8"><img src="assets/d8aa1a36b645ea8b4fff04a719bb1076.jpg" alt="GenAI analytics" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">Product Analytics for GenAI Applications</span></span>
-    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#111"><img src="assets/5c4284756c66ac4ee11d58e74f9606dc.jpg" alt="Fitness influencer" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">Fitness Influencer (5M+) Personal Training</span></span>
-    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#FDF0EE"><img src="assets/14bda0d13625decfdb0015bfaa47a15e.jpg" alt="Moms" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">Empowering Moms to Balance Ambitions &amp; Motherhood</span></span>
-    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#E8E4DC"><img src="uploads/web-card-4.png" alt="Digital Marketing Agency LP" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">Services LP for a Digital Marketing Agency</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#C8102E"><img src="assets/16ae025c1ccd303b2279181038b11f26.jpg" alt="Albeli" style="width:100%;height:100%;object-fit:cover;object-position:50% 11%"></span><span style="font-size:13px;line-height:1.35">Albeli — Brand &amp; logo design</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#FDF0EE"><img src="assets/14bda0d13625decfdb0015bfaa47a15e.jpg" alt="Moms" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">Keeping Moms Real — Community web design</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#111"><img src="assets/5c4284756c66ac4ee11d58e74f9606dc.jpg" alt="Fitness influencer" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">FITFRHOME — Fitness influencer site (5M+)</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#F2F2F4"><img src="assets/6d7ab24839ca057f63a835710fe86514.jpg" alt="Growth Market Reports" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">Growth Market Reports — Website redesign</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#F2F2F4"><img src="assets/d62221efa34ff0ff019e77c6ecb7c37b.jpg" alt="CI Vantage" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">CI Vantage — Healthcare product design</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#DCE8F8"><img src="assets/d8aa1a36b645ea8b4fff04a719bb1076.jpg" alt="AxisAI" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">AxisAI — GenAI product analytics</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#EAF3FB"><img src="assets/52249c212c7673079a7c55c1149dd619.jpg" alt="SeaScanner" style="width:100%;height:100%;object-fit:cover;object-position:top left"></span><span style="font-size:13px;line-height:1.35">SeaScanner — UX critique</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#F3F2EC"><img src="assets/6b1cd99a37a4104f1f9f70d4bdf7146b.jpg" alt="EcoCart" style="width:100%;height:100%;object-fit:cover;object-position:center"></span><span style="font-size:13px;line-height:1.35">EcoCart — Eco-conscious quick commerce app</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#141414"><img src="assets/106f61a2b9c1f8920be16da3cb789a85.jpg" alt="Services LP" style="width:100%;height:100%;object-fit:cover;object-position:top center"></span><span style="font-size:13px;line-height:1.35">Services LP — Digital marketing landing page</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#F4F4F6"><img src="assets/d09ce95c5d5261a0251576f7e73b11f2.png" alt="Payment portal" style="width:100%;height:100%;object-fit:cover;object-position:top center"></span><span style="font-size:13px;line-height:1.35">Payment portal — Enterprise UX (20k+ users)</span></span>
+    <span style="flex:0 0 160px;display:flex;flex-direction:column;gap:8px"><span style="display:block;height:200px;border-radius:4px;overflow:hidden;background:#fff"><img src="assets/23b09b9c42b9b40c5a60a77ffb412f0e.jpg" alt="Heavy-equipment app" style="width:100%;height:100%;object-fit:cover;object-position:center"></span><span style="font-size:13px;line-height:1.35">Heavy-equipment AI app — 140+ screens, 4.9★</span></span>
   </div>
 </section>
 
@@ -1069,38 +1082,42 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 <!--MARK_BODY-->
 </main>
 
-<!-- MOBILE FOOTER -->
-<footer id="m-ft" class="m-only" style="margin-top:88px;padding:56px 22px 26px;background:#141414;color:#fff">
-  <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#E2557F">SAY HI</span>
-  <h2 style="margin:16px 0 0;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:clamp(44px,13vw,54px);line-height:.95;letter-spacing:-.045em">Let's <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;color:#E2557F">(work)</span><br>together.</h2>
-  <p style="margin:14px 0 0;font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:19px;color:#BDB8AF">or just say hi &lt;3</p>
-  <a href="mailto:mehakrgarg@gmail.com" style="display:block;margin-top:30px;padding-bottom:8px;border-bottom:1.5px solid #fff;font-size:21px;font-weight:500;letter-spacing:-.01em;color:#fff;text-decoration:none">mehakrgarg@gmail.com <span style="float:right">→</span></a>
-  <a href="uploads/Mehak-Garg-Resume.pdf" download style="display:block;margin-top:18px;padding-bottom:8px;border-bottom:1px solid #3A3A3A;font-size:21px;font-weight:500;letter-spacing:-.01em;color:#fff;text-decoration:none">Download resume <span style="float:right">↓</span></a>
-  <div style="margin-top:40px;display:flex;flex-wrap:wrap;gap:10px 18px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em">
-    <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">LINKEDIN →</a>
-    <a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">BEHANCE →</a>
-    <a href="https://dribbble.com/mehakkg" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">DRIBBBLE →</a>
-    <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">MEDIUM →</a>
+<!-- MOBILE + DESKTOP FOOTER (unified) -->
+<footer id="m-ft" class="m-only" style="position:relative;overflow:hidden;background:#E9C7E3 url('assets/70dc1f2ecf3997887f73dd3230b97874.jpg') center top/cover no-repeat;min-height:620px">
+  <div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:50px;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0) 100%);pointer-events:none"></div>
+  <div style="position:relative;z-index:4;padding:60px 22px 32px;display:flex;flex-direction:column">
+    <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;color:#B2376A">SAY HI</span>
+    <h2 style="margin:12px 0 0;font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:clamp(52px,15vw,72px);line-height:.9;letter-spacing:-.03em;color:#fff;text-shadow:0 6px 30px rgba(150,40,110,0.3)">Let's <span style="color:#B2376A">(work)</span><br>together</h2>
+    <p style="margin:16px 0 0;font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:20px;color:#C87CA8">or just say hi &lt;3</p>
+    <a href="mailto:mehakrgarg@gmail.com" style="display:block;margin-top:28px;padding-bottom:10px;border-bottom:1.5px solid rgba(178,55,106,0.5);font-size:20px;font-weight:500;letter-spacing:-.01em;color:#141414;text-decoration:none">mehakrgarg@gmail.com <span style="float:right">→</span></a>
+    <a href="Mehak-Garg-Resume.pdf" download style="display:block;margin-top:14px;padding-bottom:10px;border-bottom:1px solid rgba(178,55,106,0.25);font-size:20px;font-weight:500;letter-spacing:-.01em;color:#141414;text-decoration:none">Download resume <span style="float:right">↓</span></a>
+    <div style="margin-top:36px;display:flex;flex-wrap:wrap;gap:10px 18px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em">
+      <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener" style="color:#8A3256;text-decoration:none">LINKEDIN →</a>
+      <a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener" style="color:#8A3256;text-decoration:none">BEHANCE →</a>
+      <a href="https://dribbble.com/mehakkg" target="_blank" rel="noopener" style="color:#8A3256;text-decoration:none">DRIBBBLE →</a>
+      <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="color:#8A3256;text-decoration:none">MEDIUM →</a>
+    </div>
+    <div style="margin-top:40px;display:flex;justify-content:space-between;align-items:flex-end">
+      <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:60px;line-height:.8;letter-spacing:-.03em;color:#B2376A">m<span style="color:#E2557F">.</span>g</span>
+      <span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#8A3256">© 2026 · PUNE · <a href="#m-view" style="color:#8A3256;text-decoration:none">TOP ↑</a></span>
+    </div>
   </div>
-  <div style="margin-top:44px;display:flex;justify-content:space-between;align-items:flex-end">
-    <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:64px;line-height:.8;letter-spacing:-.03em">m<span style="color:#E2557F">.</span>g</span>
-    <span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#8C877E">© 2026 · PUNE · <a href="#m-view" style="color:#8C877E;text-decoration:none">TOP ↑</a></span>
-  </div>
+  <img class="front" src="assets/0817ca79958dccfa34732ced94032ba5.png" alt="" aria-hidden="true" style="position:absolute;left:-1%;top:0;width:102%;pointer-events:none;z-index:2">
 </footer>
 
 <!-- ============================================================ NEW FOOTER -->
-<footer id="contact" style="position:relative;overflow:hidden;background:#E9C7E3 url('assets/70dc1f2ecf3997887f73dd3230b97874.jpg') center top/cover no-repeat;color:#141414;font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:clamp(700px,76vw,1100px)">
-  <div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:180px;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0) 100%);pointer-events:none"></div>
+<footer id="contact" style="position:relative;overflow:hidden;background:#E9C7E3 url('assets/70dc1f2ecf3997887f73dd3230b97874.jpg') center top/cover no-repeat;color:#141414;font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:clamp(600px,62vw,900px)">
+  <div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:60px;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0) 100%);pointer-events:none"></div>
   <div style="position:absolute;left:0;right:0;top:clamp(100px,9.7vw,140px);display:flex;flex-direction:column;align-items:center;text-align:center;z-index:1">
     <span style="font-family:var(--mono);font-size:12px;letter-spacing:0.22em;color:#B2376A">THE END OF THE SCROLL · THE START OF SOMETHING</span>
-    <h2 style="margin:34px 0 0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(100px,14.7vw,212px);line-height:0.88;letter-spacing:-0.035em;color:#fff;text-shadow:0 10px 60px rgba(150,40,110,0.22)">Let's <span style="color:#B2376A">(work)</span><br>together</h2>
+    <h2 style="margin:24px 0 0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(72px,10.5vw,152px);line-height:0.9;letter-spacing:-0.035em;color:#fff;text-shadow:0 10px 60px rgba(150,40,110,0.22)">Let's <span style="color:#B2376A">(work)</span><br>together</h2>
   </div>
   <img class="front" src="assets/0817ca79958dccfa34732ced94032ba5.png" alt="" aria-hidden="true" style="position:absolute;left:-1%;top:0;width:102%;pointer-events:none;z-index:2">
-  <div style="position:absolute;left:0;right:0;top:clamp(400px,44vw,640px);display:flex;flex-direction:column;align-items:center;gap:14px;z-index:3">
+  <div style="position:absolute;left:0;right:0;top:clamp(300px,34vw,480px);display:flex;flex-direction:column;align-items:center;gap:14px;z-index:3">
     <a href="mailto:mehakrgarg@gmail.com" class="btn" style="padding:20px 36px;border-radius:999px;background:#141414;color:#fff;font-size:18px;font-weight:600;text-decoration:none;box-shadow:0 14px 34px rgba(120,30,80,0.25)">mehakrgarg@gmail.com ↗</a>
     <span style="font-family:var(--hand);font-weight:600;font-size:30px;color:#B2376A;transform:rotate(-2deg)">or just say hi &lt;3</span>
   </div>
-  <div style="position:absolute;left:clamp(24px,5.6vw,80px);right:clamp(24px,5.6vw,80px);top:clamp(500px,54.9vw,790px);display:grid;grid-template-columns:5fr 3fr 3fr;align-items:start;gap:40px;z-index:3">
+  <div style="position:absolute;left:clamp(24px,5.6vw,80px);right:clamp(24px,5.6vw,80px);top:clamp(380px,43vw,590px);display:grid;grid-template-columns:5fr 3fr 3fr;align-items:start;gap:40px;z-index:3">
     <a href="Mehak-Garg-Resume.pdf" download class="folder" aria-label="Download Mehak's resume" style="position:relative;display:block;width:280px;height:214px;text-decoration:none">
       <span aria-hidden="true" style="position:absolute;left:0;top:0;width:104px;height:40px;border-radius:16px 16px 0 0;background:#E2557F"></span>
       <span aria-hidden="true" style="position:absolute;left:0;top:22px;width:280px;height:192px;border-radius:0 20px 20px 20px;background:#E2557F"></span>
