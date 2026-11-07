@@ -411,6 +411,9 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 
 /* ── Mobile view (≤767px) ── */
+.skyp{animation:skypan 60s ease-in-out infinite alternate}
+@keyframes skypan{from{background-position:49% 100%}to{background-position:51% 100%}}
+@media(prefers-reduced-motion:reduce){.skyp{animation:none}}
 .m-only{display:none}
 @media(max-width:767px){
   .m-only{display:block}
@@ -1074,37 +1077,45 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 </header>
 
 <!-- M HERO -->
-<section id="m-hero" style="padding:34px 22px 0">
-  <div style="display:flex;align-items:center;gap:12px">
-    <span style="width:52px;height:52px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1.5px solid #141414;display:block"><img src="assets/5ee40e8ef9190bccf842103b540fe49b.png" alt="Mehak" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"></span>
-    <span style="font-family:'Caveat',cursive;font-weight:600;font-size:22px;line-height:1.1;color:#141414">← hi, that's me.<br><span style="font-size:17px;color:#76716A">Mehak, Pune</span></span>
+<section id="m-hero" style="padding:14px 14px 0">
+  <div class="skyp" style="border-radius:24px;overflow:hidden;background:#3D8FE8 url('assets/cb254ac10403398ba1efcb0803b8b1a2.jpg') center bottom/cover no-repeat;padding:28px 22px 30px;color:#fff">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1.5px solid rgba(255,255,255,.9);display:block"><img src="assets/5ee40e8ef9190bccf842103b540fe49b.png" alt="Mehak" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"></span>
+      <span style="font-size:16px;font-weight:600">Mehak Garg</span>
+      <span style="font-family:'Caveat',cursive;font-weight:600;font-size:19px;transform:rotate(-3deg);display:inline-block;color:rgba(255,255,255,.92)">← hi, that's me</span>
+    </div>
+    <h1 style="color:#fff;text-shadow:0 2px 24px rgba(10,40,100,.18);margin:26px 0 0;font-weight:600;font-size:clamp(32px,9vw,46px);line-height:1.04;letter-spacing:-.05em">Complex products only work when people trust them.<br><span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;letter-spacing:-.025em;background:linear-gradient(180deg,transparent 68%,rgba(226,85,127,.75) 68%,rgba(226,85,127,.75) 88%,transparent 88%)">I design that trust.</span></h1>
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.55;color:rgba(255,255,255,.9)">Five years on enterprise security, plus healthcare operations, edtech and the food industry. Different domains, same job: make the system clear enough to trust.</p>
+    <div style="margin-top:24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+      <a href="#m-work" style="padding:14px 22px;border-radius:999px;background:#fff;color:#141414;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 10px 28px rgba(10,40,100,.22)">Start with the work →</a>
+      <a href="#m-ft" style="font-size:14px;font-weight:600;padding-bottom:3px;border-bottom:2px solid rgba(255,255,255,.9);color:#fff;text-decoration:none">Work with me</a>
+    </div>
+    <dl style="margin:28px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid rgba(255,255,255,.3);padding-top:22px">
+      <div style="display:flex;flex-direction:column;gap:4px;padding-right:16px;padding-bottom:14px"><dt style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:34px;line-height:1;letter-spacing:-.02em;margin:0;color:#fff">30K+</dt><dd style="margin:0;font-size:12px;line-height:1.4;color:rgba(255,255,255,.85)">organizations use products I designed</dd></div>
+      <div style="display:flex;flex-direction:column;gap:4px;padding-left:16px;padding-bottom:14px;border-left:1px solid rgba(255,255,255,.3)"><dt style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:34px;line-height:1;letter-spacing:-.02em;margin:0;color:#fff">30+</dt><dd style="margin:0;font-size:12px;line-height:1.4;color:rgba(255,255,255,.85)">products shipped, B2B SaaS and consumer</dd></div>
+      <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:4px;padding-top:14px;border-top:1px solid rgba(255,255,255,.3)"><dt style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:34px;line-height:1;letter-spacing:-.02em;margin:0;color:#fff">11% → 18%</dt><dd style="margin:0;font-size:12px;line-height:1.4;color:rgba(255,255,255,.85)">trial-to-paid conversion, within 6 months of the PAM redesign</dd></div>
+    </dl>
+    <a href="#m-work" style="display:flex;justify-content:space-between;align-items:flex-start;margin:28px -22px -30px;padding:16px 22px 20px;border-top:1px solid rgba(255,255,255,.3);text-decoration:none;color:#fff">
+      <span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.75)">01 · START HERE</span><span style="font-family:'Caveat',cursive;font-weight:600;font-size:17px;color:rgba(255,255,255,.85)">if you only read one</span><span style="font-weight:600;font-size:16px;letter-spacing:-.02em">PAM · enterprise security</span></span>
+      <span style="width:72px;height:56px;border-radius:5px 5px 0 0;overflow:hidden;background:#DCE7F7;flex-shrink:0;position:relative"><img src="assets/9ca9166345804b4ba02a198712468a5e.png" alt="" style="position:absolute;left:8px;top:8px;width:200px;border-radius:3px"></span>
+    </a>
   </div>
-  <h1 style="margin:34px 0 0;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:clamp(60px,18vw,80px);line-height:.88;letter-spacing:-.055em">Product<br><span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;letter-spacing:-.035em">Designer</span><span style="color:#E2557F">.</span></h1>
-  <div style="margin-top:18px;display:flex;justify-content:space-between"><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">SENIOR · ENTERPRISE &amp; CONSUMER · AI</span><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">(01)</span></div>
-  <p style="margin:40px 0 0;font-family:'Bodoni Moda',serif;font-size:25px;line-height:1.28;letter-spacing:-.01em">Complex products only work when people trust them.<br><em style="font-style:italic;background:linear-gradient(180deg,transparent 62%,rgba(226,85,127,.35) 62%)">I design that trust.</em></p>
-  <p style="margin:18px 0 0;font-size:15.5px;line-height:1.65;color:#4F4A43">Five years designing enterprise identity and access platforms, where one unclear screen becomes a security risk. I bring that same rigor to any product where clarity drives adoption, from B2B SaaS to consumer apps.</p>
-  <div style="margin-top:28px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <a href="#m-ft" style="padding:15px 24px;border-radius:999px;background:#141414;color:#fff;font-size:15px;font-weight:600;text-decoration:none;display:inline-block">Work with me ↗</a>
-    <a href="case-pam.html" style="font-size:15px;font-weight:600;border-bottom:1.5px solid #E2557F;padding-bottom:2px;color:#141414;text-decoration:none">Read the PAM audit →</a>
-  </div>
-  <dl style="margin:48px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-top:18px;border-top:1px solid #E5E2DD">
-    <div style="display:flex;flex-direction:column;gap:6px"><dt style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:32px;line-height:1;letter-spacing:-.02em;margin:0">100%</dt><dd style="margin:0;font-size:12px;line-height:1.4;color:#76716A">lift in trial-to-paid conversion</dd></div>
-    <div style="display:flex;flex-direction:column;gap:6px"><dt style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:32px;line-height:1;letter-spacing:-.02em;margin:0">30K+</dt><dd style="margin:0;font-size:12px;line-height:1.4;color:#76716A">organizations use products I designed</dd></div>
-    <div style="display:flex;flex-direction:column;gap:6px"><dt style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:32px;line-height:1;letter-spacing:-.02em;margin:0">30+</dt><dd style="margin:0;font-size:12px;line-height:1.4;color:#76716A">products shipped, B2B SaaS and consumer</dd></div>
-  </dl>
-  <p style="margin:40px 0 0;padding:18px 0;border-top:1px solid #E5E2DD;border-bottom:1px solid #E5E2DD;font-family:'Caveat',cursive;font-weight:600;font-size:23px;line-height:1.15;text-align:center">the screens are the easy part.<br>knowing what to build is the job. <span style="color:#E2557F">— m.</span></p>
 </section>
 
 <!-- M WORK -->
-<section id="m-work" style="padding:72px 22px 0">
+<section id="m-work" style="padding:60px 22px 0">
   <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;border-bottom:1px solid #141414">
-    <h2 style="margin:0;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:30px;letter-spacing:-.03em;line-height:1">Selected work</h2>
+    <div style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#141414">START WITH THE CASE STUDIES</span><h2 style="margin:4px 0 0;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:28px;letter-spacing:-.03em;line-height:1">Selected work</h2></div>
     <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">(06)</span>
   </div>
   <a href="case-pam.html" style="display:flex;flex-direction:column;gap:14px;padding:22px 0 26px;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
-    <span style="position:relative;display:block;height:220px;border-radius:4px;overflow:hidden;background:#DCE7F7">
-      <img src="assets/aba7651c0f1385901a19c961eebdec2f.png" alt="PAM dashboard" style="position:absolute;left:22px;top:26px;width:460px;border-radius:6px;box-shadow:0 12px 30px rgba(20,20,40,.14)">
+    <span style="position:relative;display:block;height:220px;border-radius:8px;overflow:hidden;background:#DCE7F7">
+      <img src="assets/9ca9166345804b4ba02a198712468a5e.png" alt="PAM dashboard" style="position:absolute;left:22px;top:22px;width:460px;border-radius:6px;box-shadow:0 12px 30px rgba(20,20,40,.14)">
       <span style="position:absolute;right:12px;top:12px;padding:5px 10px;border-radius:999px;background:#141414;color:#fff;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em">CASE STUDY</span>
+    </span>
+    <span style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;padding:14px 0 14px;border-top:1px solid #E5E2DD;border-bottom:1px solid #E5E2DD">
+      <span style="display:flex;flex-direction:column;gap:3px"><span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:28px;line-height:1;letter-spacing:-.02em">$800K</span><span style="font-size:12px;color:#76716A">in new sales after the redesign</span></span>
+      <span style="display:flex;flex-direction:column;gap:3px;border-left:1px solid #E5E2DD;padding-left:16px"><span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:22px;line-height:1;letter-spacing:-.02em">11% → 18%</span><span style="font-size:12px;color:#76716A">trial-to-paid, within 6 months</span></span>
     </span>
     <span style="display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px">
       <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">01</span>
@@ -1114,15 +1125,15 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
       </span>
     </span>
   </a>
-  <a href="case-idp.html" style="display:grid;grid-template-columns:30px minmax(0,1fr) 54px;gap:8px;align-items:center;padding:18px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
-    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">02</span>
-    <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Architecting enterprise IAM from the ground up</span><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">ENTERPRISE SECURITY · NDA</span></span>
-    <span style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:#DBEEE4;position:relative;flex-shrink:0;display:block"><img src="assets/ed5c6a160117d54eb89eff3fbcdc3ea8.png" alt="" style="position:absolute;left:8px;top:10px;width:140px"></span>
-  </a>
   <a href="case-merry.html" style="display:grid;grid-template-columns:30px minmax(0,1fr) 54px;gap:8px;align-items:center;padding:18px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
-    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">03</span>
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">02</span>
     <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">A healthcare coordination system built for operational pressure</span><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">HEALTHCARE OPS · NDA</span></span>
     <span style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:#FBE7D9;position:relative;flex-shrink:0;display:block"><img src="assets/1ce57235976d7a3dc578104957c53761.png" alt="" style="position:absolute;left:8px;top:10px;width:140px"></span>
+  </a>
+  <a href="case-idp.html" style="display:grid;grid-template-columns:30px minmax(0,1fr) 54px;gap:8px;align-items:center;padding:18px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
+    <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">03</span>
+    <span style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Architecting enterprise IAM from the ground up</span><span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#76716A">ENTERPRISE SECURITY · NDA</span></span>
+    <span style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:#DBEEE4;position:relative;flex-shrink:0;display:block"><img src="assets/ed5c6a160117d54eb89eff3fbcdc3ea8.png" alt="" style="position:absolute;left:8px;top:10px;width:140px"></span>
   </a>
   <a href="#m-work" style="display:grid;grid-template-columns:30px minmax(0,1fr) 54px;gap:8px;align-items:center;padding:18px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit">
     <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">04</span>
@@ -1191,11 +1202,11 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
     <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414">(05)</span>
   </div>
   <p style="margin:16px 0 6px;font-size:15px;line-height:1.55;color:#4F4A43">Essays on how I decide what to build. Reels on the person doing it.</p>
-  <a href="https://medium.com/@mehakrgarg/designing-for-deal-breakers-the-lens-i-use-before-i-touch-a-roadmap-2e369ea792f1" target="_blank" rel="noopener" style="display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#141414">ESSAY</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Designing for deal breakers — the only prioritization framework</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">MEDIUM · 6 MIN</span></span><span>↗</span></a>
-  <a href="https://medium.com/@mehakrgarg/why-the-best-designers-are-ignoring-the-biggest-design-problem-5d585c84d4cd" target="_blank" rel="noopener" style="display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#141414">ESSAY</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Why the best designers are ignoring the biggest design problem</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">MEDIUM · 6 MIN</span></span><span>↗</span></a>
-  <div class="m-reel-row" data-href="https://www.instagram.com/p/C2Pw5l8oe5F/" style="position:relative;display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;cursor:pointer"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#E2557F">REEL</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Unveiling my skillset</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">INSTAGRAM</span></span><span>↗</span><span class="m-reel-thumb" style="display:none;position:absolute;right:0;bottom:calc(100% - 8px);width:110px;aspect-ratio:1;border-radius:10px;overflow:hidden;border:2.5px solid #fff;box-shadow:0 12px 32px rgba(20,20,20,.25);z-index:50"><img src="assets/dd-skillset.png" style="width:100%;height:100%;object-fit:cover"></span></div>
-  <div class="m-reel-row" data-href="https://www.instagram.com/p/C2KuqtOo2Ga/?img_index=1" style="position:relative;display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;cursor:pointer"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#E2557F">REEL</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">My design journey</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">INSTAGRAM</span></span><span>↗</span><span class="m-reel-thumb" style="display:none;position:absolute;right:0;bottom:calc(100% - 8px);width:110px;aspect-ratio:1;border-radius:10px;overflow:hidden;border:2.5px solid #fff;box-shadow:0 12px 32px rgba(20,20,20,.25);z-index:50"><img src="assets/dd-design-journey.png" style="width:100%;height:100%;object-fit:cover"></span></div>
-  <div class="m-reel-row" data-href="https://www.instagram.com/p/C2WR-f1oNaQ/" style="position:relative;display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;cursor:pointer"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#E2557F">REEL</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">How I deal with creative blocks</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">INSTAGRAM</span></span><span>↗</span><span class="m-reel-thumb" style="display:none;position:absolute;right:0;bottom:calc(100% - 8px);width:110px;aspect-ratio:1;border-radius:10px;overflow:hidden;border:2.5px solid #fff;box-shadow:0 12px 32px rgba(20,20,20,.25);z-index:50"><img src="assets/dd-creative-blocks.png" style="width:100%;height:100%;object-fit:cover"></span></div>
+  <a href="https://medium.com/@mehakrgarg/designing-for-deal-breakers-the-lens-i-use-before-i-touch-a-roadmap-2e369ea792f1" target="_blank" rel="noopener" style="display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#141414">ESSAY</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Designing for deal breakers — the only prioritization framework</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">MEDIUM · 6 MIN</span></span><span>→</span></a>
+  <a href="https://medium.com/@mehakrgarg/why-the-best-designers-are-ignoring-the-biggest-design-problem-5d585c84d4cd" target="_blank" rel="noopener" style="display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;text-decoration:none;color:inherit"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#141414">ESSAY</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Why the best designers are ignoring the biggest design problem</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">MEDIUM · 6 MIN</span></span><span>→</span></a>
+  <div class="m-reel-row" data-href="https://www.instagram.com/p/C2Pw5l8oe5F/" style="position:relative;display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;cursor:pointer"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#E2557F">REEL</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">Unveiling my skillset</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">INSTAGRAM</span></span><span>→</span><span class="m-reel-thumb" style="display:none;position:absolute;right:0;bottom:calc(100% - 8px);width:110px;aspect-ratio:1;border-radius:10px;overflow:hidden;border:2.5px solid #fff;box-shadow:0 12px 32px rgba(20,20,20,.25);z-index:50"><img src="assets/dd-skillset.png" style="width:100%;height:100%;object-fit:cover"></span></div>
+  <div class="m-reel-row" data-href="https://www.instagram.com/p/C2KuqtOo2Ga/?img_index=1" style="position:relative;display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;cursor:pointer"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#E2557F">REEL</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">My design journey</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">INSTAGRAM</span></span><span>→</span><span class="m-reel-thumb" style="display:none;position:absolute;right:0;bottom:calc(100% - 8px);width:110px;aspect-ratio:1;border-radius:10px;overflow:hidden;border:2.5px solid #fff;box-shadow:0 12px 32px rgba(20,20,20,.25);z-index:50"><img src="assets/dd-design-journey.png" style="width:100%;height:100%;object-fit:cover"></span></div>
+  <div class="m-reel-row" data-href="https://www.instagram.com/p/C2WR-f1oNaQ/" style="position:relative;display:grid;grid-template-columns:58px minmax(0,1fr) 18px;gap:8px;align-items:baseline;padding:16px 0;border-bottom:1px solid #E5E2DD;cursor:pointer"><span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#E2557F">REEL</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:18px;line-height:1.25">How I deal with creative blocks</span><span style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#76716A">INSTAGRAM</span></span><span>→</span><span class="m-reel-thumb" style="display:none;position:absolute;right:0;bottom:calc(100% - 8px);width:110px;aspect-ratio:1;border-radius:10px;overflow:hidden;border:2.5px solid #fff;box-shadow:0 12px 32px rgba(20,20,20,.25);z-index:50"><img src="assets/dd-creative-blocks.png" style="width:100%;height:100%;object-fit:cover"></span></div>
 </section>
 
 </div><!-- end #m-view -->
@@ -1214,11 +1225,11 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
     <a href="#m-ft" onclick="closeMobileMenu()" style="display:flex;align-items:baseline;gap:14px;color:#141414;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#76716A;flex-shrink:0">05</span><span style="font-weight:600;font-size:clamp(44px,13vw,54px);line-height:1.05;letter-spacing:-.04em">Contact</span></a>
   </nav>
   <div style="margin-top:auto;display:flex;flex-direction:column;gap:16px;padding-top:30px">
-    <a href="#m-ft" onclick="closeMobileMenu()" style="display:block;padding:16px;border-radius:999px;background:#141414;color:#fff;text-align:center;font-size:15px;font-weight:600;text-decoration:none">Say hi ↗</a>
+    <a href="#m-ft" onclick="closeMobileMenu()" style="display:block;padding:16px;border-radius:999px;background:#141414;color:#fff;text-align:center;font-size:15px;font-weight:600;text-decoration:none">Say hi →</a>
     <div style="display:flex;justify-content:space-between">
       <a href="uploads/Mehak-Garg-Resume.pdf" download style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414;text-decoration:none">RESUME ↓</a>
-      <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414;text-decoration:none">LINKEDIN ↗</a>
-      <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414;text-decoration:none">MEDIUM ↗</a>
+      <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414;text-decoration:none">LINKEDIN →</a>
+      <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#141414;text-decoration:none">MEDIUM →</a>
     </div>
   </div>
 </div>
@@ -1231,13 +1242,13 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#E2557F">SAY HI</span>
   <h2 style="margin:16px 0 0;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:clamp(44px,13vw,54px);line-height:.95;letter-spacing:-.045em">Let's <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;color:#E2557F">(work)</span><br>together.</h2>
   <p style="margin:14px 0 0;font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:19px;color:#BDB8AF">or just say hi &lt;3</p>
-  <a href="mailto:mehakrgarg@gmail.com" style="display:block;margin-top:30px;padding-bottom:8px;border-bottom:1.5px solid #fff;font-size:21px;font-weight:500;letter-spacing:-.01em;color:#fff;text-decoration:none">mehakrgarg@gmail.com <span style="float:right">↗</span></a>
+  <a href="mailto:mehakrgarg@gmail.com" style="display:block;margin-top:30px;padding-bottom:8px;border-bottom:1.5px solid #fff;font-size:21px;font-weight:500;letter-spacing:-.01em;color:#fff;text-decoration:none">mehakrgarg@gmail.com <span style="float:right">→</span></a>
   <a href="uploads/Mehak-Garg-Resume.pdf" download style="display:block;margin-top:18px;padding-bottom:8px;border-bottom:1px solid #3A3A3A;font-size:21px;font-weight:500;letter-spacing:-.01em;color:#fff;text-decoration:none">Download resume <span style="float:right">↓</span></a>
   <div style="margin-top:40px;display:flex;flex-wrap:wrap;gap:10px 18px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em">
-    <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">LINKEDIN ↗</a>
-    <a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">BEHANCE ↗</a>
-    <a href="https://dribbble.com/mehakkg" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">DRIBBBLE ↗</a>
-    <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">MEDIUM ↗</a>
+    <a href="https://www.linkedin.com/in/mehakrajeshgarg/" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">LINKEDIN →</a>
+    <a href="https://www.behance.net/mehakgarg5" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">BEHANCE →</a>
+    <a href="https://dribbble.com/mehakkg" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">DRIBBBLE →</a>
+    <a href="https://medium.com/@mehakrgarg" target="_blank" rel="noopener" style="color:#fff;text-decoration:none">MEDIUM →</a>
   </div>
   <div style="margin-top:44px;display:flex;justify-content:space-between;align-items:flex-end">
     <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:64px;line-height:.8;letter-spacing:-.03em">m<span style="color:#E2557F">.</span>g</span>
