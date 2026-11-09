@@ -23,34 +23,83 @@ a{color:#141414;text-decoration:none}a:hover{color:#141414}
 html, body { margin: 0; padding: 0; background: #FFFFFF; overflow-x: hidden }
 * { box-sizing: border-box }
 img { max-width: 100%; display: block }
-/* Responsive overrides */
+
+/* ── Scroll-spy TOC ── */
+aside a { transition: background .15s ease, color .15s ease }
+aside a.toc-active { background: #141414 !important; color: #FFFFFF !important; font-weight: 600 !important; border-radius: 8px }
+aside a:not(.toc-active) { color: #5F5F5F }
+
+/* ── Mobile TOC pill (floating, bottom of screen) ── */
+#m-toc-pill {
+  display: none;
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  z-index: 999; background: #141414; color: #fff;
+  font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+  padding: 10px 20px; border-radius: 999px;
+  white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  cursor: pointer; user-select: none;
+}
+#m-toc-drawer {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 998;
+  background: #fff; border-top: 1px solid #E8E8E8;
+  border-radius: 20px 20px 0 0;
+  padding: 20px 22px 32px;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.12);
+  flex-direction: column; gap: 4px; max-height: 70vh; overflow-y: auto;
+}
+#m-toc-drawer.open { display: flex }
+#m-toc-backdrop {
+  display: none; position: fixed; inset: 0; z-index: 997; background: rgba(0,0,0,0.3)
+}
+#m-toc-backdrop.open { display: block }
+
+/* ── Responsive overrides ── */
 @media (max-width: 900px) {
-  /* Nav */
   nav[style*="padding: 0 80px"] { padding: 0 22px !important }
-  /* Hero grid */
+  nav > div[style*="display: flex; height: 72px"] { display: none !important }
   div[style*="grid-template-columns: 7fr 5fr"] { grid-template-columns: 1fr !important }
-  /* 4-col metadata */
   dl[style*="grid-template-columns: repeat(4"] { grid-template-columns: 1fr 1fr !important }
-  /* Body grid with sidebar */
-  div[style*="grid-template-columns: 260px"] { grid-template-columns: 1fr !important }
+  div[style*="grid-template-columns: 260px"] { grid-template-columns: 1fr !important; gap: 0 !important }
   aside[style*="position: sticky"] { display: none !important }
-  /* Section margins */
-  div[style*="margin: 0 80px"] { margin: 0 22px !important }
-  section[style*="margin: 0 80px"] { margin: 0 22px !important }
-  /* Hero image canvas */
-  div.ehero { height: 280px !important }
-  img.eh-main { width: 90% !important; left: 5% !important; margin-left: 0 !important }
+  #m-toc-pill { display: flex; align-items: center; gap: 8px }
+  div[style*="margin: 0 80px"] { margin: 0 !important }
+  section[style*="margin: 0 80px"] { margin: 0 !important }
+  div[style*="padding: 64px 56px"] { padding: 28px 22px !important }
+  div[style*="padding: 22px 28px"] { padding: 14px 18px !important }
+  article[style*="padding: 72px 0 84px 64px"] { padding: 40px 22px !important }
+  article[style*="padding:"] { padding-left: 22px !important; padding-right: 22px !important }
+  div.ehero { height: 240px !important }
+  img.eh-main { width: 92% !important; left: 4% !important; margin-left: 0 !important; top: 24px !important }
   img.eh-l, img.eh-r { display: none !important }
-  /* 3-col grids */
+  span[style*="position: absolute; left: 82px"],
+  span[style*="position: absolute; right: 74px"] { display: none !important }
   div[style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important }
   div[style*="grid-template-columns: 1fr 1fr 1fr"] { grid-template-columns: 1fr !important }
+  div[style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important }
   div[style*="grid-template-columns: 5fr 7fr"],
   div[style*="grid-template-columns: 7fr 5fr"],
   div[style*="grid-template-columns: 6fr 6fr"],
+  div[style*="grid-template-columns: 4fr 8fr"],
+  div[style*="grid-template-columns: 8fr 4fr"],
+  div[style*="grid-template-columns: 5fr 6fr"],
   div[style*="grid-template-columns: 5fr 6fr 1fr"] { grid-template-columns: 1fr !important }
-  /* font size scale-down */
-  h1[style*="font-size: 58px"] { font-size: 36px !important }
-  h2[style*="font-size: 48px"] { font-size: 30px !important }
+  div[style*="border-right: 1px solid #E8E8E8"] { border-right: none !important }
+  h1[style*="font-size: 58px"] { font-size: clamp(28px,7vw,42px) !important }
+  h2[style*="font-size: 46px"],
+  h2[style*="font-size: 48px"],
+  h2[style*="font-size: 44px"] { font-size: clamp(24px,6vw,36px) !important }
+  h3[style*="font-size: 28px"],
+  h3[style*="font-size: 30px"] { font-size: 20px !important }
+  /* Images in absolute positioned containers */
+  img[style*="position: absolute"] { position: static !important; width: 100% !important; left: auto !important; top: auto !important; margin: 0 !important }
+  div[style*="position: relative"][style*="height: 4"] { height: auto !important; overflow: visible !important }
+  div[style*="position: relative"][style*="height: 5"] { height: auto !important; overflow: visible !important }
+  div[style*="position: relative"][style*="height: 6"] { height: auto !important; overflow: visible !important }
+  div[style*="position: relative"][style*="height: 3"] { height: auto !important; overflow: visible !important }
+  /* Footer / end section */
+  footer[style*="padding: 72px 80px"] { padding: 48px 22px !important }
+  div[style*="padding: 72px 80px"] { padding: 48px 22px !important }
 }
 </style>
 </head>
@@ -159,5 +208,91 @@ img { max-width: 100%; display: block }
 </footer>
 
 </div>
+
+<!-- Mobile TOC pill -->
+<div id="m-toc-pill" aria-label="Jump to section" onclick="toggleMToc()">
+  <span style="width:6px;height:6px;border-radius:50%;background:#9A3F6E;display:inline-block"></span>
+  <span id="m-toc-label">01 · The stakes</span>
+  <span style="font-size:9px;opacity:0.7;margin-left:4px">▲</span>
+</div>
+<div id="m-toc-backdrop" onclick="toggleMToc()"></div>
+<div id="m-toc-drawer" role="navigation" aria-label="Sections">
+  <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#6E6E6E;padding-bottom:8px">JUMP TO SECTION</span>
+  <a href="#e-stakes" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">01</span>The stakes</a>
+  <a href="#e-problem" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">02</span>The real problem</a>
+  <a href="#e-framing" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">03</span>Framing the work</a>
+  <a href="#e-principles" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">04</span>Principles</a>
+  <a href="#e-architecture" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">05</span>Architecture</a>
+  <a href="#e-hardest" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">06</span>The hardest decision</a>
+  <a href="#e-cc1" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">07</span>Course correction 01</a>
+  <a href="#e-cc2" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">08</span>Course correction 02</a>
+  <a href="#e-tiering" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">09</span>Behavioural tiering</a>
+  <a href="#e-team" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">10</span>Running the team</a>
+  <a href="#e-outcomes" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">11</span>Outcomes</a>
+  <a href="#e-retro" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:24px">12</span>What I'd do differently</a>
+</div>
+
+<script>
+(function(){
+  const sections = [
+    {id:'e-stakes', label:'01 · The stakes'},
+    {id:'e-problem', label:'02 · The real problem'},
+    {id:'e-framing', label:'03 · Framing the work'},
+    {id:'e-principles', label:'04 · Principles'},
+    {id:'e-architecture', label:'05 · Architecture'},
+    {id:'e-hardest', label:'06 · The hardest decision'},
+    {id:'e-cc1', label:'07 · Course correction 01'},
+    {id:'e-cc2', label:'08 · Course correction 02'},
+    {id:'e-tiering', label:'09 · Behavioural tiering'},
+    {id:'e-team', label:'10 · Running the team'},
+    {id:'e-outcomes', label:'11 · Outcomes'},
+    {id:'e-retro', label:'12 · What I'd do differently'}
+  ];
+
+  function getActive(){
+    const offset = 100;
+    let active = sections[0].id;
+    for(const s of sections){
+      const el = document.getElementById(s.id);
+      if(el && el.getBoundingClientRect().top <= offset) active = s.id;
+    }
+    return active;
+  }
+
+  function update(){
+    const activeId = getActive();
+    // Desktop sidebar
+    document.querySelectorAll('aside a[href^="#e-"]').forEach(a => {
+      const tid = a.getAttribute('href').slice(1);
+      a.classList.toggle('toc-active', tid === activeId);
+    });
+    // Mobile pill label
+    const lbl = document.getElementById('m-toc-label');
+    if(lbl){
+      const s = sections.find(s=>s.id===activeId);
+      if(s) lbl.textContent = s.label;
+    }
+  }
+
+  function init(){
+    window.addEventListener('scroll', update, {passive:true});
+    update();
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
+function toggleMToc(){
+  const drawer = document.getElementById('m-toc-drawer');
+  const backdrop = document.getElementById('m-toc-backdrop');
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open', !isOpen);
+  backdrop.classList.toggle('open', !isOpen);
+  document.getElementById('m-toc-pill').querySelector('span:last-child').textContent = isOpen ? '▲' : '▼';
+}
+</script>
 </body>
 </html>
