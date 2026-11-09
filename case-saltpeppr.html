@@ -111,9 +111,9 @@ aside a:not(.toc-active) { color: #5F5F5F }
 </section>
 
 <!-- BODY: rail + chapters -->
-<div style="position: relative; margin: 0 80px; display: grid; grid-template-columns: 260px minmax(0, 1fr)">
+<div style="position: relative; margin: 0 80px; display: grid; grid-template-columns: 260px minmax(0, 1fr); align-items: start">
 <span aria-hidden="true" style="position: absolute; left: 260px; top: 0; bottom: 0; border-left: 1px dashed #E2E2E2"></span>
-<aside style="padding: 56px 24px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; align-self: start; position: sticky; top: 24px">
+<aside style="padding: 48px 20px; display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; align-self: start; position: sticky; top: 72px; max-height: calc(100vh - 72px); overflow-y: auto; box-sizing: border-box">
 <span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #6E6E6E; padding-bottom: 12px">YOU ARE HERE</span>
 <a href="#s-short" style="display: flex; gap: 10px; padding: 7px 10px; border-radius: 8px; background: #141414; color: #FFFFFF; font-weight: 600"><span style="font-family: 'Space Mono', monospace; font-size: 12px">01</span>The short version</a>
 <a href="#s-problem" style="display: flex; gap: 10px; padding: 7px 10px; color: #5F5F5F"><span style="font-family: 'Space Mono', monospace; font-size: 12px">02</span>The problem</a>
@@ -175,14 +175,9 @@ aside a:not(.toc-active) { color: #5F5F5F }
 <!-- Sidebar TOC -->
 <script>
 (function(){
+  // Fix grid alignment for sticky sidebar
   var grid = document.querySelector('div[style*="grid-template-columns: 260px"]');
-  if(!grid) return;
-  grid.style.alignItems = 'start';
-  var aside = document.createElement('aside');
-  aside.setAttribute('aria-label','Section navigation');
-  aside.style.cssText = 'padding:48px 20px;display:flex;flex-direction:column;gap:4px;font-size:13.5px;align-self:start;position:sticky;top:72px;max-height:calc(100vh - 72px);overflow-y:auto;border-right:1px solid #E8E8E8;box-sizing:border-box';
-  aside.innerHTML = '<span style="font-family:\'Space Mono\',monospace;font-size:10px;letter-spacing:.14em;color:#6E6E6E;padding-bottom:10px">YOU ARE HERE</span><a href="#s-short" style="display:flex;gap:9px;padding:7px 10px;border-radius:7px;text-decoration:none;font-size:13.5px"><span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#9A3F6E;min-width:28px">01</span>The short version</a><a href="#s-problem" style="display:flex;gap:9px;padding:7px 10px;border-radius:7px;text-decoration:none;font-size:13.5px"><span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#9A3F6E;min-width:28px">02</span>The problem</a><a href="#s-hard" style="display:flex;gap:9px;padding:7px 10px;border-radius:7px;text-decoration:none;font-size:13.5px"><span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#9A3F6E;min-width:28px">03</span>The hard part</a><a href="#s-role" style="display:flex;gap:9px;padding:7px 10px;border-radius:7px;text-decoration:none;font-size:13.5px"><span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#9A3F6E;min-width:28px">04</span>My role</a><a href="#s-d1" style="display:flex;gap:9px;padding:7px 10px;border-radius:7px;text-decoration:none;font-size:13.5px"><span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#9A3F6E;min-width:28px">05</span>Decision 01</a><a href="#s-d2" style="display:flex;gap:9px;padding:7px 10px;border-radius:7px;text-decoration:none;font-size:13.5px"><span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#9A3F6E;min-width:28px">06</span>Decision 02</a><a href="#s-d3" style="display:flex;gap:9px;padding:7px 10px;border-radius:7px;text-decoration:none;font-size:13.5px"><span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#9A3F6E;min-width:28px">07</span>Decision 03</a><a href="#s-d4" style="display:flex;gap:9px;padding:7px 10px;border-radius:7px;text-decoration:none;font-size:13.5px"><span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#9A3F6E;min-width:28px">08</span>Decision 04</a><a href="#s-addressed" style="display:flex;gap:9px;padding:7px 10px;border-radius:7px;text-decoration:none;font-size:13.5px"><span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#9A3F6E;min-width:28px">09</span>What we addressed</a><a href="#s-differently" style="display:flex;gap:9px;padding:7px 10px;border-radius:7px;text-decoration:none;font-size:13.5px"><span style="font-family:\'Space Mono\',monospace;font-size:11px;color:#9A3F6E;min-width:28px">10</span>What I\'d do differently</a>';
-  grid.insertBefore(aside, grid.firstChild);
+  if(grid) grid.style.alignItems = 'start';
 })();
 
 // Scroll-spy
@@ -205,7 +200,7 @@ aside a:not(.toc-active) { color: #5F5F5F }
     });
     var lbl = document.getElementById('m-toc-label');
     if(lbl && current){
-      var sectionLabels = {"s-short":"01 · The short version","s-problem":"02 · The problem","s-hard":"03 · The hard part","s-role":"04 · My role","s-d1":"05 · Decision 01","s-d2":"06 · Decision 02","s-d3":"07 · Decision 03","s-d4":"08 · Decision 04","s-addressed":"09 · What we addressed","s-differently":"10 · What I'd do differently"};
+      var sectionLabels = {"s-short":"01 · The short version","s-problem":"02 · The problem","s-hard":"03 · Why it was hard","s-role":"04 · My role","s-d1":"05 · Decision 01","s-d2":"06 · Decision 02","s-d3":"07 · Decision 03","s-d4":"08 · Decision 04","s-addressed":"09 · What the design addressed","s-differently":"10 · What I'd do differently"};
       if(sectionLabels[current]) lbl.textContent = sectionLabels[current];
     }
   }
