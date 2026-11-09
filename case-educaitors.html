@@ -256,10 +256,11 @@ aside a:not(.toc-active) { color: #5F5F5F }
   var articles = document.querySelectorAll('article[id]');
 
   function update(){
-    var scrollY = window.scrollY + 160;
+    var scrollY = window.scrollY;
     var current = null;
     articles.forEach(function(a){
-      if(a.offsetTop <= scrollY) current = a.id;
+      var docTop = a.getBoundingClientRect().top + scrollY;
+      if(docTop <= scrollY + 160) current = a.id;
     });
     links.forEach(function(l){
       var match = current && l.getAttribute('href') === '#' + current;
