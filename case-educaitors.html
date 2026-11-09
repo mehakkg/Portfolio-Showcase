@@ -100,15 +100,34 @@ aside a:not(.toc-active) { color: #5F5F5F }
   /* Footer / end section */
   footer[style*="padding: 72px 80px"] { padding: 48px 22px !important }
   div[style*="padding: 72px 80px"] { padding: 48px 22px !important }
+  /* Hide decorative grid rails */
+  .grid-rail-l, .grid-rail-r { display: none !important }
+  /* Clamp large fixed widths on inline styles */
+  [style*="width: 1440px"] { width: 100% !important; max-width: 100% !important }
+  [style*="width: 1280px"] { width: 100% !important; max-width: 100% !important }
+  [style*="width: 892px"] { width: 100% !important; max-width: 100% !important }
+  [style*="width: 860px"] { width: 100% !important; max-width: 100% !important }
+  [style*="width: 780px"] { width: 100% !important; max-width: 100% !important }
+  [style*="width: 740px"] { width: 100% !important; max-width: 100% !important }
+  [style*="max-width: 892px"] { max-width: 100% !important }
+  [style*="max-width: 860px"] { max-width: 100% !important }
+  [style*="max-width: 780px"] { max-width: 100% !important }
+  /* Nav items */
+  nav { padding: 0 22px !important }
+  nav > div { gap: 12px !important }
+  /* Article padding */
+  article { padding: 40px 22px !important }
+  /* Ensure body/page wraps */
+  body > div { overflow-x: hidden !important }
 }
 </style>
 </head>
 <body>
 <div style="position: relative; width: 100%; max-width: 1440px; margin: 0 auto; box-sizing: border-box; background: #FFFFFF; color: #141414; font-family: 'Hanken Grotesk', system-ui, sans-serif; display: flex; flex-direction: column; overflow-x: hidden">
 
-<!-- grid rails -->
-<span aria-hidden="true" style="position: absolute; left: 80px; top: 0; bottom: 0; border-left: 1px dashed #E2E2E2; z-index: 0"></span>
-<span aria-hidden="true" style="position: absolute; left: 1360px; top: 0; bottom: 0; border-left: 1px dashed #E2E2E2; z-index: 0"></span>
+<!-- grid rails (hidden on mobile) -->
+<span aria-hidden="true" class="grid-rail-l" style="position: absolute; left: 80px; top: 0; bottom: 0; border-left: 1px dashed #E2E2E2; z-index: 0"></span>
+<span aria-hidden="true" class="grid-rail-r" style="position: absolute; left: 1360px; top: 0; bottom: 0; border-left: 1px dashed #E2E2E2; z-index: 0"></span>
 
 
 <!-- NAV -->
@@ -246,11 +265,11 @@ aside a:not(.toc-active) { color: #5F5F5F }
     {id:'e-tiering', label:'09 · Behavioural tiering'},
     {id:'e-team', label:'10 · Running the team'},
     {id:'e-outcomes', label:'11 · Outcomes'},
-    {id:'e-retro', label:'12 · What I'd do differently'}
+    {id:'e-retro', label:"12 · What I'd do differently"}
   ];
 
   function getActive(){
-    const offset = 100;
+    const offset = window.innerHeight * 0.35;
     let active = sections[0].id;
     for(const s of sections){
       const el = document.getElementById(s.id);
@@ -261,12 +280,10 @@ aside a:not(.toc-active) { color: #5F5F5F }
 
   function update(){
     const activeId = getActive();
-    // Desktop sidebar
     document.querySelectorAll('aside a[href^="#e-"]').forEach(a => {
       const tid = a.getAttribute('href').slice(1);
       a.classList.toggle('toc-active', tid === activeId);
     });
-    // Mobile pill label
     const lbl = document.getElementById('m-toc-label');
     if(lbl){
       const s = sections.find(s=>s.id===activeId);
@@ -275,9 +292,26 @@ aside a:not(.toc-active) { color: #5F5F5F }
   }
 
   function init(){
-    window.addEventListener('scroll', update, {passive:true});
+    // Listen on window, document, and any overflow scroll containers
+    const opts = {passive:true};
+    window.addEventListener('scroll', update, opts);
+    document.addEventListener('scroll', update, opts);
+    // Also observe with IntersectionObserver as a reliable fallback
+    if('IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if(e.isIntersecting) update(); });
+      }, {rootMargin:'-30% 0px -60% 0px', threshold:0});
+      sections.forEach(s => {
+        const el = document.getElementById(s.id);
+        if(el) io.observe(el);
+      });
+    }
     update();
+    // Fallback poll for first 2s to catch any delayed render
+    let t = 0;
+    const poll = setInterval(()=>{ update(); if(++t>4) clearInterval(poll); }, 400);
   }
+
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', init);
   } else {
