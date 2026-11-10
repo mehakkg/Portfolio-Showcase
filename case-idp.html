@@ -1,712 +1,153 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Identity Platform — Mehak Garg</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IdP Case Study — Mehak Garg</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Caveat:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;family=Caveat:wght@500;600;700&amp;display=swap">
 <style>
-*,*::before,*::after{box-sizing:border-box}
-:root{
-  --bg:#FFFFFF;--ink:#141414;--fg:#2B2B2B;--sub:#6E6E6E;--line:#E8E8E8;
-  --green:#9ED4B5;--green-deep:#2B7A52;--green-light:#DBEEE4;--green-tint:#EEF7F2;--green-border:#C9E3D3;
-  --pink:#FF9FB2;--pink-deep:#E2557F;--rose:#B2376A;
-  --serif:'Bodoni Moda',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif;
-  --mono:'Space Mono',monospace;--hand:'Caveat',cursive;
+body{margin:0;background:#FFFFFF}
+a{color:#141414;text-decoration:none}a:hover{color:#141414}
+.endcell{transition:background-color .3s ease}
+.endcell:hover{background-color:#EEF7F2}
+.endcell:focus-visible,.acc:focus-visible{outline:3px solid #141414;outline-offset:-3px}
+.flink{transition:transform .3s ease}
+.flink:hover{transform:translateX(-8px)}
+</style>
+
+<style>
+html, body { margin: 0; padding: 0; background: #FFFFFF; overflow-x: hidden }
+* { box-sizing: border-box }
+img { max-width: 100%; display: block }
+
+/* TOC scroll-spy */
+aside a { transition: background .15s ease, color .15s ease }
+aside a.toc-active { background: #141414 !important; color: #FFFFFF !important; font-weight: 600 !important }
+aside a:not(.toc-active) { color: #5F5F5F }
+
+/* Mobile TOC pill */
+#m-toc-pill {
+  display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  z-index: 999; background: #141414; color: #fff;
+  font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+  padding: 10px 20px; border-radius: 999px; white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25); cursor: pointer; align-items: center; gap: 8px;
 }
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-h1,h2,h3,h4,h5,h6,p,blockquote,dl,figure{margin:0}
-img{display:block;max-width:100%}
-
-/* ── password gate ── */
-#pw-gate{position:fixed;inset:0;z-index:9999;background:#0A0A0A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:24px}
-#pw-gate h2{margin:0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(28px,4vw,52px);color:#fff;text-align:center;line-height:1.1}
-#pw-gate p{margin:0;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:#9A958C;text-align:center}
-#pw-gate input{width:min(280px,90vw);padding:14px 20px;border:1.5px solid #444;border-radius:999px;background:#1A1A1A;color:#fff;font-family:var(--sans);font-size:16px;text-align:center;outline:none}
-#pw-gate input:focus{border-color:var(--green)}
-#pw-gate button{padding:14px 32px;border-radius:999px;background:var(--pink-deep);color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;font-family:var(--sans)}
-#pw-gate button:hover{background:var(--rose)}
-#pw-error{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#E2557F;opacity:0;transition:opacity .3s;min-height:16px}
-
-/* ── nav ── */
-nav{position:relative;display:flex;justify-content:space-between;align-items:center;height:72px;padding:0 80px;border-bottom:1px solid var(--line)}
-.nav-brand{display:flex;align-items:center;gap:14px;padding-left:24px}
-.nav-brand img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid var(--ink)}
-.nav-brand span{font-weight:700;font-size:18px}
-.nav-links{display:flex;height:72px;font-family:var(--mono);font-size:11px;letter-spacing:.14em}
-.nav-links a{display:flex;align-items:center;padding:0 32px;border-left:1px solid var(--line)}
-.nav-links a:last-child{border-right:1px solid var(--line)}
-.nav-links a.active{background:var(--ink);color:#fff}
-
-/* ── hero ── */
-.hero{position:relative;margin:0 80px;display:grid;grid-template-columns:7fr 5fr;border-bottom:1px solid var(--line)}
-.hero-left{padding:64px 56px 56px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:24px}
-.hero-eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em}
-.hero-dot{width:9px;height:9px;background:var(--green);border:1.5px solid var(--ink)}
-.hero-h1{font-weight:700;font-size:clamp(40px,4.2vw,60px);line-height:1.12;letter-spacing:-.04em}
-.hero-h1 em{font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.02em;background:var(--green);padding:0 10px;border-radius:4px;white-space:nowrap}
-.hero-nda{font-size:13px;color:var(--sub)}
-.hero-right{padding:64px 56px 56px;display:flex;flex-direction:column;gap:22px;justify-content:center}
-.hero-p{font-family:var(--serif);font-size:20px;line-height:1.55}
-.hero-dl{margin-top:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 20px}
-.hero-dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--sub)}
-.hero-dd{font-size:15px;font-weight:600}
-
-/* ── stats bar ── */
-.stats{position:relative;margin:0 80px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-.stat{padding:26px 28px;display:flex;flex-direction:column;gap:8px;border-right:1px solid var(--line)}
-.stat:last-child{border-right:none}
-.stat-num{font-family:var(--serif);font-style:italic;font-size:48px;line-height:1;white-space:nowrap}
-.stat-label{font-size:14px;line-height:1.45;color:#4A4A4A}
-
-/* ── green intro section ── */
-.g-section{position:relative;background:var(--green-light);padding:56px;display:flex;flex-direction:column;gap:52px}
-.g-hero-img{width:1040px;max-width:100%;margin:0 auto;border-radius:12px;border:1px solid var(--green-border);box-shadow:0 30px 70px rgba(20,60,40,.22)}
-.g-cards{display:flex;flex-direction:column;gap:26px}
-.g-caption{font-family:var(--hand);font-weight:600;font-size:28px}
-.g-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-.g-card{background:#fff;border:1.5px solid var(--ink);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 18px 40px rgba(20,60,40,.14)}
-.g-card-q{font-family:var(--mono);font-size:11px;letter-spacing:.12em}
-.g-card-h{font-family:var(--serif);font-style:italic;font-weight:600;font-size:30px;line-height:1.1}
-.g-card-rule{height:8px;border-radius:4px;background:repeating-linear-gradient(90deg,#E8E8E8 0 18px,transparent 18px 24px)}
-.g-card-sub{font-size:13px;color:#5F5F5F}
-
-/* ── how to read ── */
-.htr{position:relative;margin:0 80px;display:grid;grid-template-columns:260px 1fr 1fr 2fr;border-bottom:1.5px solid var(--ink);background:var(--bg)}
-.htr-label{padding:24px;border-right:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--sub);display:flex;align-items:center}
-.htr-cell{padding:24px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
-.htr-num{font-family:var(--serif);font-style:italic;font-size:34px;line-height:1}
-.htr-sub{font-size:14px;color:#4A4A4A}
-.htr-mark{background:var(--green);padding:0 4px}
-.htr-pills{padding:24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:600}
-.htr-pills a{padding:8px 12px;border-radius:999px;border:1px solid var(--ink)}
-
-/* ── body grid ── */
-.body-grid{position:relative;margin:0 80px;display:grid;grid-template-columns:260px minmax(0,1fr)}
-.sidebar{padding:56px 24px;display:flex;flex-direction:column;gap:6px;font-size:14px;align-self:start;position:sticky;top:24px}
-.sidebar-you{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--sub);padding-bottom:12px}
-.sidebar-link{display:flex;gap:10px;padding:8px 10px;color:#5F5F5F}
-.sidebar-link.active{border-radius:8px;background:var(--ink);color:#fff;font-weight:600}
-.sidebar-link span{font-family:var(--mono);font-size:12px}
-.sidebar-progress{margin-top:18px;height:4px;border-radius:2px;background:#eee;overflow:hidden}
-.sidebar-bar{display:block;width:28%;height:100%;background:var(--ink)}
-.sidebar-time{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--sub)}
-main{display:flex;flex-direction:column}
-
-/* ── articles ── */
-article{padding:72px 0 88px 64px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:26px}
-article:last-child{padding-bottom:96px;border-bottom:none}
-.art-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--sub);white-space:nowrap}
-.art-h{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(36px,3.5vw,50px);line-height:1.05}
-.art-p{font-size:17px;line-height:1.7;color:var(--fg);max-width:760px}
-.art-big{max-width:860px;font-family:var(--serif);font-size:26px;line-height:1.35}
-.art-h3{font-family:var(--serif);font-style:italic;font-weight:600;font-size:32px;line-height:1.15;max-width:860px;margin:16px 0 0}
-.art-next{align-self:flex-start;max-width:760px;margin-top:8px;padding-top:20px;border-top:1px solid var(--ink);font-size:18px;font-weight:600;line-height:1.5}
-
-/* highlights */
-.hl{background:var(--green);padding:1px 5px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
-.bq{margin:8px 0;max-width:860px;padding-left:28px;border-left:3px solid var(--green);font-family:var(--serif);font-style:italic;font-weight:600;font-size:32px;line-height:1.3}
-.code{font-family:var(--mono);font-size:14px;background:var(--green-tint);border:1px solid var(--green-border);border-radius:6px;padding:1px 7px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
-
-/* decision cards */
-.dc{max-width:956px;border:1px solid var(--ink);border-radius:14px;overflow:hidden}
-.dc-head{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--ink);background:#fff}
-.dc-num{width:26px;height:26px;border-radius:50%;background:var(--green-deep);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.dc-tag{padding:4px 9px;border-radius:6px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em}
-.dc-title{font-family:var(--serif);font-style:italic;font-weight:600;font-size:24px;line-height:1.2}
-.dc-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-.dc-what{padding:20px 24px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
-.dc-cost{padding:20px 24px;background:var(--green-tint);display:flex;flex-direction:column;gap:8px}
-.dc-kicker-what{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sub)}
-.dc-kicker-cost{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--green-deep)}
-.dc-text{font-size:15.5px;line-height:1.6;color:#333}
-
-/* figures */
-.fig{margin:4px 0 0;display:flex;flex-direction:column;gap:12px;max-width:956px}
-.fig-wrap{border:1px solid var(--ink);border-radius:14px;background:var(--green-light);padding:24px}
-.fig-img{display:block;width:100%;border-radius:8px;border:1px solid var(--green-border)}
-.fig-cap{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sub);display:flex;justify-content:space-between;gap:24px}
-.cost-note{max-width:760px;padding:18px 22px;border-radius:12px;background:var(--green-tint);border:1px solid var(--green-border);display:flex;flex-direction:column;gap:8px}
-
-/* annotated img overlay */
-.ann{position:relative}
-.ann-box{position:absolute;border:2.5px solid var(--green-deep);border-radius:8px;background:rgba(158,212,181,.14)}
-.ann-badge{position:absolute;right:-13px;top:-13px;width:26px;height:26px;border-radius:50%;background:var(--green-deep);color:#fff;border:2px solid #fff;font-family:var(--mono);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.2)}
-
-/* numbered list */
-.num-list{display:flex;flex-direction:column;gap:24px;max-width:760px}
-.num-row{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:baseline}
-.num{font-family:var(--mono);font-size:12px;color:var(--sub)}
-
-/* close cards */
-.close-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:956px}
-.close-card{border:1px solid var(--ink);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px}
-.close-card.green{background:var(--green-tint)}
-.close-num{font-family:var(--mono);font-size:12px;color:var(--sub)}
-.close-num.green{color:var(--green-deep)}
-.close-h{font-weight:700;font-size:18px;line-height:1.3}
-.close-p{font-size:15px;line-height:1.6;color:#4A4A4A}
-
-/* ── ending ── */
-.ending{position:relative;margin:0 80px;display:grid;grid-template-columns:1fr 1.3fr 1fr;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--line);height:380px}
-.end-cell{transition:background-color .3s ease}
-.end-cell:hover{background:var(--green-tint)}
-.end-home{display:flex;align-items:center;justify-content:center;gap:12px;border-right:1px solid var(--line);font-family:var(--mono);font-size:13px;letter-spacing:.14em}
-.end-next{position:relative;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:36px;border-right:1px solid var(--line)}
-.end-thumb{position:relative;height:210px;border-radius:12px;overflow:hidden;background:#DCE7F7;border:1px solid var(--ink)}
-.end-thumb img{position:absolute;left:24px;top:24px;width:520px;border-radius:8px}
-.end-meta{display:flex;justify-content:space-between;align-items:baseline}
-.end-title{font-family:var(--serif);font-style:italic;font-weight:600;font-size:24px}
-.end-tag{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sub)}
-.end-related{position:relative;display:flex;align-items:center;justify-content:center}
-.end-related-label{position:relative;font-family:var(--mono);font-size:13px;letter-spacing:.14em}
-.end-related-hand{position:absolute;bottom:64px;font-family:var(--hand);font-weight:600;font-size:22px;color:#5F5F5F}
-
-/* ── footer ── */
-footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;display:grid;grid-template-columns:6fr 6fr;align-items:end;gap:40px}
-.footer-card{position:relative;width:440px;height:330px}
-.footer-card-bg{position:absolute;left:0;top:0;width:170px;height:60px;border-radius:22px 22px 0 0;background:var(--pink-deep)}
-.footer-card-main{position:absolute;left:0;top:36px;width:440px;height:294px;border-radius:0 26px 26px 26px;background:var(--pink-deep)}
-.footer-card-inner{position:absolute;left:54px;top:64px;width:330px;height:220px;background:#FFFDFB;border-radius:6px;transform:rotate(-3deg);box-shadow:0 10px 24px rgba(120,20,60,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
-.footer-card-tape{position:absolute;top:-14px;left:150px;width:30px;height:30px;border-radius:4px;background:#F4C84B;border:1.5px solid var(--ink)}
-.footer-name{font-family:var(--hand);font-weight:700;font-size:58px;line-height:.9;color:var(--ink)}
-.footer-card-bottom{position:absolute;left:0;top:250px;width:440px;height:80px;border-radius:6px 6px 26px 26px;background:#EC6F93;z-index:2}
-.footer-nav{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-family:var(--serif);font-size:52px;line-height:1.1}
-.footer-nav a{color:var(--rose);transition:transform .3s ease}
-.footer-nav a:hover{transform:translateX(-8px)}
-
-/* ── reveal ── */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
-.reveal.in{opacity:1;transform:none}
-
-/* ── responsive ── */
-@media(max-width:900px){
-  nav{padding:0 20px}
-  .nav-brand{padding-left:0}
-  .nav-links a{padding:0 14px}
-  .hero,.stats,.htr,.body-grid,.ending{margin:0 20px}
-  .hero{grid-template-columns:1fr}
-  .hero-left{border-right:none;border-bottom:1px solid var(--line);padding:40px 24px}
-  .hero-right{padding:32px 24px}
-  .hero-dl{grid-template-columns:1fr}
-  .stats{grid-template-columns:1fr 1fr}
-  .stat:nth-child(2){border-right:none}
-  .htr{grid-template-columns:1fr;overflow:hidden}
-  .htr-label{border-right:none;border-bottom:1px solid var(--line)}
-  .htr-cell{border-right:none;border-bottom:1px solid var(--line)}
-  .body-grid{grid-template-columns:1fr}
-  .sidebar{display:none}
-  main{border-left:none}
-  article{padding:48px 24px 60px}
-  .dc-body{grid-template-columns:1fr}
-  .dc-what{border-right:none;border-bottom:1px solid var(--line)}
-  .close-grid{grid-template-columns:1fr}
-  .g-grid{grid-template-columns:1fr 1fr}
-  .ending{grid-template-columns:1fr;height:auto}
-  .end-home{min-height:60px;border-right:none;border-bottom:1px solid var(--line)}
-  .end-next{border-right:none;border-bottom:1px solid var(--line)}
-  .g-section{padding:32px 24px}
-  .g-hero-img{width:100%}
-  footer{padding:48px 24px 40px;grid-template-columns:1fr}
-  .footer-card{display:none}
-  .footer-nav{align-items:flex-start;font-size:40px}
+#m-toc-drawer {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 998;
+  background: #fff; border-top: 1px solid #E8E8E8; border-radius: 20px 20px 0 0;
+  padding: 20px 22px 32px; box-shadow: 0 -8px 32px rgba(0,0,0,0.12);
+  flex-direction: column; gap: 4px; max-height: 70vh; overflow-y: auto;
 }
-@media(max-width:480px){
-  .nav-links a{padding:0 10px;font-size:10px}
-  .g-grid{grid-template-columns:1fr}
-  .stats{grid-template-columns:1fr}
+#m-toc-drawer.open { display: flex }
+#m-toc-backdrop { display: none; position: fixed; inset: 0; z-index: 997; background: rgba(0,0,0,0.3) }
+#m-toc-backdrop.open { display: block }
+
+@media (max-width: 900px) {
+  .grid-rail-l, .grid-rail-r { display: none !important }
+  nav[style*="padding: 0 80px"] { padding: 0 22px !important }
+  div[style*="grid-template-columns: 260px"] { grid-template-columns: 1fr !important; gap: 0 !important }
+  aside { display: none !important }
+  #m-toc-pill { display: flex }
+  div[style*="margin: 0 80px"] { margin: 0 22px !important }
+  section[style*="margin: 0 80px"] { margin: 0 22px !important }
+  article { padding: 40px 22px !important }
+  div[style*="grid-template-columns: 7fr 5fr"],
+  div[style*="grid-template-columns: 5fr 7fr"],
+  div[style*="grid-template-columns: 6fr 6fr"],
+  div[style*="grid-template-columns: repeat(2"],
+  div[style*="grid-template-columns: repeat(3"],
+  div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important }
+  h1[style*="font-size: 58px"], h1[style*="font-size: 56px"] { font-size: clamp(28px,7vw,42px) !important }
+  h2[style*="font-size: 46px"], h2[style*="font-size: 48px"], h2[style*="font-size: 44px"] { font-size: clamp(22px,5.5vw,32px) !important }
+  [style*="max-width: 892px"], [style*="max-width: 860px"], [style*="max-width: 780px"] { max-width: 100% !important }
+  div[style*="padding: 0 80px"] { padding: 0 22px !important }
 }
 </style>
 </head>
 <body>
 
-<!-- ── PASSWORD GATE ── -->
-<div id="pw-gate">
-  <h2>This case study is password&nbsp;protected.</h2>
-  <p>ENTER PASSWORD TO CONTINUE</p>
-  <input id="pw-input" type="password" placeholder="••••••••" autocomplete="off">
-  <button onclick="checkPw()">Unlock →</button>
-  <span id="pw-error"></span>
-</div>
+<div style="position: relative; width: 100%; max-width: 1440px; margin: 0 auto; box-sizing: border-box; background: #FFFFFF; color: #141414; font-family: 'Hanken Grotesk', system-ui, sans-serif; display: flex; flex-direction: column">
 
-<!-- ── NAV ── -->
-<nav>
-  <a class="nav-brand" href="index.html">
-    <img src="uploads/idp/5ee40e8ef9190bccf842103b540fe49b.png" alt="Mehak Garg">
-    <span>Mehak Garg</span>
-  </a>
-  <div class="nav-links">
-    <a href="index.html#work" class="active">WORK</a>
-    <a href="index.html#about">ABOUT</a>
-    <a href="index.html#writing">WRITING</a>
-    <a href="index.html#contact">SAY HI ↗</a>
-  </div>
+<!-- grid rails -->
+<span aria-hidden="true" class="grid-rail-l" style="position: absolute; left: 80px; top: 0; bottom: 0; border-left: 1px dashed #E2E2E2; z-index: 0"></span>
+<span aria-hidden="true" class="grid-rail-r" style="position: absolute; left: 1360px; top: 0; bottom: 0; border-left: 1px dashed #E2E2E2; z-index: 0"></span>
+<span aria-hidden="true" style="position: absolute; left: 340px; top: 1500px; bottom: 960px; border-left: 1px dashed #E2E2E2; z-index: 0"></span>
+
+<!-- NAV -->
+<nav style="position: relative; display: flex; justify-content: space-between; align-items: center; height: 72px; padding: 0 80px; border-bottom: 1px solid #E8E8E8">
+<a href="index.html" style="text-decoration:none;color:inherit"><span style="display: flex; align-items: center; gap: 14px; padding-left: 24px"><span style="width: 34px; height: 34px; border-radius: 50%; overflow: hidden; border: 1.5px solid #141414"><img src="./assets/5ee40e8ef9190bccf842103b540fe49b.png" alt="" style="width: 100%; height: 100%; object-fit: cover"></span><span style="font-weight: 700; font-size: 18px">Mehak Garg</span></span></a>
+<div style="display: flex; height: 72px; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.14em">
+<a href="index.html" style="display:flex;align-items:center;padding:0 32px;border-left:1px solid #E8E8E8;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.14em">← ALL WORK</a><a href="mailto:mehakrgarg@gmail.com" style="display:flex;align-items:center;padding:0 32px;border-left:1px solid #E8E8E8;border-right:1px solid #E8E8E8;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.14em">SAY HI ↗</a>
+</div>
 </nav>
 
-<!-- ── HERO ── -->
-<section class="hero" id="s-open">
-  <div class="hero-left">
-    <span class="hero-eyebrow">01 / 07 · IDENTITY PLATFORM · NDA <span class="hero-dot"></span></span>
-    <h1 class="hero-h1">Building the <em>decision layer</em> of an enterprise identity platform</h1>
-    <span class="hero-nda">Confidential work. Some details changed or left out. Opinions mine.</span>
-  </div>
-  <div class="hero-right">
-    <p class="hero-p">Every identity platform answers the same four questions. Who are you. What can you do. Is it really you. Can we prove it happened.</p>
-    <p class="hero-p">The product had a surface for each. Built separately, years apart, by different teams, each one correct on its own and none of them aware the others existed. I spent a year on this product, and the thing I got most wrong was how long it took me to see that.</p>
-    <dl class="hero-dl">
-      <div style="display:flex;flex-direction:column;gap:4px">
-        <dt class="hero-dt">ROLE</dt>
-        <dd class="hero-dd">Strategic design partner, embedded with the Head of Architecture and Product Owners</dd>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:4px">
-        <dt class="hero-dt">PRODUCT</dt>
-        <dd class="hero-dd">Enterprise identity provider (IdP)</dd>
-      </div>
-    </dl>
-  </div>
+<!-- FIRST VIEW -->
+<section id="s-open" style="position: relative; margin: 0 80px; display: grid; grid-template-columns: 7fr 5fr; border-bottom: 1px solid #E8E8E8">
+<div style="padding: 64px 56px 56px; border-right: 1px solid #E8E8E8; display: flex; flex-direction: column; gap: 24px">
+<span style="display: flex; align-items: center; gap: 10px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em">01 / 04 · IDENTITY PLATFORM · NDA <span style="width: 9px; height: 9px; background: #F8DAE9; border: 1.5px solid #141414"></span></span>
+<h1 style="margin: 0; font-weight: 700; font-size: 60px; line-height: 1.12; letter-spacing: -0.04em">Building the <span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; letter-spacing: -0.02em; background: #F8DAE9; padding: 0 10px; border-radius: 4px; white-space: nowrap">decision layer</span> of an enterprise identity platform</h1>
+<span style="font-size: 13px; color: #6E6E6E">Confidential work. Some details changed or left out. Opinions mine.</span>
+</div>
+<div style="padding: 64px 56px 56px; display: flex; flex-direction: column; gap: 22px; justify-content: center">
+<p style="margin: 0; font-family: 'Bodoni Moda', serif; font-size: 22px; line-height: 1.5">The product had every capability an enterprise identity platform needs, and no model connecting them.</p><p style="margin: 0; font-size: 16px; line-height: 1.65; color: #3A3A3A">Five areas, built at different times by different teams, each correct on its own. This is where they failed, why it mattered to enterprise buyers, and the four habits that fixed it.</p><dl style="margin: 8px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 20px">
+<div style="display: flex; flex-direction: column; gap: 4px"><dt style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #6E6E6E">ROLE</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">Strategic design partner, embedded with the Head of Architecture and Product Owners</dd></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><dt style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #6E6E6E">PRODUCT</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">Enterprise identity provider (IdP)</dd></div>
+</dl>
+</div>
 </section>
 
-<!-- ── STATS + GREEN ── -->
-<section style="position:relative;margin:0 80px;border-bottom:1px solid var(--line)">
-  <div class="stats">
-    <div class="stat">
-      <span class="stat-num">12</span>
-      <span class="stat-label">internal teams interviewed before designing onboarding</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">8–10</span>
-      <span class="stat-label">decisions reversed before they reached build</span>
-    </div>
-    <div class="stat" style="border-right:none">
-      <span class="stat-num">1 quarter</span>
-      <span class="stat-label">of engineering work unblocked</span>
-    </div>
-  </div>
-  <div class="g-section">
-    <img class="g-hero-img reveal" src="uploads/idp/0a906801c99646d8b4c236db0e5453e7.jpg" alt="The identity platform's admin dashboard with the Customize widget panel open, product name blurred">
-    <div class="g-cards">
-      <span class="g-caption">four questions, four screens, zero conversation between them ↓</span>
-      <div class="g-grid">
-        <div class="g-card" style="transform:rotate(-2deg)">
-          <span class="g-card-q">Q1</span>
-          <span class="g-card-h">Who are you?</span>
-          <span class="g-card-rule"></span>
-          <span class="g-card-sub">a separate screen, built separately</span>
-        </div>
-        <div class="g-card" style="transform:rotate(1.5deg)">
-          <span class="g-card-q">Q2</span>
-          <span class="g-card-h">What can you do?</span>
-          <span class="g-card-rule"></span>
-          <span class="g-card-sub">a separate screen, built separately</span>
-        </div>
-        <div class="g-card" style="transform:rotate(-1deg)">
-          <span class="g-card-q">Q3</span>
-          <span class="g-card-h">Is it really you?</span>
-          <span class="g-card-rule"></span>
-          <span class="g-card-sub">a separate screen, built separately</span>
-        </div>
-        <div class="g-card" style="transform:rotate(2deg)">
-          <span class="g-card-q">Q4</span>
-          <span class="g-card-h">Can we prove it?</span>
-          <span class="g-card-rule"></span>
-          <span class="g-card-sub">a separate screen, built separately</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<section style="position: relative; margin: 0 80px; border-bottom: 1px solid #E8E8E8">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid #E8E8E8">
+<div style="padding: 26px 28px; border-right: 1px solid #E8E8E8; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 48px; line-height: 1; white-space: nowrap">12</span><span style="font-size: 14px; line-height: 1.45; color: #4A4A4A">internal teams interviewed before designing onboarding</span></div><div style="padding: 26px 28px; border-right: 1px solid #E8E8E8; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 48px; line-height: 1; white-space: nowrap">8–10</span><span style="font-size: 14px; line-height: 1.45; color: #4A4A4A">decisions reversed before they reached build</span></div><div style="padding: 26px 28px;  display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 48px; line-height: 1; white-space: nowrap">1 quarter</span><span style="font-size: 14px; line-height: 1.45; color: #4A4A4A">of engineering work unblocked</span></div>
+</div>
+<div style="position: relative; background: #DBEEE4; padding: 56px 56px 60px; display: flex; flex-direction: column; gap: 52px">
+<img src="./assets/0a906801c99646d8b4c236db0e5453e7.jpg" alt="The identity platform’s admin dashboard with the Customize widget panel open, product name blurred" style="display: block; width: 1040px; margin: 0 auto; border-radius: 12px; border: 1px solid #C9E3D3; box-shadow: 0 30px 70px rgba(20,60,40,0.22)">
+<span style="font-family: 'Caveat', cursive; font-weight: 600; font-size: 28px; text-align: center">five areas, each correct on its own. the trouble was in between ↓</span></div>
 </section>
 
-<!-- ── HOW TO READ ── -->
-<section class="htr">
-  <div class="htr-label">HOW TO READ THIS</div>
-  <div class="htr-cell">
-    <span class="htr-num">60 sec</span>
-    <span class="htr-sub">read only the <span class="htr-mark">green lines</span></span>
-  </div>
-  <div class="htr-cell">
-    <span class="htr-num">6 min</span>
-    <span class="htr-sub">the whole story</span>
-  </div>
-  <div class="htr-pills">
-    <a href="#s-open">01 Opening</a>
-    <a href="#s-review">02 The review</a>
-    <a href="#s-fix">03 The fix</a>
-    <a href="#s-research">04 The research</a>
-    <a href="#s-denominator">05 The denominator</a>
-    <a href="#s-pattern">06 The pattern</a>
-    <a href="#s-close">07 Close</a>
-  </div>
+<!-- HOW TO READ -->
+<section style="position: relative; margin: 0 80px; display: grid; grid-template-columns: 260px 1fr 1fr 2fr; border-bottom: 1.5px solid #141414; background: #FFFFFF">
+<div style="padding: 24px 24px; border-right: 1px solid #E8E8E8; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #6E6E6E; display: flex; align-items: center">HOW TO READ THIS</div>
+<div style="padding: 24px; border-right: 1px solid #E8E8E8; display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 34px; line-height: 1">60 sec</span><span style="font-size: 14px; color: #4A4A4A">read only the <span style="background: #F8DAE9; padding: 0 4px">green lines</span></span></div>
+<div style="padding: 24px; border-right: 1px solid #E8E8E8; display: flex; flex-direction: column; gap: 4px; width: 217px"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 34px; line-height: 1">5 min</span><span style="font-size: 14px; color: #4A4A4A">the whole story</span></div>
+<div style="padding: 24px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; font-weight: 600">
+<a href="#s-problem" style="padding: 8px 12px; border-radius: 999px; border: 1px solid #141414">01 The problem</a><a href="#s-why" style="padding: 8px 12px; border-radius: 999px; border: 1px solid #141414">02 Why it mattered</a><a href="#s-how" style="padding: 8px 12px; border-radius: 999px; border: 1px solid #141414">03 How I solved it</a><a href="#s-worked" style="padding: 8px 12px; border-radius: 999px; border: 1px solid #141414">04 How I know it worked</a>
+</div>
 </section>
 
-<!-- ── BODY ── -->
-<div class="body-grid">
-  <!-- sidebar -->
-  <aside class="sidebar">
-    <span class="sidebar-you">YOU ARE HERE</span>
-    <a href="#s-open" class="sidebar-link"><span>01</span>Opening</a>
-    <a href="#s-review" class="sidebar-link active"><span>02</span>The review</a>
-    <a href="#s-fix" class="sidebar-link"><span>03</span>The fix</a>
-    <a href="#s-research" class="sidebar-link"><span>04</span>The research</a>
-    <a href="#s-denominator" class="sidebar-link"><span>05</span>The denominator</a>
-    <a href="#s-pattern" class="sidebar-link"><span>06</span>The pattern</a>
-    <a href="#s-close" class="sidebar-link"><span>07</span>Close</a>
-    <div class="sidebar-progress"><span class="sidebar-bar"></span></div>
-    <span class="sidebar-time">~7 MIN LEFT</span>
-  </aside>
-
-  <main>
-
-    <!-- 02 THE REVIEW -->
-    <article id="s-review" class="reveal">
-      <div style="display:flex;align-items:baseline;gap:18px">
-        <span class="art-eyebrow">02 / 07</span>
-        <h2 class="art-h">The architecture was signed off before I got there.</h2>
-      </div>
-      <p class="art-p">The model was clean. Every group gets a policy, every policy belongs to a group. It had been through review and nobody had a problem with it.</p>
-      <p class="art-p">It took me about a week to find the hole, and once I saw it I couldn't unsee it. <span class="hl">Put someone in two groups and the system has two valid answers and no rule for choosing.</span> Engineering says authenticator app. Contractors says hardware key. Both correct, both active, no precedence. The admin gets a lockout they can't explain and a user whose manager is now asking questions.</p>
-      <blockquote class="bq">It survived review because it's flawless for anyone in one group. Which is most people, most of the time, in most demos.</blockquote>
-      <p class="art-p">I wrote up exactly how it fails, modelled an alternative, and took it to the Head of Architecture and the product owners. That's not a comfortable meeting. You're telling a room that something they already approved is wrong, and all you have is a worked example.</p>
-      <p class="art-p">It got changed before anyone built on it.</p>
-      <a href="#s-fix" class="art-next">But the reversal isn't the interesting part. What the fix turned out to be is. <span aria-hidden="true">↓</span></a>
-    </article>
-
-    <!-- 03 THE FIX -->
-    <article id="s-fix" class="reveal">
-      <div style="display:flex;align-items:baseline;gap:18px">
-        <span class="art-eyebrow">03 / 07</span>
-        <h2 class="art-h">My first instinct was a better error message.</h2>
-      </div>
-      <p class="art-p">Show both policies, let the admin choose. Which is solving it at the wrong end. By the time there's a conflict, someone is already locked out and someone else is already on the phone.</p>
-      <p class="art-p">So scope moved to the front. You pick groups before you can write a condition at all: <span class="code">"Select the group(s) this rule targets. The conditions below only evaluate users in these groups."</span> You can't build a rule that collides with another one, because the system knows who you've scoped to before you've written anything.</p>
-      <p class="art-p"><span class="hl">Everything else in the builder follows from that one move.</span></p>
-
-      <!-- FIG 1 -->
-      <figure class="fig">
-        <div class="fig-wrap">
-          <div class="ann">
-            <img class="fig-img" src="uploads/idp/e98e8d978ba2d95137f067d94493ee00.jpg" alt="The policy builder: a Flow column of ordered rules with No match arrows and a locked default rule, a rule asking which groups it applies to before any conditions, a live count of matching users, and a rail of reusable zones, device posture profiles and method sets">
-            <span class="ann-box" style="left:25.78%;top:24.88%;width:32.81%;height:7.81%"><span class="ann-badge">1</span></span>
-            <span class="ann-box" style="left:79.58%;top:16.47%;width:16.51%;height:68.51%"><span class="ann-badge">2</span></span>
-            <span class="ann-box" style="left:3.54%;top:21.88%;width:19.38%;height:77.88%"><span class="ann-badge">3</span></span>
-            <span class="ann-box" style="left:3.65%;top:10.82%;width:19.79%;height:3.85%"><span class="ann-badge">4</span></span>
-          </div>
-        </div>
-        <figcaption class="fig-cap">FIG. 1 — THE POLICY BUILDER · 1 SCOPE FIRST · 2 OBJECTS · 3 ORDER · 4 BLAST RADIUS</figcaption>
-      </figure>
-
-      <div class="dc">
-        <div class="dc-head">
-          <span class="dc-num">2</span>
-          <span class="dc-tag">DECISION</span>
-          <span class="dc-title">Conditions became objects, not text you type</span>
-        </div>
-        <div class="dc-body">
-          <div class="dc-what">
-            <span class="dc-kicker-what">WHAT I DID</span>
-            <span class="dc-text">Zones, Device Posture profiles and Method Sets each got their own page and their own object, dragged into rules from a rail. "Office Network" is one object holding six IP ranges. Change it once and every rule using it changes.</span>
-          </div>
-          <div class="dc-cost">
-            <span class="dc-kicker-cost">WHAT IT COST</span>
-            <span class="dc-text">Indirection. Read a rule and you see "Office Network," not the six ranges. There's a Change link to open it up. I traded reading-at-a-glance for not maintaining the same list in twelve places.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="dc">
-        <div class="dc-head">
-          <span class="dc-num">3</span>
-          <span class="dc-tag">DECISION</span>
-          <span class="dc-title">Evaluation order goes on the canvas</span>
-        </div>
-        <div class="dc-body">
-          <div class="dc-what">
-            <span class="dc-kicker-what">WHAT I DID</span>
-            <span class="dc-text"><span class="code">"Top to bottom. First match wins,"</span> printed on the panel, with <span class="code">"No match ↓"</span> between every rule and a locked default at the bottom so there is always a terminal case.</span>
-          </div>
-          <div class="dc-cost">
-            <span class="dc-kicker-cost">WHAT IT COST</span>
-            <span class="dc-text">The order is now something admins can get wrong by dragging. Visible beats hidden, but visible also means editable.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="dc">
-        <div class="dc-head">
-          <span class="dc-num">4</span>
-          <span class="dc-tag">DECISION</span>
-          <span class="dc-title">You see the blast radius while you build</span>
-        </div>
-        <div class="dc-body">
-          <div class="dc-what">
-            <span class="dc-kicker-what">WHAT I DID</span>
-            <span class="dc-text"><span class="code">"~120 users match current rules across 1 app"</span> in the header, <span class="code">"~108 users match"</span> beside the conditions, both updating live.</span>
-          </div>
-          <div class="dc-cost">
-            <span class="dc-kicker-cost">WHAT IT COST</span>
-            <span class="dc-text">Every count is an estimate, and an estimate presented confidently will eventually be wrong in a way someone notices.</span>
-          </div>
-        </div>
-      </div>
-
-      <a href="#s-research" class="art-next">I thought that was the lesson. Catch the structural problem early, fix it at the root, move on. <span aria-hidden="true">↓</span></a>
-    </article>
-
-    <!-- 04 THE RESEARCH -->
-    <article id="s-research" class="reveal">
-      <div style="display:flex;align-items:baseline;gap:18px">
-        <span class="art-eyebrow">04 / 07</span>
-        <h2 class="art-h">I ran the research myself. Then I ignored a quarter of it.</h2>
-      </div>
-      <p class="art-p">Onboarding had no design owner and no research behind it, so I did it. Twelve teams inside the IdP org: support, engineering, customer success, sales engineering, each seeing a different slice of where new admins got stuck.</p>
-      <p class="art-p">Four things came up with everyone. No mental model of how the pieces connect. Setup order arbitrary, with some routes leaving the product half-working. MFA skipped because it felt unrelated to everything they'd just done. And no definition of finished.</p>
-      <p class="art-big"><span class="hl">Then I designed a questionnaire with fourteen questions in it.</span></p>
-      <p class="art-p">The reasoning felt airtight. Learn enough up front, company size, directory type, compliance posture, what they're migrating from, and I can tailor the whole path. More questions, better fit.</p>
-      <p class="art-p">People abandoned it. Not because the questions were bad. Because you'd answer fourteen things and still not have set anything up. It was a form standing between the admin and the product.</p>
-      <p class="art-p">So I cut it to eight. Better, still wrong. Five. Drop-off mostly stopped, and now the tailoring was thin enough that I had to ask what the form was still doing there.</p>
-      <blockquote class="bq">Three rounds in, I finally read my own research properly.</blockquote>
-      <a href="#s-denominator" class="art-next" style="font-size:15px">Next ↓</a>
-    </article>
-
-    <!-- 05 THE DENOMINATOR -->
-    <article id="s-denominator" class="reveal">
-      <div style="display:flex;align-items:baseline;gap:18px">
-        <span class="art-eyebrow">05 / 07</span>
-        <h2 class="art-h">It was never a data problem.</h2>
-      </div>
-      <p class="art-p">I'd been solving data collection. It was sequencing. Twelve teams told me admins didn't know what order to do things in, and my answer was to add a step before the order even began.</p>
-      <p class="art-p">The fourth finding was the one I kept skimming. No definition of finished. That isn't something you fix with better tailoring. <span class="hl">It's something you fix with a number.</span></p>
-      <p class="art-p">The questions didn't need to branch the product. They needed to name a goal so the product could show a finite list.</p>
-
-      <div class="dc">
-        <div class="dc-head">
-          <span class="dc-tag">DECISION</span>
-          <span class="dc-title">Three questions, and what they produce is a denominator</span>
-        </div>
-        <div class="dc-body">
-          <div class="dc-what">
-            <span class="dc-kicker-what">WHAT I DID</span>
-            <span class="dc-text"><span class="code">"To Do for Use-Case: Adaptive Multi-Factor Authentication · 2 of 7."</span> Seven is what done means. Two is where you are. Customize sits directly underneath, so a wrong answer at the start is something you change rather than something you restart.</span>
-          </div>
-          <div class="dc-cost">
-            <span class="dc-kicker-cost">WHAT IT COST</span>
-            <span class="dc-text">An admin who'd rather explore is now looking at a recommended path they didn't ask for. And the list is only as good as the use case they picked, so a wrong answer stays wrong until someone finds Customize.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- FIG 2 -->
-      <figure class="fig">
-        <div class="fig-wrap">
-          <div class="ann">
-            <img class="fig-img" src="uploads/idp/91b478499d4cb2b71515141de89ab64c.jpg" alt="Getting Started checklist: To Do for Use-Case Adaptive Multi Factor Authentication, 2 of 7, with a Customize link under the title">
-            <span class="ann-box" style="left:89.55%;top:28.41%;width:8.91%;height:11.95%"></span>
-            <span class="ann-box" style="left:2.55%;top:34.39%;width:8.91%;height:3.90%"></span>
-          </div>
-        </div>
-        <figcaption class="fig-cap">FIG. 2 — SEVEN IS WHAT DONE MEANS. CUSTOMIZE SITS RIGHT UNDER IT.</figcaption>
-      </figure>
-
-      <p class="art-p">Three calls came out of the same reframe.</p>
-
-      <div class="num-list">
-        <div class="num-row">
-          <span class="num">01</span>
-          <p class="art-p">The first screen asks who you are, not what you want: <span class="code">"I use Plugins like Wordpress, Drupal"</span> against <span class="code">"I am here to explore Identity &amp; Access Management features."</span> Those two people need different products, and once you know which, nothing downstream has to hedge.</p>
-        </div>
-      </div>
-
-      <!-- FIG 3 -->
-      <figure class="fig">
-        <div class="fig-wrap">
-          <div style="max-width:620px;margin:0 auto">
-            <img class="fig-img" src="uploads/idp/afc6c3923c80845e646246f81bd32e55.jpg" alt="First screen: two cards, I use Plugins like Wordpress Drupal and I am here to explore Identity and Access Management features">
-          </div>
-        </div>
-        <figcaption class="fig-cap">FIG. 3 — WHO YOU ARE, NOT WHAT YOU WANT</figcaption>
-      </figure>
-
-      <div class="num-list">
-        <div class="num-row">
-          <span class="num">02</span>
-          <p class="art-p"><span class="code">"Not sure, need help!"</span> is a real option in the use-case list, and <span class="code">"Not sure, want to start fresh"</span> in the directory step. The research said admins had no mental model. That belongs in the UI, not a help doc.</p>
-        </div>
-      </div>
-
-      <!-- FIG 4 -->
-      <figure class="fig">
-        <div class="fig-wrap">
-          <div style="display:grid;grid-template-columns:5fr 9fr;gap:20px;align-items:start">
-            <div class="ann">
-              <img class="fig-img" src="uploads/idp/77c6b6b96b0cd49592f1239145fc4667.jpg" alt="Use-case list ending in Not sure, need help!">
-              <span class="ann-box" style="left:8.63%;top:85.22%;width:52.88%;height:12.17%"></span>
-            </div>
-            <div class="ann">
-              <img class="fig-img" src="uploads/idp/86c97d5af6210efa4e6df684f3903752.jpg" alt="Directory step: where are your users stored, with Not sure, want to start fresh as an option">
-              <span class="ann-box" style="left:50.89%;top:82.75%;width:47.86%;height:14.51%"></span>
-            </div>
-          </div>
-        </div>
-        <figcaption class="fig-cap">FIG. 4 — "NOT SURE" IS A REAL ANSWER, TWICE</figcaption>
-      </figure>
-
-      <div style="display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:48px;max-width:956px;align-items:start">
-        <div class="num-row">
-          <span class="num">03</span>
-          <p class="art-p">Help is ranked by what it costs us: Documentation, then Video, then Request a Demo.</p>
-        </div>
-        <!-- FIG help panel -->
-        <div style="border:1px solid var(--ink);border-radius:14px;background:var(--green-light);padding:20px 20px 20px 28px">
-          <div class="ann" style="position:relative">
-            <img class="fig-img" src="uploads/idp/23b632afab889b479d700881a72f0330.jpg" alt="Help panel with Documentation first, then Video, then Request a Demo">
-            <span class="ann-badge" style="position:absolute;left:-15px;top:19%">1</span>
-            <span class="ann-badge" style="position:absolute;left:-15px;top:49.5%">2</span>
-            <span class="ann-badge" style="position:absolute;left:-15px;top:78.5%">3</span>
-          </div>
-        </div>
-      </div>
-
-      <a href="#s-pattern" class="art-next">I'd made the same mistake the architecture review made. Designed for the clean case, from the inside, without checking what the user was actually asking. <span aria-hidden="true">↓</span></a>
-    </article>
-
-    <!-- 06 THE PATTERN -->
-    <article id="s-pattern" class="reveal">
-      <div style="display:flex;align-items:baseline;gap:18px">
-        <span class="art-eyebrow">06 / 07</span>
-        <h2 class="art-h">By the third area I knew what I was looking for.</h2>
-      </div>
-      <p class="art-big">Not "what's wrong with this screen." <span class="hl">What question is this screen failing to answer.</span></p>
-
-      <h3 class="art-h3">Authentication methods looked like an ordering problem.</h3>
-      <p class="art-p">Fifteen methods in a flat list, sorted by when they were built, a hardware key sitting next to an SMS code as though they were equivalent choices. They aren't, and the page was silent on the only distinction that matters.</p>
-      <p class="art-p">So the tiers don't describe what a method does. They describe what it survives. <span class="code">"Cryptographically bound credentials. Cannot be replayed or intercepted,"</span> against <span class="code">"One-time codes and push notifications. Effective but susceptible to phishing."</span> We tell admins the weakness of methods we're selling them.</p>
-
-      <!-- FIG 5 -->
-      <figure class="fig">
-        <div class="fig-wrap">
-          <div class="ann">
-            <img class="fig-img" src="uploads/idp/4cc03b623b3d906744b117d0a044b730.png" alt="Methods page: Phishing-Resistant tier above Standard MFA, each with a description of what it survives">
-            <span class="ann-box" style="left:0.43%;top:8.90%;width:60%;height:8.38%"></span>
-            <span class="ann-box" style="left:0.43%;top:89.53%;width:63.48%;height:8.90%"></span>
-          </div>
-        </div>
-        <figcaption class="fig-cap">FIG. 5 — THE TIER SAYS WHAT A METHOD SURVIVES</figcaption>
-      </figure>
-
-      <p class="art-p">WebAuthn ended up as two cards rather than one: technically one protocol, split by whether the user has to carry something. That's the only difference anyone will ever notice.</p>
-      <p class="art-p">And enabled and used are separate facts on the page. SMS reads <span class="code">"512 enrolled · 0 policy rules."</span> It's on, people registered it, nothing references it.</p>
-
-      <!-- FIG 6 -->
-      <figure class="fig">
-        <div class="fig-wrap">
-          <div style="max-width:540px;margin:0 auto">
-            <div class="ann">
-              <img class="fig-img" src="uploads/idp/10688374ece0862ff1c37c8f6c952585.png" alt="Method drawer: 1203 enrolled, 2 policy rules, last used 1 day ago, with the two rules named">
-              <span class="ann-box" style="left:2.29%;top:37.62%;width:95.22%;height:60.40%"></span>
-            </div>
-          </div>
-        </div>
-        <figcaption class="fig-cap">FIG. 6 — ENROLLED AND REFERENCED, COUNTED SEPARATELY</figcaption>
-      </figure>
-
-      <div class="cost-note">
-        <span class="dc-kicker-cost">WHAT IT COST</span>
-        <span class="dc-text">Methods between tiers had to land somewhere and some admins will disagree. The tier is also a judgment that ages. What's phishing-resistant now may not be in three years, and this makes reclassification a visible event instead of a quiet one.</span>
-      </div>
-
-      <h3 class="art-h3">Devices looked like a scoring problem, until I noticed we were pretending to have data we didn't.</h3>
-      <p class="art-p">A Chromebook with no agent and a Linux server failing every posture check were both going to show up as a number. So no-signal shows a dash and failure shows 0% in red.</p>
-
-      <!-- FIG 7 -->
-      <figure class="fig">
-        <div class="fig-wrap">
-          <div class="ann">
-            <img class="fig-img" src="uploads/idp/b76e3c8032479c1181cd3ead54be2615.png" alt="Device list: a browser-only Chrome device shows a dash for trust, an Ubuntu server shows 0% in red">
-            <span class="ann-box" style="left:80.33%;top:37.96%;width:11.67%;height:8.76%"></span>
-            <span class="ann-box" style="left:80.33%;top:51.09%;width:11.67%;height:9.12%"></span>
-          </div>
-        </div>
-        <figcaption class="fig-cap">FIG. 7 — NO SIGNAL IS A DASH. FAILURE IS 0%.</figcaption>
-      </figure>
-
-      <div class="cost-note">
-        <span class="dc-kicker-cost">WHAT IT COST</span>
-        <span class="dc-text">Admins have to learn what a dash means. I made the common case slightly harder to stop a dangerous one: reading unmonitored devices as compliant.</span>
-      </div>
-
-      <p class="art-p">The other thing devices needed was memory. Not a log of what happened, which already existed, but a record of what was true. Expand any login and the inputs are frozen at decision time: profile match 7 of 7, posture healthy, location allowed, network trusted, no attribute changes from the previous trusted profile.</p>
-
-      <!-- FIG 8 -->
-      <figure class="fig">
-        <div class="fig-wrap">
-          <div class="ann">
-            <img class="fig-img" src="uploads/idp/aede99ecf2d9615a1e45fa21e80338d8.png" alt="Device audit: login permitted, posture check 7/7 attributes match, configuration changed, each row expandable">
-            <span class="ann-box" style="left:0.18%;top:8.83%;width:99.65%;height:18.04%"></span>
-          </div>
-        </div>
-        <figcaption class="fig-cap">FIG. 8 — WHAT WAS TRUE, KEPT PER DECISION</figcaption>
-      </figure>
-
-      <blockquote class="bq">That line closes the loop back to page three. Four months later an auditor asks why this person had access in June, and the system answers with reasoning instead of an outcome.</blockquote>
-      <a href="#s-close" class="art-next" style="font-size:15px">Next ↓</a>
-    </article>
-
-    <!-- 07 CLOSE -->
-    <article id="s-close" class="reveal">
-      <div style="display:flex;align-items:baseline;gap:18px">
-        <span class="art-eyebrow">07 / 07</span>
-        <h2 class="art-h">Four questions, one system.</h2>
-      </div>
-      <p class="art-p">Three of these came from the same place. <span class="hl">The approved policy model, my fourteen-question form, the flat method list: each designed correctly for the case in front of it, by someone who hadn't checked what question the thing was actually being asked.</span></p>
-      <p class="art-p">Eight to ten decisions got overturned on this project. None because I was senior. Every one because someone showed a failure case clearly enough that the better option became obvious, and in one case the someone was me, showing it to myself, three iterations late.</p>
-
-      <div class="close-grid">
-        <div class="close-card">
-          <span class="close-num">01</span>
-          <span class="close-h">Architecture is a design problem.</span>
-          <span class="close-p">By the time you're drawing the policy builder, the decision that determines whether it can work was made somewhere else, weeks earlier. The work that mattered most here was written documents and dependency maps.</span>
-        </div>
-        <div class="close-card">
-          <span class="close-num">02</span>
-          <span class="close-h">Approved doesn't mean right.</span>
-          <span class="close-p">Raising a flawed decision late is expensive. Raising it with a worked alternative and a clear failure case is just the job.</span>
-        </div>
-        <div class="close-card">
-          <span class="close-num">03</span>
-          <span class="close-h">Research can be right while you're reading it wrong.</span>
-          <span class="close-p">Twelve teams told me admins didn't know when they were done. I answered with a form three times before I understood they needed a number.</span>
-        </div>
-        <div class="close-card green">
-          <span class="close-num green">04</span>
-          <span class="close-h">What I'd change.</span>
-          <span class="close-p">Map the dependencies in week one, not week five. And start the questionnaire at three questions and add upward, rather than starting at fourteen and cutting down.</span>
-        </div>
-      </div>
-    </article>
-
-  </main>
+<!-- BODY: rail + chapters -->
+<div style="position: relative; margin: 0 80px; display: grid; grid-template-columns: 260px minmax(0, 1fr); align-items: start">
+<aside style="padding: 48px 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; align-self: start; position: sticky; top: 72px; max-height: calc(100vh - 72px); overflow-y: auto; box-sizing: border-box">
+<span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #6E6E6E; padding-bottom: 12px">YOU ARE HERE</span>
+<a href="#s-problem" style="display: flex; gap: 10px; padding: 8px 10px; border-radius: 8px; background: #141414; color: #FFFFFF; font-weight: 600"><span style="font-family: 'Space Mono', monospace; font-size: 12px">01</span>The problem</a>
+<a href="#s-why" style="display: flex; gap: 10px; padding: 8px 10px; color: #5F5F5F"><span style="font-family: 'Space Mono', monospace; font-size: 12px">02</span>Why it mattered</a>
+<a href="#s-how" style="display: flex; gap: 10px; padding: 8px 10px; color: #5F5F5F"><span style="font-family: 'Space Mono', monospace; font-size: 12px">03</span>How I solved it</a>
+<a href="#s-worked" style="display: flex; gap: 10px; padding: 8px 10px; color: #5F5F5F"><span style="font-family: 'Space Mono', monospace; font-size: 12px">04</span>How I know it worked</a>
+<span style="margin-top: 18px; height: 4px; border-radius: 2px; background: #EEEEEE; overflow: hidden"><span style="display: block; width: 12%; height: 100%; background: #141414"></span></span>
+<span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: #6E6E6E">~5 MIN LEFT</span>
+</aside>
+<main style="display: flex; flex-direction: column"><article id="s-problem" style="padding: 72px 0 88px 64px; border-bottom: 1px solid #E8E8E8; display: flex; flex-direction: column; gap: 26px"><span style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #2B7A52">WHAT WAS THE PROBLEM</span><div style="display: flex; align-items: baseline; gap: 18px; margin-top: -14px"><span style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em; color: #6E6E6E; white-space: nowrap">01 / 04</span><h2 style="margin: 0; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 50px; line-height: 1.08; max-width: 900px">Every capability an enterprise identity platform needs, and no model connecting them.</h2></div><p style="margin: 0; font-size: 17px; line-height: 1.7; color: #2B2B2B; max-width: 760px">Five areas: provisioning, policy, authentication, devices, reporting. Built at different times by different teams, each one correct on its own. <span style="background: #F8DAE9; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">The failures only showed up at the seams.</span></p><figure style="margin: 8px 0 0; display: flex; flex-direction: column; gap: 12px; max-width: 956px"><div style="border: 1px solid #141414; border-radius: 14px; background: #FBFDFB; padding: 28px"><div role="img" aria-label="Five areas built separately: provisioning, policy, authentication, devices, reporting. Failures sit at the seams between them: two groups with two valid policies, fifteen MFA methods that look equivalent, an audit that shows access but not why, and a new admin with no order to follow." style="position: relative; width: 898px; height: 360px"><svg aria-hidden="true" width="898" height="360" viewBox="0 0 898 360" style="position: absolute; left: 0; top: 0; overflow: visible"><path d="M 4 70 V 58 H 894 V 70" fill="none" stroke="#141414" stroke-width="1.4"></path><line x1="449.0" y1="58" x2="449.0" y2="40" stroke="#141414" stroke-width="1.4"></line><polyline points="158,98 170,109 158,120 170,131 158,142 170,153 158,164 170,175 158,186" fill="none" stroke="#141414" stroke-width="2" stroke-linejoin="round"></polyline><circle cx="164.0" cy="202" r="7" fill="#F8DAE9" stroke="#141414" stroke-width="1.6"></circle><polyline points="348,98 360,109 348,120 360,131 348,142 360,153 348,164 360,175 348,186" fill="none" stroke="#141414" stroke-width="2" stroke-linejoin="round"></polyline><circle cx="354.0" cy="202" r="7" fill="#F8DAE9" stroke="#141414" stroke-width="1.6"></circle><line x1="522.0" y1="134.0" x2="566.0" y2="134.0" stroke="#BDBDBD" stroke-width="1.4" stroke-dasharray="3 4"></line><polyline points="728,98 740,109 728,120 740,131 728,142 740,153 728,164 740,175 728,186" fill="none" stroke="#141414" stroke-width="2" stroke-linejoin="round"></polyline><circle cx="734.0" cy="202" r="7" fill="#F8DAE9" stroke="#141414" stroke-width="1.6"></circle><path d="M 164.0 209 V 224 H 143.0 V 244" fill="none" stroke="#141414" stroke-width="1.2"></path><path d="M 354.0 209 V 224 H 449.0 V 244" fill="none" stroke="#141414" stroke-width="1.2"></path><path d="M 734.0 209 V 224 H 755.0 V 244" fill="none" stroke="#141414" stroke-width="1.2"></path></svg><div style="position: absolute; left: 0px; top: 92px; width: 138px; height: 84px; box-sizing: border-box; border: 1.5px solid #141414; border-radius: 12px; background: #FFFFFF; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 22px rgba(20,60,40,0.10)"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6E6E6E">AREA 01</span><span style="font-weight: 700; font-size: 17px">Provisioning</span></div><div style="position: absolute; left: 190px; top: 106px; width: 138px; height: 84px; box-sizing: border-box; border: 1.5px solid #141414; border-radius: 12px; background: #FFFFFF; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 22px rgba(20,60,40,0.10)"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6E6E6E">AREA 02</span><span style="font-weight: 700; font-size: 17px">Policy</span></div><div style="position: absolute; left: 380px; top: 84px; width: 138px; height: 84px; box-sizing: border-box; border: 1.5px solid #141414; border-radius: 12px; background: #FFFFFF; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 22px rgba(20,60,40,0.10)"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6E6E6E">AREA 03</span><span style="font-weight: 700; font-size: 17px">Authentication</span></div><div style="position: absolute; left: 570px; top: 102px; width: 138px; height: 84px; box-sizing: border-box; border: 1.5px solid #141414; border-radius: 12px; background: #FFFFFF; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 22px rgba(20,60,40,0.10)"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6E6E6E">AREA 04</span><span style="font-weight: 700; font-size: 17px">Devices</span></div><div style="position: absolute; left: 760px; top: 88px; width: 138px; height: 84px; box-sizing: border-box; border: 1.5px solid #141414; border-radius: 12px; background: #FFFFFF; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 22px rgba(20,60,40,0.10)"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6E6E6E">AREA 05</span><span style="font-weight: 700; font-size: 17px">Reporting</span></div><div style="position: absolute; left: 0px; top: 244px; width: 286px; box-sizing: border-box; border-top: 2px solid #141414; padding-top: 14px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2B7A52">SEAM · PROVISIONING × POLICY</span><span style="font-size: 15.5px; line-height: 1.55; color: #2B2B2B">A user in two groups hit two valid policies, and the system had no rule for choosing.</span></div><div style="position: absolute; left: 306px; top: 244px; width: 286px; box-sizing: border-box; border-top: 2px solid #141414; padding-top: 14px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2B7A52">SEAM · POLICY × AUTHENTICATION</span><span style="font-size: 15.5px; line-height: 1.55; color: #2B2B2B">Fifteen MFA methods in a flat list, where a hardware key and an SMS code looked like equivalent choices.</span></div><div style="position: absolute; left: 612px; top: 244px; width: 286px; box-sizing: border-box; border-top: 2px solid #141414; padding-top: 14px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2B7A52">SEAM · DEVICES × REPORTING</span><span style="font-size: 15.5px; line-height: 1.55; color: #2B2B2B">An auditor asked why someone had access in June. The product could show that they did, not why.</span></div><div style="position: absolute; left: 0; right: 0; top: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2B7A52">SEAM · ALL FIVE × A NEW ADMIN</span><span style="font-size: 15.5px; line-height: 1.4; color: #2B2B2B; background: #FBFDFB; padding: 0 12px">Every capability in a nav menu, with nothing to say which came first.</span></div></div></div><figcaption style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; line-height: 1.6; color: #6E6E6E">FIG. 1 — FIVE AREAS, EACH CORRECT ON ITS OWN. THE FAILURES LIVE AT THE SEAMS.</figcaption></figure><blockquote style="margin: 8px 0; max-width: 860px; padding-left: 28px; border-left: 3px solid #F8DAE9; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 32px; line-height: 1.3"><span style="background: #F8DAE9; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">None of these are bugs.</span> Every one is the product working exactly as designed.</blockquote><a href="#s-why" style="align-self: flex-start; max-width: 760px; margin-top: 8px; padding-top: 20px; border-top: 1px solid #141414; font-size: 18px; font-weight: 600; line-height: 1.5">So why did that matter? <span aria-hidden="true">↓</span></a></article><article id="s-why" style="padding: 72px 0 88px 64px; border-bottom: 1px solid #E8E8E8; display: flex; flex-direction: column; gap: 26px"><span style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #2B7A52">WHY IT WAS A PROBLEM</span><div style="display: flex; align-items: baseline; gap: 18px; margin-top: -14px"><span style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em; color: #6E6E6E; white-space: nowrap">02 / 04</span><h2 style="margin: 0; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 50px; line-height: 1.08; max-width: 900px">Enterprise buyers evaluate identity platforms at the seams, not on the feature list.</h2></div><p style="margin: 0; max-width: 860px; font-family: 'Bodoni Moda', serif; font-size: 26px; line-height: 1.4">Three things were actually at stake.</p><div style="display: flex; flex-direction: column; max-width: 956px; border-bottom: 1px solid #141414"><div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 300px; gap: 28px; padding: 28px 0; border-top: 1px solid #141414; align-items: start"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 54px; line-height: 0.9; color: #2B7A52">01</span><div style="display: flex; flex-direction: column; gap: 10px"><span style="font-weight: 700; font-size: 21px; line-height: 1.3">Misconfiguration is the threat model.</span><span style="font-size: 16px; line-height: 1.7; color: #333333">In most product categories, a confusing settings page costs you a support ticket. In identity, it costs you a breach. An admin who picks SMS because the page didn’t tell him it’s interceptable has just weakened the organisation’s authentication floor, and nothing in the product will tell him. <span style="background: #F8DAE9; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">Design decisions here are security decisions.</span></span></div><div style="display: flex; flex-direction: column; gap: 8px; padding: 18px; border-radius: 14px; background: #EEF7F2; border: 1px solid #C9E3D3"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6E6E6E">A CONFUSING SETTINGS PAGE COSTS</span><span style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px"><span style="display: flex; flex-direction: column; gap: 4px; padding: 12px; border-radius: 10px; background: #FFFFFF; border: 1px solid #DADADA"><span style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: 0.12em; color: #6E6E6E">MOST PRODUCTS</span><span style="font-weight: 700; font-size: 15px">a support ticket</span></span><span style="display: flex; flex-direction: column; gap: 4px; padding: 12px; border-radius: 10px; background: #141414; color: #FFFFFF"><span style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: 0.12em; color: #BFBFBF">IDENTITY</span><span style="font-weight: 700; font-size: 15px">a breach</span></span></span></div></div><div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 300px; gap: 28px; padding: 28px 0; border-top: 1px solid #141414; align-items: start"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 54px; line-height: 0.9; color: #2B7A52">02</span><div style="display: flex; flex-direction: column; gap: 10px"><span style="font-weight: 700; font-size: 21px; line-height: 1.3">A system that can’t explain itself can’t be sold into regulated industries.</span><span style="font-size: 16px; line-height: 1.7; color: #333333">SOC 2 and ISO 27001 audits don’t ask whether your access control works. They ask you to reconstruct a specific decision from four months ago and show your reasoning. <span style="background: #F8DAE9; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">We could show outcomes. We couldn’t show reasoning.</span> That’s not a reporting gap, it’s a deal-blocker.</span></div><div style="display: flex; flex-direction: column; gap: 8px; padding: 18px; border-radius: 14px; background: #EEF7F2; border: 1px solid #C9E3D3"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6E6E6E">AN AUDITOR ASKS ABOUT ONE DECISION</span><span style="display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px; border: 1.5px solid #141414; border-radius: 10px; background: #EEF7F2; font-size: 14px; line-height: 1.35"><span style="">Show the outcome</span><span style="color: #2B7A52; font-weight: 700">✓</span></span><span style="display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px; border: 1.5px solid #141414; border-radius: 10px; background: #FFFFFF; font-size: 14px; line-height: 1.35"><span style=" text-decoration: line-through; color: #8A8A8A;">Show the reasoning</span><span style="color: #B3412E; font-weight: 700">✕</span></span><span style="font-family: 'Caveat', cursive; font-weight: 600; font-size: 21px; color: #141414; transform: rotate(-1.5deg); align-self: flex-start; margin-top: 2px">= deal-blocker</span></div></div><div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 300px; gap: 28px; padding: 28px 0; border-top: 1px solid #141414; align-items: start"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 54px; line-height: 0.9; color: #2B7A52">03</span><div style="display: flex; flex-direction: column; gap: 10px"><span style="font-weight: 700; font-size: 21px; line-height: 1.3">The policy model couldn’t represent reality.</span><span style="font-size: 16px; line-height: 1.7; color: #333333">One group, one policy is clean until a contractor is also an engineer, which in a real company is most senior people. Every downstream surface inherited that gap, so the cost of leaving it would have compounded with every feature built on top.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 18px; border-radius: 14px; background: #EEF7F2; border: 1px solid #C9E3D3"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6E6E6E">ONE GROUP, ONE POLICY</span><svg aria-hidden="true" width="262" height="150" viewBox="0 0 262 150"><text x="72" y="12" text-anchor="middle" style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: 0.08em" fill="#4A4A4A">ENGINEERS</text><text x="190" y="12" text-anchor="middle" style="font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: 0.08em" fill="#4A4A4A">CONTRACTORS</text><circle cx="98" cy="72" r="48" fill="#FFFFFF" stroke="#141414" stroke-width="1.5"></circle><circle cx="164" cy="72" r="48" fill="#FFFFFF" fill-opacity="0.55" stroke="#141414" stroke-width="1.5"></circle><circle cx="131" cy="62" r="5.5" fill="#141414"></circle><path d="M122 86 q9 -20 18 0 z" fill="#141414"></path><text x="131" y="144" text-anchor="middle" style="font-family: Caveat, cursive; font-size: 19px; font-weight: 600" fill="#141414">which policy wins?</text></svg></div></div></div><div style="max-width: 956px; box-sizing: border-box; border-radius: 14px; background: #141414; color: #FFFFFF; padding: 36px 40px; display: grid; grid-template-columns: 260px minmax(0, 1fr); align-items: start; gap: 36px"><div style="display: flex; flex-direction: column; gap: 10px"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #9ED4B5">AND UNDERNEATH ALL THREE</span><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 30px; line-height: 1.2">Nobody could tell when setup was finished.</span></div><div style="display: flex; flex-direction: column; gap: 14px"><span style="font-size: 16px; line-height: 1.7; color: #E6E6E6">Twelve teams told me the same thing. Admins configured things in whatever order the menu presented, and had no way to know whether they’d missed something that mattered.</span><span style="font-family: 'Bodoni Moda', serif; font-size: 22px; line-height: 1.45"><span style="background: #F8DAE9; color: #141414; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">A half-configured identity platform is worse than none, because people believe it’s protecting them.</span></span></div></div><a href="#s-how" style="align-self: flex-start; max-width: 760px; margin-top: 8px; padding-top: 20px; border-top: 1px solid #141414; font-size: 18px; font-weight: 600; line-height: 1.5">Here’s how I worked through it. <span aria-hidden="true">↓</span></a></article><article id="s-how" style="padding: 72px 0 88px 64px; border-bottom: 1px solid #E8E8E8; display: flex; flex-direction: column; gap: 26px"><span style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #2B7A52">HOW I SOLVED IT</span><div style="display: flex; align-items: baseline; gap: 18px; margin-top: -14px"><span style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em; color: #6E6E6E; white-space: nowrap">03 / 04</span><h2 style="margin: 0; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 50px; line-height: 1.08; max-width: 900px">Four things I do. This project is where each one shows.</h2></div><div style="display: flex; flex-direction: column; margin-top: -40px"><div style="display: flex; flex-direction: column; gap: 22px; max-width: 956px; margin-top: 40px; padding-top: 30px; border-top: 1.5px solid #141414"><div style="display: flex; align-items: baseline; gap: 20px"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 64px; line-height: 0.85; color: #2B7A52">01</span><h3 style="margin: 0; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 36px; line-height: 1.15">I draw the system before I draw the screen.</h3></div><p style="margin: 0; font-size: 17px; line-height: 1.7; color: #2B2B2B; max-width: 760px">Before any Figma file, I mapped what depends on what. The team had been arguing about build order for a month. <span style="background: #F8DAE9; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">The map ended it in one meeting:</span> the policy engine had to be right first, because everything else either feeds it or reports on it.</p><figure style="margin: 8px 0 0; display: flex; flex-direction: column; gap: 12px; max-width: 956px"><div style="border: 1px solid #141414; border-radius: 14px; background: #FBFDFB; padding: 28px"><div role="img" aria-label="Dependency map: provisioning decides who exists, groups decide how they are organised, the policy engine reads both at the moment of access, reporting proves it happened. Provisioning and groups feed the policy engine; reporting reports on it." style="position: relative; width: 898px; height: 242px; margin: 0 auto"><svg aria-hidden="true" width="898" height="242" viewBox="0 0 898 242" style="position: absolute; left: 0; top: 0; overflow: visible"><defs><marker id="dar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#141414"></path></marker></defs><line x1="200" y1="126.0" x2="228" y2="126.0" stroke="#141414" stroke-width="1.6" marker-end="url(#dar)"></line><line x1="434" y1="126.0" x2="462" y2="126.0" stroke="#141414" stroke-width="1.6" marker-end="url(#dar)"></line><line x1="668" y1="126.0" x2="696" y2="126.0" stroke="#141414" stroke-width="1.6" marker-end="url(#dar)"></line><path d="M 98.0 64 C 98.0 0, 546.0 0, 546.0 62" fill="none" stroke="#141414" stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#dar)"></path><path d="M 0 204 V 214 H 430 V 204" fill="none" stroke="#2B7A52" stroke-width="1.6"></path><path d="M 702 204 V 214 H 898 V 204" fill="none" stroke="#2B7A52" stroke-width="1.6"></path></svg><div style="position: absolute; left: 0px; top: 70px; width: 196px; height: 112px; box-sizing: border-box; border: 1.5px solid #141414; border-radius: 12px; background: #FFFFFF; padding: 16px 18px; display: flex; flex-direction: column; justify-content: space-between; "><span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.12em">PROVISIONING</span><span style="font-size: 15px; line-height: 1.4; color: #2B2B2B">decides who exists</span></div><div style="position: absolute; left: 234px; top: 70px; width: 196px; height: 112px; box-sizing: border-box; border: 1.5px solid #141414; border-radius: 12px; background: #FFFFFF; padding: 16px 18px; display: flex; flex-direction: column; justify-content: space-between; "><span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.12em">GROUPS</span><span style="font-size: 15px; line-height: 1.4; color: #2B2B2B">decide how they’re organised</span></div><div style="position: absolute; left: 468px; top: 70px; width: 196px; height: 112px; box-sizing: border-box; border: 2.5px solid #141414; border-radius: 12px; background: #F8DAE9; padding: 16px 18px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 6px 6px 0 #141414"><span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.12em">POLICY ENGINE</span><span style="font-size: 15px; line-height: 1.4; color: #2B2B2B">reads both at the moment of access</span></div><div style="position: absolute; left: 702px; top: 70px; width: 196px; height: 112px; box-sizing: border-box; border: 1.5px solid #141414; border-radius: 12px; background: #FFFFFF; padding: 16px 18px; display: flex; flex-direction: column; justify-content: space-between; "><span style="font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.12em">REPORTING</span><span style="font-size: 15px; line-height: 1.4; color: #2B2B2B">proves it happened</span></div><span style="position: absolute; left: 138.0px; top: 12px; font-family: 'Caveat', cursive; font-weight: 600; font-size: 20px; color: #4F4F4F; background: #FBFDFB; padding: 0 6px">reads this too</span><span style="position: absolute; left: 0px; width: 430px; top: 222px; text-align: center; font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #2B7A52">FEEDS IT</span><span style="position: absolute; left: 702px; width: 196px; top: 222px; text-align: center; font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #2B7A52">REPORTS ON IT</span><span style="position: absolute; left: 458px; width: 216px; top: 208px; text-align: center; font-family: 'Caveat', cursive; font-weight: 600; font-size: 23px; color: #141414; transform: rotate(-2deg)">had to be right first ↑</span></div></div><figcaption style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; line-height: 1.6; color: #6E6E6E">FIG. 2 — THE DEPENDENCY MAP, DRAWN BEFORE ANY FIGMA FILE</figcaption></figure></div><div style="display: flex; flex-direction: column; gap: 22px; max-width: 956px; margin-top: 40px; padding-top: 30px; border-top: 1.5px solid #141414"><div style="display: flex; align-items: baseline; gap: 20px"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 64px; line-height: 0.85; color: #2B7A52">02</span><h3 style="margin: 0; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 36px; line-height: 1.15">I fix things where they break, not where they show up.</h3></div><p style="margin: 0; font-size: 17px; line-height: 1.7; color: #2B2B2B; max-width: 760px">Two groups, two valid policies, nothing to decide between them. My first instinct was a conflict dialog: show both, let the admin pick. That’s a fix at the point of pain, not the point of failure. By then someone’s already locked out.</p><p style="margin: 0; font-size: 17px; line-height: 1.7; color: #2B2B2B; max-width: 760px">So scope moved to the front of the flow. You choose which groups a rule targets before you can write a condition. <span style="background: #F8DAE9; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">The collision can’t happen, so there’s nothing to resolve.</span></p><div style="border: 1px solid #141414; border-radius: 14px; background: #FBFDFB; padding: 24px 28px"><div style="display: flex; flex-direction: column; gap: 18px"><div style="display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 18px; align-items: center"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; line-height: 1.5; letter-spacing: 0.12em; color: #8A3324">MY FIRST INSTINCT<br>AT THE POINT OF PAIN</span><div style="display: flex; flex-direction: column; gap: 6px"><div style="display: flex; align-items: center; gap: 10px"><span style="flex: 1; padding: 12px 14px; border-radius: 10px; background: #FFFFFF; border: 1.5px solid #141414; font-size: 14.5px; line-height: 1.35; text-align: center">Admin writes rules</span><span aria-hidden="true" style="flex: none; font-family: 'Space Mono', monospace; font-size: 14px">→</span><span style="flex: 1; padding: 12px 14px; border-radius: 10px; background: #FFFFFF; border: 1.5px solid #141414; font-size: 14.5px; line-height: 1.35; text-align: center">Two policies collide</span><span aria-hidden="true" style="flex: none; font-family: 'Space Mono', monospace; font-size: 14px">→</span><span style="flex: 1; padding: 12px 14px; border-radius: 10px; background: #FFFFFF; border: 1.5px dashed #B3412E; color: #8A3324; font-size: 14.5px; line-height: 1.35; text-align: center">Conflict dialog: pick one</span></div><span style="font-family: 'Caveat', cursive; font-weight: 600; font-size: 20px; color: #4F4F4F; padding-left: 4px">too late: someone’s already locked out</span></div></div><span style="height: 1px; background: #C9E3D3"></span><div style="display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 18px; align-items: center"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; line-height: 1.5; letter-spacing: 0.12em; color: #2B7A52">WHAT SHIPPED<br>AT THE POINT OF FAILURE</span><div style="display: flex; flex-direction: column; gap: 6px"><div style="display: flex; align-items: center; gap: 10px"><span style="flex: 1; padding: 12px 14px; border-radius: 10px; background: #F8DAE9; border: 1.5px solid #141414; font-weight: 700; font-size: 14.5px; line-height: 1.35; text-align: center">Choose the groups a rule targets</span><span aria-hidden="true" style="flex: none; font-family: 'Space Mono', monospace; font-size: 14px">→</span><span style="flex: 1; padding: 12px 14px; border-radius: 10px; background: #FFFFFF; border: 1.5px solid #141414; font-size: 14.5px; line-height: 1.35; text-align: center">Then write conditions</span><span aria-hidden="true" style="flex: none; font-family: 'Space Mono', monospace; font-size: 14px">→</span><span style="flex: 1; padding: 12px 14px; border-radius: 10px; background: #FFFFFF; border: 1.5px solid #141414; font-size: 14.5px; line-height: 1.35; text-align: center">No collision to resolve</span></div><span style="font-family: 'Caveat', cursive; font-weight: 600; font-size: 20px; color: #4F4F4F; padding-left: 4px">the system knows who a rule covers before any condition exists</span></div></div></div></div><figure style="margin: 8px 0 0; display: flex; flex-direction: column; gap: 12px; max-width: 956px"><div style="border: 1px solid #141414; border-radius: 14px; background: #DBEEE4; padding: 24px"><div style="position: relative"><img src="./assets/e98e8d978ba2d95137f067d94493ee00.jpg" alt="The policy builder: each rule asks which groups it applies to before any conditions, with ordered rules, a locked default and a live count of matching users" style="display: block; width: 100%; border-radius: 8px; border: 1px solid #C9E3D3"><span aria-hidden="true" style="position: absolute; border: 2.5px solid #2B7A52; border-radius: 8px; background: rgba(158,212,181,0.14); left: 25.78%; top: 24.88%; width: 32.81%; height: 7.81%"><span style="position: absolute; left: 100%; top: -40px; margin-left: 8px; white-space: nowrap; padding: 4px 10px; border-radius: 6px; background: #141414; color: #FFFFFF; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em">SCOPE FIRST</span></span></div></div><figcaption style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; line-height: 1.6; color: #6E6E6E">FIG. 3 — THE POLICY BUILDER. YOU PICK GROUPS BEFORE YOU CAN WRITE A CONDITION.</figcaption></figure></div><div style="display: flex; flex-direction: column; gap: 22px; max-width: 956px; margin-top: 40px; padding-top: 30px; border-top: 1.5px solid #141414"><div style="display: flex; align-items: baseline; gap: 20px"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 64px; line-height: 0.85; color: #2B7A52">03</span><h3 style="margin: 0; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 36px; line-height: 1.15">I treat signed-off decisions as still open.</h3></div><p style="margin: 0; font-size: 17px; line-height: 1.7; color: #2B2B2B; max-width: 760px">That policy model had already been through review. I wrote up how it failed, built the alternative, and took it to the Head of Architecture and the POs. Uncomfortable meeting, right outcome. It changed before anyone built on it.</p><div style="border: 1px solid #141414; border-radius: 14px; background: #FBFDFB; padding: 28px 28px 26px"><div style="display: flex; flex-direction: column; gap: 34px"><div style="display: flex; align-items: center; gap: 18px"><div style="position: relative; flex: 1; border: 1.5px solid #141414; border-radius: 12px; background: #FFFFFF; padding: 20px 22px 26px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #4A4A4A">POLICY MODEL · AS REVIEWED</span><span style="font-weight: 700; font-size: 17px; line-height: 1.35">One group, one policy.</span><span style="position: absolute; right: 18px; bottom: -16px; padding: 5px 12px; border: 2px solid #6E6E6E; border-radius: 6px; background: #FFFFFF; color: #6E6E6E; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; transform: rotate(-3deg)">SIGNED OFF</span></div><div style="flex: none; width: 190px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center"><span style="font-family: 'Caveat', cursive; font-weight: 600; font-size: 20px; line-height: 1.1; color: #4F4F4F">wrote up how it failed, built the alternative</span><span style="font-family: 'Space Mono', monospace; font-size: 18px">→</span></div><div style="position: relative; flex: 1; border: 1.5px solid #141414; border-radius: 12px; background: #F8DAE9; padding: 20px 22px 26px; display: flex; flex-direction: column; gap: 8px"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #4A4A4A">POLICY MODEL · AS BUILT</span><span style="font-weight: 700; font-size: 17px; line-height: 1.35">Rules scoped to the groups they target.</span><span style="position: absolute; right: 18px; bottom: -16px; padding: 5px 12px; border: 2px solid #2B7A52; border-radius: 6px; background: #FFFFFF; color: #2B7A52; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; transform: rotate(2.5deg)">CHANGED BEFORE BUILD</span></div></div><div style="display: flex; align-items: center; gap: 18px; padding-top: 18px; border-top: 1px dashed #C9E3D3"><span style="display: flex; gap: 6px"><span style="width: 26px; height: 26px; border-radius: 6px; background: #141414"></span><span style="width: 26px; height: 26px; border-radius: 6px; background: #141414"></span><span style="width: 26px; height: 26px; border-radius: 6px; background: #141414"></span><span style="width: 26px; height: 26px; border-radius: 6px; background: #141414"></span><span style="width: 26px; height: 26px; border-radius: 6px; background: #141414"></span><span style="width: 26px; height: 26px; border-radius: 6px; background: #141414"></span><span style="width: 26px; height: 26px; border-radius: 6px; background: #141414"></span><span style="width: 26px; height: 26px; border-radius: 6px; background: #141414"></span><span style="width: 26px; height: 26px; border-radius: 6px; border: 1.5px dashed #141414"></span><span style="width: 26px; height: 26px; border-radius: 6px; border: 1.5px dashed #141414"></span></span><span style="font-size: 15px; line-height: 1.45; color: #2B2B2B"><b>8 to 10 decisions</b> went the same way across the project.</span></div></div></div><p style="margin: 0; font-size: 17px; line-height: 1.7; color: #2B2B2B; max-width: 760px">None of them because I pushed. <span style="background: #F8DAE9; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">All of them because the failure case was undeniable once someone drew it.</span></p></div><div style="display: flex; flex-direction: column; gap: 22px; max-width: 956px; margin-top: 40px; padding-top: 30px; border-top: 1.5px solid #141414"><div style="display: flex; align-items: baseline; gap: 20px"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 64px; line-height: 0.85; color: #2B7A52">04</span><h3 style="margin: 0; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 36px; line-height: 1.15">I check whether I’m answering my own question.</h3></div><p style="margin: 0; font-size: 17px; line-height: 1.7; color: #2B2B2B; max-width: 760px">I interviewed twelve teams about onboarding, then designed a fourteen-question form. People abandoned it. Cut to eight. Still wrong. Five.</p><figure style="margin: 8px 0 0; display: flex; flex-direction: column; gap: 12px; max-width: 956px"><div style="border: 1px solid #141414; border-radius: 14px; background: #FBFDFB; padding: 28px"><div style="display: flex; flex-direction: column; gap: 16px"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #6E6E6E">QUESTIONS IN THE ONBOARDING FORM, ONE SQUARE EACH</span><div style="display: grid; grid-template-columns: 96px 400px minmax(0, 1fr); gap: 18px; align-items: center"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #6E6E6E">ROUND 1</span><span style="display: flex; align-items: center; gap: 4px"><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="margin-left: 10px; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 24px">14</span></span><span style="font-size: 15px; color: #4A4A4A">People abandoned it.</span></div><div style="display: grid; grid-template-columns: 96px 400px minmax(0, 1fr); gap: 18px; align-items: center"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #6E6E6E">ROUND 2</span><span style="display: flex; align-items: center; gap: 4px"><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="margin-left: 10px; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 24px">8</span></span><span style="font-size: 15px; color: #4A4A4A">Still wrong.</span></div><div style="display: grid; grid-template-columns: 96px 400px minmax(0, 1fr); gap: 18px; align-items: center"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #6E6E6E">ROUND 3</span><span style="display: flex; align-items: center; gap: 4px"><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #141414"></span><span style="margin-left: 10px; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 24px">5</span></span><span style="font-size: 15px; color: #4A4A4A">Back to my own notes.</span></div><div style="display: grid; grid-template-columns: 96px 400px minmax(0, 1fr); gap: 18px; align-items: center"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #2B7A52">SHIPPED</span><span style="display: flex; align-items: center; gap: 4px"><span style="width: 22px; height: 22px; border-radius: 5px; background: #F8DAE9; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #F8DAE9; border: 1.5px solid #141414"></span><span style="width: 22px; height: 22px; border-radius: 5px; background: #F8DAE9; border: 1.5px solid #141414"></span><span style="margin-left: 10px; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 24px">3</span></span><span style="font-size: 15px; font-weight: 700">Produces a number: 2 of 7.</span></div><span style="margin-top: 6px; padding-top: 14px; border-top: 1px dashed #C9E3D3; font-family: 'Caveat', cursive; font-weight: 600; font-size: 23px; color: #141414">I’d been solving data collection. The problem was sequencing.</span></div></div><figcaption style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; line-height: 1.6; color: #6E6E6E">FIG. 4 — THREE ROUNDS OF CUTTING BEFORE I REREAD MY OWN RESEARCH</figcaption></figure><p style="margin: 0; font-size: 17px; line-height: 1.7; color: #2B2B2B; max-width: 760px">Three rounds in, I went back to my own notes and found the finding I’d been skimming: admins had no definition of finished. My answer had been to add a step before the sequence even began.</p><p style="margin: 0; max-width: 860px; font-family: 'Bodoni Moda', serif; font-size: 26px; line-height: 1.4"><span style="background: #F8DAE9; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">What shipped is three questions that produce a number: 2 of 7. Seven is what done means.</span></p><figure style="margin: 8px 0 0; display: flex; flex-direction: column; gap: 12px; max-width: 956px"><div style="border: 1px solid #141414; border-radius: 14px; background: #DBEEE4; padding: 24px"><div style="position: relative"><img src="./assets/91b478499d4cb2b71515141de89ab64c.jpg" alt="Getting Started checklist: To Do for Use-Case Adaptive Multi Factor Authentication, 2 of 7, with a Customize link under the title" style="display: block; width: 100%; border-radius: 8px; border: 1px solid #C9E3D3; background: #FFFFFF"><span aria-hidden="true" style="position: absolute; border: 2.5px solid #2B7A52; border-radius: 8px; background: rgba(158,212,181,0.14); left: 89.55%; top: 28.41%; width: 8.91%; height: 11.95%"></span></div></div><figcaption style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; line-height: 1.6; color: #6E6E6E">FIG. 5 — 2 OF 7. SEVEN IS WHAT DONE MEANS.</figcaption></figure></div></div><a href="#s-worked" style="align-self: flex-start; max-width: 760px; margin-top: 8px; padding-top: 20px; border-top: 1px solid #141414; font-size: 18px; font-weight: 600; line-height: 1.5">And how I know it worked. <span aria-hidden="true">↓</span></a></article><article id="s-worked" style="padding: 72px 0 88px 64px; display: flex; flex-direction: column; gap: 26px"><span style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #2B7A52">HOW I KNOW IT WORKED</span><div style="display: flex; align-items: baseline; gap: 18px; margin-top: -14px"><span style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em; color: #6E6E6E; white-space: nowrap">04 / 04</span><h2 style="margin: 0; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 50px; line-height: 1.08; max-width: 900px">The strongest evidence is a failure with no incident history.</h2></div><p style="margin: 0; font-size: 17px; line-height: 1.7; color: #2B2B2B; max-width: 760px">The multi-group lockout was caught and fixed before implementation. No migration, no affected customers, nothing to point at.</p><blockquote style="margin: 8px 0; max-width: 860px; padding-left: 28px; border-left: 3px solid #F8DAE9; font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 32px; line-height: 1.3"><span style="background: #F8DAE9; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">That’s what a good architectural call looks like from the outside: nothing.</span></blockquote><div style="max-width: 956px; display: grid; grid-template-columns: 1.25fr 1fr 1fr; border: 1px solid #141414; border-radius: 14px; overflow: hidden"><div style="border-right: 1px solid #141414; padding: 26px 26px 30px; background: #EEF7F2; display: flex; flex-direction: column; gap: 16px"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #2B7A52">WHAT I CAN POINT AT</span><ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px"><li style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; font-size: 15.5px; line-height: 1.6; color: #2B2B2B"><span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 9px; border-radius: 2px; background: #2B7A52"></span><span>A quarter of engineering work unblocked once the policy model settled.</span></li><li style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; font-size: 15.5px; line-height: 1.6; color: #2B2B2B"><span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 9px; border-radius: 2px; background: #2B7A52"></span><span>Eight to ten decisions reversed before build.</span></li><li style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; font-size: 15.5px; line-height: 1.6; color: #2B2B2B"><span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 9px; border-radius: 2px; background: #2B7A52"></span><span>The three-tier authentication structure is still the architecture of that surface, not a visual pass that got reworked.</span></li><li style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; font-size: 15.5px; line-height: 1.6; color: #2B2B2B"><span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 9px; border-radius: 2px; background: #2B7A52"></span><span>Every finding from the twelve interviews maps to something that shipped.</span></li></ul></div><div style="border-right: 1px solid #141414; padding: 26px 26px 30px; background: #FFFFFF; display: flex; flex-direction: column; gap: 16px"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #6E6E6E">WHAT I DON’T HAVE</span><ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px"><li style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; font-size: 15.5px; line-height: 1.6; color: #2B2B2B"><span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 9px; border-radius: 2px; background: #6E6E6E"></span><span>Completion rates on the three-question flow against the fourteen-question one.</span></li><li style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; font-size: 15.5px; line-height: 1.6; color: #2B2B2B"><span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 9px; border-radius: 2px; background: #6E6E6E"></span><span>The iteration was testing rounds, not instrumented funnels, so it’s directional.</span></li></ul></div><div style="padding: 26px 26px 30px; background: #FFFFFF; display: flex; flex-direction: column; gap: 16px"><span style="font-family: 'Space Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; color: #141414">IF I RAN IT AGAIN</span><ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px"><li style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; font-size: 15.5px; line-height: 1.6; color: #2B2B2B"><span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 9px; border-radius: 2px; background: #141414"></span><span><span style="background: #F8DAE9; padding: 1px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone">Define the success metric at the start, not at the end.</span></span></li><li style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; font-size: 15.5px; line-height: 1.6; color: #2B2B2B"><span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 9px; border-radius: 2px; background: #141414"></span><span>Time-to-first-enforced-policy was the number that mattered. I only worked that out after the thing was built.</span></li></ul></div></div><figure style="margin: 8px 0 0; display: flex; flex-direction: column; gap: 12px; max-width: 956px"><div style="border: 1px solid #141414; border-radius: 14px; background: #DBEEE4; padding: 24px"><div style="position: relative"><img src="./assets/4cc03b623b3d906744b117d0a044b730.png" alt="Methods page: Phishing-Resistant tier, “Cryptographically bound credentials. Cannot be replayed or intercepted,” above Standard MFA, “One-time codes and push notifications. Effective but susceptible to phishing.”" style="display: block; width: 100%; border-radius: 8px; border: 1px solid #C9E3D3; background: #FFFFFF"></div></div><figcaption style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; line-height: 1.6; color: #6E6E6E">FIG. 6 — THE TIERED AUTHENTICATION METHODS, STILL THE ARCHITECTURE OF THAT SURFACE</figcaption></figure></article>
+</main>
 </div>
 
-<!-- ── ENDING ── -->
-<section class="ending">
-  <a href="index.html" class="end-cell end-home">‹&nbsp;&nbsp;RETURN TO HOMEPAGE</a>
-  <a href="case-merry.html" class="end-cell end-next">
-    <span class="end-thumb" style="background:#F6E6DA;overflow:hidden"><img src="uploads/merry/c919471e5939bbc3dc0dc6e9c0e1cc88.jpg" alt="Merry Health dashboard" style="position:absolute;left:16px;top:12px;width:480px;border-radius:6px"></span>
-    <span class="end-meta">
-      <span class="end-title">Emergency ambulance coordination</span>
-      <span class="end-tag">NEXT · MERRY HEALTH</span>
-    </span>
-  </a>
-  <a href="index.html#work" class="end-cell end-related">
-    <svg width="300" height="110" viewBox="0 0 300 110" fill="none" aria-hidden="true" style="position:absolute;left:50%;top:50%;margin:-55px 0 0 -150px"><path d="M30 60 C 20 20, 150 8, 250 22 C 300 30, 296 82, 230 92 C 150 104, 40 98, 22 70 C 12 52, 60 30, 120 26" stroke="#141414" stroke-width="2.2" stroke-linecap="round" opacity=".75"/></svg>
-    <span class="end-related-label">SEE ALL WORK&nbsp;&nbsp;›</span>
-    <span class="end-related-hand">back to the index</span>
-  </a>
+<!-- ENDING -->
+<section style="position: relative; margin: 0 80px; display: grid; grid-template-columns: 1fr 1.3fr 1fr; border-top: 1.5px solid #141414; border-bottom: 1px solid #E8E8E8; height: 380px">
+<a href="index.html" class="endcell" style="display: flex; align-items: center; justify-content: center; gap: 12px; border-right: 1px solid #E8E8E8; font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.14em">‹&nbsp;&nbsp;RETURN TO HOMEPAGE</a>
+<a href="#case-pam" class="endcell" style="position: relative; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 36px; border-right: 1px solid #E8E8E8">
+<span style="position: relative; height: 210px; border-radius: 12px; overflow: hidden; background: #DCE7F7; border: 1px solid #141414"><img src="./assets/12ed737607325e346cf64c9ca6c363bb.jpg" alt="The redesigned privileged access dashboard" style="position: absolute; left: 24px; top: 24px; width: 520px; border-radius: 8px"></span>
+<span style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 600; font-size: 24px">From stalling at POC to $800K</span><span style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6E6E6E">NEXT · NDA</span></span>
+</a>
+<a href="#case-pam" class="endcell" style="position: relative; display: flex; align-items: center; justify-content: center">
+<svg width="300" height="110" viewBox="0 0 300 110" fill="none" aria-hidden="true" style="position: absolute; left: 50%; top: 50%; margin: -55px 0 0 -150px"><path d="M30 60 C 20 20, 150 8, 250 22 C 300 30, 296 82, 230 92 C 150 104, 40 98, 22 70 C 12 52, 60 30, 120 26" stroke="#141414" stroke-width="2.2" stroke-linecap="round" opacity="0.75"></path></svg>
+<span style="position: relative; font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.14em">SEE RELATED PROJECT&nbsp;&nbsp;›</span>
+<span style="position: absolute; bottom: 64px; font-family: 'Caveat', cursive; font-weight: 600; font-size: 22px; color: #5F5F5F">PAM · enterprise security</span>
+</a>
 </section>
 
-<!-- ── FOOTER ── -->
+<!-- FOOTER -->
 <footer style="position:relative;overflow:hidden;background:#E9C7E3 url('assets/70dc1f2ecf3997887f73dd3230b97874.jpg') center top/cover no-repeat;color:#141414;font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:clamp(600px,62vw,900px)">
   <div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:80px;background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0) 100%);pointer-events:none"></div>
   <div aria-hidden="true" style="position:absolute;left:50%;top:clamp(60px,7vw,100px);transform:translateX(-50%);width:min(900px,90%);height:clamp(300px,35vw,500px);background:radial-gradient(ellipse at center,rgba(195,120,200,0.55) 0%,rgba(178,55,106,0.25) 40%,transparent 70%);filter:blur(40px);pointer-events:none;z-index:0"></div>
@@ -749,59 +190,62 @@ footer{position:relative;margin:0;padding:72px 160px 56px;background:#FDEBF0;dis
   </div>
 </footer>
 
+</div>
+
+
+<!-- Mobile TOC pill -->
+<div id="m-toc-pill" aria-label="Jump to section" onclick="toggleMToc()">
+  <span style="width:6px;height:6px;border-radius:50%;background:#9A3F6E;display:inline-block"></span>
+  <span id="m-toc-label">01 · The problem</span>
+  <span style="font-size:9px;opacity:0.7;margin-left:4px">▲</span>
+</div>
+<div id="m-toc-backdrop" onclick="toggleMToc()"></div>
+<div id="m-toc-drawer" role="navigation" aria-label="Sections">
+  <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#6E6E6E;padding-bottom:8px">JUMP TO SECTION</span>
+  <a href="#s-problem" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:28px">01</span>The problem</a>
+  <a href="#s-why" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:28px">02</span>Why it mattered</a>
+  <a href="#s-how" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:28px">03</span>How I solved it</a>
+  <a href="#s-worked" onclick="toggleMToc()" style="display:flex;gap:10px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#141414;font-size:14px"><span style="font-family:'Space Mono',monospace;font-size:12px;color:#9A3F6E;min-width:28px">04</span>How I know it worked</a>
+</div>
+
 <script>
+// Scroll-spy
 (function(){
-  if(sessionStorage.getItem('idp_auth')==='1'){
-    document.getElementById('pw-gate').style.display='none';
-  }
-  document.getElementById('pw-input').addEventListener('keydown',function(e){
-    if(e.key==='Enter') checkPw();
-  });
-})();
+  var articles = document.querySelectorAll('article[id], section[id^="s-"]');
+  var links = document.querySelectorAll('aside a[href^="#s-"]');
+  var sectionLabels = {"s-problem":"01 · The problem","s-why":"02 · Why it mattered","s-how":"03 · How I solved it","s-worked":"04 · How I know it worked"};
 
-function checkPw(){
-  var v=document.getElementById('pw-input').value;
-  var err=document.getElementById('pw-error');
-  if(v==='mehak123'){
-    sessionStorage.setItem('idp_auth','1');
-    document.getElementById('pw-gate').style.display='none';
-  } else {
-    err.textContent='Incorrect password. Try again.';
-    err.style.opacity='1';
-    document.getElementById('pw-input').value='';
-    document.getElementById('pw-input').focus();
-    setTimeout(function(){err.style.opacity='0';},2500);
-  }
-}
-
-// sidebar scroll highlight
-(function(){
-  var sections=['s-open','s-review','s-fix','s-research','s-denominator','s-pattern','s-close'];
-  var links=document.querySelectorAll('.sidebar-link');
   function update(){
-    var cur='s-open';
-    sections.forEach(function(id){
-      var el=document.getElementById(id);
-      if(el&&el.getBoundingClientRect().top<120) cur=id;
+    var scrollY = window.scrollY;
+    var current = null;
+    articles.forEach(function(a){
+      var docTop = a.getBoundingClientRect().top + scrollY;
+      if(docTop <= scrollY + 160) current = a.id;
     });
     links.forEach(function(l){
-      var href=l.getAttribute('href').replace('#','');
-      l.classList.toggle('active',href===cur);
+      l.classList.toggle('toc-active', l.getAttribute('href') === '#' + current);
     });
+    // Progress bar
+    var bar = document.querySelector('aside span[style*="background: #EEEEEE"] span');
+    if(bar && articles.length){
+      var idx = 0;
+      articles.forEach(function(a,i){ if(a.id===current) idx=i+1; });
+      bar.style.width = Math.max(12, Math.round(idx/articles.length*100)) + '%';
+    }
+    // Mobile label
+    var lbl = document.getElementById('m-toc-label');
+    if(lbl && current && sectionLabels[current]) lbl.textContent = sectionLabels[current];
   }
-  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('scroll', update, {passive:true});
+  update();
 })();
 
-// reveal on scroll
-(function(){
-  var els=document.querySelectorAll('.reveal');
-  var io=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting) e.target.classList.add('in');
-    });
-  },{threshold:0.08});
-  els.forEach(function(el){io.observe(el);});
-})();
+function toggleMToc(){
+  var d=document.getElementById('m-toc-drawer'),b=document.getElementById('m-toc-backdrop');
+  var open=d.classList.contains('open');
+  d.classList.toggle('open',!open); b.classList.toggle('open',!open);
+  document.getElementById('m-toc-pill').querySelector('span:last-child').textContent=open?'▲':'▼';
+}
 </script>
 </body>
 </html>
