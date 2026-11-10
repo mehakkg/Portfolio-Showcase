@@ -18,7 +18,7 @@ a{color:#141414;text-decoration:none}a:hover{color:#141414}
 </style>
 
 <style>
-html, body { margin: 0; padding: 0; background: #FFFFFF; overflow-x: hidden }
+html, body { margin: 0; padding: 0; background: #FFFFFF; overflow-x: hidden; max-width: 100vw }
 * { box-sizing: border-box }
 img { max-width: 100%; display: block }
 
@@ -48,11 +48,13 @@ aside a:not(.toc-active) { color: #5F5F5F }
 @media (max-width: 900px) {
   .grid-rail-l, .grid-rail-r { display: none !important }
   nav[style*="padding: 0 80px"] { padding: 0 22px !important }
-  div[style*="grid-template-columns: 260px"] { grid-template-columns: 1fr !important; gap: 0 !important }
+  div[style*="grid-template-columns: 260px"] { grid-template-columns: minmax(0,1fr) !important; gap: 0 !important }
+  /* Force all grid children and flex columns to not blow past container */
+  main, article, section, div { min-width: 0 }
   aside { display: none !important }
   #m-toc-pill { display: flex }
   div[style*="margin: 0 80px"] { margin: 0 22px !important }
-  section[style*="margin: 0 80px"] { margin: 0 22px !important }
+  section[style*="margin: 0 80px"] { margin: 0 !important }
   article { padding: 40px 22px !important }
   /* Stack ALL multi-column grids (div AND section) */
   div[style*="grid-template-columns: 7fr 5fr"],
