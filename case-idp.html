@@ -54,16 +54,32 @@ aside a:not(.toc-active) { color: #5F5F5F }
   div[style*="margin: 0 80px"] { margin: 0 22px !important }
   section[style*="margin: 0 80px"] { margin: 0 22px !important }
   article { padding: 40px 22px !important }
+  /* Stack ALL multi-column grids (div AND section) */
   div[style*="grid-template-columns: 7fr 5fr"],
   div[style*="grid-template-columns: 5fr 7fr"],
   div[style*="grid-template-columns: 6fr 6fr"],
   div[style*="grid-template-columns: repeat(2"],
   div[style*="grid-template-columns: repeat(3"],
-  div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important }
-  h1[style*="font-size: 58px"], h1[style*="font-size: 56px"] { font-size: clamp(28px,7vw,42px) !important }
-  h2[style*="font-size: 46px"], h2[style*="font-size: 48px"], h2[style*="font-size: 44px"] { font-size: clamp(22px,5.5vw,32px) !important }
-  [style*="max-width: 892px"], [style*="max-width: 860px"], [style*="max-width: 780px"] { max-width: 100% !important }
+  div[style*="grid-template-columns: 1fr 1fr"],
+  section[style*="grid-template-columns: 7fr 5fr"],
+  section[style*="grid-template-columns: 5fr 7fr"],
+  section[style*="grid-template-columns: 6fr 6fr"],
+  section[style*="grid-template-columns: repeat(2"],
+  section[style*="grid-template-columns: repeat(3"],
+  section[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important }
+  /* Hero section padding */
+  #s-open > div { padding: 32px 22px !important; border-right: none !important }
+  /* Stats section */
+  section[style*="display: grid"][style*="grid-template-columns: 260px"] { grid-template-columns: 1fr !important }
+  /* Green image section */
+  div[style*="background: #DBEEE4"] { padding: 32px 22px !important }
+  h1[style*="font-size: 60px"], h1[style*="font-size: 58px"], h1[style*="font-size: 56px"] { font-size: clamp(28px,7vw,42px) !important }
+  h2[style*="font-size: 50px"], h2[style*="font-size: 46px"], h2[style*="font-size: 48px"], h2[style*="font-size: 44px"] { font-size: clamp(22px,5.5vw,32px) !important }
+  [style*="max-width: 892px"], [style*="max-width: 860px"], [style*="max-width: 760px"], [style*="max-width: 780px"] { max-width: 100% !important }
   div[style*="padding: 0 80px"] { padding: 0 22px !important }
+  /* Large paddings in content areas */
+  [style*="padding: 72px 0 88px 64px"] { padding: 36px 0 44px 0 !important }
+  [style*="padding: 56px 56px"] { padding: 32px 22px !important }
   /* Scale down any fixed-width block element that overflows */
   img, svg { max-width: 100% !important; height: auto !important }
   div[style*="width: 956px"], div[style*="width: 900px"], div[style*="width: 898px"],
