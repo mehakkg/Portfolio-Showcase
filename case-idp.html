@@ -56,19 +56,30 @@ aside a:not(.toc-active) { color: #5F5F5F }
   div[style*="margin: 0 80px"] { margin: 0 22px !important }
   section[style*="margin: 0 80px"] { margin: 0 !important }
   article { padding: 40px 22px !important }
-  /* Stack ALL multi-column grids (div AND section) */
+  /* Stack ALL multi-column grids — target every fixed/fr pattern that breaks at 375px */
   div[style*="grid-template-columns: 7fr 5fr"],
   div[style*="grid-template-columns: 5fr 7fr"],
   div[style*="grid-template-columns: 6fr 6fr"],
+  div[style*="grid-template-columns: 1fr 1.3fr 1fr"],
+  div[style*="grid-template-columns: 1.25fr 1fr 1fr"],
+  div[style*="grid-template-columns: 5fr 3fr 3fr"],
   div[style*="grid-template-columns: repeat(2"],
   div[style*="grid-template-columns: repeat(3"],
   div[style*="grid-template-columns: 1fr 1fr"],
+  div[style*="grid-template-columns: 64px minmax"],
+  div[style*="grid-template-columns: 96px 400px"],
+  div[style*="grid-template-columns: 260px 1fr 1fr 2fr"],
+  div[style*="grid-template-columns: 150px minmax"],
   section[style*="grid-template-columns: 7fr 5fr"],
   section[style*="grid-template-columns: 5fr 7fr"],
-  section[style*="grid-template-columns: 6fr 6fr"],
   section[style*="grid-template-columns: repeat(2"],
-  section[style*="grid-template-columns: repeat(3"],
-  section[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important }
+  section[style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; gap: 16px !important }
+  /* Diagram annotation containers: scroll horizontally rather than clip */
+  div[role="img"] { overflow-x: auto; overflow-y: hidden }
+  /* Diagram inner containers with fixed heights — let them scroll */
+  [style*="position: relative; width: 898px"],
+  [style*="position: relative; width: 956px"],
+  [style*="position: relative; width: 900px"] { min-width: 320px; overflow-x: auto }
   /* Hero section padding */
   #s-open > div { padding: 32px 22px !important; border-right: none !important }
   /* Stats section */
